@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@platform/lesson-schema": ["platform/lesson-schema/src/index.ts"],
+      "@platform/lesson-runtime": ["platform/lesson-runtime/src/index.ts"],
+      "@platform/primitives": ["platform/primitives/src/index.ts"]
+    },
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src", "tests", "vite.config.ts", "playwright.config.ts"],
+  "exclude": ["platform/**/*.test.*"]
+}

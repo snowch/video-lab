@@ -1,0 +1,50 @@
+/* Copyright © 2026 Christopher Snow */
+/* Course styling of the unchanged shared lesson runtime. */
+.verdict {
+  margin-top: 16px;
+}
+.verdict-failure {
+  background: var(--warm);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.verdict table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.verdict th,
+.verdict td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.verdict pre {
+  overflow-wrap: anywhere;
+}
+.hint-ladder {
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+  padding-top: 20px;
+}
+.hint-ladder ol {
+  padding-left: 22px;
+}
+.hint-ladder li {
+  padding-left: 6px;
+}
+.hint-ladder h4 {
+  margin-bottom: 6px;
+}
+.challenge-reset-confirm {
+  display: flex;
+  gap: 8px;
+}
+.figure-lead {
+  padding: 14px 22px 0;
+}
+.prose a {
+  overflow-wrap: anywhere;
+}

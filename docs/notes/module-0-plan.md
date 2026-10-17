@@ -63,3 +63,12 @@ Preserve performance: load preview lazily, do not start a multi-megabyte WASM en
 ## Originality note
 
 The common introduction is a vocabulary glossary and a generic 'convert this video' command. This lesson begins instead with a real technical recording that must be inspected for editing, and introduces terminology only when an observation demands it. No copied teaching text, figures or examples.
+
+## Implemented slice decisions (17 October 2026)
+
+- Adopted the public platform at `9ab98e999f3566d415b56e975b77e899ba9036d3` by checked copy. Course-specific figures and grader use its schema and unchanged lesson runtime. `platform/SOURCE.json` pins hashes.
+- Original browser build-queue demo, scripted at 12 fps for ten seconds, with a clearly identified synthetic tone. Real captured pictures, encoded MP4, raw native ffprobe evidence and independently extracted inspection stills precede prose. See `module-0/media/README.md` and `module-0/fact-brief.md`.
+- Introduced terms are explicit in lesson data. The shared term gate enforces order between lessons; independent review checks introduction order within this single lesson.
+- Six-field inspection challenge derives its reference from the measured fixture, with per-field feedback, five hints, retry, reset and stored work regraded on load. Reflection stays optional and ungraded.
+- Reversible assumptions: proposed title retained; H.264/AAC MP4 and a generated tone chosen for the first fixture; Chromium and Firefox support tested, phone controls tested with Chromium touch emulation. WebKit is not part of the verified baseline because this workspace lacks its system libraries and root package installation.
+- No later module, editor, remote processing, account or FFmpeg.wasm runtime implemented. All course media and runtime assets are served locally under `/video-lab/`.
