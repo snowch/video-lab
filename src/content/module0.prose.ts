@@ -13,9 +13,10 @@ const firstGap = fixture.frames[1]!.pts - fixture.frames[0]!.pts;
 export const prose = {
   question:
     "Before cutting a screen recording, find out what pictures and sound the file contains and when they belong on screen. Can a quiet preview tell you whether sound was recorded?",
-  motivation: `This ${fixture.duration}-second recording shows a build queue. The capture script clicks Sort, and the browser puts the longest build first. The sound is a quiet synthetic tone, not narration. Inspecting the file lets you distinguish missing narration from a player that is merely muted. Listening is optional; the text describes the visual action.`,
-  prediction:
-    "A stream is a sequence of related media data inside a file, such as pictures or sound. This file contains a video stream and a synthetic audio stream. Predict whether muting the player changes which streams the file contains, then check your reasoning.",
+  motivation: `The sample file provided with this lesson, \`${fixture.file}\`, is a ${fixture.duration}-second recording of a build queue. You can play it below in [Inspect pictures and timestamps](#/module-0/investigation).
+
+The capture script clicks Sort, and the browser puts the longest build first. The sound is a quiet synthetic tone, not narration. Inspecting the file lets you distinguish missing narration from a player that is merely muted. Listening is optional; the text describes the visual action.`,
+  prediction: `A stream is a sequence of related media data inside a file, such as pictures or sound. The sample recording, \`${fixture.file}\`, contains a video stream and a synthetic audio stream. Predict whether muting its player changes which streams the file contains, then check your reasoning.`,
   investigation: `A frame is one picture in the video stream. This recording contains ${frameCount} frames. A frame index counts pictures from zero.
 
 Play the recording, then move the frame slider or choose a thumbnail. The still below the player is the selected picture extracted from the recording. Use Previous frame and Next frame to inspect neighbouring pictures.
