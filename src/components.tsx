@@ -16,6 +16,7 @@ import {
   asset,
 } from "./media/model";
 import { ui } from "./content/ui.strings";
+import { StreamOverview } from "./StreamOverview";
 const seconds = (n: number) =>
   `${n.toFixed(6).replace(/0+$/, "").replace(/\.$/, "")} ${ui.seconds}`;
 export function Explorer() {
@@ -270,6 +271,7 @@ export function Prediction() {
     [feedback, setFeedback] = useState("");
   return (
     <div>
+      <StreamOverview />
       <fieldset>
         <legend>{ui.predictionQuestion}</legend>
         {[
