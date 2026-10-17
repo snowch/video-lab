@@ -1,8 +1,14 @@
 // Copyright © 2026 Christopher Snow
 import type { Artifact, Challenge } from "@platform/lesson-schema";
 import type { Verdict, VerdictFailure } from "@platform/lesson-runtime";
+import { gradeEdit } from "./module2/grade";
 import { labels } from "./content/module0.labels";
 export function grade(challenge: Challenge, artifact: Artifact): Verdict {
+  if (
+    challenge.tests.kind === "answers" &&
+    challenge.tests.grader === "cutting-and-joining"
+  )
+    return gradeEdit(challenge, artifact);
   if (challenge.tests.kind !== "answers")
     return {
       passed: false,

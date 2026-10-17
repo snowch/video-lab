@@ -1,0 +1,15 @@
+# Module 2 implementation
+
+Copyright © 2026 Christopher Snow.
+
+The owner requested Cutting and joining directly, so Module 1 remains a planned course entry. Module 2 links to the available Module 0 prerequisite and introduces the command concepts it needs locally. The shell resolves the two implemented lessons by module number, uses their titles and sections, links prerequisites, and remounts the lesson store on navigation. Shared platform files remain unchanged. Challenge state remains namespaced by lesson, with cross-lesson isolation covered by browser tests.
+
+The lesson reuses the original build-queue app recording. A small controlled-keyframe derivative makes the effect of the demonstrated stream-copy seek inspectable. Six real cut outputs and four real joined outputs are committed with SHA-256, native measurements, commands, versions and 28 decoded reference stills. Selectors choose those outputs; they do not simulate a render or expose an arbitrary editing tool. The separate clock failure experiment is a mathematical model with an explicit local label and explanation.
+
+Video and audio are cut together with their respective filters, rebased, then joined together for the encoded results. The fixture has matching stream parameters. Explicit constant-frame-rate output preserves this known source's last picture interval; it is not proposed as a general variable-frame-rate recipe. The copy examples retain their real start offsets and longer container durations. The UI reports first PTS, stream duration and container duration separately.
+
+Native verification checks source derivation, all output hashes and recorded metadata, every decoded output picture against its intended source picture, and all extracted JPEG references. Pixel comparisons allow bounded encoding/JPEG error; copy output pixels must be identical. The visual app text and encoded tone remain original course assets. No new runtime dependency or remote service is added.
+
+The model tests cover actual cut starts, join-side picture ownership, exclusive end bounds, reversed order, different hold durations, invalid intervals and expected outputs. Grading tests cover empty/nonfinite/wrong answers and source/output clock confusion. Browser tests cover every cut and join, playback, prediction, clock toggling, hints/corrections, saved work/reset, reflection, media failure fallback, routes, themes, keyboard radios and page width. Native player controls supply standard keyboard/touch operation; independent review checks their rendered use.
+
+Scope limits: these are short fixed examples, not arbitrary uploads or a general editor. Browser seeking remains approximate. The silent-narration problem is not exercised with real speech; all recordings use the disclosed synthetic tone. Chromium and Firefox are verified, with phone layouts emulated in Chromium. Safari/WebKit, physical devices and screen-reader operation are not verified. Independent prose, learner, sceptic, resolution and checker records are kept in `review/`; final validation records exact commands and outcomes.

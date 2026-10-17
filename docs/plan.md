@@ -14,7 +14,9 @@ The course's guiding idea: **A video editor chooses what the viewer sees, hears,
 
 Comfortable with a terminal, files, basic code and an ordinary browser. No prior video editing, FFmpeg, codec or audio-production knowledge. Course is suitable for desktop and a tablet; exercises that need native FFmpeg are clearly optional or have an observable browser counterpart.
 
-## Curriculum (only introduction and Module 0 in current task)
+## Curriculum
+
+The owner extended the implementation to Module 2 on 17 October 2026. Modules 0 and 2 are available; Module 1 remains planned. Module 2 introduces the FFmpeg concepts it needs without requiring an unavailable lesson.
 
 | Module | What it teaches | Signature hands-on activity |
 | --- | --- | --- |

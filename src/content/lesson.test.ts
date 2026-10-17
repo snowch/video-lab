@@ -11,7 +11,7 @@ import { grade } from "../grade";
 import { modules } from "./home.strings";
 import { referenceAnswers } from "../media/model";
 describe("shared lesson contract and course scope", () => {
-  it("provides exactly one complete ten-section lesson with allowed terms and models", () => {
+  it("keeps Module 0 complete with allowed terms and models", () => {
     expect(lesson.sections.map((s) => s.kind)).toEqual(SECTION_KINDS);
     expect(checkLesson(lesson)).toEqual([]);
     expect(termProblems([lesson])).toEqual([]);

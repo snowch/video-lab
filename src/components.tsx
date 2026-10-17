@@ -361,6 +361,7 @@ export function Failure() {
   );
 }
 export function Editor({
+  lesson,
   challenge,
   artifact,
   onChange,
@@ -414,7 +415,9 @@ export function Editor({
         ))}
       </div>
       <p>
-        <a href="#/module-0/investigation">{ui.inspectAgain}</a>
+        <a href={`#/module-${lesson.module}/investigation`}>
+          {ui.inspectAgain}
+        </a>
       </p>
     </div>
   );

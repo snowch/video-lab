@@ -10,11 +10,11 @@ export const home = {
     "For software and data engineers who want to make clearer demos. You need ordinary file handling, a browser and basic code or terminal familiarity. No video editing vocabulary is assumed.",
   outcomeTitle: "What you can do here",
   outcome:
-    "Module 0 is a complete lesson with a real recording and an inspection challenge. Learn to distinguish the file container, the streams inside it and their codecs before deciding where to cut.",
+    "Modules 0 and 2 are complete lessons with real recordings and inspection challenges. Inspect a file’s pictures, sound and timing, then compare cuts and arrange clips into a clearer demo.",
   start: "Start Module 0",
   planTitle: "Course plan",
   planNote:
-    "Only Module 0 is available. The remaining modules describe the planned curriculum.",
+    "Modules 0 and 2 are available. Module 1 and the remaining modules describe the planned curriculum.",
 };
 
 export const modules = [

@@ -20,6 +20,8 @@ Read those files and this repo's plan before implementation. Adapt rules instead
 
 Implement the front-page introduction and **Module 0: What is a digital video?** as a complete, playable, deployed and tested vertical slice. Subsequent modules are a plan, not implementation deliverables. The initial implementation used a project branch and a reviewable PR. On 17 October 2026, the owner explicitly authorised deploying the reviewed implementation straight to `main`; this supersedes the original instruction to leave `main` unchanged. GitHub Pages deploys from `main` after the full quality check.
 
+The owner requested Module 2 (Cutting and joining) on 17 October 2026. This extends the original scope to that complete lesson while Module 1 remains planned. Apply the same mandatory workflow, using `docs/notes/module-2-plan.md` and `docs/notes/module-2/review/` for Module 2. The standing authorisation to deploy reviewed changes to `main` applies.
+
 ## Editorial standard
 
 British English. Direct, accurate, concrete, non-marketing prose. No filler, no rhetorical suspense, no generic AI-sounding transitions. Prefer a working example to a repeated explanation. Define an unfamiliar term only when it becomes necessary. A short paragraph is not necessarily an intelligible one: explain the mechanism and consequence.

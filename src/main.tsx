@@ -8,6 +8,17 @@ import {
   type Book,
 } from "@platform/lesson-runtime";
 import { lesson } from "./content/lesson";
+import { lesson2 } from "./module2/lesson";
+import { prose as prose2 } from "./module2/prose";
+import { m2 } from "./module2/strings";
+import {
+  CutSource,
+  CutPrediction,
+  CutExplorer,
+  JoinExplorer,
+  ClockExperiment,
+  EditReflection,
+} from "./module2/components";
 import { prose } from "./content/module0.prose";
 import { ui } from "./content/ui.strings";
 import { home, modules } from "./content/home.strings";
@@ -26,23 +37,37 @@ const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
   title: home.title,
-  lessons: [lesson],
+  lessons: [lesson, lesson2],
   interactives: {
     explorer: Explorer,
     streams: Streams,
     prediction: Prediction,
     failure: Failure,
     reflection: Reflection,
+    "cut-source": CutSource,
+    "cut-prediction": CutPrediction,
+    "cut-explorer": CutExplorer,
+    "join-explorer": JoinExplorer,
+    "edit-clock": ClockExperiment,
+    "edit-reflection": EditReflection,
   },
   ChallengeEditor: Editor,
   grade,
-  timeModelNotes: { recorded: prose.modelNote },
+  timeModelNotes: {
+    recorded: prose.modelNote,
+    "recorded-cuts": prose2.modelNote,
+    "edit-clock": prose2.clockNote,
+  },
 };
 const strings = {
   ...DEFAULT_STRINGS,
   lesson: {
     ...DEFAULT_STRINGS.lesson,
-    timeModel: { recorded: ui.modelHeading },
+    timeModel: {
+      recorded: ui.modelHeading,
+      "recorded-cuts": m2.recordedLabel,
+      "edit-clock": m2.clockLabel,
+    },
     modelNote: ui.modelHeading,
     modelVsReality: ui.limitsHeading,
     modelVsRealityNoSimulator: ui.limitsHeading,
@@ -96,13 +121,15 @@ function Home() {
               </span>
               <div>
                 <small>
-                  {m.id === lesson.module ? ui.available : ui.planned}
+                  {book.lessons.some((l) => l.module === m.id)
+                    ? ui.available
+                    : ui.planned}
                 </small>
                 <h3>{m.title}</h3>
                 <p>{m.summary}</p>
               </div>
-              {m.id === lesson.module && (
-                <a className="button" href="#/module-0">
+              {book.lessons.some((l) => l.module === m.id) && (
+                <a className="button" href={`#/module-${m.id}`}>
                   {ui.open} →
                 </a>
               )}
@@ -131,9 +158,13 @@ function App() {
     document.documentElement.dataset.theme = theme;
     storage.set("video-lab:theme", theme);
   }, [theme]);
-  const inLesson = route.startsWith("#/module-0");
+  const activeLesson = book.lessons.find(
+    (l) =>
+      l.module === Number(route.match(/^#\/module-(\d+)(?:\/|$)/)?.[1] ?? -1),
+  );
+  const inLesson = !!activeLesson;
   useEffect(() => {
-    document.title = `${inLesson ? lesson.title : home.subtitle} · ${home.title}`;
+    document.title = `${activeLesson ? activeLesson.title : home.subtitle} · ${home.title}`;
     const section = route.split("/")[2];
     if (section) {
       document.getElementById(`section-${section}`)?.scrollIntoView();
@@ -142,7 +173,7 @@ function App() {
       if (!initial.current) main.current?.focus();
     }
     initial.current = false;
-  }, [route, inLesson]);
+  }, [route, inLesson, activeLesson]);
   return (
     <>
       <a
@@ -176,15 +207,15 @@ function App() {
         </div>
       </header>
       <main id="content" ref={main} tabIndex={-1}>
-        {inLesson ? (
+        {activeLesson ? (
           <div className="course-layout">
             <aside className="lesson-nav">
               <a href="#/">{ui.back}</a>
               <span className="eyebrow">{ui.onPage}</span>
               <ol>
-                {lesson.sections.map((s, i) => (
+                {activeLesson.sections.map((s, i) => (
                   <li key={s.kind}>
-                    <a href={`#/module-0/${s.kind}`}>
+                    <a href={`#/module-${activeLesson.module}/${s.kind}`}>
                       {String(i + 1).padStart(2, "0")} {s.title}
                     </a>
                   </li>
@@ -192,10 +223,16 @@ function App() {
               </ol>
             </aside>
             <div>
-              <span className="eyebrow">{ui.lessonNumber}</span>
+              <span className="eyebrow">
+                {activeLesson.module === 0 ? ui.lessonNumber : m2.lessonNumber}
+              </span>
               <LessonView
+                key={activeLesson.id}
                 book={book}
-                lesson={lesson}
+                lesson={activeLesson}
+                lessonHref={(id) =>
+                  `#/module-${book.lessons.find((l) => l.id === id)?.module ?? 0}`
+                }
                 storage={storage}
                 strings={strings}
               />
@@ -207,7 +244,7 @@ function App() {
       </main>
       <footer className="site-footer">
         <span>{ui.copyright}</span>
-        <a href="https://github.com/snowch/video-lab/blob/codex/issue-1-module-0/docs/sources.md">
+        <a href="https://github.com/snowch/video-lab/blob/main/docs/sources.md">
           {ui.source}
         </a>
       </footer>

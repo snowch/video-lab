@@ -2,9 +2,13 @@
 
 Copyright © 2026 Christopher Snow.
 
-An interactive course for software and data engineers making clearer demonstrations. This branch implements the introduction and **Module 0: What is a digital video?** Modules 1–9 are explicitly planned and not implemented.
+An interactive course for software and data engineers making clearer demonstrations. The introduction, **Module 0: What is a digital video?** and **Module 2: Cutting and joining** are implemented. Module 1 and Modules 3–9 remain planned. Module 2 supplies its own short FFmpeg introduction and links to Module 0 for media fundamentals.
 
 Module 0 uses an original browser-app recording, genuine H.264/AAC MP4, recorded ffprobe evidence and extracted frames. The player, frame inspector, streams diagram, prediction, failure experiment and graded inspection challenge work without a remote service. The challenge has useful failed-test feedback, five progressive hints, retries, reset and locally saved work regraded on reload.
+
+Module 2 compares six real stream-copy/encoded cuts and four real joined outputs from the same original recording. Learners inspect boundary pictures, arrange clips, compare source and output clocks, and complete a six-field edit challenge. The browser selects verified pre-generated results; it does not run FFmpeg or render arbitrary edits.
+
+See the [Module 2 plan](docs/notes/module-2-plan.md), [media commands and verification](docs/notes/module-2/media/README.md), and [independent reviews](docs/notes/module-2/review/).
 
 ## Run and check
 
@@ -17,7 +21,7 @@ npm run dev
 npm run check
 ```
 
-Open the URL Vite prints with `/video-lab/`. `npm run check` is exactly the command CI runs: formatting, source copyright, unedited platform copy, strict typecheck, model/schema/term/reference tests, required native media verification, production build and Playwright. `npm run build && npm run preview` serves the production bundle. Browser tests cover Chromium desktop/phone in light/dark plus desktop Firefox; WebKit/Safari are not yet a verified baseline.
+Open the URL Vite prints with `/video-lab/`. `npm run check` is exactly the command CI runs: formatting, source copyright, unedited platform copy, strict typecheck, model/schema/term/reference tests, required native verification of both modules’ media, production build and Playwright. `npm run build && npm run preview` serves the production bundle. Browser tests cover Chromium desktop/phone in light/dark plus desktop Firefox; WebKit/Safari are not yet a verified baseline.
 
 See [media provenance and commands](docs/notes/module-0/media/README.md), [sources and licences](docs/sources.md), [module plan](docs/notes/module-0-plan.md), and [independent review records](docs/notes/module-0/review/).
 

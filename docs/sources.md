@@ -59,3 +59,15 @@ Direct npm dependencies and their installed declared licences are listed below. 
 | vite | 7.3.7 | MIT |
 | vitest | 4.1.12 | MIT |
 | zod | 4.6.7 | MIT |
+
+## Module 2 references and media
+
+Accessed 17 October 2026. Original teaching text was drafted from native measurements and these primary references:
+
+- https://ffmpeg.org/ffmpeg.html#Main-options — input `-ss` seeks to an earlier seek point; stream copy preserves pre-request material for the demonstrated command. Transcoding with accurate seek can discard it.
+- https://ffmpeg.org/ffmpeg-filters.html#trim and https://ffmpeg.org/ffmpeg-filters.html#atrim — range selection and unchanged timestamps.
+- https://ffmpeg.org/ffmpeg-filters.html#setpts_002c-asetpts — resetting a segment's presentation timestamps.
+- https://ffmpeg.org/ffmpeg-filters.html#concat — segment timestamps start at zero, video/audio are joined together, corresponding stream parameters must be compatible. Dimensions require explicit conversion when they differ; no claim is made that all frame rates must match.
+- https://ffmpeg.org/ffmpeg-formats.html#concat — the concat demuxer is a separate mechanism with matching-stream/time-base requirements, not the concat filter exercised here.
+
+[Module 2 provenance](notes/module-2/media/README.md) records the controlled-keyframe derivative, ten outputs, extracted stills, commands, exact native versions and validation tolerances. All media derives from the original course recording and inherits its rights statement. No new third-party asset or runtime dependency is introduced.

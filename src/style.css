@@ -912,3 +912,139 @@ code {
     scroll-behavior: auto !important;
   }
 }
+
+/* Cutting and joining: both clocks stay legible without hover. */
+.edit-recording {
+  margin: 18px 0;
+}
+.edit-recording video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0b1821;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.edit-recording code {
+  overflow-wrap: anywhere;
+}
+.edit-keyframes {
+  margin: 18px 0;
+}
+.edit-keyframes ol {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.edit-keyframes li {
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px;
+  background: var(--raised);
+  font-variant-numeric: tabular-nums;
+}
+.edit-keyframes .is-selected {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+.edit-summary {
+  padding: 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+}
+.edit-boundaries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.edit-boundary {
+  margin: 0;
+  min-width: 0;
+}
+.edit-boundary figcaption {
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+.edit-boundary img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+.edit-boundary dl,
+.edit-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+.edit-boundary dd,
+.edit-facts dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.edit-boundary dt,
+.edit-facts dt {
+  color: var(--muted);
+}
+.edit-evidence {
+  margin-top: 20px;
+}
+.edit-evidence pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+.edit-timeline {
+  margin: 24px 0;
+}
+.edit-timeline h3 {
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+.edit-track {
+  position: relative;
+  height: 44px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.edit-track > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 1px solid var(--accent);
+}
+.clip-a {
+  background: var(--accent-soft);
+}
+.clip-b {
+  background: var(--warm);
+}
+.edit-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.edit-timeline p {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .edit-boundaries {
+    grid-template-columns: 1fr;
+  }
+  .edit-facts {
+    grid-template-columns: 1fr;
+  }
+  .edit-facts dd {
+    margin-bottom: 8px;
+  }
+}
