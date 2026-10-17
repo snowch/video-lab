@@ -135,6 +135,8 @@ export function Explorer() {
             <dt>{ui.rate}</dt>
             <dd>{videoStream.rate}</dd>
           </dl>
+          <p className="player-note">{ui.timingHelp}</p>
+          <p className="player-note">{ui.rateHelp}</p>
         </div>
       </div>
       <p className="player-note">{ui.previewNote}</p>
@@ -204,6 +206,7 @@ export function Streams() {
                 <div className="audio-track" aria-hidden="true" />
               )}
               <p>{s.type === "video" ? ui.videoFrames : ui.audioSamples}</p>
+              {s.type === "audio" && <p>{ui.audioHelp}</p>}
               <div className="timeline-label">
                 {s.type === "video"
                   ? frames

@@ -51,7 +51,7 @@ export const labels = {
     codec:
       "Use the codec shown for the video stream. The file container and the audio codec describe different things.",
     frame:
-      "Select the requested time in the explorer and read its frame index. Seconds and picture indexes have different units.",
+      "Move the recorded-frame slider while watching PTS, then use Previous frame or Next frame until it matches the requested time. Read the frame index; seconds and picture indexes have different units.",
     timestamp:
       "Enter the selected picture’s PTS in seconds. The tick count needs the time base before it becomes seconds.",
   },

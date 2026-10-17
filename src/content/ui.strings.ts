@@ -1,4 +1,6 @@
 // Copyright © 2026 Christopher Snow
+import { audioStream, videoStream } from "../media/model";
+
 export const ui = {
   brand: "Video Lab",
   skip: "Skip to content",
@@ -32,13 +34,17 @@ export const ui = {
   timeBase: "Time base, seconds per tick",
   resolution: "Picture dimensions",
   rate: "Average frames per second",
+  timingHelp:
+    "A timestamp tick is one unit of a stream’s clock. The time base gives seconds per tick: multiply the tick count by this fraction to obtain seconds.",
+  rateHelp: `The rate is a fraction of pictures per second: ${videoStream.rate} means ${Number(videoStream.rate?.split("/")[0]) / Number(videoStream.rate?.split("/")[1])} pictures per second here.`,
+  audioHelp: `This stream has ${audioStream.sampleRate?.toLocaleString("en-GB")} samples per second in ${audioStream.channels} channel. An audio block groups samples reconstructed together when the stream is decoded.`,
   seconds: "s",
   pixels: "pixels",
   frameAlt: "Extracted picture from the build-queue recording",
   playerNote:
     "The sound is a quiet synthetic tone, not speech. Muting changes playback only. All meaningful actions are described in the text.",
   previewNote:
-    "The preview reports the browser’s playback time estimate. The still comes from FFmpeg; ffprobe recorded its presentation timestamp separately. Moving to a new time can briefly show a neighbouring picture in the player.",
+    "FFmpeg is a set of media processing tools. Its inspection tool ffprobe recorded the timestamps here; FFmpeg extracted the stills. The preview reports the browser’s playback time estimate. Moving to a new time can briefly show a neighbouring picture in the player.",
   previewError:
     "The browser could not play this MP4. You can still inspect every extracted frame below or download the recording.",
   playError:

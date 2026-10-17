@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import fixture from "./fixture.json";
+import fixture from "./fixture.json" with { type: "json" };
 export { fixture };
 export const videoStream = fixture.streams.find((s) => s.type === "video")!;
 export const audioStream = fixture.streams.find((s) => s.type === "audio")!;

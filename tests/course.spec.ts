@@ -11,6 +11,7 @@ const open = async (page: import("@playwright/test").Page) => {
 };
 test("introduction, theme persistence and browser navigation", async ({
   page,
+  isMobile,
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -20,7 +21,8 @@ test("introduction, theme persistence and browser navigation", async ({
   );
   await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(9);
   const theme = await page.locator("html").getAttribute("data-theme");
-  await page.getByRole("button", { name: ui.theme }).click();
+  if (isMobile) await page.getByRole("button", { name: ui.theme }).tap();
+  else await page.getByRole("button", { name: ui.theme }).click();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
   await page.reload();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
@@ -44,7 +46,7 @@ test("introduction, theme persistence and browser navigation", async ({
 });
 test("real playback, frame inspection, prediction, streams and failure experiment", async ({
   page,
-  browserName,
+  isMobile,
 }) => {
   await open(page);
   await page.getByRole("button", { name: ui.checkPrediction }).click();
@@ -78,7 +80,9 @@ test("real playback, frame inspection, prediction, streams and failure experimen
   await expect
     .poll(() => player.evaluate((v) => (v as HTMLVideoElement).currentTime))
     .toBeCloseTo(6.25, 1);
-  await page.getByRole("button", { name: ui.next, exact: true }).click();
+  if (isMobile)
+    await page.getByRole("button", { name: ui.next, exact: true }).tap();
+  else await page.getByRole("button", { name: ui.next, exact: true }).click();
   await expect(slider).toHaveValue("76");
   await slider.focus();
   await page.keyboard.press("ArrowLeft");
@@ -107,7 +111,6 @@ test("real playback, frame inspection, prediction, streams and failure experimen
   const evidence = await page.request.get("media/ffprobe.json");
   expect(evidence.ok()).toBe(true);
   expect((await evidence.json()).streams).toHaveLength(2);
-  expect(browserName).toBeTruthy();
 });
 test("challenge errors, five progressive hints, retry, saved completion and reset", async ({
   page,
@@ -209,4 +212,20 @@ test("responsive layout, readable controls, no page errors and screenshots", asy
     });
   }
   expect(errors).toEqual([]);
+});
+
+test("media failure keeps measured inspection and grading usable", async ({
+  page,
+}) => {
+  await page.route("**/media/build-queue.mp4", (route) => route.abort());
+  await open(page);
+  await expect(page.getByRole("alert")).toHaveText(ui.previewError);
+  await page.locator("#frame-cursor").fill("75");
+  await expect(page.getByTestId("reference-frame")).toHaveAttribute(
+    "src",
+    /075.jpg$/,
+  );
+  await expect(page.getByTestId("frame-time")).toHaveText("6.25 s");
+  await page.getByRole("button", { name: "Run tests", exact: true }).click();
+  await expect(page.locator(".verdict-failure")).toHaveCount(6);
 });
