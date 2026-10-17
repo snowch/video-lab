@@ -34,8 +34,8 @@ Do not edit the copied platform. The course provides its shell, original prose, 
 
 ## GitHub Pages
 
-The Vite base path is `/video-lab/`; hash routes support direct lesson links, reloads and back/forward navigation on static hosting. The Pages workflow runs the full check before uploading `dist/` and deploying. It runs on pushes to the requested base branch `codex/intro-module-0`, and can be dispatched once GitHub recognises the workflow on the repository's default branch.
+The Vite base path is `/video-lab/`; hash routes support direct lesson links, reloads and back/forward navigation on static hosting. The Pages workflow runs the full check before uploading `dist/` and deploying. It runs on pushes to `main` and supports manual dispatch from Actions.
 
-In **Settings → Pages**, select **GitHub Actions** as the source. The `github-pages` environment must permit deployment from `codex/intro-module-0`. This repository currently permits only `main` (observed through the GitHub API on 17 October 2026). That protection blocks deployment from the requested branch. This task leaves `main` and the environment protection unchanged. After the PR is reviewed and merged into its requested base, the owner must permit that base branch in **Settings → Environments → github-pages → Deployment branches** for the workflow to deploy.
+In **Settings → Pages**, select **GitHub Actions** as the source. The existing `github-pages` environment permits `main`, so its deployment protection is retained. On 17 October 2026 the owner authorised deploying the reviewed implementation directly to `main`, superseding the initial project-branch-only delivery constraint.
 
-The intended address is https://snowch.github.io/video-lab/ . Deployment is not claimed until the workflow succeeds and the live page is inspected. Local checks and independent reviews use the production build.
+The course address is https://snowch.github.io/video-lab/ . The **Deploy GitHub Pages** workflow reports each deployment result; [PR #2](https://github.com/snowch/video-lab/pull/2) records the live-site verification. Deployment success is established by the workflow and live check, not by this configuration note.

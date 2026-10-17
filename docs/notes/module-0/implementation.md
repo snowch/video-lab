@@ -22,7 +22,7 @@ The shared Markdown runtime also includes maths support used by other courses; t
 
 The recording uses constant spacing. Later lessons can add a second real variable-frame-rate fixture; the current lesson explains why average frame rate alone is insufficient without pretending this fixture varies. Sample counts are positions implied by the sample rate over an interval, not a count of padded AAC decoder output.
 
-The public Pages environment currently allows only `main`, so deployment from this task's requested base is blocked by repository protection. The implementation adds the workflow and exact setup instructions, preserves the restriction and does not change `main`. Review and browser evidence use the production build served at `/video-lab/`.
+The public Pages environment allows only `main`. Initial project-branch delivery was blocked by that protection. The owner subsequently authorised deploying the reviewed implementation directly to `main`; the Pages workflow now targets that branch and retains the existing environment restriction. Review and browser evidence use the production build served at `/video-lab/`; PR #2 records subsequent live-site verification.
 
 ## Review roles
 

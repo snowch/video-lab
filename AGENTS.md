@@ -18,7 +18,7 @@ Read those files and this repo's plan before implementation. Adapt rules instead
 
 ## Scope of this Codex task
 
-Implement the front-page introduction and **Module 0: What is a digital video?** as a complete, playable, deployed and tested vertical slice. Subsequent modules are a plan, not implementation deliverables. The main branch must remain unchanged; work on the project branch, and leave a reviewable PR.
+Implement the front-page introduction and **Module 0: What is a digital video?** as a complete, playable, deployed and tested vertical slice. Subsequent modules are a plan, not implementation deliverables. The initial implementation used a project branch and a reviewable PR. On 17 October 2026, the owner explicitly authorised deploying the reviewed implementation straight to `main`; this supersedes the original instruction to leave `main` unchanged. GitHub Pages deploys from `main` after the full quality check.
 
 ## Editorial standard
 

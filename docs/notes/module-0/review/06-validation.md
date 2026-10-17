@@ -25,7 +25,9 @@ The separate reader and sceptic ran their own page and media checks; `01-reader.
 
 Five screenshots in `screenshots/` come from the rebuilt production page at `/video-lab/`, using Playwright Chromium: introduction at 1440 × 1000/light, explorer at desktop/light, stream diagram at desktop/dark, and explorer/challenge at 390 × 844/dark with touch enabled. Element screenshots include the whole selected interactive. The challenge is shown before answers are entered. No screenshots are mock-ups.
 
-## Limitations and blockers
+## Initial delivery limitations and blockers
+
+This section records the initial PR delivery state. The owner subsequently authorised deployment directly to `main`, and the Pages workflow was updated to use the already-permitted branch. See PR #2 for the subsequent deployment and live-site result.
 
 - Pages is configured with GitHub Actions, but the `github-pages` environment permits deployment only from `main` (GitHub API inspected on 17 October 2026). This task must use `codex/intro-module-0` as its base and leave `main` unchanged. The environment protection was preserved. The public course address returned HTTP 404 when checked. Deployment is configured but **not deployed or live-verified**; README specifies the owner setting needed after review/merge into the requested base.
 - Playwright WebKit downloaded, but could not launch because the workspace lacks its GTK/Graphene/Harfbuzz/Manette/Hyphen/GLES libraries. `npx playwright install-deps` could not install them without root authentication. No WebKit/Safari check is claimed. Browser coverage uses Chromium and Firefox; phone coverage is emulation, not physical-device or screen-reader certification.
