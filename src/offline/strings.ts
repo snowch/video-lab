@@ -1,6 +1,6 @@
 // Copyright © 2026 Christopher Snow
 export const offline = {
-  title: "Use Video Lab offline",
+  title: "Offline access and app installation",
   description:
     "Download the available lessons, recordings and pictures so you can use them without an internet connection in this browser.",
   idle: "No complete offline copy has been saved yet. Connect to the internet and download it before going offline.",

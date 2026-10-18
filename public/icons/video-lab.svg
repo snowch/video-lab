@@ -1,0 +1,7 @@
+<!-- Copyright © 2026 Christopher Snow -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Video Lab</title>
+  <rect width="512" height="512" fill="#12695e" />
+  <rect x="152" y="120" width="208" height="272" rx="24" fill="#f6a623" />
+  <path d="M220 188 L324 256 L220 324 Z" fill="#fff" />
+</svg>

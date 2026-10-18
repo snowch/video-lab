@@ -1076,3 +1076,15 @@ code {
 .offline-panel [role="status"] {
   font-weight: 600;
 }
+
+.install-access {
+  border-top: 1px solid var(--line);
+  margin-top: 20px;
+  padding-top: 8px;
+}
+.install-access h2 {
+  font-size: 1.15rem;
+}
+.install-access li + li {
+  margin-top: 12px;
+}

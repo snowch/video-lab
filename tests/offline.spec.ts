@@ -48,6 +48,9 @@ const test = base.extend<{ site: Site }>({
           ".js": "text/javascript",
           ".css": "text/css",
           ".json": "application/json",
+          ".webmanifest": "application/manifest+json",
+          ".png": "image/png",
+          ".svg": "image/svg+xml",
           ".mp4": "video/mp4",
           ".jpg": "image/jpeg",
           ".woff2": "font/woff2",
@@ -99,7 +102,7 @@ test("complete download survives offline reload and new tab, with all media and 
     await page.evaluate(() => navigator.serviceWorker.getRegistration()),
   ).toBeUndefined();
   const panel = page.getByRole("region", { name: offline.title });
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
@@ -108,7 +111,7 @@ test("complete download survives offline reload and new tab, with all media and 
   });
   await context.setOffline(true);
   await page.reload();
-  await page.locator(".offline-panel summary").click();
+  await page.locator(".offline-panel > details > summary").click();
   await expect(panel.getByRole("status")).toHaveText(offline.offlineReady);
   // All files are fetched through the worker with the network disconnected, not the HTTP cache.
   const manifest = JSON.parse(
@@ -206,12 +209,13 @@ test("complete download survives offline reload and new tab, with all media and 
 });
 test("incomplete download reports failure and retries; missing storage can be repaired", async ({
   page,
+  context,
   site,
 }) => {
   site.fail = "media/frames/119.jpg";
   await page.goto(site.url);
   const panel = page.locator(".offline-panel");
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
@@ -231,24 +235,42 @@ test("incomplete download reports failure and retries; missing storage can be re
   await expect(panel.getByRole("status")).toHaveText(offline.ready, {
     timeout: 30000,
   });
-  await page.evaluate(async () => {
-    await caches.open("another-app-cache");
-    for (const name of await caches.keys())
-      if (name.startsWith("video-lab-offline:")) {
-        const cache = await caches.open(name);
-        await cache.delete(new URL("media/frames/119.jpg", location.href));
-      }
-  });
+  // Inject eviction only after the download action settles, with no network repair.
+  await expect(
+    panel.getByRole("button", { name: offline.check, exact: true }),
+  ).toBeEnabled();
+  await context.setOffline(true);
+  expect(
+    await page.evaluate(async () => {
+      await caches.open("another-app-cache");
+      let removed = false;
+      for (const name of await caches.keys())
+        if (name.startsWith("video-lab-offline:")) {
+          const cache = await caches.open(name);
+          removed =
+            (await cache.delete(
+              new URL("media/frames/119.jpg", location.href),
+            )) || removed;
+        }
+      return removed;
+    }),
+  ).toBe(true);
   await page.reload();
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await expect(panel.getByRole("status")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
+  await context.setOffline(false);
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.ready);
+  // Firefox's emulated connectivity signal may lag behind restored requests.
+  // The repair contract is a complete saved copy, regardless of that signal.
+  await expect(panel.getByRole("status")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+  );
   expect(await page.evaluate(() => caches.has("another-app-cache"))).toBe(true);
 });
 test("updates wait for a complete copy and explicit reload, preserving saved work", async ({
@@ -259,7 +281,7 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   test.setTimeout(90000);
   await page.goto(site.url + "#/module-2");
   const panel = page.locator(".offline-panel");
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
@@ -283,15 +305,15 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await context.setOffline(true);
   await page.reload();
   await seekAndPlay(page.locator("#ix-cut-source video"));
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
   await expect(panel.getByRole("status")).toHaveText(offline.updateFailed);
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await context.setOffline(false);
   site.fail = "";
   // A distinct script ensures retry even if the browser remembers the failed update.
   site.revision = 2;
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
   await expect(panel.getByRole("status")).toHaveText(offline.updateReady, {
     timeout: 30000,
@@ -323,7 +345,7 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await seekAndPlay(second.locator("video").first());
   await second.close();
   await context.setOffline(false);
-  await panel.locator("summary").click();
+  await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
   await expect(panel.getByRole("status")).toHaveText(offline.current);
   site.revision = 3;
@@ -363,7 +385,7 @@ test("unsupported browsers keep online lessons usable", async ({
   });
   await page.goto(site.url + "#/module-2");
   const panel = page.locator(".offline-panel");
-  await panel.locator("summary").focus();
+  await panel.locator(":scope > details > summary").focus();
   await page.keyboard.press("Enter");
   await expect(panel.getByRole("status")).toHaveText(offline.unsupported);
   await expect(panel.getByRole("button")).toHaveCount(0);

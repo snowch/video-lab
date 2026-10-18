@@ -81,3 +81,14 @@ Accessed 18 October 2026. Original implementation and UI prose; no source prose 
 - https://developer.mozilla.org/en-US/docs/Web/API/Request/integrity — SHA-256 verification against the production manifest. Tests reject a successful HTTP response with incorrect file contents.
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests — single byte ranges, 206 and 416 responses. Unit tests pin boundaries and browser tests seek native MP4 recordings offline.
 - https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria — local browser storage is not permanent; private browsing and eviction limits are stated in the UI.
+
+## App installation and original icon
+
+Accessed 18 October 2026:
+
+- https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable — manifest identity, display mode, secure hosting, icons, platform-dependent installation and the browser prompt. Actual Chromium installability is checked via the browser protocol; controlled prompt tests are not represented as OS installation.
+- https://www.mozilla.org/en-US/firefox/143.0/releasenotes/ — Firefox143 introduced Windows website apps pinned to the taskbar; this corrects the initial drafting brief's overbroad claim about Firefox desktop. Manifest-based PWA support and generic website apps are distinct.
+
+The icon is an original vector rendering of Video Lab's existing teal/orange play mark, not a third-party asset. `public/icons/video-lab.svg` is the source; `scripts/generate-icons.mjs` reproduces the PNG sizes and maskable version with the existing Playwright dependency. Copyright © 2026 Christopher Snow applies; no new blanket licence is invented. Browser-specific placement of an app icon is controlled by that browser/operating system, not by the web app.
+- https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/id and https://www.w3.org/TR/appmanifest/#id-member — independently checked during review: relative app ids resolve against the start URL's origin, unlike manifest-relative start/scope URLs. The explicit `/video-lab/` id is checked against Chromium's parsed manifest.
+- https://support.google.com/chrome/answer/9658361?co=GENIE.Platform%3DAndroid — the separate drafter and sceptic fetched current Android guidance: More → Install and create shortcut → Install. Menu wording is qualified by version.

@@ -66,3 +66,5 @@ No full nonlinear video editor, timeline compositor, AI API, accounts, payment, 
 ## Offline support scope extension
 
 On 18 October 2026 the owner requested offline app support. Apply the same mandatory workflow to this slice using `docs/notes/offline-plan.md` and `docs/notes/offline/review/`. The standing authorisation to deploy reviewed changes to `main` applies.
+
+The owner additionally requested a desktop icon on 18 October 2026. Extend offline support with installable app metadata and icons; use `docs/notes/install-plan.md` and `docs/notes/install/review/` for its mandatory drafting and review workflow.

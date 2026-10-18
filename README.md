@@ -27,11 +27,19 @@ See [media provenance and commands](docs/notes/module-0/media/README.md), [sourc
 
 ## Use offline
 
-Open [Video Lab](https://snowch.github.io/video-lab/) while connected. Expand **Use Video Lab offline**, choose **Download for offline use**, and keep the page open until it reports that the complete copy is ready. Both available modules, all recordings and pictures, challenges and local notes then work offline, including reopening a saved lesson URL in the same browser. The current bundle is about 9 MB before transfer compression.
+Open [Video Lab](https://snowch.github.io/video-lab/) while connected. Expand **Offline access and app installation**, choose **Download for offline use**, and keep the page open until it reports that the complete copy is ready. Both available modules, all recordings and pictures, challenges and local notes then work offline, including reopening a saved lesson URL in the same browser. The current bundle is about 9 MB before transfer compression.
 
 Use **Check for updates** while connected. A complete update offers **Reload to use update**; other open Video Lab tabs reload too. Already saved challenge work, notes and theme remain in this browser. External source links require a connection. Browser storage can be cleared or evicted, and private sessions are temporary; this is not a backup or synchronisation service.
 
 Offline saving uses standard service workers and Cache Storage on HTTPS (or localhost). It is enabled only after requesting a download. For local offline testing use `npm run build && npm run preview`, not the development server. The build generates `dist/sw.js` and `dist/offline-manifest.json` from all production assets. Native video seeking is served from complete saved recordings using HTTP byte ranges. No additional runtime dependency is installed. See [offline plan](docs/notes/offline-plan.md) and [review records](docs/notes/offline/review/).
+
+## App icon and installation
+
+Open **Offline access and app installation** and find **Add a Video Lab icon**. When the browser offers installation, **Install Video Lab** opens its prompt. Otherwise, expand the browser instructions: Chrome/Edge offer address-bar or menu installation; Chrome on Android offers **More → Install and create shortcut → Install**; Safari on Mac offers **File → Add to Dock**; iPhone/iPad use **Share → Add to Home Screen**. Firefox web-app support varies by operating system and version. The browser chooses where the app shortcut appears.
+
+The app has its own original play icon, stable identity and standalone launch configuration. Installing it does not itself save every lesson: complete **Download for offline use** before disconnecting. Previously downloaded copies should use **Check for updates**, then **Reload to use update**, to receive the installation controls and icon metadata.
+
+Icons are generated from `public/icons/video-lab.svg` by `node scripts/generate-icons.mjs`. No additional dependency is required. The manifest and icons are included in offline downloads. See the [installation plan](docs/notes/install-plan.md) and [independent reviews](docs/notes/install/review/).
 
 ## Shared platform
 
