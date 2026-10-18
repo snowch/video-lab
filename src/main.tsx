@@ -33,6 +33,7 @@ import {
 import { grade } from "./grade";
 import { asset, frames } from "./media/model";
 import "./style.css";
+import { OfflineAccess } from "./offline/OfflineAccess";
 const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
@@ -206,6 +207,7 @@ function App() {
           </nav>
         </div>
       </header>
+      <OfflineAccess />
       <main id="content" ref={main} tabIndex={-1}>
         {activeLesson ? (
           <div className="course-layout">

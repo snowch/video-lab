@@ -71,3 +71,13 @@ Accessed 17 October 2026. Original teaching text was drafted from native measure
 - https://ffmpeg.org/ffmpeg-formats.html#concat — the concat demuxer is a separate mechanism with matching-stream/time-base requirements, not the concat filter exercised here.
 
 [Module 2 provenance](notes/module-2/media/README.md) records the controlled-keyframe derivative, ten outputs, extracted stills, commands, exact native versions and validation tolerances. All media derives from the original course recording and inherits its rights statement. No new third-party asset or runtime dependency is introduced.
+
+## Offline browser APIs
+
+Accessed 18 October 2026. Original implementation and UI prose; no source prose is copied and no new runtime dependency is added.
+
+- https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API — secure contexts, scoped control, installation and update lifecycle. Browser tests exercise installation failure, a waiting update, activation, reload and offline navigation.
+- https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage — complete saved responses, scoped cache names and explicit readiness checks. Tests remove an asset and verify repair while preserving an unrelated application's cache.
+- https://developer.mozilla.org/en-US/docs/Web/API/Request/integrity — SHA-256 verification against the production manifest. Tests reject a successful HTTP response with incorrect file contents.
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests — single byte ranges, 206 and 416 responses. Unit tests pin boundaries and browser tests seek native MP4 recordings offline.
+- https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria — local browser storage is not permanent; private browsing and eviction limits are stated in the UI.

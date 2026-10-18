@@ -1,0 +1,60 @@
+// Copyright © 2026 Christopher Snow
+import { readdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { build } from "vite";
+const digest = (data) => createHash("sha256").update(data).digest("base64");
+async function walk(path) {
+  const entries = await readdir(path, { withFileTypes: true });
+  return (
+    await Promise.all(
+      entries.map((e) =>
+        e.isDirectory() ? walk(`${path}/${e.name}`) : `${path}/${e.name}`,
+      ),
+    )
+  ).flat();
+}
+const paths = (await walk("dist"))
+  .filter((p) => !p.endsWith("/sw.js") && !p.endsWith("/offline-manifest.json"))
+  .sort();
+const files = await Promise.all(
+  paths.map(async (path) => {
+    const bytes = await readFile(path);
+    return {
+      path: path.slice(5),
+      integrity: `sha256-${digest(bytes)}`,
+      bytes: bytes.length,
+    };
+  }),
+);
+const sources = await Promise.all(
+  ["src/offline/worker.ts", "src/offline/range.ts"].map((p) =>
+    readFile(p, "utf8"),
+  ),
+);
+const version = digest(JSON.stringify(files) + sources.join("")).replaceAll(
+  "/",
+  "_",
+);
+const manifest = {
+  version,
+  bytes: files.reduce((n, f) => n + f.bytes, 0),
+  files,
+};
+await writeFile("dist/offline-manifest.json", JSON.stringify(manifest));
+await build({
+  configFile: false,
+  publicDir: false,
+  define: { __OFFLINE_MANIFEST__: JSON.stringify(manifest) },
+  build: {
+    outDir: "dist",
+    emptyOutDir: false,
+    minify: false,
+    target: "es2022",
+    lib: {
+      entry: "src/offline/worker.ts",
+      formats: ["es"],
+      fileName: () => "sw.js",
+    },
+  },
+});
+console.log(`Offline bundle: ${files.length} files, ${manifest.bytes} bytes.`);

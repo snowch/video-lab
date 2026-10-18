@@ -62,3 +62,7 @@ Add copyright © 2026 Christopher Snow in source headers and footer, consistent 
 ## No premature scope growth
 
 No full nonlinear video editor, timeline compositor, AI API, accounts, payment, streaming service, giant FFmpeg.wasm payload or imitation media results in Module 0. Ship a *small truthful learning tool* first. Leave later modules unimplemented but shown as planned.
+
+## Offline support scope extension
+
+On 18 October 2026 the owner requested offline app support. Apply the same mandatory workflow to this slice using `docs/notes/offline-plan.md` and `docs/notes/offline/review/`. The standing authorisation to deploy reviewed changes to `main` applies.

@@ -25,6 +25,14 @@ Open the URL Vite prints with `/video-lab/`. `npm run check` is exactly the comm
 
 See [media provenance and commands](docs/notes/module-0/media/README.md), [sources and licences](docs/sources.md), [module plan](docs/notes/module-0-plan.md), and [independent review records](docs/notes/module-0/review/).
 
+## Use offline
+
+Open [Video Lab](https://snowch.github.io/video-lab/) while connected. Expand **Use Video Lab offline**, choose **Download for offline use**, and keep the page open until it reports that the complete copy is ready. Both available modules, all recordings and pictures, challenges and local notes then work offline, including reopening a saved lesson URL in the same browser. The current bundle is about 9 MB before transfer compression.
+
+Use **Check for updates** while connected. A complete update offers **Reload to use update**; other open Video Lab tabs reload too. Already saved challenge work, notes and theme remain in this browser. External source links require a connection. Browser storage can be cleared or evicted, and private sessions are temporary; this is not a backup or synchronisation service.
+
+Offline saving uses standard service workers and Cache Storage on HTTPS (or localhost). It is enabled only after requesting a download. For local offline testing use `npm run build && npm run preview`, not the development server. The build generates `dist/sw.js` and `dist/offline-manifest.json` from all production assets. Native video seeking is served from complete saved recordings using HTTP byte ranges. No additional runtime dependency is installed. See [offline plan](docs/notes/offline-plan.md) and [review records](docs/notes/offline/review/).
+
 ## Shared platform
 
 `platform/` is an unchanged copy of `snowch/learning-platform`, with the upstream commit and file hashes in `platform/SOURCE.json`. To update, clone that repository, make and commit any upstream changes there, then run:
