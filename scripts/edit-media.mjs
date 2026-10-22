@@ -248,6 +248,9 @@ if (generate) {
     "-shortest",
     root + "quiet-audio.mp4",
   ]);
+  // Module 8: verification. A candidate that plays but has no audio stream:
+  // stream-copied video only, the classic "I exported it wrong" file.
+  encode(["-i", src, "-map", "0:v:0", "-c", "copy", root + "video-only.mp4"]);
   // Comparison stills at 6 s (the sorted result), one per encoded variant, so
   // the quality lessons can show real rendered pictures side by side.
   mkdirSync(root + "stills", { recursive: true });
@@ -446,6 +449,15 @@ const expected = {
     "-shortest",
     "edit/quiet-audio.mp4",
   ],
+  "video-only.mp4": [
+    "-i",
+    "public/media/build-queue.mp4",
+    "-map",
+    "0:v:0",
+    "-c",
+    "copy",
+    "edit/video-only.mp4",
+  ],
 };
 const notes = {
   "cropped-zoom.mp4":
@@ -472,6 +484,8 @@ const notes = {
   "mixed-tone.wav": "Two synthetic tones mixed: two sounds at once.",
   "quiet-audio.mp4":
     "The recording with the 5% tone as its sound: picture unchanged, sound nearly silent.",
+  "video-only.mp4":
+    "The recording's video stream copied without the audio stream: plays fine, but a stream probe shows no audio. The Module 8 broken candidate.",
 };
 
 const stillNotes = {

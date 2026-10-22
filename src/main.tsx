@@ -66,6 +66,15 @@ import {
   CaptionSmall,
   CaptionReflection,
 } from "./captions/components";
+import { verifyLesson } from "./verify/lesson";
+import { v } from "./verify/strings";
+import {
+  CandidatePlayers,
+  CandidateProbes,
+  ExportEditor,
+  BrokenCandidate,
+  VerifyReflection,
+} from "./verify/components";
 import {
   CutSource,
   CutPrediction,
@@ -103,6 +112,7 @@ const book: Book = {
     soundLesson,
     qualityLesson,
     captionsLesson,
+    verifyLesson,
   ],
   interactives: {
     explorer: Explorer,
@@ -147,6 +157,11 @@ const book: Book = {
     "caption-editor": CaptionEditor,
     "caption-small": CaptionSmall,
     "caption-reflection": CaptionReflection,
+    "candidate-players": CandidatePlayers,
+    "candidate-probes": CandidateProbes,
+    "export-editor": ExportEditor,
+    "broken-candidate": BrokenCandidate,
+    "verify-reflection": VerifyReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -166,6 +181,7 @@ const lessonNumbers: Record<string, string> = {
   "make-the-sound-clear": sd.lessonNumber,
   "compression-and-quality": q.lessonNumber,
   "captions-and-overlays": ca.lessonNumber,
+  "export-publish-verify": v.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -189,6 +205,7 @@ const NEW_MODULE_IDS = new Set(
     soundLesson,
     qualityLesson,
     captionsLesson,
+    verifyLesson,
   ].map((l) => l.module),
 );
 function resolveRoute(route: string): string {

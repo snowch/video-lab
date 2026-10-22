@@ -1,6 +1,6 @@
 {
   "description": "Original media for the editing modules (4-8): every file derives from the verified build-queue recording (public/media/build-queue.mp4), the original extracted frames (public/media/frames/) or the synthetic tone (public/media/build/tone.wav). All files are original to this course; no third-party media is used.",
-  "generated": "2026-10-22T02:50:09.128Z",
+  "generated": "2026-10-22T03:33:55.310Z",
   "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
   "files": {
     "cropped-zoom.mp4": {
@@ -352,6 +352,22 @@
           "codec": "aac",
           "sampleRate": 8000,
           "channels": 1
+        }
+      ]
+    },
+    "video-only.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -map 0:v:0 -c copy edit/video-only.mp4",
+      "note": "The recording's video stream copied without the audio stream: plays fine, but a stream probe shows no audio. The Module 8 broken candidate.",
+      "bytes": 44659,
+      "sha256": "5321e7aee31b5b81ad62ff8e58209e80a870bf98d69c5c2679b8cbb94a4b2dbd",
+      "duration": 10,
+      "size": 44659,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
         }
       ]
     },
