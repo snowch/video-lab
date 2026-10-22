@@ -109,6 +109,13 @@ export const editLesson = parseLesson({
   objectives: [...ed.objectives],
   prerequisites: ["cutting-and-joining"],
   introduces: ["crop", "scale", "callout", "pacing"],
+  termExemptions: [
+    {
+      term: "resolution",
+      reason:
+        "Used as the ordinary label for the pixel dimensions the probe reports; the rationed teaching term is introduced in Module 6 with its measurement meaning.",
+    },
+  ],
   sections: SECTION_KINDS.map((kind) => ({
     kind,
     title: ed.sections[kind],

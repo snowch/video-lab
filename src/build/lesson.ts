@@ -107,6 +107,11 @@ export const buildLesson = parseLesson({
   ],
   termExemptions: [
     {
+      term: "resolution",
+      reason:
+        "Used as the ordinary word for the pixel dimensions the probe reports; the rationed teaching term is introduced in Module 6 with its measurement meaning.",
+    },
+    {
       term: "crop",
       reason:
         'Appears only as the ordinary English noun/verb in "the cuts, crops, level measurements" naming what later lessons do; the rationed crop filter term is not used in its filter sense here.',

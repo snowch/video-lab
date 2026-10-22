@@ -128,6 +128,43 @@ export function buildCropScale(input: CropScaleInput): string[] {
   ];
 }
 
+export interface ReencodeInput {
+  readonly input: string;
+  readonly width: number;
+  readonly height: number;
+  readonly crf: number;
+  readonly output: string;
+}
+
+/** Scale to a resolution and re-encode at a CRF quality setting. */
+export function buildReencode(input: ReencodeInput): string[] {
+  const { width, height, crf } = input;
+  for (const n of [width, height])
+    if (!Number.isInteger(n) || n <= 0 || n % 2)
+      throw new RangeError("Dimensions must be positive even integers");
+  if (!Number.isInteger(crf) || crf < 0 || crf > 51)
+    throw new RangeError("CRF must be an integer from 0 to 51");
+  if (
+    !/^[%0-9a-zA-Z._-]+$/.test(input.input) ||
+    !/^[%0-9a-zA-Z._-]+$/.test(input.output)
+  )
+    throw new RangeError("Filenames must be plain names");
+  return [
+    "-y",
+    "-i",
+    input.input,
+    "-vf",
+    `scale=${width}:${height}`,
+    "-c:v",
+    "libx264",
+    "-crf",
+    String(crf),
+    "-pix_fmt",
+    "yuv420p",
+    input.output,
+  ];
+}
+
 /** Probe a media file and print JSON to the log stream. */
 export function buildProbe(file: string): string[] {
   if (!/^[%0-9a-zA-Z._-]+$/.test(file))

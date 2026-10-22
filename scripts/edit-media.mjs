@@ -248,6 +248,29 @@ if (generate) {
     "-shortest",
     root + "quiet-audio.mp4",
   ]);
+  // Comparison stills at 6 s (the sorted result), one per encoded variant, so
+  // the quality lessons can show real rendered pictures side by side.
+  mkdirSync(root + "stills", { recursive: true });
+  for (const name of [
+    "half-size-crf18",
+    "half-size-crf23",
+    "half-size-crf35",
+    "quarter-size-crf23",
+    "cropped-zoom",
+    "captioned",
+    "captioned-small",
+  ])
+    encode([
+      "-ss",
+      "6",
+      "-i",
+      root + name + ".mp4",
+      "-frames:v",
+      "1",
+      "-q:v",
+      "2",
+      root + "stills/" + name + ".jpg",
+    ]);
 }
 
 // Record (or verify) every file. The SRT is text; the rest are media.
@@ -451,6 +474,18 @@ const notes = {
     "The recording with the 5% tone as its sound: picture unchanged, sound nearly silent.",
 };
 
+const stillNotes = {
+  "half-size-crf18": "Still at 6 s: 640x360 at CRF 18 (high quality).",
+  "half-size-crf23": "Still at 6 s: 640x360 at CRF 23 (default quality).",
+  "half-size-crf35": "Still at 6 s: 640x360 at CRF 35 (heavily compressed).",
+  "quarter-size-crf23": "Still at 6 s: 480x270 at CRF 23.",
+  "cropped-zoom": "Still at 6 s: the centre crop scaled to 960x540.",
+  captioned:
+    "Still at 6 s: the recording with the caption burned in at full size.",
+  "captioned-small":
+    "Still at 6 s: the same caption at 640x360, small and hard to read.",
+};
+
 if (generate) {
   for (const [name, args] of Object.entries(expected))
     add(name, ["ffmpeg", "-y", ...args].join(" "), notes[name]);
@@ -460,6 +495,13 @@ if (generate) {
     "The caption source used for captioned.mp4 and captioned-small.mp4. Three cues covering the whole 10-second recording.",
     { cues: 3 },
   );
+  for (const [name, note] of Object.entries(stillNotes))
+    add(
+      `stills/${name}.jpg`,
+      `ffmpeg -y -ss 6 -i edit/${name}.mp4 -frames:v 1 -q:v 2 edit/stills/${name}.jpg`,
+      note,
+      { stillAt: "6 s" },
+    );
   record.generated = new Date().toISOString();
   writeFileSync(manifest, JSON.stringify(record, null, 2) + "\n");
 } else {
@@ -477,6 +519,21 @@ if (generate) {
         name + " probed size matches recorded bytes",
       );
       assert.deepEqual(actual.streams, entry.streams, name + " streams");
+    }
+    if (name.endsWith(".jpg")) {
+      // The comparison still must exist, decode, and match the recorded size.
+      const p = JSON.parse(
+        runFfprobe([
+          "-v",
+          "error",
+          "-show_entries",
+          "stream=width,height",
+          "-of",
+          "json",
+          file,
+        ]).toString(),
+      );
+      assert.ok(p.streams[0].width > 0, name + " decodes with a width");
     }
     if (name.endsWith(".wav")) {
       const actual = volume(file);

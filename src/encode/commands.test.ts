@@ -5,6 +5,7 @@ import {
   buildMuxAudio,
   buildCut,
   buildCropScale,
+  buildReencode,
   buildProbe,
   buildStill,
   buildVolumeDetect,
@@ -108,6 +109,57 @@ describe("command builders", () => {
         crop: { w: 481, h: 270, x: 0, y: 0 },
         scale: { w: 960, h: 540 },
         output: "o.mp4",
+      }),
+    ).toThrow(RangeError);
+  });
+  it("builds the scale+CRF re-encode command and validates its inputs", () => {
+    expect(
+      buildReencode({
+        input: "in.mp4",
+        width: 640,
+        height: 360,
+        crf: 23,
+        output: "out.mp4",
+      }),
+    ).toEqual([
+      "-y",
+      "-i",
+      "in.mp4",
+      "-vf",
+      "scale=640:360",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "23",
+      "-pix_fmt",
+      "yuv420p",
+      "out.mp4",
+    ]);
+    expect(() =>
+      buildReencode({
+        input: "in.mp4",
+        width: 641,
+        height: 360,
+        crf: 23,
+        output: "o.mp4",
+      }),
+    ).toThrow(RangeError);
+    expect(() =>
+      buildReencode({
+        input: "in.mp4",
+        width: 640,
+        height: 360,
+        crf: 52,
+        output: "o.mp4",
+      }),
+    ).toThrow(RangeError);
+    expect(() =>
+      buildReencode({
+        input: "in.mp4",
+        width: 640,
+        height: 360,
+        crf: 23,
+        output: "o.mp4; x",
       }),
     ).toThrow(RangeError);
   });

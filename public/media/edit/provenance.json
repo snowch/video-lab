@@ -1,6 +1,6 @@
 {
   "description": "Original media for the editing modules (4-8): every file derives from the verified build-queue recording (public/media/build-queue.mp4), the original extracted frames (public/media/frames/) or the synthetic tone (public/media/build/tone.wav). All files are original to this course; no third-party media is used.",
-  "generated": "2026-10-22T01:40:36.561Z",
+  "generated": "2026-10-22T02:50:09.128Z",
   "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
   "files": {
     "cropped-zoom.mp4": {
@@ -9,6 +9,7 @@
       "bytes": 105492,
       "sha256": "9f7797bf5219187786e6a069cc078de154d07c700c59e4f09613adb0d1b66b94",
       "duration": 10.005,
+      "size": 105492,
       "streams": [
         {
           "type": "video",
@@ -30,6 +31,7 @@
       "bytes": 113187,
       "sha256": "082805686ad055c54f364298acd0beafd1783ec18c06f4f892c3f5d59a10a53c",
       "duration": 10.005,
+      "size": 113187,
       "streams": [
         {
           "type": "video",
@@ -51,6 +53,7 @@
       "bytes": 133138,
       "sha256": "d08fbec1a7e7ff58cc0c9a53f37f9f0dfdb9bfcb62ade08043714e8415aa5dc2",
       "duration": 10.005,
+      "size": 133138,
       "streams": [
         {
           "type": "video",
@@ -67,11 +70,12 @@
       ]
     },
     "timed-callout.mp4": {
-      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf drawtext=fontfile=DejaVuSans-Bold.ttf:text='Build queue - sorted by duration':fontcolor=white:fontsize=28:x=20:y=20:box=1:boxcolor=black@0.6:boxborderw=8:enable='between(t,3,5)' -c:v libx264 -pix_fmt yuv420p edit/timed-callout.mp4",
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf drawtext=...:enable='between(t,3,5)' -c:v libx264 -pix_fmt yuv420p edit/timed-callout.mp4",
       "note": "A callout that appears only between 3 and 5 seconds.",
       "bytes": 137397,
       "sha256": "e35f986a6f51f2364b227cc07f0ed54309460c0ea595cea93223e23de4ea27f4",
       "duration": 10.005,
+      "size": 137397,
       "streams": [
         {
           "type": "video",
@@ -93,6 +97,7 @@
       "bytes": 77918,
       "sha256": "458c74155687cbb69f9f0e5a86f5ca0f405994c1e8e9e670bb2bfa9347c88298",
       "duration": 11,
+      "size": 77918,
       "streams": [
         {
           "type": "video",
@@ -108,6 +113,7 @@
       "bytes": 31645,
       "sha256": "d6231d4e7b9e409859dca4a1a91c46475e680beaccc06682c330622de2e4590b",
       "duration": 6,
+      "size": 31645,
       "streams": [
         {
           "type": "video",
@@ -123,6 +129,7 @@
       "bytes": 139560,
       "sha256": "339891abb8cc8e38c3e1526010656db241ca1e13d10c7417b3cb2b2631c65d14",
       "duration": 10.005,
+      "size": 139560,
       "streams": [
         {
           "type": "video",
@@ -144,6 +151,7 @@
       "bytes": 120667,
       "sha256": "e5dab3e6351181e71105de72cd9fc73b0d6962161acc965117d1154c47e49a99",
       "duration": 10.005,
+      "size": 120667,
       "streams": [
         {
           "type": "video",
@@ -165,6 +173,7 @@
       "bytes": 121523,
       "sha256": "45e1a41a34d405bdd7e2dd8d4dfd0de3cefb8e0dafe6de3255c5fe5cfbc9d187",
       "duration": 10.005,
+      "size": 121523,
       "streams": [
         {
           "type": "video",
@@ -186,6 +195,7 @@
       "bytes": 100142,
       "sha256": "ba8690eec22b60baad22c33a83878bbed518cc86f61023ebae9b9b61b652c0b2",
       "duration": 10.005,
+      "size": 100142,
       "streams": [
         {
           "type": "video",
@@ -207,6 +217,7 @@
       "bytes": 106019,
       "sha256": "bcb8149f6df05da21fcdeeeb8a72cb1d1ab1c336a001a74173acd7dc028c83d7",
       "duration": 10.005,
+      "size": 106019,
       "streams": [
         {
           "type": "video",
@@ -228,6 +239,7 @@
       "bytes": 48078,
       "sha256": "f19bef7aa251d3de2457928fb437fde91675953ae9d62003257076913f6d278e",
       "duration": 3,
+      "size": 48078,
       "streams": [
         {
           "type": "audio",
@@ -247,6 +259,7 @@
       "bytes": 48078,
       "sha256": "8831df86d525a3d75808a50657b8eb622e8ed4267d8c1a84c7b03cd6003bd177",
       "duration": 3,
+      "size": 48078,
       "streams": [
         {
           "type": "audio",
@@ -266,6 +279,7 @@
       "bytes": 48078,
       "sha256": "8bc552479de5c327e4e4c91dc0157e1ba888d8d7ff60f81669f104660d20292e",
       "duration": 3,
+      "size": 48078,
       "streams": [
         {
           "type": "audio",
@@ -285,6 +299,7 @@
       "bytes": 48078,
       "sha256": "0eff0dbc0c9101a3b70f8bf89b4efda3bfc3bffb0a34c8f18ca57af35578213d",
       "duration": 3,
+      "size": 48078,
       "streams": [
         {
           "type": "audio",
@@ -304,6 +319,7 @@
       "bytes": 529278,
       "sha256": "e7557f1e7bae527a039d470682eafd4f3c419a07de77e994196001b168cea972",
       "duration": 6,
+      "size": 529278,
       "streams": [
         {
           "type": "audio",
@@ -323,6 +339,7 @@
       "bytes": 40930,
       "sha256": "355fbd8bf32d4ae83a4ca5757eeffc8fe1a4fbc166046c3f17a48b165af98347",
       "duration": 3,
+      "size": 40930,
       "streams": [
         {
           "type": "video",
@@ -344,6 +361,55 @@
       "bytes": 183,
       "sha256": "5258d6b501f1c5d35830228df3cb4209e937f860027096ffd7d7fff6c2588add",
       "cues": 3
+    },
+    "stills/half-size-crf18.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/half-size-crf18.mp4 -frames:v 1 -q:v 2 edit/stills/half-size-crf18.jpg",
+      "note": "Still at 6 s: 640x360 at CRF 18 (high quality).",
+      "bytes": 26532,
+      "sha256": "7612b54df2e9ea72ff462dd285df856f6c1e880c1e1018a14f4a0aeff45aeef0",
+      "stillAt": "6 s"
+    },
+    "stills/half-size-crf23.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/half-size-crf23.mp4 -frames:v 1 -q:v 2 edit/stills/half-size-crf23.jpg",
+      "note": "Still at 6 s: 640x360 at CRF 23 (default quality).",
+      "bytes": 26394,
+      "sha256": "b2a6d4bfe7759fe53673ae09718900de2af266c59e7863a01d990d558b94438a",
+      "stillAt": "6 s"
+    },
+    "stills/half-size-crf35.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/half-size-crf35.mp4 -frames:v 1 -q:v 2 edit/stills/half-size-crf35.jpg",
+      "note": "Still at 6 s: 640x360 at CRF 35 (heavily compressed).",
+      "bytes": 25666,
+      "sha256": "9e00a2f482f55429494f595e91c1afaea950d5acad3f54752f5d80ebe1840e4b",
+      "stillAt": "6 s"
+    },
+    "stills/quarter-size-crf23.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/quarter-size-crf23.mp4 -frames:v 1 -q:v 2 edit/stills/quarter-size-crf23.jpg",
+      "note": "Still at 6 s: 480x270 at CRF 23.",
+      "bytes": 17459,
+      "sha256": "edccb46f0d19e20213190bf31c05b1d5d7c8fa07498f22f5718bb212f8876022",
+      "stillAt": "6 s"
+    },
+    "stills/cropped-zoom.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/cropped-zoom.mp4 -frames:v 1 -q:v 2 edit/stills/cropped-zoom.jpg",
+      "note": "Still at 6 s: the centre crop scaled to 960x540.",
+      "bytes": 24183,
+      "sha256": "1db899dd43eb2aa2ae16bef0aa318224a2b49b3c80687c83e13553c56fb594cb",
+      "stillAt": "6 s"
+    },
+    "stills/captioned.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/captioned.mp4 -frames:v 1 -q:v 2 edit/stills/captioned.jpg",
+      "note": "Still at 6 s: the recording with the caption burned in at full size.",
+      "bytes": 52073,
+      "sha256": "b52e442510bb088fc8c70085fe468c79c3581e9cfe5c88487597a2ebbb4a5c1e",
+      "stillAt": "6 s"
+    },
+    "stills/captioned-small.jpg": {
+      "command": "ffmpeg -y -ss 6 -i edit/captioned-small.mp4 -frames:v 1 -q:v 2 edit/stills/captioned-small.jpg",
+      "note": "Still at 6 s: the same caption at 640x360, small and hard to read.",
+      "bytes": 29660,
+      "sha256": "b6f1d9c08db493f036125ee0af1a28887edfe6d0f23dbecfd0f8feb74f415088",
+      "stillAt": "6 s"
     }
   }
 }

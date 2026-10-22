@@ -48,6 +48,15 @@ import {
   OverDriven,
   SoundReflection,
 } from "./sound/components";
+import { qualityLesson } from "./quality/lesson";
+import { q } from "./quality/strings";
+import {
+  QualityPlayers,
+  QualityStills,
+  QualityEditor,
+  QuarterSize,
+  QualityReflection,
+} from "./quality/components";
 import {
   CutSource,
   CutPrediction,
@@ -83,6 +92,7 @@ const book: Book = {
     lesson2,
     editLesson,
     soundLesson,
+    qualityLesson,
   ],
   interactives: {
     explorer: Explorer,
@@ -117,6 +127,11 @@ const book: Book = {
     "sound-editor": SoundEditor,
     "over-driven": OverDriven,
     "sound-reflection": SoundReflection,
+    "quality-players": QualityPlayers,
+    "quality-stills": QualityStills,
+    "quality-editor": QualityEditor,
+    "quarter-size": QuarterSize,
+    "quality-reflection": QualityReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -134,6 +149,7 @@ const lessonNumbers: Record<string, string> = {
   "cutting-and-joining": m2.lessonNumber,
   "make-it-readable": ed.lessonNumber,
   "make-the-sound-clear": sd.lessonNumber,
+  "compression-and-quality": q.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -148,9 +164,15 @@ const ROUTE_REDIRECTS: Record<number, number> = {
   2: 3,
 };
 const NEW_MODULE_IDS = new Set(
-  [captureLesson, buildLesson, lesson, lesson2, editLesson, soundLesson].map(
-    (l) => l.module,
-  ),
+  [
+    captureLesson,
+    buildLesson,
+    lesson,
+    lesson2,
+    editLesson,
+    soundLesson,
+    qualityLesson,
+  ].map((l) => l.module),
 );
 function resolveRoute(route: string): string {
   const match = route.match(/^#\/module-(\d+)(?:\/([a-zA-Z]+))?$/);

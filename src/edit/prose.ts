@@ -18,7 +18,7 @@ Watch the queue text in each. The crop keeps only the centre region, so that reg
 The default values reproduce the recorded comparison: crop the centre half (480 × 270 starting at 240, 135) and scale it back to 960 × 540.`,
   failureExperiment: `Scaling the whole picture down has the opposite effect: the same content, smaller. The recording scaled to 640 × 360 plays below. At that size the queue text is noticeably harder to read than in the full frame — and this is why a crop-then-zoom beats a plain scale-down for screen demos.
 
-The failure is not hypothetical: many sharing tools scale a large recording down to fit a bitrate or a player, and the text is the first thing to suffer.`,
+The failure is not hypothetical: many sharing tools scale a large recording down to fit a player, and the text is the first thing to suffer. (We give the shrinking budget its proper name in the compression lesson.)`,
   explanation:
     `The crop command runs as ` +
     "`-vf crop=W:H:X:Y,scale=W:H`" +

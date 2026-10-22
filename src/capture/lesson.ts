@@ -118,6 +118,11 @@ export const captureLesson = parseLesson({
       reason:
         "Used as the everyday word for the speed and rhythm of a recording, named here as a reflection prompt; the rationed teaching term for deliberate pacing choices is introduced in Module 4.",
     },
+    {
+      term: "resolution",
+      reason:
+        "Used as the ordinary word for the pixel dimensions the browser reports for a capture; the rationed teaching term is introduced in Module 6 with its measurement meaning.",
+    },
   ],
   sections: SECTION_KINDS.map((kind) => ({
     kind,

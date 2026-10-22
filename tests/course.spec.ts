@@ -24,7 +24,7 @@ test("introduction, theme persistence and browser navigation", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,
   );
-  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(5);
+  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(4);
   const theme = await page.locator("html").getAttribute("data-theme");
   if (isMobile) await page.getByRole("button", { name: ui.theme }).tap();
   else await page.getByRole("button", { name: ui.theme }).click();
