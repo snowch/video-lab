@@ -14,7 +14,7 @@ export const home = {
   start: "Start with capture",
   planTitle: "Course plan",
   planNote:
-    "Modules 0 to 3 are available. The remaining modules describe the planned curriculum and are labelled planned until implemented.",
+    "Modules 0 to 4 are available. The remaining modules describe the planned curriculum and are labelled planned until implemented.",
 };
 
 export const modules = [

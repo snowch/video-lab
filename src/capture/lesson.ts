@@ -107,6 +107,18 @@ export const captureLesson = parseLesson({
     "getDisplayMedia",
     "MIME type",
   ],
+  termExemptions: [
+    {
+      term: "scale",
+      reason:
+        "Used only as the ordinary English verb for enlarging the application's own UI before recording (zooming), not as the rationed FFmpeg filter name introduced in Module 4.",
+    },
+    {
+      term: "pacing",
+      reason:
+        "Used as the everyday word for the speed and rhythm of a recording, named here as a reflection prompt; the rationed teaching term for deliberate pacing choices is introduced in Module 4.",
+    },
+  ],
   sections: SECTION_KINDS.map((kind) => ({
     kind,
     title: cap.sections[kind],

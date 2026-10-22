@@ -1,0 +1,349 @@
+{
+  "description": "Original media for the editing modules (4-8): every file derives from the verified build-queue recording (public/media/build-queue.mp4), the original extracted frames (public/media/frames/) or the synthetic tone (public/media/build/tone.wav). All files are original to this course; no third-party media is used.",
+  "generated": "2026-10-22T01:40:36.561Z",
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "files": {
+    "cropped-zoom.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf crop=480:270:240:135,scale=960:540:flags=lanczos -c:v libx264 -pix_fmt yuv420p edit/cropped-zoom.mp4",
+      "note": "Crops the centre half of the picture and scales it back to 960x540: the Module 4 readability example.",
+      "bytes": 105492,
+      "sha256": "9f7797bf5219187786e6a069cc078de154d07c700c59e4f09613adb0d1b66b94",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "half-size-crf23.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf scale=640:360 -c:v libx264 -pix_fmt yuv420p edit/half-size-crf23.mp4",
+      "note": "640x360 at CRF 23 (FFmpeg's default quality): also the Module 4 plain scale-down contrast.",
+      "bytes": 113187,
+      "sha256": "082805686ad055c54f364298acd0beafd1783ec18c06f4f892c3f5d59a10a53c",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "callout.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf drawtext=fontfile=DejaVuSans-Bold.ttf:text='Build queue - sorted by duration':fontcolor=white:fontsize=28:x=20:y=20:box=1:boxcolor=black@0.6:boxborderw=8 -c:v libx264 -pix_fmt yuv420p edit/callout.mp4",
+      "note": "A persistent callout drawn with DejaVu Sans (SIL OFL 1.1, bundled with the sandbox FFmpeg build).",
+      "bytes": 133138,
+      "sha256": "d08fbec1a7e7ff58cc0c9a53f37f9f0dfdb9bfcb62ade08043714e8415aa5dc2",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "timed-callout.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf drawtext=fontfile=DejaVuSans-Bold.ttf:text='Build queue - sorted by duration':fontcolor=white:fontsize=28:x=20:y=20:box=1:boxcolor=black@0.6:boxborderw=8:enable='between(t,3,5)' -c:v libx264 -pix_fmt yuv420p edit/timed-callout.mp4",
+      "note": "A callout that appears only between 3 and 5 seconds.",
+      "bytes": 137397,
+      "sha256": "e35f986a6f51f2364b227cc07f0ed54309460c0ea595cea93223e23de4ea27f4",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "crossfade.mp4": {
+      "command": "ffmpeg -y -loop 1 -t 6 -i frames/000.jpg -loop 1 -t 6 -i frames/072.jpg -filter_complex xfade=transition=fade:duration=1:offset=5 -c:v libx264 -pix_fmt yuv420p -r 30 edit/crossfade.mp4",
+      "note": "A one-second fade between two original extracted frames.",
+      "bytes": 77918,
+      "sha256": "458c74155687cbb69f9f0e5a86f5ca0f405994c1e8e9e670bb2bfa9347c88298",
+      "duration": 11,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        }
+      ]
+    },
+    "zoom-pan.mp4": {
+      "command": "ffmpeg -y -loop 1 -t 6 -i frames/048.jpg -c:v libx264 -pix_fmt yuv420p -r 30 edit/zoom-pan.mp4",
+      "note": "The Sort-action frame held for six seconds.",
+      "bytes": 31645,
+      "sha256": "d6231d4e7b9e409859dca4a1a91c46475e680beaccc06682c330622de2e4590b",
+      "duration": 6,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        }
+      ]
+    },
+    "captioned.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf subtitles=captions.srt -c:v libx264 -pix_fmt yuv420p edit/captioned.mp4",
+      "note": "The three-line caption track burned into the picture at full size.",
+      "bytes": 139560,
+      "sha256": "339891abb8cc8e38c3e1526010656db241ca1e13d10c7417b3cb2b2631c65d14",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "captioned-small.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf subtitles=captions.srt:force_style='Fontsize=18' -s 640x360 -c:v libx264 -pix_fmt yuv420p edit/captioned-small.mp4",
+      "note": "The same captions at 640x360: caption text that was readable at 960x540 becomes hard to read when the picture is scaled down.",
+      "bytes": 120667,
+      "sha256": "e5dab3e6351181e71105de72cd9fc73b0d6962161acc965117d1154c47e49a99",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "half-size-crf18.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf scale=640:360 -c:v libx264 -pix_fmt yuv420p -crf 18 edit/half-size-crf18.mp4",
+      "note": "640x360 at CRF 18 (high quality).",
+      "bytes": 121523,
+      "sha256": "45e1a41a34d405bdd7e2dd8d4dfd0de3cefb8e0dafe6de3255c5fe5cfbc9d187",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "half-size-crf35.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf scale=640:360 -c:v libx264 -pix_fmt yuv420p -crf 35 edit/half-size-crf35.mp4",
+      "note": "640x360 at CRF 35 (heavily compressed).",
+      "bytes": 100142,
+      "sha256": "ba8690eec22b60baad22c33a83878bbed518cc86f61023ebae9b9b61b652c0b2",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "quarter-size-crf23.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf scale=480:270 -c:v libx264 -pix_fmt yuv420p -crf 23 edit/quarter-size-crf23.mp4",
+      "note": "480x270 at CRF 23: same quality setting, smaller picture.",
+      "bytes": 106019,
+      "sha256": "bcb8149f6df05da21fcdeeeb8a72cb1d1ab1c336a001a74173acd7dc028c83d7",
+      "duration": 10.005,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "quiet-tone.wav": {
+      "command": "ffmpeg -y -i build/tone.wav -af volume=0.05 edit/quiet-tone.wav",
+      "note": "The synthetic tone at 5% volume: almost inaudible.",
+      "bytes": 48078,
+      "sha256": "f19bef7aa251d3de2457928fb437fde91675953ae9d62003257076913f6d278e",
+      "duration": 3,
+      "streams": [
+        {
+          "type": "audio",
+          "codec": "pcm_s16le",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      ],
+      "volume": {
+        "mean": -47.1,
+        "max": -44.1
+      }
+    },
+    "loud-tone.wav": {
+      "command": "ffmpeg -y -i build/tone.wav -af volume=0.5 edit/loud-tone.wav",
+      "note": "The synthetic tone at 50% volume.",
+      "bytes": 48078,
+      "sha256": "8831df86d525a3d75808a50657b8eb622e8ed4267d8c1a84c7b03cd6003bd177",
+      "duration": 3,
+      "streams": [
+        {
+          "type": "audio",
+          "codec": "pcm_s16le",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      ],
+      "volume": {
+        "mean": -27.1,
+        "max": -24.1
+      }
+    },
+    "over-tone.wav": {
+      "command": "ffmpeg -y -i build/tone.wav -af volume=2.0 edit/over-tone.wav",
+      "note": "The synthetic tone at 200% volume: clipped and distorted.",
+      "bytes": 48078,
+      "sha256": "8bc552479de5c327e4e4c91dc0157e1ba888d8d7ff60f81669f104660d20292e",
+      "duration": 3,
+      "streams": [
+        {
+          "type": "audio",
+          "codec": "pcm_s16le",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      ],
+      "volume": {
+        "mean": -15.1,
+        "max": -12
+      }
+    },
+    "band-tone.wav": {
+      "command": "ffmpeg -y -i build/tone.wav -af highpass=f=200,lowpass=f=3400 edit/band-tone.wav",
+      "note": "The synthetic tone band-limited like a telephone line.",
+      "bytes": 48078,
+      "sha256": "0eff0dbc0c9101a3b70f8bf89b4efda3bfc3bffb0a34c8f18ca57af35578213d",
+      "duration": 3,
+      "streams": [
+        {
+          "type": "audio",
+          "codec": "pcm_s16le",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      ],
+      "volume": {
+        "mean": -21.3,
+        "max": -17.8
+      }
+    },
+    "mixed-tone.wav": {
+      "command": "ffmpeg -y -f lavfi -i sine=frequency=440:sample_rate=44100:duration=6 -f lavfi -i sine=frequency=660:sample_rate=44100:duration=6 -filter_complex amix=inputs=2:duration=first -c:a pcm_s16le edit/mixed-tone.wav",
+      "note": "Two synthetic tones mixed: two sounds at once.",
+      "bytes": 529278,
+      "sha256": "e7557f1e7bae527a039d470682eafd4f3c419a07de77e994196001b168cea972",
+      "duration": 6,
+      "streams": [
+        {
+          "type": "audio",
+          "codec": "pcm_s16le",
+          "sampleRate": 44100,
+          "channels": 1
+        }
+      ],
+      "volume": {
+        "mean": -24.1,
+        "max": -18.5
+      }
+    },
+    "quiet-audio.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -i edit/quiet-tone.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest edit/quiet-audio.mp4",
+      "note": "The recording with the 5% tone as its sound: picture unchanged, sound nearly silent.",
+      "bytes": 40930,
+      "sha256": "355fbd8bf32d4ae83a4ca5757eeffc8fe1a4fbc166046c3f17a48b165af98347",
+      "duration": 3,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      ]
+    },
+    "captions.srt": {
+      "command": "authored directly; burned into captioned.mp4 and captioned-small.mp4 with the subtitles filter",
+      "note": "The caption source used for captioned.mp4 and captioned-small.mp4. Three cues covering the whole 10-second recording.",
+      "bytes": 183,
+      "sha256": "5258d6b501f1c5d35830228df3cb4209e937f860027096ffd7d7fff6c2588add",
+      "cues": 3
+    }
+  }
+}

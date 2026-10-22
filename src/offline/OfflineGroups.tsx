@@ -99,7 +99,7 @@ export function OfflineGroups() {
         : offline.groupIdle;
   return (
     <div className="offline-group">
-      <p role="status" aria-live="polite">
+      <p role="status" aria-live="polite" data-offline-group="encoding">
         {status}
       </p>
       {!encoding.ready && (

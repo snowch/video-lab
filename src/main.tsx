@@ -28,6 +28,17 @@ import {
   BuildFallback,
   BuildReflection,
 } from "./build/components";
+import { editLesson } from "./edit/lesson";
+import { ed } from "./edit/strings";
+import {
+  ReadabilitySource,
+  ReadabilityComparison,
+  ScaledDown,
+  Callouts,
+  Pacing,
+  CropEditor,
+  EditReflection as ReadabilityReflection,
+} from "./edit/components";
 import {
   CutSource,
   CutPrediction,
@@ -56,7 +67,7 @@ const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
   title: home.title,
-  lessons: [captureLesson, buildLesson, lesson, lesson2],
+  lessons: [captureLesson, buildLesson, lesson, lesson2, editLesson],
   interactives: {
     explorer: Explorer,
     streams: Streams,
@@ -76,8 +87,15 @@ const book: Book = {
     "cut-explorer": CutExplorer,
     "join-explorer": JoinExplorer,
     "edit-clock": ClockExperiment,
-    "edit-reflection": EditReflection,
+    "module2-reflection": EditReflection,
     "own-cut": OwnCut,
+    "readability-source": ReadabilitySource,
+    "readability-comparison": ReadabilityComparison,
+    "scaled-down": ScaledDown,
+    callouts: Callouts,
+    pacing: Pacing,
+    "crop-editor": CropEditor,
+    "edit-reflection": ReadabilityReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -93,6 +111,7 @@ const lessonNumbers: Record<string, string> = {
   "build-a-file": b.lessonNumber,
   "what-is-video": ui.lessonNumber,
   "cutting-and-joining": m2.lessonNumber,
+  "make-it-readable": ed.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -107,7 +126,9 @@ const ROUTE_REDIRECTS: Record<number, number> = {
   2: 3,
 };
 const NEW_MODULE_IDS = new Set(
-  [captureLesson, buildLesson, lesson, lesson2].map((l) => l.module),
+  [captureLesson, buildLesson, lesson, lesson2, editLesson].map(
+    (l) => l.module,
+  ),
 );
 function resolveRoute(route: string): string {
   const match = route.match(/^#\/module-(\d+)(?:\/([a-zA-Z]+))?$/);

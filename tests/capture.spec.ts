@@ -1,6 +1,7 @@
 // Copyright © 2026 Christopher Snow
 import { test, expect } from "@playwright/test";
 import { cap } from "../src/capture/strings";
+import { home } from "../src/content/home.strings";
 
 const open = async (page: import("@playwright/test").Page) => {
   await page.goto("./#/module-0");
@@ -121,11 +122,9 @@ test("capture plan challenge grades all four fields with feedback", async ({
   );
 });
 
-test("retired module numbers redirect to the relocated lessons", async ({
+test("old bookmarks land on real lessons and unknown routes fall back home", async ({
   page,
 }) => {
-  await page.goto("./#/module-4");
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.goto("./#/module-0");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(cap.title);
   await page.goto("./#/module-0/investigation");
@@ -134,20 +133,22 @@ test("retired module numbers redirect to the relocated lessons", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Cutting and joining",
   );
+  // A number no lesson lives at renders the home page instead of failing.
+  await page.goto("./#/module-99");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    home.subtitle,
+  );
+  // In-page hash changes to a real lesson still work without a reload.
   await page.goto("./#/module-1");
   await page.evaluate(() => {
     location.hash = "#/module-0/investigation";
   });
-  await expect(page).toHaveURL(/#\/module-2\/investigation$/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "What is a digital video?",
-  );
-  await page.goto("./#/module-1");
+  await expect(page).toHaveURL(/#\/module-0\/investigation$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(cap.title);
   await page.evaluate(() => {
-    location.hash = "#/module-2/investigation";
+    location.hash = "#/module-99";
   });
-  await expect(page).toHaveURL(/#\/module-3\/investigation$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Cutting and joining",
+    home.subtitle,
   );
 });

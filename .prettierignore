@@ -2,5 +2,6 @@ platform/
 *.md
 package-lock.json
 public/media/
+public/vendor/
 src/media/fixture.json
 docs/notes/module-0/media/*.json

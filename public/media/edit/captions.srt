@@ -1,0 +1,11 @@
+1
+00:00:00,000 --> 00:00:03,000
+Show the build queue before sorting.
+
+2
+00:00:03,000 --> 00:00:06,000
+Press Sort once.
+
+3
+00:00:06,000 --> 00:00:10,000
+Payments is the longest build.

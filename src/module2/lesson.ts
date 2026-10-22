@@ -71,7 +71,7 @@ const figures: Record<
     timeModel: "none",
   },
   reflection: {
-    kind: "edit-reflection",
+    kind: "module2-reflection",
     caption: m2.captions.reflection,
     timeModel: "none",
   },

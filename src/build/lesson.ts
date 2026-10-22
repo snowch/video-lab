@@ -107,6 +107,11 @@ export const buildLesson = parseLesson({
   ],
   termExemptions: [
     {
+      term: "crop",
+      reason:
+        'Appears only as the ordinary English noun/verb in "the cuts, crops, level measurements" naming what later lessons do; the rationed crop filter term is not used in its filter sense here.',
+    },
+    {
       term: "frame",
       reason:
         "Appears only inside the literal FFmpeg option name `-framerate`, which the command must show exactly; the rationed term is not used in its media sense here.",
