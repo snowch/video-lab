@@ -116,7 +116,7 @@ describe("command builders", () => {
       "-v",
       "error",
       "-show_entries",
-      "stream=index,codec_type,codec_name,width,height,sample_rate,channels,nb_frames,duration:format=format_name,duration,size",
+      "stream=index,codec_type,codec_name,width,height,pix_fmt,sample_rate,channels,nb_frames,duration:format=format_name,duration,size",
       "-of",
       "json",
       "film.mp4",

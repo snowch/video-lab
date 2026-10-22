@@ -29,4 +29,16 @@ export const offline = {
   reload: "Reload to use update",
   limits:
     "The saved copy belongs to this browser on this device. Browser storage can be cleared or removed, and private browsing copies are temporary. Downloading and updating need an internet connection, as do external source links. Challenge work and notes stay in this browser; they do not sync to an account or another device.",
+  groupDownload: "Download the encoder for offline use",
+  groupRetry: "Retry encoder download",
+  groupIdle:
+    "Offline encoding is not downloaded. The encoder core is large, so it is an explicit opt-in: lessons, recordings and challenges work offline without it, and encoding lessons download it when you press Run.",
+  groupDownloading:
+    "Downloading the encoder core for offline use. Keep this page open until it is ready.",
+  groupReady:
+    "The encoder core is saved in this browser. Encoding lessons can now run without an internet connection.",
+  groupFailed:
+    "The encoder download did not finish. You can keep using the site online, where encoding downloads the core on demand.",
+  groupNote: (size: string) =>
+    `The encoder core is about ${size}. It is excluded from the baseline offline copy and downloaded only on explicit request, or automatically when you press Run in an encoding lesson while online.`,
 } as const;

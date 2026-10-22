@@ -136,7 +136,7 @@ export function buildProbe(file: string): string[] {
     "-v",
     "error",
     "-show_entries",
-    "stream=index,codec_type,codec_name,width,height,sample_rate,channels,nb_frames,duration:format=format_name,duration,size",
+    "stream=index,codec_type,codec_name,width,height,pix_fmt,sample_rate,channels,nb_frames,duration:format=format_name,duration,size",
     "-of",
     "json",
     file,
@@ -208,7 +208,11 @@ export function parseProbe(log: readonly string[]): ProbeResult | undefined {
   };
   if (!Array.isArray(p.streams) || !p.format) return undefined;
   const num = (v: unknown) =>
-    typeof v === "string" && v !== "" ? Number(v) : undefined;
+    typeof v === "string" && v !== ""
+      ? Number(v)
+      : typeof v === "number"
+        ? v
+        : undefined;
   const streams: ProbeStream[] = p.streams.map((s) => {
     const st = s as Record<string, unknown>;
     return {

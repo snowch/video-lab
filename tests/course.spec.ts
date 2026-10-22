@@ -38,9 +38,7 @@ test("introduction, theme persistence and browser navigation", async ({
     home.subtitle,
   );
   await page.goBack();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    labels.title,
-  );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(cap.title);
   await page.goForward();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,

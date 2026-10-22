@@ -4,6 +4,7 @@ import type { Verdict, VerdictFailure } from "@platform/lesson-runtime";
 import { gradeEdit } from "./module2/grade";
 import { labels } from "./content/module0.labels";
 import { cap } from "./capture/strings";
+import { b } from "./build/strings";
 
 /** Grade an answers challenge whose fields have per-field feedback text. */
 function gradeAnswers(
@@ -56,6 +57,16 @@ export function grade(challenge: Challenge, artifact: Artifact): Verdict {
       challenge,
       artifact,
       cap.feedback as Record<string, string>,
+    );
+  if (
+    challenge.tests.kind === "answers" &&
+    challenge.tests.grader === "probe-prediction"
+  )
+    return gradeAnswers(
+      challenge,
+      artifact,
+      b.feedback as Record<string, string>,
+      ["pictures", "duration", "size"],
     );
   if (challenge.tests.kind !== "answers")
     return {

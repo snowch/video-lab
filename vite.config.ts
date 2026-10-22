@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 export default defineConfig({
   base: "/video-lab/",
   plugins: [react()],
+  worker: { format: "es" },
   resolve: {
     alias: {
       "@platform/lesson-schema": resolve("platform/lesson-schema/src/index.ts"),

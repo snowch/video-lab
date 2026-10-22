@@ -38,7 +38,7 @@ export const modules = [
   },
   {
     id: 3,
-    title: "Cut and join",
+    title: "Cutting and joining",
     summary:
       "Remove dead time, compare copy and encoded cuts, and arrange clips into a clear story.",
   },

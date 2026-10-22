@@ -26,6 +26,11 @@ export interface RunResult {
   readonly code: number;
   readonly log: readonly string[];
   readonly files: Readonly<Record<string, Uint8Array>>;
+  /** Per-step results in step order: each EXEC/FFPROBE step's exit code and buffered log. */
+  readonly steps: ReadonlyArray<{
+    readonly code: number;
+    readonly log: readonly string[];
+  }>;
 }
 
 export interface Runner {
@@ -115,6 +120,7 @@ export function createRunner(spawn: () => Worker): Runner {
       const files: Record<string, Uint8Array> = {};
       let lastCode = 0;
       let lastLog: readonly string[] = [];
+      const stepResults: { code: number; log: readonly string[] }[] = [];
       const written: string[] = [];
       const read: string[] = [];
       try {
@@ -139,6 +145,7 @@ export function createRunner(spawn: () => Worker): Runner {
           if (reply.type === "EXEC" || reply.type === "FFPROBE") {
             lastCode = reply.code;
             lastLog = reply.log;
+            stepResults.push({ code: reply.code, log: reply.log });
           }
         }
         for (const name of job.read ?? []) {
@@ -160,7 +167,7 @@ export function createRunner(spawn: () => Worker): Runner {
           }).catch(() => {});
         if (cancelled) throw new Error("Cancelled");
         set({ kind: "done", log: lastLog });
-        return { code: lastCode, log: lastLog, files };
+        return { code: lastCode, log: lastLog, files, steps: stepResults };
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         set({ kind: "failed", message });

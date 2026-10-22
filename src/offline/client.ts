@@ -20,6 +20,33 @@ export function workerMessage(
     worker.postMessage(message, [channel.port2]);
   });
 }
+
+export interface GroupStatus {
+  readonly ready: boolean;
+  readonly bytes: number;
+  readonly known: boolean;
+  readonly downloading?: boolean;
+}
+
+export function workerGroupMessage(
+  worker: ServiceWorker,
+  message: string,
+): Promise<GroupStatus> {
+  return new Promise((resolve, reject) => {
+    const channel = new MessageChannel();
+    const timeout = setTimeout(() => {
+      channel.port1.close();
+      reject(new Error("Offline worker timeout"));
+    }, 180000);
+    channel.port1.onmessage = (event) => {
+      clearTimeout(timeout);
+      channel.port1.close();
+      resolve(event.data as GroupStatus);
+    };
+    worker.postMessage(message, [channel.port2]);
+  });
+}
+
 export function installed(worker: ServiceWorker): Promise<void> {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {

@@ -97,7 +97,7 @@ test("complete download survives offline reload and new tab, with all media and 
   site,
 }) => {
   test.setTimeout(90000);
-  await page.goto(site.url + "#/module-2");
+  await page.goto(site.url + "#/module-3");
   expect(
     await page.evaluate(() => navigator.serviceWorker.getRegistration()),
   ).toBeUndefined();
@@ -195,7 +195,7 @@ test("complete download survives offline reload and new tab, with all media and 
     "Saved while offline.",
   );
   const second = await context.newPage();
-  await second.goto(site.url + "#/module-0");
+  await second.goto(site.url + "#/module-2");
   await expect(second.getByRole("heading", { level: 1 })).toHaveText(
     "What is a digital video?",
   );
@@ -279,7 +279,7 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   site,
 }) => {
   test.setTimeout(90000);
-  await page.goto(site.url + "#/module-2");
+  await page.goto(site.url + "#/module-3");
   const panel = page.locator(".offline-panel");
   await panel.locator(":scope > details > summary").click();
   await panel
@@ -322,7 +322,7 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
     "Keep this note through an update.",
   );
   const second = await context.newPage();
-  await second.goto(site.url + "#/module-0");
+  await second.goto(site.url + "#/module-2");
   await Promise.all([
     page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
     second.waitForEvent(
@@ -383,7 +383,7 @@ test("unsupported browsers keep online lessons usable", async ({
   await page.addInitScript(() => {
     delete (Navigator.prototype as { serviceWorker?: unknown }).serviceWorker;
   });
-  await page.goto(site.url + "#/module-2");
+  await page.goto(site.url + "#/module-3");
   const panel = page.locator(".offline-panel");
   await panel.locator(":scope > details > summary").focus();
   await page.keyboard.press("Enter");

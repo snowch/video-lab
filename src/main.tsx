@@ -19,6 +19,15 @@ import {
   CaptureFallback,
   CaptureReflection,
 } from "./capture/components";
+import { buildLesson } from "./build/lesson";
+import { b } from "./build/strings";
+import { prose as buildProse } from "./build/prose";
+import {
+  Filmstrip,
+  BuildEncoder,
+  BuildFallback,
+  BuildReflection,
+} from "./build/components";
 import {
   CutSource,
   CutPrediction,
@@ -46,7 +55,7 @@ const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
   title: home.title,
-  lessons: [captureLesson, lesson, lesson2],
+  lessons: [captureLesson, buildLesson, lesson, lesson2],
   interactives: {
     explorer: Explorer,
     streams: Streams,
@@ -57,6 +66,10 @@ const book: Book = {
     "capture-pipeline": CapturePipeline,
     "capture-fallback": CaptureFallback,
     "capture-reflection": CaptureReflection,
+    filmstrip: Filmstrip,
+    "build-encoder": BuildEncoder,
+    "build-fallback": BuildFallback,
+    "build-reflection": BuildReflection,
     "cut-source": CutSource,
     "cut-prediction": CutPrediction,
     "cut-explorer": CutExplorer,
@@ -70,27 +83,41 @@ const book: Book = {
     recorded: prose.modelNote,
     "recorded-cuts": prose2.modelNote,
     "edit-clock": prose2.clockNote,
+    "wasm-encode": buildProse.modelNote,
   },
 };
 const lessonNumbers: Record<string, string> = {
   "capture-demo": cap.lessonNumber,
+  "build-a-file": b.lessonNumber,
   "what-is-video": ui.lessonNumber,
   "cutting-and-joining": m2.lessonNumber,
 };
 /**
- * Route migration: the redesigned course renumbers the modules. Old bookmarks
- * (`#/module-0`, `#/module-2`) redirect to the relocated lessons' new module
- * numbers; section kinds survive where the section exists, otherwise the
- * lesson start. Any other unknown route falls back to the home page.
+ * Route migration: the redesigned course renumbers the modules. The retired
+ * numbers — 0 (the old inspection lesson) and 2 (the old cut/join lesson) —
+ * redirect to the relocated lessons' new module numbers; section kinds survive
+ * where the section exists, otherwise the lesson start. The new module 0 is
+ * the capture lesson and is a real route, not a redirect target. Any other
+ * unknown route falls back to the home page.
  */
-const ROUTE_REDIRECTS: Record<string, number> = { 0: 2, 2: 3 };
+const ROUTE_REDIRECTS: Record<number, number> = {
+  0: 2,
+  2: 3,
+};
+const NEW_MODULE_IDS = new Set(
+  [captureLesson, buildLesson, lesson, lesson2].map((l) => l.module),
+);
 function resolveRoute(route: string): string {
   const match = route.match(/^#\/module-(\d+)(?:\/([a-zA-Z]+))?$/);
   if (!match) return route;
   const module = Number(match[1]);
-  const target = ROUTE_REDIRECTS[module];
-  if (target === undefined) return route;
-  return match[2] ? `#/module-${target}/${match[2]}` : `#/module-${target}`;
+  // A retired number redirects only when no lesson lives there any more.
+  if (!NEW_MODULE_IDS.has(module)) {
+    const target = ROUTE_REDIRECTS[module];
+    if (target !== undefined)
+      return match[2] ? `#/module-${target}/${match[2]}` : `#/module-${target}`;
+  }
+  return route;
 }
 const strings = {
   ...DEFAULT_STRINGS,
@@ -100,6 +127,7 @@ const strings = {
       recorded: ui.modelHeading,
       "recorded-cuts": m2.recordedLabel,
       "edit-clock": m2.clockLabel,
+      "wasm-encode": b.lessonNumber,
     },
     modelNote: ui.modelHeading,
     modelVsReality: ui.limitsHeading,
@@ -174,7 +202,11 @@ function Home() {
   );
 }
 function App() {
-  const [route, setRoute] = useState(() => resolveRoute(location.hash)),
+  const [route, setRoute] = useState(() => {
+      const resolved = resolveRoute(location.hash);
+      if (resolved !== location.hash) location.replace(resolved);
+      return resolved;
+    }),
     [theme, setTheme] = useState(
       () =>
         storage.get("video-lab:theme") ??

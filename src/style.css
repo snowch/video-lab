@@ -1225,3 +1225,12 @@ code {
     margin-top: 8px;
   }
 }
+
+.offline-group {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-top: 12px;
+}
+.offline-group [role="status"] {
+  font-weight: 600;
+}

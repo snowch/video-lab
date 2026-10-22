@@ -156,7 +156,7 @@ export function Recorder() {
         >
           {cap.reRecord}
         </button>
-        {supported && state === "idle" && (
+        {supported && (state === "idle" || state === "error") && (
           <button onClick={useFallback}>{cap.useFallback}</button>
         )}
       </div>

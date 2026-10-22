@@ -124,7 +124,7 @@ test("existing app window does not offer installation again", async ({
   await page.addInitScript(() =>
     Object.defineProperty(navigator, "standalone", { value: true }),
   );
-  await page.goto("./#/module-2");
+  await page.goto("./#/module-3");
   await page.locator(".offline-panel > details > summary").click();
   await expect(page.locator(".install-access").getByRole("status")).toHaveText(
     install.installed,

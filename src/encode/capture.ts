@@ -46,26 +46,25 @@ export type CaptureState =
   | { readonly kind: "unsupported"; readonly message: string }
   | { readonly kind: "ended"; readonly message: string };
 
+export const DENIED_MESSAGE =
+  "Permission was denied or the picker was dismissed. Nothing was recorded.";
+
 export function describeError(error: unknown): string {
-  if (error instanceof DOMException) {
-    switch (error.name) {
-      case "NotAllowedError":
-        return "Permission was denied or the picker was dismissed. Nothing was recorded.";
-      case "NotFoundError":
-        return "No screen, window or tab source was available to capture.";
-      case "NotReadableError":
-        return "The selected source could not be read. It may be busy or protected.";
-      case "AbortError":
-        return "The capture source was unavailable before recording started.";
-      case "SecurityError":
-        return "This page is not in a secure context, so screen capture is not allowed here.";
-      default:
-        return error.message || "The browser refused the capture request.";
-    }
-  }
-  return error instanceof Error
-    ? error.message
-    : "The browser refused the capture request.";
+  const name =
+    error && typeof error === "object" && "name" in error
+      ? String((error as { name: unknown }).name)
+      : "";
+  if (name === "NotAllowedError") return DENIED_MESSAGE;
+  if (name === "NotFoundError")
+    return "No screen, window or tab source was available to capture.";
+  if (name === "NotReadableError")
+    return "The selected source could not be read. It may be busy or protected.";
+  if (name === "AbortError")
+    return "The capture source was unavailable before recording started.";
+  if (name === "SecurityError")
+    return "This page is not in a secure context, so screen capture is not allowed here.";
+  if (error instanceof Error && error.message) return error.message;
+  return "The browser refused the capture request.";
 }
 
 /** The file extension that honestly matches a recorder MIME type. */

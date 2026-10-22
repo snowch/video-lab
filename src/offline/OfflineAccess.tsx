@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { workerMessage, installed } from "./client";
 import { offline } from "./strings";
+import { OfflineGroups } from "./OfflineGroups";
 import { InstallApp } from "../install/InstallApp";
 export function OfflineAccess() {
   const supported =
@@ -183,6 +184,7 @@ export function OfflineAccess() {
             )}
           </div>
         )}
+        <OfflineGroups />
         <p className="muted">{offline.limits}</p>
         <InstallApp />
       </details>
