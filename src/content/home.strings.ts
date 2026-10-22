@@ -14,7 +14,7 @@ export const home = {
   start: "Start with capture",
   planTitle: "Course plan",
   planNote:
-    "Modules 0 to 9 are available. The remaining module describes the planned curriculum and is labelled planned until implemented.",
+    "All eleven modules, 0 to 10, are available. Each one runs on real files in your browser.",
 };
 
 export const modules = [

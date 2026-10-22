@@ -83,6 +83,14 @@ import {
   CutList,
   AssistReflection,
 } from "./assist/components";
+import { projectLesson } from "./project/lesson";
+import { p } from "./project/strings";
+import {
+  RecipeView,
+  RecipeRunner,
+  ViewerReview,
+  ProjectReflection,
+} from "./project/components";
 import {
   CutSource,
   CutPrediction,
@@ -122,6 +130,7 @@ const book: Book = {
     captionsLesson,
     verifyLesson,
     assistLesson,
+    projectLesson,
   ],
   interactives: {
     explorer: Explorer,
@@ -175,6 +184,10 @@ const book: Book = {
     "claim-checker": ClaimChecker,
     "cut-list": CutList,
     "assist-reflection": AssistReflection,
+    "recipe-view": RecipeView,
+    "recipe-runner": RecipeRunner,
+    "viewer-review": ViewerReview,
+    "project-reflection": ProjectReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -196,6 +209,7 @@ const lessonNumbers: Record<string, string> = {
   "captions-and-overlays": ca.lessonNumber,
   "export-publish-verify": v.lessonNumber,
   "ai-assisted-production": ai.lessonNumber,
+  "final-project": p.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -221,6 +235,7 @@ const NEW_MODULE_IDS = new Set(
     captionsLesson,
     verifyLesson,
     assistLesson,
+    projectLesson,
   ].map((l) => l.module),
 );
 function resolveRoute(route: string): string {

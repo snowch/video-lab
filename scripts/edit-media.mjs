@@ -251,6 +251,35 @@ if (generate) {
   // Module 8: verification. A candidate that plays but has no audio stream:
   // stream-copied video only, the classic "I exported it wrong" file.
   encode(["-i", src, "-map", "0:v:0", "-c", "copy", root + "video-only.mp4"]);
+  // Module 10: the final project's reference recipe, run step by step on the
+  // source: crop-and-zoom (Module 4), caption burn (Module 7), re-encode at
+  // 640x360 CRF 23 (Module 6). Each step's output is kept as a real file.
+  encode([
+    "-i",
+    src,
+    "-vf",
+    "crop=480:270:240:135,scale=960:540:flags=lanczos",
+    ...x264,
+    root + "recipe-step1-crop.mp4",
+  ]);
+  encode([
+    "-i",
+    root + "recipe-step1-crop.mp4",
+    "-vf",
+    `subtitles=${root + "captions.srt"}`,
+    ...x264,
+    root + "recipe-step2-captioned.mp4",
+  ]);
+  encode([
+    "-i",
+    root + "recipe-step2-captioned.mp4",
+    "-vf",
+    "scale=640:360",
+    ...x264,
+    "-crf",
+    "23",
+    root + "recipe-step3-final.mp4",
+  ]);
   // Comparison stills at 6 s (the sorted result), one per encoded variant, so
   // the quality lessons can show real rendered pictures side by side.
   mkdirSync(root + "stills", { recursive: true });
@@ -458,6 +487,32 @@ const expected = {
     "copy",
     "edit/video-only.mp4",
   ],
+  "recipe-step1-crop.mp4": [
+    "-i",
+    "public/media/build-queue.mp4",
+    "-vf",
+    "crop=480:270:240:135,scale=960:540:flags=lanczos",
+    ...x264,
+    "edit/recipe-step1-crop.mp4",
+  ],
+  "recipe-step2-captioned.mp4": [
+    "-i",
+    "edit/recipe-step1-crop.mp4",
+    "-vf",
+    "subtitles=captions.srt",
+    ...x264,
+    "edit/recipe-step2-captioned.mp4",
+  ],
+  "recipe-step3-final.mp4": [
+    "-i",
+    "edit/recipe-step2-captioned.mp4",
+    "-vf",
+    "scale=640:360",
+    ...x264,
+    "-crf",
+    "23",
+    "edit/recipe-step3-final.mp4",
+  ],
 };
 const notes = {
   "cropped-zoom.mp4":
@@ -486,6 +541,12 @@ const notes = {
     "The recording with the 5% tone as its sound: picture unchanged, sound nearly silent.",
   "video-only.mp4":
     "The recording's video stream copied without the audio stream: plays fine, but a stream probe shows no audio. The Module 8 broken candidate.",
+  "recipe-step1-crop.mp4":
+    "Module 10 reference recipe, step 1: crop the centre half and scale it back to 960x540 (Module 4).",
+  "recipe-step2-captioned.mp4":
+    "Module 10 reference recipe, step 2: burn the caption source into the cropped picture (Module 7).",
+  "recipe-step3-final.mp4":
+    "Module 10 reference recipe, step 3: re-encode at 640x360 CRF 23 (Module 6). The finished demo.",
 };
 
 const stillNotes = {

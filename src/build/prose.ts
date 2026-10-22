@@ -27,7 +27,7 @@ The pre-generated files are real outputs of those commands, made in advance with
 4. The mux run copies the picture data (\`-c:v copy\`) and compresses the tone as AAC (\`-c:a aac\`).
 
 The probe is FFmpeg's inspection tool. It runs in the same worker and prints JSON, which the page parses and shows. The exit code of this probe build is 1 even on success; the page trusts the parsed JSON, not the exit code.`,
-  generalisation: `Building a file is reproducible: the same inputs and the same command produce the same structure, with byte sizes that vary only slightly with content. This is why a demo workflow can be written down as a recipe and run again.
+  generalisation: `Building a file is reproducible: the same inputs and the same command produce the same structure, with byte sizes that vary only slightly with content. This is why a demo workflow can be written down as a list of steps and run again.
 
 The same encoder runs the cuts, crops, level measurements and quality comparisons in later lessons. Each of those lessons shows its exact command and its measured result the same way.`,
   challenge: `Predict the probe values for the video-only build at one picture per second: the picture count, the duration in seconds, your size estimate in bytes, and the sound format the muxed file will report. Run the encoder, then check your predictions against the measured values. Each field is checked separately.`,

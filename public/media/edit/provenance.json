@@ -1,6 +1,6 @@
 {
   "description": "Original media for the editing modules (4-8): every file derives from the verified build-queue recording (public/media/build-queue.mp4), the original extracted frames (public/media/frames/) or the synthetic tone (public/media/build/tone.wav). All files are original to this course; no third-party media is used.",
-  "generated": "2026-10-22T03:33:55.310Z",
+  "generated": "2026-10-22T03:48:11.491Z",
   "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
   "files": {
     "cropped-zoom.mp4": {
@@ -368,6 +368,72 @@
           "codec": "h264",
           "width": 960,
           "height": 540
+        }
+      ]
+    },
+    "recipe-step1-crop.mp4": {
+      "command": "ffmpeg -y -i public/media/build-queue.mp4 -vf crop=480:270:240:135,scale=960:540:flags=lanczos -c:v libx264 -pix_fmt yuv420p edit/recipe-step1-crop.mp4",
+      "note": "Module 10 reference recipe, step 1: crop the centre half and scale it back to 960x540 (Module 4).",
+      "bytes": 105492,
+      "sha256": "9f7797bf5219187786e6a069cc078de154d07c700c59e4f09613adb0d1b66b94",
+      "duration": 10.005,
+      "size": 105492,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "recipe-step2-captioned.mp4": {
+      "command": "ffmpeg -y -i edit/recipe-step1-crop.mp4 -vf subtitles=captions.srt -c:v libx264 -pix_fmt yuv420p edit/recipe-step2-captioned.mp4",
+      "note": "Module 10 reference recipe, step 2: burn the caption source into the cropped picture (Module 7).",
+      "bytes": 116187,
+      "sha256": "29be5820383342be16c9e2dd0730aca9d19243b1a804c5398ca48cc1f498ffd6",
+      "duration": 10.005,
+      "size": 116187,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      ]
+    },
+    "recipe-step3-final.mp4": {
+      "command": "ffmpeg -y -i edit/recipe-step2-captioned.mp4 -vf scale=640:360 -c:v libx264 -pix_fmt yuv420p -crf 23 edit/recipe-step3-final.mp4",
+      "note": "Module 10 reference recipe, step 3: re-encode at 640x360 CRF 23 (Module 6). The finished demo.",
+      "bytes": 105834,
+      "sha256": "832a65937d2e56265c3881b02c4a1910a457bd724b8ba6c37d8c5546ca1868a2",
+      "duration": 10.005,
+      "size": 105834,
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 1
         }
       ]
     },

@@ -11,6 +11,7 @@ import { q } from "./quality/strings";
 import { ca } from "./captions/strings";
 import { v } from "./verify/strings";
 import { ai } from "./assist/strings";
+import { p } from "./project/strings";
 
 /** Grade an answers challenge whose fields have per-field feedback text. */
 function gradeAnswers(
@@ -127,6 +128,15 @@ export function grade(challenge: Challenge, artifact: Artifact): Verdict {
       challenge,
       artifact,
       ai.feedback as Record<string, string>,
+    );
+  if (
+    challenge.tests.kind === "answers" &&
+    challenge.tests.grader === "recipe-choice"
+  )
+    return gradeAnswers(
+      challenge,
+      artifact,
+      p.feedback as Record<string, string>,
     );
   if (challenge.tests.kind !== "answers")
     return {
