@@ -6,6 +6,7 @@ import { labels } from "./content/module0.labels";
 import { cap } from "./capture/strings";
 import { b } from "./build/strings";
 import { ed } from "./edit/strings";
+import { sd } from "./sound/strings";
 
 /** Grade an answers challenge whose fields have per-field feedback text. */
 function gradeAnswers(
@@ -77,6 +78,15 @@ export function grade(challenge: Challenge, artifact: Artifact): Verdict {
       challenge,
       artifact,
       ed.feedback as Record<string, string>,
+    );
+  if (
+    challenge.tests.kind === "answers" &&
+    challenge.tests.grader === "sound-choice"
+  )
+    return gradeAnswers(
+      challenge,
+      artifact,
+      sd.feedback as Record<string, string>,
     );
   if (challenge.tests.kind !== "answers")
     return {

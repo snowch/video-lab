@@ -49,7 +49,7 @@ test("readability lesson renders the source, comparison, scale-down, callouts an
   await play(videos.nth(4));
   await play(videos.nth(8));
   // The crop editor is present with its six geometry controls.
-  const editor = page.locator("#ix-crop-editor-construction");
+  const editor = page.locator("#ix-crop-editor");
   await expect(editor).toBeVisible();
   await expect(
     editor.getByRole("button", { name: ed.run, exact: true }),
@@ -79,7 +79,7 @@ test("crop editor runs a real WASM crop-and-scale and probes the result", async 
     if (request.url().includes("vendor/ffmpeg/"))
       coreRequests.push(request.url());
   });
-  const editor = page.locator("#ix-crop-editor-construction");
+  const editor = page.locator("#ix-crop-editor");
   await expect(editor.getByText(ed.statusIdle, { exact: true })).toBeVisible();
   expect(coreRequests).toEqual([]);
   await editor.getByRole("button", { name: ed.run, exact: true }).click();
@@ -108,7 +108,7 @@ test("crop editor rejects odd dimensions and reports failure honestly", async ({
 }) => {
   test.setTimeout(60000);
   await open(page);
-  const editor = page.locator("#ix-crop-editor-construction");
+  const editor = page.locator("#ix-crop-editor");
   const run = editor.getByRole("button", { name: ed.run, exact: true });
   await editor
     .getByRole("spinbutton", { name: ed.width, exact: true })
@@ -168,7 +168,7 @@ test("failed media keeps the crop editor and grading usable", async ({
   await page.route("**/media/edit/*.mp4", (route) => route.abort());
   await open(page);
   await expect(page.getByRole("alert").first()).toBeVisible();
-  const editor = page.locator("#ix-crop-editor-construction");
+  const editor = page.locator("#ix-crop-editor");
   await expect(
     editor.getByRole("button", { name: ed.run, exact: true }),
   ).toBeVisible();

@@ -157,10 +157,13 @@ export function buildVolumeDetect(input: string): string[] {
   return ["-i", input, "-af", "volumedetect", "-f", "null", "-"];
 }
 
+export interface VolumeReading {
+  readonly mean: number;
+  readonly max: number;
+}
+
 /** Parse mean/max volume (dB) from volumedetect log lines. */
-export function parseVolume(
-  log: readonly string[],
-): { mean: number; max: number } | undefined {
+export function parseVolume(log: readonly string[]): VolumeReading | undefined {
   let mean: number | undefined, max: number | undefined;
   for (const line of log) {
     const m = /mean_volume:\s*(-?[\d.]+)\s*dB/.exec(line);

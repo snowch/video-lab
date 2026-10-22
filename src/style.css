@@ -1226,6 +1226,38 @@ code {
   }
 }
 
+/* Make the sound clear: five players and the measured-level table. */
+.sound-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.sound-grid audio {
+  display: block;
+  width: 100%;
+}
+.sound-levels {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.sound-levels th,
+.sound-levels td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.sound-levels thead th {
+  color: var(--muted);
+  font-weight: 650;
+}
+@media (max-width: 600px) {
+  .sound-levels th,
+  .sound-levels td {
+    padding: 8px 6px;
+  }
+}
+
 .offline-group {
   border-top: 1px solid var(--line);
   margin-top: 16px;

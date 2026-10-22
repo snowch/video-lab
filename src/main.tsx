@@ -39,6 +39,15 @@ import {
   CropEditor,
   EditReflection as ReadabilityReflection,
 } from "./edit/components";
+import { soundLesson } from "./sound/lesson";
+import { sd } from "./sound/strings";
+import {
+  SoundPlayers,
+  SoundLevels,
+  SoundEditor,
+  OverDriven,
+  SoundReflection,
+} from "./sound/components";
 import {
   CutSource,
   CutPrediction,
@@ -67,7 +76,14 @@ const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
   title: home.title,
-  lessons: [captureLesson, buildLesson, lesson, lesson2, editLesson],
+  lessons: [
+    captureLesson,
+    buildLesson,
+    lesson,
+    lesson2,
+    editLesson,
+    soundLesson,
+  ],
   interactives: {
     explorer: Explorer,
     streams: Streams,
@@ -96,6 +112,11 @@ const book: Book = {
     pacing: Pacing,
     "crop-editor": CropEditor,
     "edit-reflection": ReadabilityReflection,
+    "sound-players": SoundPlayers,
+    "sound-levels": SoundLevels,
+    "sound-editor": SoundEditor,
+    "over-driven": OverDriven,
+    "sound-reflection": SoundReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -112,6 +133,7 @@ const lessonNumbers: Record<string, string> = {
   "what-is-video": ui.lessonNumber,
   "cutting-and-joining": m2.lessonNumber,
   "make-it-readable": ed.lessonNumber,
+  "make-the-sound-clear": sd.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -126,7 +148,7 @@ const ROUTE_REDIRECTS: Record<number, number> = {
   2: 3,
 };
 const NEW_MODULE_IDS = new Set(
-  [captureLesson, buildLesson, lesson, lesson2, editLesson].map(
+  [captureLesson, buildLesson, lesson, lesson2, editLesson, soundLesson].map(
     (l) => l.module,
   ),
 );
