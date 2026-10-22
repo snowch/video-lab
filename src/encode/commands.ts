@@ -165,6 +165,31 @@ export function buildReencode(input: ReencodeInput): string[] {
   ];
 }
 
+export interface BurnCaptionsInput {
+  readonly input: string;
+  readonly subtitles: string;
+  readonly output: string;
+}
+
+/** Burn an SRT caption source into the picture with the subtitles filter. */
+export function buildBurnCaptions(input: BurnCaptionsInput): string[] {
+  for (const name of [input.input, input.subtitles, input.output])
+    if (!/^[%0-9a-zA-Z._-]+$/.test(name))
+      throw new RangeError("Filenames must be plain names");
+  return [
+    "-y",
+    "-i",
+    input.input,
+    "-vf",
+    `subtitles=${input.subtitles}`,
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    input.output,
+  ];
+}
+
 /** Probe a media file and print JSON to the log stream. */
 export function buildProbe(file: string): string[] {
   if (!/^[%0-9a-zA-Z._-]+$/.test(file))

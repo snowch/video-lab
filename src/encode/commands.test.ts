@@ -6,6 +6,7 @@ import {
   buildCut,
   buildCropScale,
   buildReencode,
+  buildBurnCaptions,
   buildProbe,
   buildStill,
   buildVolumeDetect,
@@ -160,6 +161,33 @@ describe("command builders", () => {
         height: 360,
         crf: 23,
         output: "o.mp4; x",
+      }),
+    ).toThrow(RangeError);
+  });
+  it("builds the caption burn command and validates its filenames", () => {
+    expect(
+      buildBurnCaptions({
+        input: "in.mp4",
+        subtitles: "captions.srt",
+        output: "out.mp4",
+      }),
+    ).toEqual([
+      "-y",
+      "-i",
+      "in.mp4",
+      "-vf",
+      "subtitles=captions.srt",
+      "-c:v",
+      "libx264",
+      "-pix_fmt",
+      "yuv420p",
+      "out.mp4",
+    ]);
+    expect(() =>
+      buildBurnCaptions({
+        input: "in.mp4",
+        subtitles: "captions.srt; x",
+        output: "o.mp4",
       }),
     ).toThrow(RangeError);
   });
