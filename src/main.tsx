@@ -11,6 +11,14 @@ import { lesson } from "./content/lesson";
 import { lesson2 } from "./module2/lesson";
 import { prose as prose2 } from "./module2/prose";
 import { m2 } from "./module2/strings";
+import { captureLesson } from "./capture/lesson";
+import { cap } from "./capture/strings";
+import {
+  Recorder,
+  CapturePipeline,
+  CaptureFallback,
+  CaptureReflection,
+} from "./capture/components";
 import {
   CutSource,
   CutPrediction,
@@ -38,13 +46,17 @@ const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
   title: home.title,
-  lessons: [lesson, lesson2],
+  lessons: [captureLesson, lesson, lesson2],
   interactives: {
     explorer: Explorer,
     streams: Streams,
     prediction: Prediction,
     failure: Failure,
     reflection: Reflection,
+    recorder: Recorder,
+    "capture-pipeline": CapturePipeline,
+    "capture-fallback": CaptureFallback,
+    "capture-reflection": CaptureReflection,
     "cut-source": CutSource,
     "cut-prediction": CutPrediction,
     "cut-explorer": CutExplorer,
@@ -60,6 +72,26 @@ const book: Book = {
     "edit-clock": prose2.clockNote,
   },
 };
+const lessonNumbers: Record<string, string> = {
+  "capture-demo": cap.lessonNumber,
+  "what-is-video": ui.lessonNumber,
+  "cutting-and-joining": m2.lessonNumber,
+};
+/**
+ * Route migration: the redesigned course renumbers the modules. Old bookmarks
+ * (`#/module-0`, `#/module-2`) redirect to the relocated lessons' new module
+ * numbers; section kinds survive where the section exists, otherwise the
+ * lesson start. Any other unknown route falls back to the home page.
+ */
+const ROUTE_REDIRECTS: Record<string, number> = { 0: 2, 2: 3 };
+function resolveRoute(route: string): string {
+  const match = route.match(/^#\/module-(\d+)(?:\/([a-zA-Z]+))?$/);
+  if (!match) return route;
+  const module = Number(match[1]);
+  const target = ROUTE_REDIRECTS[module];
+  if (target === undefined) return route;
+  return match[2] ? `#/module-${target}/${match[2]}` : `#/module-${target}`;
+}
 const strings = {
   ...DEFAULT_STRINGS,
   lesson: {
@@ -142,7 +174,7 @@ function Home() {
   );
 }
 function App() {
-  const [route, setRoute] = useState(location.hash),
+  const [route, setRoute] = useState(() => resolveRoute(location.hash)),
     [theme, setTheme] = useState(
       () =>
         storage.get("video-lab:theme") ??
@@ -151,7 +183,11 @@ function App() {
   const main = useRef<HTMLElement>(null);
   const initial = useRef(true);
   useEffect(() => {
-    const change = () => setRoute(location.hash);
+    const change = () => {
+      const resolved = resolveRoute(location.hash);
+      if (resolved !== location.hash) location.replace(resolved);
+      setRoute(resolved);
+    };
     addEventListener("hashchange", change);
     return () => removeEventListener("hashchange", change);
   }, []);
@@ -226,7 +262,7 @@ function App() {
             </aside>
             <div>
               <span className="eyebrow">
-                {activeLesson.module === 0 ? ui.lessonNumber : m2.lessonNumber}
+                {lessonNumbers[activeLesson.id] ?? ""}
               </span>
               <LessonView
                 key={activeLesson.id}

@@ -1,0 +1,8 @@
+{
+  "file": "media/build/tone.wav",
+  "description": "Synthetic 440 Hz sine tone, 3 seconds, 8000 Hz mono, 16-bit PCM. Clearly synthetic; not narration.",
+  "generated": "2026-10-21T23:41:08.431Z",
+  "command": "ffmpeg -f lavfi -i sine=frequency=440:sample_rate=8000:duration=3 -c:a pcm_s16le public/media/build/tone.wav",
+  "bytes": 48078,
+  "sha256": "4ec0e8f9ba3586e443fcdf0d36288c569df93522dbe163ce36b8e478c61245f9"
+}

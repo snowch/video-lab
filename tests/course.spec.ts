@@ -3,11 +3,16 @@ import { test, expect } from "@playwright/test";
 import { ui } from "../src/content/ui.strings";
 import { labels } from "../src/content/module0.labels";
 import { home } from "../src/content/home.strings";
+import { cap } from "../src/capture/strings";
 const open = async (page: import("@playwright/test").Page) => {
-  await page.goto("./#/module-0");
+  await page.goto("./#/module-2");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     labels.title,
   );
+};
+const openCapture = async (page: import("@playwright/test").Page) => {
+  await page.goto("./#/module-0");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(cap.title);
 };
 test("introduction, theme persistence and browser navigation", async ({
   page,
@@ -19,7 +24,7 @@ test("introduction, theme persistence and browser navigation", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,
   );
-  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(8);
+  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(7);
   const theme = await page.locator("html").getAttribute("data-theme");
   if (isMobile) await page.getByRole("button", { name: ui.theme }).tap();
   else await page.getByRole("button", { name: ui.theme }).click();
@@ -27,9 +32,7 @@ test("introduction, theme persistence and browser navigation", async ({
   await page.reload();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
   await page.getByRole("link", { name: home.start }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    labels.title,
-  );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(cap.title);
   await page.getByRole("link", { name: ui.back }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,
@@ -183,7 +186,7 @@ test("responsive layout, readable controls, no page errors and screenshots", asy
 }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  for (const route of ["./", "./#/module-0"]) {
+  for (const route of ["./", "./#/module-2"]) {
     await page.goto(route);
     await page.locator("h1").waitFor();
     await page.evaluate(() => document.fonts.ready);
@@ -206,7 +209,7 @@ test("responsive layout, readable controls, no page errors and screenshots", asy
     expect(small).toEqual([]);
     await page.screenshot({
       path: testInfo.outputPath(
-        route === "./" ? "introduction.png" : "module-0.png",
+        route === "./" ? "introduction.png" : "module-2-inspection.png",
       ),
       fullPage: true,
     });

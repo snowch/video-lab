@@ -4,7 +4,7 @@ import { m2 } from "../src/module2/strings";
 import { ui } from "../src/content/ui.strings";
 import { fixture, referenceAnswers } from "../src/module2/model";
 const open = async (page: import("@playwright/test").Page) => {
-  await page.goto("./#/module-2");
+  await page.goto("./#/module-3");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(m2.title);
 };
 const play = async (video: import("@playwright/test").Locator) => {
@@ -203,7 +203,7 @@ test("course routes, keyboard controls, both themes and responsive diagrams", as
   await page
     .getByRole("link", { name: /04 Compare requested and actual cuts/ })
     .click();
-  await expect(page).toHaveURL(/module-2\/investigation$/);
+  await expect(page).toHaveURL(/module-3\/investigation$/);
   await page.reload();
   await expect(page.locator("#section-investigation")).toBeInViewport();
   const choice = page.locator("#ix-cut-prediction input").first();

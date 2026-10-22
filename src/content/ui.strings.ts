@@ -14,7 +14,7 @@ export const ui = {
   available: "Interactive lesson",
   open: "Open lesson",
   back: "← Course overview",
-  lessonNumber: "MODULE 0 / MEDIA FUNDAMENTALS",
+  lessonNumber: "MODULE 2 / INSPECT REAL MEDIA",
   onPage: "In this lesson",
   heroCaption:
     "Original build-queue recording · picture and sound inspected separately",

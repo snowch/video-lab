@@ -80,9 +80,10 @@ const figureKinds: Record<string, { kind: string; caption: string }> = {
 export const lesson = parseLesson({
   id: "what-is-video",
   title: labels.title,
-  module: 0,
+  module: 2,
   order: 0,
   objectives: labels.objectives,
+  prerequisites: ["capture-demo"],
   introduces: [
     "stream",
     "frame",

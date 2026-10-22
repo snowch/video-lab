@@ -1,7 +1,7 @@
 // Copyright © 2026 Christopher Snow
 export const m2 = {
   title: "Cutting and joining",
-  lessonNumber: "MODULE 2 / CUTTING AND JOINING",
+  lessonNumber: "MODULE 3 / CUT AND JOIN",
   recordedLabel: "Recorded FFmpeg output",
   clockLabel: "Calculated clock model",
   objectives: [

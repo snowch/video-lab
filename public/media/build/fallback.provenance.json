@@ -1,0 +1,67 @@
+{
+  "description": "Precomputed lesson results shown only when the browser cannot run the in-browser encoder. The lesson always labels these as pre-generated, never as the learner's run.",
+  "generated": "2026-10-21T23:43:09.581Z",
+  "commands": {
+    "videoOnly": "ffmpeg -framerate 1 -i public/media/build/still-%03d.jpg -c:v libx264 -pix_fmt yuv420p -movflags +faststart public/media/build/fallback-video-only.mp4",
+    "audioVideo": "ffmpeg -i public/media/build/fallback-video-only.mp4 -i public/media/build/tone.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 64k -shortest public/media/build/fallback-audio-video.mp4"
+  },
+  "files": {
+    "fallback-video-only.mp4": {
+      "bytes": 35738,
+      "sha256": "2dc5039beae5582ffaf8ea30b0da3064dc8fb4ba2228e0b9cdab9db79e8e2b17",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 540,
+            "duration": "4.000000",
+            "nb_frames": "4"
+          }
+        ],
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "4.000000",
+          "size": "35738"
+        }
+      }
+    },
+    "fallback-audio-video.mp4": {
+      "bytes": 41323,
+      "sha256": "b55de8f6a0c15b77c58fef5483302c055f9193bf65ba54a85d8fa223acd54d8a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 540,
+            "duration": "1.000000",
+            "nb_frames": "1"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "sample_rate": "8000",
+            "channels": 1,
+            "duration": "3.000000",
+            "nb_frames": "25"
+          }
+        ],
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "3.000000",
+          "size": "41323"
+        }
+      }
+    }
+  }
+}

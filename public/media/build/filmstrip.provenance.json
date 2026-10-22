@@ -1,0 +1,6 @@
+{
+  "description": "Four original stills from the verified build-queue capture (public/media/frames), renamed as a numbered filmstrip for the file-building lesson. Frame 000: initial queue. Frame 048: the Sort action. Frame 072: the sorted result. Frame 119: the held result.",
+  "source": "scripts/generate-media.mjs (Playwright capture of media-source/demo.html)",
+  "files": ["still-000.jpg", "still-001.jpg", "still-002.jpg", "still-003.jpg"],
+  "note": "Originals remain in public/media/frames with measured ffprobe evidence in docs/notes/module-0/media/."
+}

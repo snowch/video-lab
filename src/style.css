@@ -1088,3 +1088,140 @@ code {
 .install-access li + li {
   margin-top: 12px;
 }
+
+.recorder-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.recorder-controls button {
+  min-height: 44px;
+}
+.recorder-result {
+  margin-top: 16px;
+}
+.recorder-result video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  background: #0b1821;
+}
+.recorder-facts {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: 6px 18px;
+  margin: 14px 0;
+  font-size: 0.95rem;
+}
+.recorder-facts dt {
+  font-weight: 650;
+  color: var(--muted);
+}
+.recorder-facts dd {
+  margin: 0;
+}
+.pipeline ol {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.pipeline li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--raised);
+  position: relative;
+  padding-left: 34px;
+  counter-increment: pipeline-step;
+}
+.pipeline li::before {
+  content: counter(pipeline-step);
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.pipeline ol {
+  counter-reset: pipeline-step;
+}
+.encode-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: end;
+  margin: 14px 0;
+}
+.encode-controls button {
+  min-height: 44px;
+}
+.encode-command {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 8px 0;
+}
+.encode-facts {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: 6px 18px;
+  margin: 14px 0;
+  font-size: 0.95rem;
+}
+.encode-facts dt {
+  font-weight: 650;
+  color: var(--muted);
+}
+.encode-facts dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+.filmstrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.filmstrip figure {
+  margin: 0;
+}
+.filmstrip img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+.filmstrip figcaption {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+@media (max-width: 600px) {
+  .recorder-facts,
+  .encode-facts {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+  .recorder-facts dd + dt,
+  .encode-facts dd + dt {
+    margin-top: 8px;
+  }
+}
