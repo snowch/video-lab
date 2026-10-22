@@ -18,7 +18,7 @@ describe("Module 2 lesson and edit grading", () => {
     expect(
       modelProblems(
         [lesson, lesson2],
-        ["recorded", "recorded-cuts", "edit-clock"],
+        ["recorded", "recorded-cuts", "edit-clock", "wasm-encode"],
       ),
     ).toEqual([]);
     expect(lesson2.prerequisites).toEqual([lesson.id]);

@@ -126,4 +126,25 @@ export const m2 = {
     "Saved in this browser when storage is available. These notes are not graded.",
   clearNotes: "Clear notes",
   inspectAgain: "Return to the cut experiment",
+  ownCutTitle: "Cut the recording yourself",
+  ownCutCaption:
+    "A real trim-and-encode cut run in this browser's FFmpeg.wasm on the course's original recording. The command, the produced file and the probe are real.",
+  ownCutStart: "Cut from source time, seconds",
+  ownCutRun: "Run the cut",
+  ownCutCancel: "Cancel",
+  ownCutIdle: "Ready. Nothing has run yet.",
+  ownCutLoading:
+    "Loading the encoder (downloaded once, only because you pressed Run)...",
+  ownCutRunning: "Cutting in your browser...",
+  ownCutDone: "Done. The file below is the cut this run produced.",
+  ownCutFailed: "The encoder failed in this browser.",
+  ownCutCommand: "The exact command this run executed",
+  ownCutSize: "File size",
+  ownCutDuration: "Duration",
+  ownCutPictures: "Pictures",
+  ownCutDownload: "Download the cut",
+  ownCutUnavailable:
+    "This browser cannot run the encoder. The recorded cut and join experiments above still work, and the Module 1 lesson explains the commands.",
+  ownCutNote:
+    "The encoder core is downloaded only when you press Run. Your own capture from Module 0 stays in the recorder and is never uploaded; this exercise cuts the labelled original recording so the command and result are reproducible.",
 };

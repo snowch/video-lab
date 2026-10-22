@@ -31,7 +31,7 @@ const fields: AnswerField[] = [
 ];
 const figures: Record<
   string,
-  { kind: string; caption: string; timeModel: string }
+  { kind: string; caption: string; timeModel: string; role?: string }
 > = {
   motivation: {
     kind: "cut-source",
@@ -48,11 +48,18 @@ const figures: Record<
     caption: m2.captions.cuts,
     timeModel: "recorded-cuts",
   },
+  ownCut: {
+    kind: "own-cut",
+    caption: m2.ownCutCaption,
+    timeModel: "wasm-encode",
+    role: "experiment",
+  },
   construction: {
     kind: "join-explorer",
     caption: m2.captions.join,
     timeModel: "recorded-cuts",
   },
+
   failureExperiment: {
     kind: "edit-clock",
     caption: m2.captions.clock,
@@ -81,15 +88,29 @@ export const lesson2 = parseLesson({
     kind,
     title: m2.sections[kind],
     prose: prose[kind],
-    interactives: figures[kind]
-      ? [
-          {
-            id: figures[kind].kind,
-            ...figures[kind],
-            props: kind === "challenge" ? { challengeId: "edit-plan" } : {},
-          },
-        ]
-      : [],
+    interactives: [
+      ...(figures[kind]
+        ? [
+            {
+              id: figures[kind].kind,
+              ...figures[kind],
+              props: kind === "challenge" ? { challengeId: "edit-plan" } : {},
+            },
+          ]
+        : []),
+      ...(kind === "investigation" && figures.ownCut
+        ? [
+            {
+              id: figures.ownCut.kind,
+              kind: figures.ownCut.kind,
+              timeModel: figures.ownCut.timeModel,
+              caption: figures.ownCut.caption,
+              role: figures.ownCut.role,
+              props: {},
+            },
+          ]
+        : []),
+    ],
   })),
   challenges: [
     {

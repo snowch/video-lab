@@ -35,6 +35,7 @@ import {
   JoinExplorer,
   ClockExperiment,
   EditReflection,
+  OwnCut,
 } from "./module2/components";
 import { prose } from "./content/module0.prose";
 import { ui } from "./content/ui.strings";
@@ -76,6 +77,7 @@ const book: Book = {
     "join-explorer": JoinExplorer,
     "edit-clock": ClockExperiment,
     "edit-reflection": EditReflection,
+    "own-cut": OwnCut,
   },
   ChallengeEditor: Editor,
   grade,

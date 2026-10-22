@@ -31,7 +31,9 @@ The player shows the selected recorded output. The first and last stills were ex
 Video stream duration and container duration answer different questions. The first measures how much picture playback the cut contains; the second covers the file, including audio timing. Read the first video presentation timestamp separately: audio and video can begin at slightly different output times.`,
   construction: `Clip A keeps source [${a.start}, ${a.end}); clip B begins at source ${b.start} seconds. Change their order and B's end to test whether the result remains understandable. Longer B gives viewers more time to read the sorted result.
 
-The output timeline places clips consecutively. Each clip's output duration is its source end minus its source start. The next clip starts where the previous one ends. At the join, the second clip supplies the picture. Play the recorded result and compare the stills immediately before and after that join.`,
+The output timeline places clips consecutively. Each clip's output duration is its source end minus its source start. The next clip starts where the previous one ends. At the join, the second clip supplies the picture. Play the recorded result and compare the stills immediately before and after that join.
+
+Then run the same kind of cut yourself below: a real trim-and-encode of the course's original recording in this browser's FFmpeg.wasm, with the exact command and the measured result shown.`,
   failureExperiment: `Source time is useful for finding material, but it does not say where that material belongs in an edit. Test leaving A at source ${a.start}–${a.end} seconds and B at source ${b.start}–${b.end} seconds on the output axis. Then reset each clip's clock and place B after A.
 
 The drawing compares those two arrangements mathematically. It shows why retaining source positions leaves a gap in this arrangement. It does not play a faulty export or predict how every incorrect FFmpeg command would behave.`,

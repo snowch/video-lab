@@ -246,3 +246,46 @@ test("failed output playback retains independent stills, evidence and grading", 
   await page.getByRole("button", { name: "Run tests", exact: true }).click();
   await expect(page.locator(".verdict-failure")).toHaveCount(6);
 });
+
+test("own-cut runs a real WASM trim-and-encode and probes the result", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  await open(page);
+  const ownCut = page.locator("#ix-own-cut");
+  await expect(ownCut.getByText(m2.ownCutIdle, { exact: true })).toBeVisible();
+  await ownCut
+    .getByRole("combobox", { name: m2.ownCutStart, exact: true })
+    .selectOption("4");
+  await ownCut.getByRole("button", { name: m2.ownCutRun, exact: true }).click();
+  await expect(ownCut.getByText(m2.ownCutDone, { exact: true })).toBeVisible({
+    timeout: 90000,
+  });
+  await expect(ownCut.getByText("ffmpeg -y -ss 4 -i source.mp4")).toBeVisible();
+  const facts = ownCut.locator(".encode-facts");
+  await expect(facts).toContainText("bytes");
+  await expect(facts).toContainText("s");
+  const video = ownCut.locator("video");
+  await expect
+    .poll(() => video.evaluate((v) => (v as HTMLVideoElement).readyState))
+    .toBeGreaterThanOrEqual(2);
+  const download = ownCut.getByRole("link", { name: m2.ownCutDownload });
+  await expect(download).toHaveAttribute("download", "my-cut.mp4");
+  const href = await download.getAttribute("href");
+  expect(href).toMatch(/^blob:/);
+});
+
+test("own-cut reports failure honestly when the encoder core cannot load", async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await page.route("**/vendor/ffmpeg/ffmpeg-core.wasm", (route) =>
+    route.abort(),
+  );
+  await open(page);
+  const ownCut = page.locator("#ix-own-cut");
+  await ownCut.getByRole("button", { name: m2.ownCutRun, exact: true }).click();
+  await expect(
+    ownCut.getByText(m2.ownCutUnavailable, { exact: true }),
+  ).toBeVisible({ timeout: 60000 });
+});

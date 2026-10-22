@@ -1,6 +1,13 @@
 // Copyright © 2026 Christopher Snow
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStored, type InteractiveProps } from "@platform/lesson-runtime";
+import { asset } from "../media/model";
+import { buildCut, buildProbe, parseProbe } from "../encode/commands";
+import {
+  createBrowserRunner,
+  type JobState,
+  type Runner,
+} from "../encode/runner";
 import { m2 } from "./strings";
 import {
   fixture,
@@ -390,6 +397,173 @@ export function EditReflection({ store }: InteractiveProps) {
       <button onClick={() => store.setSlot("reflection", "")}>
         {m2.clearNotes}
       </button>
+    </div>
+  );
+}
+
+async function fetchBytes(path: string): Promise<Uint8Array> {
+  const response = await fetch(asset(path));
+  if (!response.ok) throw new Error(`Could not load ${path}`);
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+interface CutFile {
+  readonly name: string;
+  readonly url: string;
+  readonly bytes: number;
+  readonly probe?: ReturnType<typeof parseProbe>;
+}
+
+/**
+ * Cut your own recording: run a real trim-and-encode cut of the course's
+ * original build-queue MP4 in the browser's FFmpeg.wasm, then play, probe and
+ * download the result. The learner's own capture from Module 0 cannot be
+ * read from storage here (it never leaves the recorder), so the lesson cuts
+ * the labelled original recording; the command and the probe are real.
+ */
+export function OwnCut() {
+  const runnerRef = useRef<Runner | undefined>(undefined);
+  const [state, setState] = useState<JobState>({ kind: "idle" });
+  const [start, setStart] = useState(2);
+  const [result, setResult] = useState<CutFile | undefined>();
+  const [failed, setFailed] = useState(false);
+  const abortRef = useRef<AbortController | undefined>(undefined);
+  const urlRef = useRef<string | undefined>(undefined);
+
+  const runner = useMemo(() => {
+    if (!runnerRef.current) runnerRef.current = createBrowserRunner();
+    return runnerRef.current;
+  }, []);
+  useEffect(() => {
+    const unsubscribe = runner.subscribe(setState);
+    return () => {
+      unsubscribe();
+      runner.dispose();
+      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    };
+  }, [runner]);
+
+  const run = async () => {
+    if (urlRef.current) {
+      URL.revokeObjectURL(urlRef.current);
+      urlRef.current = undefined;
+    }
+    setResult(undefined);
+    setFailed(false);
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    try {
+      const source = await fetchBytes("build-queue.mp4");
+      const args = buildCut({
+        input: "source.mp4",
+        start,
+        method: "encode",
+        output: "my-cut.mp4",
+      });
+      const probeArgs = buildProbe("my-cut.mp4");
+      const outcome = await runner.run({
+        label: m2.ownCutRunning,
+        write: { "source.mp4": source },
+        steps: [
+          { type: "EXEC", args },
+          { type: "FFPROBE", args: probeArgs },
+        ],
+        read: ["my-cut.mp4"],
+        signal: controller.signal,
+      });
+      const bytes = outcome.files["my-cut.mp4"];
+      if (!bytes) throw new Error("The run produced no file");
+      const probe = parseProbe(
+        outcome.steps.find((s) =>
+          s.log.some((line) => line.includes('"streams"')),
+        )?.log ?? outcome.log,
+      );
+      const url = URL.createObjectURL(
+        new Blob([new Uint8Array(bytes)], { type: "video/mp4" }),
+      );
+      urlRef.current = url;
+      setResult({
+        name: "my-cut.mp4",
+        url,
+        bytes: bytes.length,
+        probe,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message === "Cancelled") return;
+      setFailed(true);
+    }
+  };
+
+  const running = state.kind === "loading" || state.kind === "running";
+  return (
+    <div className="recorder">
+      <div className="encode-controls">
+        <label className="control-label">
+          {m2.ownCutStart}
+          <select
+            value={start}
+            onChange={(e) => setStart(Number(e.target.value))}
+            disabled={running}
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
+              <option key={value} value={value}>
+                {value} s
+              </option>
+            ))}
+          </select>
+        </label>
+        <button onClick={() => void run()} disabled={running}>
+          {m2.ownCutRun}
+        </button>
+        {running && (
+          <button onClick={() => runner.cancel()}>{m2.ownCutCancel}</button>
+        )}
+      </div>
+      <p className="player-note" aria-live="polite">
+        {state.kind === "idle" && m2.ownCutIdle}
+        {state.kind === "loading" && m2.ownCutLoading}
+        {state.kind === "running" && m2.ownCutRunning}
+        {state.kind === "done" && m2.ownCutDone}
+        {state.kind === "failed" && `${m2.ownCutFailed} ${state.message}`}
+      </p>
+      {result && (
+        <div className="recorder-result">
+          <pre className="encode-command">
+            <span className="muted">{m2.ownCutCommand}: </span>
+            {`ffmpeg ${buildCut({ input: "source.mp4", start, method: "encode", output: "my-cut.mp4" }).join(" ")}`}
+          </pre>
+          <video src={result.url} controls playsInline preload="metadata" />
+          <dl className="encode-facts">
+            <dt>{m2.ownCutSize}</dt>
+            <dd>{result.bytes} bytes</dd>
+            {result.probe && (
+              <>
+                <dt>{m2.ownCutDuration}</dt>
+                <dd>
+                  {result.probe.duration !== undefined
+                    ? `${result.probe.duration} s`
+                    : "—"}
+                </dd>
+                <dt>{m2.ownCutPictures}</dt>
+                <dd>
+                  {result.probe.streams.find((s) => s.codecType === "video")
+                    ?.nbFrames ?? "—"}
+                </dd>
+              </>
+            )}
+          </dl>
+          <a className="button" href={result.url} download={result.name}>
+            {m2.ownCutDownload}
+          </a>
+        </div>
+      )}
+      {failed && (
+        <p className="player-note" role="note">
+          {m2.ownCutUnavailable}
+        </p>
+      )}
+      <p className="player-note">{m2.ownCutNote}</p>
     </div>
   );
 }
