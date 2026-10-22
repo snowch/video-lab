@@ -75,6 +75,14 @@ import {
   BrokenCandidate,
   VerifyReflection,
 } from "./verify/components";
+import { assistLesson } from "./assist/lesson";
+import { ai } from "./assist/strings";
+import {
+  TranscriptView,
+  ClaimChecker,
+  CutList,
+  AssistReflection,
+} from "./assist/components";
 import {
   CutSource,
   CutPrediction,
@@ -113,6 +121,7 @@ const book: Book = {
     qualityLesson,
     captionsLesson,
     verifyLesson,
+    assistLesson,
   ],
   interactives: {
     explorer: Explorer,
@@ -162,6 +171,10 @@ const book: Book = {
     "export-editor": ExportEditor,
     "broken-candidate": BrokenCandidate,
     "verify-reflection": VerifyReflection,
+    "transcript-view": TranscriptView,
+    "claim-checker": ClaimChecker,
+    "cut-list": CutList,
+    "assist-reflection": AssistReflection,
   },
   ChallengeEditor: Editor,
   grade,
@@ -182,6 +195,7 @@ const lessonNumbers: Record<string, string> = {
   "compression-and-quality": q.lessonNumber,
   "captions-and-overlays": ca.lessonNumber,
   "export-publish-verify": v.lessonNumber,
+  "ai-assisted-production": ai.lessonNumber,
 };
 /**
  * Route migration: the redesigned course renumbers the modules. The retired
@@ -206,6 +220,7 @@ const NEW_MODULE_IDS = new Set(
     qualityLesson,
     captionsLesson,
     verifyLesson,
+    assistLesson,
   ].map((l) => l.module),
 );
 function resolveRoute(route: string): string {
