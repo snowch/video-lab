@@ -1,11 +1,11 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CaptureController, type CaptureState } from "../capture/controller";
-import { cancelProcessing, runTool } from "../processing/engine";
+import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
 import { useBlobURL, useProject } from "../journey/project";
 import { assetURL, EncoderOffline } from "../journey/shared";
 import type { StepName } from "../journey/routes";
-import { parseCommand, toolPlan } from "./command";
+import { parseCommand, toolPlan, validFilename } from "./command";
 import {
   checkFiles,
   disk,
@@ -14,6 +14,17 @@ import {
   type WorkspaceFile,
 } from "./files";
 import { cli, lessons } from "./strings";
+import { referenceLessons, refStrings } from "./reference.strings";
+import {
+  inspectChecks,
+  pictureChecks,
+  referenceSources,
+  inspectionCommand,
+  joinedCommand,
+  type ReferenceLab,
+  type CheckItem,
+} from "./reference-model";
+import { legacyProgress, loadChecks, progressKey } from "./progress";
 const historyKey = "video-lab:cli-history";
 function savedHistory(): string[] {
   try {
@@ -34,8 +45,15 @@ async function hash(blob: Blob) {
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
-export function CommandLab({ step }: { step: StepName }) {
+export function CommandLab({
+  step,
+  reference,
+}: {
+  step: StepName;
+  reference?: ReferenceLab;
+}) {
   const project = useProject();
+  const checked = useRef(loadChecks());
   const [files, setFiles] = useState<Files>({}),
     filesRef = useRef<Files>({});
   const [ready, setReady] = useState(false),
@@ -170,7 +188,7 @@ export function CommandLab({ step }: { step: StepName }) {
       cancelProcessing();
       capture.current?.destroy();
     };
-  }, [step]);
+  }, [step, reference]);
   useEffect(() => {
     project.setActive(busy || captureState !== "idle");
     return () => project.setActive(false);
@@ -258,7 +276,7 @@ export function CommandLab({ step }: { step: StepName }) {
       if (tool === "help") {
         simple(0);
         if (!locked.current) setNotice(cli.done);
-        print(cli.help);
+        print(`${cli.help}\n${refStrings.helpExtra}`);
         return;
       }
       if (tool === "clear") {
@@ -285,6 +303,30 @@ export function CommandLab({ step }: { step: StepName }) {
       }
       if (locked.current || captureState !== "idle") throw new Error(cli.wait);
       if (!ready) throw new Error(cli.loading);
+      if (tool === "hint" || tool === "solution") {
+        const lab = args[0];
+        if (
+          (lab !== "inspect" && lab !== "edit") ||
+          args.length > (tool === "hint" ? 2 : 1) ||
+          !args.length
+        )
+          throw new Error(refStrings.checkUsage);
+        const level = Number(args[1] ?? 1);
+        if (
+          tool === "hint" &&
+          (!Number.isInteger(level) || level < 1 || level > 5)
+        )
+          throw new Error(refStrings.checkUsage);
+        print(
+          tool === "hint"
+            ? refStrings.hints[lab][level - 1]!
+            : lab === "inspect"
+              ? inspectionCommand
+              : joinedCommand,
+        );
+        setNotice(cli.done);
+        return;
+      }
       if (tool === "scene") {
         simple(0);
         if (!locked.current) setNotice(cli.done);
@@ -356,23 +398,184 @@ export function CommandLab({ step }: { step: StepName }) {
       setBusy(true);
       setNotice(cli.running);
       try {
-        if (["sample", "fixtures", "reference", "comparison"].includes(tool!)) {
+        if (tool === "cat") {
+          simple(1);
+          const file = filesRef.current[args[0]!];
+          if (!file) throw new Error(`${cli.missing} ${args[0]}`);
+          if (!/\.(json|txt|md)$/i.test(file.name))
+            throw new Error(refStrings.catUsage);
+          const content = await file.blob.text();
+          live();
+          print(content);
+        } else if (tool === "note") {
+          if (
+            args.length !== 2 ||
+            !validFilename(args[0]!) ||
+            !/\.(txt|md)$/i.test(args[0]!)
+          )
+            throw new Error(refStrings.noteUsage);
+          if (filesRef.current[args[0]!]) throw new Error(cli.exists);
+          await put(
+            [
+              {
+                name: args[0]!,
+                blob: new Blob([args[1]!], { type: "text/plain" }),
+                origin: "note",
+              },
+            ],
+            live,
+          );
+          live();
+          print(`${refStrings.noteSaved} ${args[0]}`);
+        } else if (tool === "progress") {
+          simple(0);
+          print(refStrings.progressTitle);
+          for (const lab of ["inspect", "edit"] as const) {
+            const saved = checked.current[lab],
+              file = saved ? filesRef.current[saved.name] : undefined;
+            const current =
+              saved && file && (await hash(file.blob)) === saved.sha256;
+            live();
+            print(
+              `${lab}: ${saved ? (current ? refStrings.checked : refStrings.changed) : refStrings.notChecked}${saved ? ` · ${saved.name} · SHA-256 ${saved.sha256}` : ""}`,
+            );
+            const legacy = legacyProgress(lab);
+            print(
+              `${refStrings.legacyTitle} ${lab}: ${legacy.complete ? refStrings.legacySaved : refStrings.legacyNone}`,
+            );
+            if (legacy.note) print(`${refStrings.legacyNotes} ${legacy.note}`);
+          }
+        } else if (tool === "check") {
+          const [lab, name] = args;
+          if (args.length !== 2 || (lab !== "inspect" && lab !== "edit"))
+            throw new Error(refStrings.checkUsage);
+          const file = filesRef.current[name!];
+          if (!file) throw new Error(`${cli.missing} ${name}`);
+          const expected = referenceSources[lab],
+            evidence = file.evidence;
+          if (
+            !evidence ||
+            evidence.tool !== (lab === "inspect" ? "ffprobe" : "ffmpeg")
+          )
+            throw new Error(refStrings.missingEvidence);
+          if (
+            !evidence.inputs.some(
+              (i) => i.name === expected.name && i.sha256 === expected.sha256,
+            ) ||
+            !evidence.args.some((a) => a.includes(expected.name))
+          )
+            throw new Error(refStrings.wrongSource);
+          let items: CheckItem[];
+          if (lab === "inspect")
+            items = inspectChecks(JSON.parse(await file.blob.text()));
+          else {
+            const source = filesRef.current[expected.name];
+            if (!source || (await hash(source.blob)) !== expected.sha256)
+              throw new Error(refStrings.wrongSource);
+            live();
+            const result = await inspectEdit(file.blob, source.blob, (line) => {
+              if (operation === generation.current) print(line);
+            });
+            live();
+            const p = result.probe,
+              video = p.streams.find((s) => s.codec_type === "video"),
+              audio = p.streams.find((s) => s.codec_type === "audio"),
+              pictures = pictureChecks(result.output, result.source);
+            items = [
+              {
+                id: "video",
+                pass: video?.codec_name === "h264",
+                actual: video?.codec_name ?? "missing",
+              },
+              {
+                id: "audio",
+                pass: audio?.codec_name === "aac",
+                actual: audio?.codec_name ?? "missing",
+              },
+              {
+                id: "dimensions",
+                pass: video?.width === 960 && video?.height === 540,
+                actual: `${video?.width}×${video?.height}`,
+              },
+              {
+                id: "duration",
+                pass: Math.abs(Number(p.format.duration) - 4) < 0.09,
+                actual: String(p.format.duration),
+              },
+              {
+                id: "start",
+                pass:
+                  Number.isFinite(Number(video?.start_time)) &&
+                  Math.abs(Number(video?.start_time)) < 0.09,
+                actual: String(video?.start_time),
+              },
+              {
+                id: "frames",
+                pass: pictures.count === 48,
+                actual: String(pictures.count),
+              },
+              {
+                id: "pictures",
+                pass: pictures.pass,
+                actual: `RGB RMS max=${pictures.maxRms.toFixed(3)}; limit<2`,
+              },
+            ];
+          }
+          live();
+          for (const item of items)
+            print(
+              `${item.pass ? "PASS" : "FAIL"} ${refStrings.criterionLabels[item.id as keyof typeof refStrings.criterionLabels] ?? item.id}: ${item.actual}`,
+            );
+          if (items.every((i) => i.pass)) {
+            checked.current[lab] = {
+              name: name!,
+              sha256: await hash(file.blob),
+              checked: new Date().toISOString(),
+            };
+            live();
+            try {
+              localStorage.setItem(
+                progressKey,
+                JSON.stringify(checked.current),
+              );
+            } catch {
+              print(refStrings.progressSession);
+            }
+            print(refStrings.checkPassed);
+          } else print(refStrings.checkFailed);
+        } else if (
+          ["sample", "fixtures", "reference", "comparison"].includes(tool!)
+        ) {
           if (tool === "reference") {
-            if (args.length !== 1 || !["build", "edit"].includes(args[0]!))
+            if (
+              args.length !== 1 ||
+              !["build", "edit", "inspect", "cuts"].includes(args[0]!)
+            )
               throw new Error(cli.referenceUsage);
           } else simple(0);
           const paths =
             tool === "comparison"
               ? [["optional/big-buck-bunny-5s.mp4", "comparison.mp4"]]
               : tool === "reference"
-                ? [
-                    [
-                      args[0] === "build"
-                        ? "media/journey/with-audio.mp4"
-                        : "media/journey/edited-demo.mp4",
-                      `reference-${args[0]}.mp4`,
-                    ],
-                  ]
+                ? args[0] === "inspect" || args[0] === "cuts"
+                  ? [
+                      [
+                        referenceSources[
+                          args[0] === "inspect" ? "inspect" : "edit"
+                        ].path,
+                        referenceSources[
+                          args[0] === "inspect" ? "inspect" : "edit"
+                        ].name,
+                      ],
+                    ]
+                  : [
+                      [
+                        args[0] === "build"
+                          ? "media/journey/with-audio.mp4"
+                          : "media/journey/edited-demo.mp4",
+                        `reference-${args[0]}.mp4`,
+                      ],
+                    ]
                 : tool === "sample"
                   ? [["media/build-queue.mp4", "capture.mp4"]]
                   : [
@@ -405,7 +608,7 @@ export function CommandLab({ step }: { step: StepName }) {
               : tool === "fixtures"
                 ? cli.fixturesSaved
                 : tool === "reference"
-                  ? `${cli.referenceSaved} reference-${args[0]}.mp4`
+                  ? `${cli.referenceSaved} ${additions[0]!.name}`
                   : `${cli.comparisonSaved}
 ${cli.comparisonCredit}`,
           );
@@ -418,7 +621,9 @@ ${cli.comparisonCredit}`,
             filesRef.current[plan.output] &&
             !plan.args.includes("-y")
           )
-            throw new Error(cli.overwrite);
+            throw new Error(
+              plan.tool === "ffprobe" ? cli.exists : cli.overwrite,
+            );
           const snapshot = Object.values(filesRef.current).filter(
             (f) => f.origin !== "recipe",
           );
@@ -436,7 +641,12 @@ ${cli.comparisonCredit}`,
           });
           live();
           if (result.text) print(result.text);
-          if (result.bytes && plan.output) {
+          const written =
+            result.bytes ??
+            (result.text && plan.output
+              ? new TextEncoder().encode(result.text)
+              : undefined);
+          if (written && plan.output) {
             const recipe = {
               tool: plan.tool,
               args: plan.args,
@@ -459,11 +669,16 @@ ${cli.comparisonCredit}`,
               [
                 {
                   name: plan.output,
-                  blob: new Blob([result.bytes], {
+                  blob: new Blob([written], {
                     type: mimeFor(plan.output),
                   }),
-                  origin: "generated",
+                  origin: plan.tool === "ffprobe" ? "report" : "generated",
                   command: text,
+                  evidence: {
+                    tool: plan.tool,
+                    args: plan.args,
+                    inputs: recipe.inputs,
+                  },
                 },
                 {
                   name: recipeName,
@@ -479,7 +694,7 @@ ${cli.comparisonCredit}`,
             print(
               `${cli.saved} ${plan.output}\n${cli.recipeSaved} ${recipeName}`,
             );
-            setPreview(plan.output);
+            if (plan.tool === "ffmpeg") setPreview(plan.output);
           }
           if (plan.tool === "ffmpeg" && result.code === 0 && sawBareAbort)
             print(cli.cleanupNotice);
@@ -561,9 +776,13 @@ ${cli.comparisonCredit}`,
       }
     }
   }
-  const lesson = lessons[step];
+  const lesson = reference ? referenceLessons[reference] : lessons[step];
   return (
-    <article className="journey-page cli-lab" data-step={step}>
+    <article
+      className="journey-page cli-lab"
+      data-step={step}
+      data-reference={reference ?? ""}
+    >
       <h1>{lesson.title}</h1>
       <p className="lesson-intro">{lesson.intro}</p>
       <section
@@ -700,6 +919,19 @@ ${cli.comparisonCredit}`,
           {playbackFailed && <p role="alert">{cli.playbackError}</p>}
         </section>
       )}
+      {reference && (
+        <nav aria-label={lesson.heading}>
+          <ol>
+            {referenceLessons[reference].sections.map((section) => (
+              <li key={section.id}>
+                <a href={`#/${step}/reference/${section.id}`}>
+                  {section.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
       <section aria-labelledby="cli-instructions">
         <h2 id="cli-instructions">{lesson.heading}</h2>
         {lesson.paragraphs.map((p, i) => (
@@ -717,6 +949,25 @@ ${cli.comparisonCredit}`,
         </ol>
         <p>{lesson.challenge}</p>
       </section>
+      {reference &&
+        referenceLessons[reference].sections.map((section) => (
+          <section id={`section-${section.id}`} key={section.id}>
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+            <ol className="command-lessons">
+              {section.examples.map((example, i) => (
+                <li key={i}>
+                  <p>{example.note}</p>
+                  <pre>
+                    <code>{example.command}</code>
+                  </pre>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
       <EncoderOffline />
       {lesson.next && (
         <a className="button" href={`#/${lesson.next}`}>

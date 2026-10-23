@@ -4,8 +4,9 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 import { offline } from "../src/offline/strings";
-import { m2 } from "../src/module2/strings";
-import { referenceAnswers } from "../src/module2/model";
+import { cli } from "../src/cli/strings";
+import { command, terminal } from "./cli-helpers";
+
 const root = resolve("dist");
 type Site = { url: string; fail: string; corrupt: string; revision: number };
 // A real HTTP origin (not route mocks) exercises service-worker requests in both browsers.
@@ -78,6 +79,7 @@ const test = base.extend<{ site: Site }>({
   },
 });
 async function seekAndPlay(video: Locator) {
+  await video.scrollIntoViewIfNeeded();
   await expect
     .poll(() => video.evaluate((v) => (v as HTMLVideoElement).readyState))
     .toBeGreaterThanOrEqual(2);
@@ -148,58 +150,21 @@ test("complete download survives offline reload and new tab, with all media and 
   expect(range.status).toBe(206);
   expect(range.bytes).toBe(100);
   expect(range.range).toMatch(/^bytes 100-199\//);
-  await seekAndPlay(page.locator("#ix-cut-source video"));
-  for (const start of [1, 3, 5])
-    for (const method of ["copy", "encode"]) {
-      const cut = page.locator("#ix-cut-explorer");
-      await cut
-        .getByRole("combobox", { name: m2.start, exact: true })
-        .selectOption(String(start));
-      await cut
-        .getByRole("combobox", { name: m2.method, exact: true })
-        .selectOption(method);
-      await seekAndPlay(cut.locator("video"));
-    }
-  for (const order of ["AB", "BA"])
-    for (const end of [6, 8]) {
-      const join = page.locator("#ix-join-explorer");
-      await join
-        .getByRole("combobox", { name: m2.order, exact: true })
-        .selectOption(order);
-      await join
-        .getByRole("combobox", { name: m2.bEnd, exact: true })
-        .selectOption(String(end));
-      await seekAndPlay(join.locator("video"));
-    }
-  for (const [key, value] of Object.entries(referenceAnswers)) {
-    const name = m2.fieldLabels[key as keyof typeof m2.fieldLabels];
-    const editor = page.locator("[data-challenge=edit-plan]");
-    if (["method", "order", "reset"].includes(key))
-      await editor
-        .getByRole("combobox", { name, exact: true })
-        .selectOption(value);
-    else await editor.getByLabel(name, { exact: true }).fill(value);
-  }
-  await page.getByRole("button", { name: "Run tests", exact: true }).click();
-  await expect(page.locator("[data-challenge=edit-plan]")).toHaveAttribute(
-    "data-complete",
-    "true",
-  );
-  await page.getByLabel(m2.reflectionLabel).fill("Saved while offline.");
+  await command(page, "reference cuts");
+  await command(page, "play reference-cuts.mp4");
+  await seekAndPlay(page.locator(".cli-preview video"));
+  await command(page, 'note offline.txt "Saved while offline."');
   await page.reload();
-  await expect(page.locator("[data-challenge=edit-plan]")).toHaveAttribute(
-    "data-complete",
-    "true",
-  );
-  await expect(page.getByLabel(m2.reflectionLabel)).toHaveValue(
-    "Saved while offline.",
-  );
+  await command(page, "cat offline.txt");
+  await expect(terminal(page)).toContainText("Saved while offline.");
   const second = await context.newPage();
   await second.goto(site.url + "#/module-0");
   await expect(second.getByRole("heading", { level: 1 })).toHaveText(
     "What is a digital video?",
   );
-  await seekAndPlay(second.locator("video").first());
+  await command(second, "reference inspect");
+  await command(second, "play reference-inspect.mp4");
+  await seekAndPlay(second.locator(".cli-preview video"));
   expect(
     await second.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -288,9 +253,7 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await expect(panel.getByRole("status")).toHaveText(offline.ready, {
     timeout: 30000,
   });
-  await page
-    .getByLabel(m2.reflectionLabel)
-    .fill("Keep this note through an update.");
+  await command(page, 'note update.txt "Keep this note through an update."');
   await page.evaluate(() => caches.open("another-app-cache"));
   site.revision = 1;
   site.fail = "media/frames/119.jpg";
@@ -304,7 +267,9 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   );
   await context.setOffline(true);
   await page.reload();
-  await seekAndPlay(page.locator("#ix-cut-source video"));
+  await command(page, "reference cuts");
+  await command(page, "play reference-cuts.mp4");
+  await seekAndPlay(page.locator(".cli-preview video"));
   await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
   await expect(panel.getByRole("status")).toHaveText(offline.updateFailed);
@@ -318,7 +283,8 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await expect(panel.getByRole("status")).toHaveText(offline.updateReady, {
     timeout: 30000,
   });
-  await expect(page.getByLabel(m2.reflectionLabel)).toHaveValue(
+  await command(page, "cat update.txt");
+  await expect(terminal(page)).toContainText(
     "Keep this note through an update.",
   );
   const second = await context.newPage();
@@ -375,13 +341,16 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await expect
     .poll(() => page.evaluate(() => caches.keys()))
     .toContain("video-lab-offline:/video-lab/:test-release-2");
-  await expect(page.getByLabel(m2.reflectionLabel)).toHaveValue(
+  await command(page, "cat update.txt");
+  await expect(terminal(page)).toContainText(
     "Keep this note through an update.",
   );
   expect(await page.evaluate(() => caches.has("another-app-cache"))).toBe(true);
   await context.setOffline(true);
   await second.reload();
-  await seekAndPlay(second.locator("video").first());
+  await command(second, "reference inspect");
+  await command(second, "play reference-inspect.mp4");
+  await seekAndPlay(second.locator(".cli-preview video"));
   await second.close();
   await context.setOffline(false);
   await panel.locator(":scope > details > summary").click();
@@ -428,7 +397,9 @@ test("unsupported browsers keep online lessons usable", async ({
   await page.keyboard.press("Enter");
   await expect(panel.getByRole("status")).toHaveText(offline.unsupported);
   await expect(panel.getByRole("button")).toHaveCount(0);
-  await seekAndPlay(page.locator("#ix-cut-source video"));
+  await command(page, "reference cuts");
+  await command(page, "play reference-cuts.mp4");
+  await seekAndPlay(page.locator(".cli-preview video"));
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

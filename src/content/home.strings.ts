@@ -10,11 +10,11 @@ export const home = {
     "For software and data engineers with ordinary terminal, browser and file familiarity. Commands are the main lab interface; media concepts and FFmpeg flags are explained as you use them. No video knowledge is assumed.",
   outcomeTitle: "A complete first demo",
   outcome:
-    "Follow Capture, Build, Inspect, Edit and Publish in a shared command workspace. Build is a separate experiment with supplied pictures; your recording stays unchanged. Inspect and edit your chosen source with typed commands, then replay and download the actual output and execution recipe. Processing stays local to your browser.",
+    "Follow Capture, Build, Inspect, Edit and Publish in a shared command workspace. Build is a separate experiment with supplied pictures; your recording stays unchanged. Inspect and edit your chosen source with typed commands, then replay and download the actual output and execution recipe. The detailed command labs let you check real reports and decoded edits, with progressive hints and saved text notes. Processing stays local to your browser.",
   start: "Start with Capture",
   planTitle: "Your route through Video Lab",
   planNote:
-    "The five command labs are available: Capture, Build, Inspect, Edit and the initial Publish checkpoint. Modules 4–7 and 9–10 are planned. Detailed recording and cutting references remain separately labelled within Inspect and Edit.",
+    "All available labs use typed commands, including the detailed inspection and cutting references. Follow Capture, Build, Inspect, Edit and the initial Publish checkpoint. Modules 4–7 and 9–10 are planned. Reference checks grade actual executed reports and media; earlier answer-based achievements are preserved separately.",
 };
 
 export const modules = [

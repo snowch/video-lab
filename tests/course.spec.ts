@@ -1,232 +1,199 @@
 // Copyright © 2026 Christopher Snow
 import { test, expect } from "@playwright/test";
 import { ui } from "../src/content/ui.strings";
-import { labels } from "../src/content/module0.labels";
-import { j } from "../src/journey/strings";
 import { home } from "../src/content/home.strings";
-const open = async (page: import("@playwright/test").Page) => {
-  await page.goto("./#/module-0");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    labels.title,
-  );
-};
-test("introduction, theme persistence and browser navigation", async ({
+import { cli } from "../src/cli/strings";
+import { referenceLessons, refStrings } from "../src/cli/reference.strings";
+import { inspectionCommand } from "../src/cli/reference-model";
+import { command, terminal, downloaded, visiblePlay } from "./cli-helpers";
+import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+test("introduction, theme, reference deep links and navigation all lead to command workspaces", async ({
   page,
-  isMobile,
 }) => {
-  const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("./");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,
   );
   await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(6);
   const theme = await page.locator("html").getAttribute("data-theme");
-  if (isMobile) await page.getByRole("button", { name: ui.theme }).tap();
-  else await page.getByRole("button", { name: ui.theme }).click();
-  await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
+  await page.getByRole("button", { name: ui.theme }).click();
   await page.reload();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
-  await page.getByRole("link", { name: home.start }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    j.capture.title,
-  );
-  await page.getByRole("link", { name: ui.back }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    home.subtitle,
-  );
-  await page.goBack();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    j.capture.title,
-  );
-  await page.goForward();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    home.subtitle,
-  );
-  expect(errors).toEqual([]);
-});
-test("real playback, frame inspection, prediction, streams and failure experiment", async ({
-  page,
-  isMobile,
-}) => {
-  await open(page);
-  await page.getByRole("button", { name: ui.checkPrediction }).click();
-  await expect(page.getByText(ui.predictionMissing)).toBeVisible();
-  await page.getByLabel(ui.predictionYes).check();
-  await page.getByRole("button", { name: ui.checkPrediction }).click();
-  await expect(page.getByText(ui.predictionWrong)).toBeVisible();
-  await page.getByLabel(ui.predictionNo).check();
-  await page.getByRole("button", { name: ui.checkPrediction }).click();
-  await expect(page.getByText(ui.predictionRight)).toBeVisible();
-  const player = page.locator("video");
-  await expect
-    .poll(() => player.evaluate((v) => (v as HTMLVideoElement).readyState))
-    .toBeGreaterThanOrEqual(2);
-  await page.getByRole("button", { name: ui.play, exact: true }).click();
-  await expect
-    .poll(() => player.evaluate((v) => (v as HTMLVideoElement).currentTime))
-    .toBeGreaterThan(0.15);
-  await page.getByRole("button", { name: ui.pause, exact: true }).click();
-  await page.getByRole("button", { name: ui.unmute, exact: true }).click();
-  await expect
-    .poll(() => player.evaluate((v) => (v as HTMLVideoElement).muted))
-    .toBe(false);
-  const slider = page.locator("#frame-cursor");
-  await slider.fill("75");
-  await expect(page.getByTestId("reference-frame")).toHaveAttribute(
-    "src",
-    /075.jpg$/,
-  );
-  await expect(page.getByTestId("frame-time")).toHaveText("6.25 s");
-  await expect
-    .poll(() => player.evaluate((v) => (v as HTMLVideoElement).currentTime))
-    .toBeCloseTo(6.25, 1);
-  if (isMobile)
-    await page.getByRole("button", { name: ui.next, exact: true }).tap();
-  else await page.getByRole("button", { name: ui.next, exact: true }).click();
-  await expect(slider).toHaveValue("76");
-  await slider.focus();
-  await page.keyboard.press("ArrowLeft");
-  await expect(slider).toHaveValue("75");
-  await page
-    .getByRole("button", { name: `${ui.frameSlider} 0`, exact: true })
-    .click();
+  await page.getByRole("link", { name: home.start, exact: true }).click();
   await expect(
-    page.getByRole("button", { name: ui.previous, exact: true }),
-  ).toBeDisabled();
-  await slider.fill("119");
-  await expect(
-    page.getByRole("button", { name: ui.next, exact: true }),
-  ).toBeDisabled();
-  await page.getByLabel(ui.selectStream).selectOption("audio");
-  await expect(page.locator("#ix-streams [role=status]")).toContainText(
-    "48000",
-  );
-  await page.getByLabel(ui.interval).selectOption("9");
-  await page.getByRole("button", { name: ui.testAssumption }).click();
-  await expect(page.getByText(ui.failureResult)).toBeVisible();
-  await expect(page.locator("#ix-failure [role=status]")).toContainText(
-    "0.981333",
-  );
-  await page.getByText(ui.evidence, { exact: true }).click();
-  const evidence = await page.request.get("media/ffprobe.json");
-  expect(evidence.ok()).toBe(true);
-  expect((await evidence.json()).streams).toHaveLength(2);
-});
-test("challenge errors, five progressive hints, retry, saved completion and reset", async ({
-  page,
-}) => {
-  await open(page);
-  await page.getByRole("button", { name: "Run tests", exact: true }).click();
-  await expect(page.locator(".verdict-failure")).toHaveCount(6);
-  await expect(
-    page.getByText(labels.feedback.frame, { exact: true }),
+    page.getByRole("textbox", { name: cli.input, exact: true }),
   ).toBeVisible();
-  for (let i = 1; i <= 5; i++)
-    await page
-      .getByRole("button", { name: `Show hint (${i} of 5)`, exact: true })
-      .click();
-  await expect(page.getByText("All hints shown")).toBeVisible();
-  for (const [key, value] of Object.entries({
-    video: "0",
-    audio: "1",
-    container: "mp4",
-    codec: "h264",
-  }))
-    await page
-      .getByRole("combobox", {
-        name: labels.fields[key as keyof typeof labels.fields],
-        exact: true,
-      })
-      .selectOption(value);
-  await page.getByLabel(labels.fields.frame, { exact: true }).fill("75");
-  await page.getByLabel(labels.fields.timestamp, { exact: true }).fill("6.25");
-  await page.getByRole("button", { name: "Run tests", exact: true }).click();
-  await expect(page.locator("[data-challenge=inspection]")).toHaveAttribute(
-    "data-complete",
-    "true",
+  await page.goto("./#/module-0/investigation");
+  await expect(page).toHaveURL(/inspect\/reference\/investigation$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    referenceLessons.inspect.title,
   );
-  await page.reload();
-  await expect(page.locator("[data-challenge=inspection]")).toHaveAttribute(
-    "data-complete",
-    "true",
-  );
-  await page.getByLabel(labels.fields.frame, { exact: true }).fill("74");
-  await expect(page.locator("[data-challenge=inspection]")).toHaveAttribute(
-    "data-complete",
-    "false",
-  );
-  await page.getByRole("button", { name: "Run tests", exact: true }).click();
-  await expect(page.locator(".verdict-failure")).toHaveCount(1);
-  await page.getByRole("button", { name: /Clear work:/ }).click();
-  await page.getByRole("button", { name: "Cancel", exact: true }).click();
-  await expect(
-    page.getByLabel(labels.fields.frame, { exact: true }),
-  ).toHaveValue("74");
-  await page.getByRole("button", { name: /Clear work:/ }).click();
-  await page.getByRole("button", { name: "Discard work", exact: true }).click();
-  await expect(
-    page.getByLabel(labels.fields.frame, { exact: true }),
-  ).toHaveValue("");
-  await expect(page.locator(".hints")).toHaveAttribute("data-revealed", "0");
   await page
-    .getByLabel(ui.reflectionLabel)
-    .fill("Check whether the player is muted, then inspect the audio stream.");
-  await page.reload();
-  await expect(page.getByLabel(ui.reflectionLabel)).toHaveValue(
-    /Check whether/,
-  );
-  await page.getByRole("button", { name: ui.clearNotes }).click();
-  await expect(page.getByLabel(ui.reflectionLabel)).toHaveValue("");
+    .getByRole("link", {
+      name: referenceLessons.inspect.sections.find((s) => s.id === "challenge")!
+        .title,
+      exact: true,
+    })
+    .click();
+  await expect(page).toHaveURL(/reference\/challenge$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/reference\/investigation$/);
+  expect(
+    await page
+      .locator("select,input[type=range],input[type=number],input[type=radio]")
+      .count(),
+  ).toBe(0);
 });
-test("responsive layout, readable controls, no page errors and screenshots", async ({
+test("reference inspection runs real frame extraction, stream removal and persisted report checking", async ({
   page,
-}, testInfo) => {
+}) => {
+  test.setTimeout(180000);
+  await page.goto("./#/module-0");
+  await command(page, "reference inspect");
+  await command(page, inspectionCommand);
+  await command(page, "check inspect inspect-report.json");
+  await expect(terminal(page)).toContainText(refStrings.checkPassed);
+  const report = JSON.parse(
+    readFileSync(await downloaded(page, "inspect-report.json"), "utf8"),
+  );
+  expect(
+    report.frames.filter(
+      (f: { media_type: string }) => f.media_type === "video",
+    ),
+  ).toHaveLength(120);
+  await command(
+    page,
+    'ffmpeg -i reference-inspect.mp4 -vf "select=eq(n\\,75)" -frames:v 1 frame75.png',
+  );
+  const image = await downloaded(page, "frame75.png");
+  const probe = JSON.parse(
+    execFileSync(
+      "ffprobe",
+      ["-v", "error", "-show_streams", "-of", "json", image],
+      { encoding: "utf8" },
+    ),
+  );
+  expect(probe.streams[0].width).toBe(960);
+  await command(page, "play frame75.png");
+  await expect(page.locator(".cli-preview img")).toBeVisible();
+  await command(
+    page,
+    "ffmpeg -i reference-inspect.mp4 -map 0:v:0 -c copy pictures.mp4",
+  );
+  await command(page, "ffprobe -v error -show_streams -of json pictures.mp4");
+  await expect(terminal(page)).toContainText("h264");
+  await command(
+    page,
+    'note inspection.txt "Check sound content as well as stream presence."',
+  );
+  await page.reload();
+  await command(page, "cat inspection.txt");
+  await expect(terminal(page)).toContainText("Check sound content");
+  await command(page, "progress");
+  await expect(terminal(page)).toContainText(refStrings.checked);
+});
+test("incomplete or imported report fails; progressive command hints and corrected real evidence work", async ({
+  page,
+}) => {
+  test.setTimeout(180000);
+  await page.goto("./#/inspect/reference/challenge");
+  await command(page, "reference inspect");
+  await command(
+    page,
+    "ffprobe -v error -show_format -of json reference-inspect.mp4 -o incomplete.json",
+  );
+  await command(page, "check inspect incomplete.json");
+  await expect(terminal(page)).toContainText(refStrings.checkFailed);
+  for (let level = 1; level <= 5; level++) {
+    await command(page, `hint inspect ${level}`);
+    await expect(terminal(page)).toContainText(
+      refStrings.hints.inspect[level - 1]!,
+    );
+  }
+  await command(page, "solution inspect");
+  await expect(terminal(page)).toContainText(inspectionCommand);
+  await command(page, inspectionCommand);
+  await command(page, "check inspect inspect-report.json");
+  await expect(terminal(page)).toContainText(refStrings.checkPassed);
+  const report = readFileSync(await downloaded(page, "inspect-report.json"));
+  const chooser = page.waitForEvent("filechooser");
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .fill("import");
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .press("Enter");
+  await (
+    await chooser
+  ).setFiles({
+    name: "imported-report.json",
+    mimeType: "application/json",
+    buffer: report,
+  });
+  await expect(page.locator(".command-workspace [role=status]")).toHaveText(
+    cli.done,
+  );
+  await command(page, "check inspect imported-report.json", cli.failed);
+  await expect(terminal(page)).toContainText(refStrings.missingEvidence);
+  await command(page, "rm inspect-report.json");
+  await page.reload();
+  await command(page, "progress");
+  await expect(terminal(page)).toContainText(refStrings.changed);
+});
+test("every reachable production and reference lab is CLI on desktop and phone", async ({
+  page,
+}, info) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  for (const route of ["./", "./#/module-0"]) {
-    await page.goto(route);
-    await page.locator("h1").waitFor();
-    await page.evaluate(() => document.fonts.ready);
+  for (const route of [
+    "capture",
+    "build",
+    "inspect",
+    "edit",
+    "publish",
+    "inspect/reference",
+    "edit/reference",
+    "module-0",
+    "module-2",
+  ]) {
+    await page.goto(`./#/${route}`);
+    await expect(
+      page.getByRole("textbox", { name: cli.input, exact: true }),
+    ).toBeVisible();
+    expect(
+      await page
+        .locator(
+          "select,input[type=range],input[type=number],input[type=radio],input[type=checkbox],.challenge-editor",
+        )
+        .count(),
+    ).toBe(0);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    const small = await page
-      .locator("button,select,input:not([type=radio]),summary")
-      .evaluateAll((elements) =>
-        elements
-          .filter(
-            (e) =>
-              e.getBoundingClientRect().height > 0 &&
-              e.getBoundingClientRect().height < 40,
-          )
-          .map((e) => e.textContent),
-      );
-    expect(small).toEqual([]);
-    await page.screenshot({
-      path: testInfo.outputPath(
-        route === "./" ? "introduction.png" : "module-0.png",
-      ),
-      fullPage: true,
-    });
   }
+  await page.screenshot({
+    path: info.outputPath("all-labs-cli.png"),
+    fullPage: true,
+  });
   expect(errors).toEqual([]);
 });
-
-test("media failure keeps measured inspection and grading usable", async ({
+test("offline reading and provided playback do not silently load the processing core", async ({
   page,
 }) => {
-  await page.route("**/media/build-queue.mp4", (route) => route.abort());
-  await open(page);
-  await expect(page.getByRole("alert")).toHaveText(ui.previewError);
-  await page.locator("#frame-cursor").fill("75");
-  await expect(page.getByTestId("reference-frame")).toHaveAttribute(
-    "src",
-    /075.jpg$/,
+  const requests: string[] = [];
+  page.on("request", (r) => requests.push(r.url()));
+  await page.goto("./#/module-0");
+  await command(page, "reference inspect");
+  await command(page, "play reference-inspect.mp4");
+  await visiblePlay(page);
+  expect(requests.some((u) => u.includes("/encoder/"))).toBe(false);
+  await command(
+    page,
+    "ffmpeg -i absent.mp4 -c:v libx264 failed.mp4",
+    cli.failed,
   );
-  await expect(page.getByTestId("frame-time")).toHaveText("6.25 s");
-  await page.getByRole("button", { name: "Run tests", exact: true }).click();
-  await expect(page.locator(".verdict-failure")).toHaveCount(6);
+  await expect(terminal(page)).toContainText("absent.mp4");
 });

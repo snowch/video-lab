@@ -70,7 +70,7 @@ export const cli = {
   captureComplete:
     "Run ls to find its actual filename, then play it and download a copy.",
   referenceUsage:
-    "Use reference build or reference edit to load a provided result.",
+    "Use reference inspect or reference cuts for lab sources; reference build or reference edit loads a provided completed comparison.",
   referenceSaved: "Provided reference saved; no processing was run:",
   comparisonSaved:
     "Provided comparison saved as comparison.mp4: five seconds, 86,088 bytes. This is an optional excerpt, not your captured or edited demo.",
@@ -92,6 +92,8 @@ capture [--audio]    Request browser recording; optional shared sound, no microp
 stop                 Finish and keep a recording; capture stops at 15 seconds
 sample               Load the provided original as capture.mp4; never overwrite
 fixtures             Load three supplied pictures and synthetic tone; never overwrite
+reference inspect    Load the original source as reference-inspect.mp4
+reference cuts       Load the controlled source as reference-cuts.mp4
 reference build      Load a provided three-second example as reference-build.mp4
 reference edit       Load a provided six-second edit as reference-edit.mp4
 comparison           Load the optional five-second comparison.mp4, 86,088 bytes
@@ -104,16 +106,16 @@ cancel               Discard active processing or recording; keep existing files
 
 Real media tools:
 ffmpeg ARGUMENTS     Run one command with one named output, or a supported help query
-ffprobe ARGUMENTS    Inspect a file with -of json; display the actual report here
+ffprobe ARGUMENTS    Inspect with -of json; add -o REPORT.json to save the report
 
 Run each command separately. Multiple lines continue ONE command.
 Use simple filenames without folders: letters, digits, dots, hyphens or underscores, beginning with a letter or digit. Source filenames may be up to 80 characters; output filenames are limited to 68 so the recipe name also fits.
-Limits: 12 media files plus 12 recipes, 24 files maximum, 32 MiB combined; each file must be nonempty and at most 20 MiB.
+Limits: 12 media/report/note files plus 12 recipes, 24 files maximum, 32 MiB combined; each file must be nonempty and at most 20 MiB.
 Each processing operation has a 120-second time limit. Cancel and retry if needed.
 Choose a new output name, or add -y to explicitly replace an existing output.
-Provided references and comparison refuse to overwrite existing files. Loading them does not run an encode or create your project export. The optional comparison is excluded from the baseline offline download.
+Reference loading and comparison refuse to overwrite existing files. They load provided bytes, not a new encode. reference inspect/cuts supplies lab inputs; reference build/edit supplies completed comparisons. The optional comparison is excluded from the baseline offline download.
 The browser build supports fewer devices, codecs and protocols than some native installations.
-ffprobe uses JSON reports only here; the adapter adds error reporting and an internal report destination.`,
+ffprobe uses JSON reports only here. -o REPORT.json saves actual executed evidence; cat reads it. Checks require the correct source and execution, not imported or provided finished work. Evaluation can finish normally while printing failed criteria; read each result. Notes refuse overwrites. Earlier saved answer achievements remain separate from new checked artefacts.`,
 };
 
 type Lesson = {
@@ -283,7 +285,7 @@ export const lessons: Record<StepName, Lesson> = {
     heading: "Review and download the actual output",
     paragraphs: [
       "Run ls and choose your final output. Replace joined.mp4 below if you used a different name. Replay that file, not just its source. Check opening context, visible action, readable result and small text at the viewer's intended size. Check sound against your intention: the joined example is silent, while the first trim retains available audio.",
-      "Download the source, final output and its recipe. A recipe lists the exact tool arguments and hashes of all workspace media at execution time, including any unrelated files. Read the -i arguments to identify the inputs the command actually uses. For a native FFmpeg rerun, supply those files under the same names and use a native build with the required features. Workspace commands such as sample, play and download are browser conveniences, not commands to paste into an operating-system shell.",
+      "Download the source, final output and its recipe. A recipe lists the exact tool arguments and hashes of all workspace input files at execution time, including any unrelated files. Read the -i arguments to identify the inputs the command actually uses. For a native FFmpeg rerun, supply those files under the same names and use a native build with the required features. Workspace commands such as sample, play and download are browser conveniences, not commands to paste into an operating-system shell.",
       "Open the downloaded file outside this lab and, where possible, on the intended viewing device. Confirm playback, intended sound and a file size suitable for sharing. A successful encode or probe cannot certify that another player supports the file or that a viewer understands the explanation. Download important work; local browser storage is not a permanent backup.",
       "If processing is unavailable, run reference build or reference edit to load a provided example, then replay reference-build.mp4 or reference-edit.mp4 with play. These files were generated in advance; viewing or downloading them is not an export made by your commands. Keep your source and resume actual processing when the tools are available.",
       "For an optional comparison, run comparison, then play comparison.mp4. This explicitly loads a five-second Big Buck Bunny excerpt of 86,088 bytes; it is not fetched merely by reading the page and is excluded from the baseline offline download. The command prints the Blender Foundation credit and CC BY 3.0 licence links. References and comparison refuse to replace an existing file.",

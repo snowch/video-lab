@@ -1,0 +1,232 @@
+{
+  "copyright": "Copyright \u00a9 2026 Christopher Snow.",
+  "build": "/video-lab/assets/index-kx2Kn7kT.js",
+  "buildSHA256": "bacff85be542a50ba8694d721ca69de7f02d83b9c0652efbe3c42827d484c6e4",
+  "files": [
+    {
+      "path": "checker-av.mp4",
+      "bytes": 67634,
+      "sha256": "a2e6e4e787fc066a08033771d564dafa9c38a252ddaf4a91c6a319fd3e368600"
+    },
+    {
+      "path": "checker-reversed.mp4",
+      "bytes": 68645,
+      "sha256": "96f5671cd4935dd8063c410c63da2659ee78a12857e6dc32a6f9bcf3e056d69a"
+    },
+    {
+      "path": "checker-av-recipe.json.txt",
+      "bytes": 1883,
+      "sha256": "63528096f91cde1931581965894bf33338c9d145dbf4d91e9605947268c75451"
+    },
+    {
+      "path": "checker-report.json.txt",
+      "bytes": 393523,
+      "sha256": "8d4a797887021262afd70ca596bb2b0e5b94be324fe0c8cd2940d24137c296aa"
+    },
+    {
+      "path": "checker-desktop-light.png",
+      "bytes": 145794,
+      "sha256": "9be29c2874a1762b9f07e2a21fd062e33b66b75c53305b5824d37167b34f84f5"
+    },
+    {
+      "path": "checker-phone-dark.png",
+      "bytes": 50531,
+      "sha256": "5f915a4e8a38f3f9c33d42ce8178d3ab47d47c0968f9200a23d3b35aeef466e1"
+    }
+  ],
+  "rawDownloadNames": {
+    "checker-report.json.txt": "checker-report.json",
+    "checker-av-recipe.json.txt": "checker-av.mp4.recipe.json"
+  },
+  "sourceMapping": {
+    "reference-cuts.mp4": "public/media/module-2/build-queue-cuts.mp4"
+  },
+  "sourceSHA256": "162707319b5c8dfbca57cbe3e54ae3cdc8e8f5a8a6d33dcfa6073c60bf45175d",
+  "contexts": [
+    {
+      "name": "chromium-desktop-light",
+      "inspectCheck": "$ check inspect checker-report.json\nPASS Required original source: reference-inspect.mp4\nPASS MP4 container evidence: mov,mp4,m4a,3gp,3g2,mj2\nPASS Picture stream and encoding: {\"index\":0,\"codec_name\":\"h264\",\"codec_long_name\":\"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\",\"profile\":\"High\",\"codec_type\":\"video\",\"codec_tag_string\":\"avc1\",\"codec_tag\":\"0x31637661\",\"width\":960,\"height\":540,\"coded_width\":960,\"coded_height\":544,\"closed_captions\":0,\"film_grain\":0,\"has_b_frames\":2,\"pix_fmt\":\"yuv420p\",\"level\":31,\"chroma_location\":\"left\",\"field_order\":\"progressive\",\"refs\":5,\"is_avc\":\"true\",\"nal_length_size\":\"4\",\"id\":\"0x1\",\"r_frame_rate\":\"12/1\",\"avg_frame_rate\":\"12/1\",\"time_base\":\"1/12288\",\"start_pts\":0,\"start_time\":\"0.000000\",\"duration_ts\":122880,\"duration\":\"10.000000\",\"bit_rate\":\"33895\",\"bits_per_raw_sample\":\"8\",\"nb_frames\":\"120\",\"nb_read_frames\":\"120\",\"extradata_size\":46,\"disposition\":{\"default\":1,\"dub\":0,\"original\":0,\"comment\":0,\"lyrics\":0,\"karaoke\":0,\"forced\":0,\"hearing_impaired\":0,\"visual_impaired\":0,\"clean_effects\":0,\"attached_pic\":0,\"timed_thumbnails\":0,\"captions\":0,\"descriptions\":0,\"metadata\":0,\"dependent\":0,\"still_image\":0},\"tags\":{\"language\":\"und\",\"handler_name\":\"VideoHandler\",\"vendor_id\":\"[0][0][0][0]\",\"encoder\":\"Lavc61.19.101 libx264\"}}\nPASS Sound stream and encoding: {\"index\":1,\"codec_name\":\"aac\",\"codec_long_name\":\"AAC (Advanced Audio Coding)\",\"profile\":\"LC\",\"codec_type\":\"audio\",\"codec_tag_string\":\"mp4a\",\"codec_tag\":\"0x6134706d\",\"sample_fmt\":\"fltp\",\"sample_rate\":\"48000\",\"channels\":1,\"channel_layout\":\"mono\",\"bits_per_sample\":0,\"id\":\"0x2\",\"r_frame_rate\":\"0/0\",\"avg_frame_rate\":\"0/0\",\"time_base\":\"1/48000\",\"start_pts\":0,\"start_time\":\"0.000000\",\"duration_ts\":480000,\"duration\":\"10.000000\",\"bit_rate\":\"64190\",\"nb_frames\":\"470\",\"nb_read_frames\":\"469\",\"extradata_size\":5,\"disposition\":{\"default\":1,\"dub\":0,\"original\":0,\"comment\":0,\"lyrics\":0,\"karaoke\":0,\"forced\":0,\"hearing_impaired\":0,\"visual_impaired\":0,\"clean_effects\":0,\"attached_pic\":0,\"timed_thumbnails\":0,\"captions\":0,\"descriptions\":0,\"metadata\":0,\"dependent\":0,\"still_image\":0},\"tags\":{\"language\":\"und\",\"handler_name\":\"SoundHandler\",\"vendor_id\":\"[0][0][0][0]\"}}\nPASS Video picture count: 120\nPASS Requested picture's presentation timestamp: {\"media_type\":\"video\",\"stream_index\":0,\"key_frame\":0,\"pts\":76800,\"pts_time\":\"6.250000\",\"pkt_dts\":76800,\"pkt_dts_time\":\"6.250000\",\"best_effort_timestamp\":76800,\"best_effort_timestamp_time\":\"6.250000\",\"pkt_duration\":1024,\"pkt_duration_time\":\"0.083333\",\"pkt_pos\":\"92244\",\"pkt_size\":\"155\",\"width\":960,\"height\":540,\"pix_fmt\":\"yuv420p\",\"pict_type\":\"B\",\"coded_picture_number\":76,\"display_picture_number\":0,\"interlaced_frame\":0,\"top_field_first\":0,\"repeat_pict\":0,\"chroma_location\":\"left\"}\nThe submitted artefact passed every measured check. Replay media and review its meaning separately.",
+      "editCheck": " and encoding: h264\nPASS Sound stream and encoding: aac\nPASS Picture dimensions: 960\u00d7540\nPASS Measured output duration: 4.000000\nPASS Output clock starts: 0.000000\nPASS Video picture count: 48\nPASS Decoded pictures agree within the encoding tolerance: RGB RMS max=0.637; limit<2\nThe submitted artefact passed every measured check. Replay media and review its meaning separately.",
+      "wrongOrderCheck": " and encoding: h264\nPASS Sound stream and encoding: aac\nPASS Picture dimensions: 960\u00d7540\nPASS Measured output duration: 4.000000\nPASS Output clock starts: 0.000000\nPASS Video picture count: 48\nFAIL Decoded pictures agree within the encoding tolerance: RGB RMS max=5.493; limit<2\nThe submitted artefact did not pass every check. Read the measured results, revise the command and check the new output.",
+      "progress": "$ progress\nChecked artefacts and earlier achievements\ninspect: Artefact passed the executed checks \u00b7 checker-report.json \u00b7 SHA-256 8d4a797887021262afd70ca596bb2b0e5b94be324fe0c8cd2940d24137c296aa\nEarlier answer-based reference achievements inspect: Earlier saved achievement retained. It is not an executed-artefact check for this command lab.\nEarlier reference notes, retained separately Original inspection note retained.\nedit: Artefact passed the executed checks \u00b7 checker-av.mp4 \u00b7 SHA-256 a2e6e4e787fc066a08033771d564dafa9c38a252ddaf4a91c6a319fd3e368600\nEarlier answer-based reference achievements edit: Earlier saved achievement retained. It is not an executed-artefact check for this command lab.\nEarlier reference notes, retained separately Original edit note retained.",
+      "bookmarks": [
+        {
+          "route": "module-0/failureExperiment",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/inspect/reference/failureExperiment",
+          "top": -0.15625
+        },
+        {
+          "route": "module-2/failureExperiment",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/edit/reference/failureExperiment",
+          "top": 0.375
+        },
+        {
+          "route": "module-0/investigation",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/inspect/reference/investigation",
+          "top": -0.34375
+        }
+      ]
+    },
+    {
+      "name": "firefox-phone-dark",
+      "inspectCheck": "$ check inspect checker-report.json\nPASS Required original source: reference-inspect.mp4\nPASS MP4 container evidence: mov,mp4,m4a,3gp,3g2,mj2\nPASS Picture stream and encoding: {\"index\":0,\"codec_name\":\"h264\",\"codec_long_name\":\"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\",\"profile\":\"High\",\"codec_type\":\"video\",\"codec_tag_string\":\"avc1\",\"codec_tag\":\"0x31637661\",\"width\":960,\"height\":540,\"coded_width\":960,\"coded_height\":544,\"closed_captions\":0,\"film_grain\":0,\"has_b_frames\":2,\"pix_fmt\":\"yuv420p\",\"level\":31,\"chroma_location\":\"left\",\"field_order\":\"progressive\",\"refs\":5,\"is_avc\":\"true\",\"nal_length_size\":\"4\",\"id\":\"0x1\",\"r_frame_rate\":\"12/1\",\"avg_frame_rate\":\"12/1\",\"time_base\":\"1/12288\",\"start_pts\":0,\"start_time\":\"0.000000\",\"duration_ts\":122880,\"duration\":\"10.000000\",\"bit_rate\":\"33895\",\"bits_per_raw_sample\":\"8\",\"nb_frames\":\"120\",\"nb_read_frames\":\"120\",\"extradata_size\":46,\"disposition\":{\"default\":1,\"dub\":0,\"original\":0,\"comment\":0,\"lyrics\":0,\"karaoke\":0,\"forced\":0,\"hearing_impaired\":0,\"visual_impaired\":0,\"clean_effects\":0,\"attached_pic\":0,\"timed_thumbnails\":0,\"captions\":0,\"descriptions\":0,\"metadata\":0,\"dependent\":0,\"still_image\":0},\"tags\":{\"language\":\"und\",\"handler_name\":\"VideoHandler\",\"vendor_id\":\"[0][0][0][0]\",\"encoder\":\"Lavc61.19.101 libx264\"}}\nPASS Sound stream and encoding: {\"index\":1,\"codec_name\":\"aac\",\"codec_long_name\":\"AAC (Advanced Audio Coding)\",\"profile\":\"LC\",\"codec_type\":\"audio\",\"codec_tag_string\":\"mp4a\",\"codec_tag\":\"0x6134706d\",\"sample_fmt\":\"fltp\",\"sample_rate\":\"48000\",\"channels\":1,\"channel_layout\":\"mono\",\"bits_per_sample\":0,\"id\":\"0x2\",\"r_frame_rate\":\"0/0\",\"avg_frame_rate\":\"0/0\",\"time_base\":\"1/48000\",\"start_pts\":0,\"start_time\":\"0.000000\",\"duration_ts\":480000,\"duration\":\"10.000000\",\"bit_rate\":\"64190\",\"nb_frames\":\"470\",\"nb_read_frames\":\"469\",\"extradata_size\":5,\"disposition\":{\"default\":1,\"dub\":0,\"original\":0,\"comment\":0,\"lyrics\":0,\"karaoke\":0,\"forced\":0,\"hearing_impaired\":0,\"visual_impaired\":0,\"clean_effects\":0,\"attached_pic\":0,\"timed_thumbnails\":0,\"captions\":0,\"descriptions\":0,\"metadata\":0,\"dependent\":0,\"still_image\":0},\"tags\":{\"language\":\"und\",\"handler_name\":\"SoundHandler\",\"vendor_id\":\"[0][0][0][0]\"}}\nPASS Video picture count: 120\nPASS Requested picture's presentation timestamp: {\"media_type\":\"video\",\"stream_index\":0,\"key_frame\":0,\"pts\":76800,\"pts_time\":\"6.250000\",\"pkt_dts\":76800,\"pkt_dts_time\":\"6.250000\",\"best_effort_timestamp\":76800,\"best_effort_timestamp_time\":\"6.250000\",\"pkt_duration\":1024,\"pkt_duration_time\":\"0.083333\",\"pkt_pos\":\"92244\",\"pkt_size\":\"155\",\"width\":960,\"height\":540,\"pix_fmt\":\"yuv420p\",\"pict_type\":\"B\",\"coded_picture_number\":76,\"display_picture_number\":0,\"interlaced_frame\":0,\"top_field_first\":0,\"repeat_pict\":0,\"chroma_location\":\"left\"}\nThe submitted artefact passed every measured check. Replay media and review its meaning separately.",
+      "editCheck": " and encoding: h264\nPASS Sound stream and encoding: aac\nPASS Picture dimensions: 960\u00d7540\nPASS Measured output duration: 4.000000\nPASS Output clock starts: 0.000000\nPASS Video picture count: 48\nPASS Decoded pictures agree within the encoding tolerance: RGB RMS max=0.637; limit<2\nThe submitted artefact passed every measured check. Replay media and review its meaning separately.",
+      "wrongOrderCheck": " and encoding: h264\nPASS Sound stream and encoding: aac\nPASS Picture dimensions: 960\u00d7540\nPASS Measured output duration: 4.000000\nPASS Output clock starts: 0.000000\nPASS Video picture count: 48\nFAIL Decoded pictures agree within the encoding tolerance: RGB RMS max=5.493; limit<2\nThe submitted artefact did not pass every check. Read the measured results, revise the command and check the new output.",
+      "progress": "$ progress\nChecked artefacts and earlier achievements\ninspect: Artefact passed the executed checks \u00b7 checker-report.json \u00b7 SHA-256 8d4a797887021262afd70ca596bb2b0e5b94be324fe0c8cd2940d24137c296aa\nEarlier answer-based reference achievements inspect: Earlier saved achievement retained. It is not an executed-artefact check for this command lab.\nEarlier reference notes, retained separately Original inspection note retained.\nedit: Artefact passed the executed checks \u00b7 checker-av.mp4 \u00b7 SHA-256 a2e6e4e787fc066a08033771d564dafa9c38a252ddaf4a91c6a319fd3e368600\nEarlier answer-based reference achievements edit: Earlier saved achievement retained. It is not an executed-artefact check for this command lab.\nEarlier reference notes, retained separately Original edit note retained.",
+      "bookmarks": [
+        {
+          "route": "module-0/failureExperiment",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/inspect/reference/failureExperiment",
+          "top": 0
+        },
+        {
+          "route": "module-2/failureExperiment",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/edit/reference/failureExperiment",
+          "top": 0
+        },
+        {
+          "route": "module-0/investigation",
+          "canonical": "http://127.0.0.1:4173/video-lab/#/inspect/reference/investigation",
+          "top": 0
+        }
+      ]
+    }
+  ],
+  "nativeProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 960,
+        "height": 540,
+        "coded_width": 960,
+        "coded_height": 540,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 31,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "12/1",
+        "avg_frame_rate": "12/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 49152,
+        "duration": "4.000000",
+        "bit_rate": "60374",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "48",
+        "extradata_size": 44,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc59.37.100 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 1,
+        "channel_layout": "mono",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 192000,
+        "duration": "4.000000",
+        "bit_rate": "68031",
+        "nb_frames": "189",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/workspace/scratch/all-labs-checker/chromium-desktop-light-checker-av.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "4.000000",
+      "size": "67634",
+      "bit_rate": "135268",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf59.27.100"
+      }
+    }
+  }
+}

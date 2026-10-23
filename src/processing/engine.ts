@@ -363,14 +363,21 @@ export async function runTool(
     async (engine) => {
       if (job.tool === "ffprobe") {
         const code = await engine.ffprobe(
-          [...job.args, "-show_error", "-o", "cli-internal-report.json"],
+          [
+            ...job.args,
+            "-show_error",
+            ...(job.output ? [] : ["-o", "cli-internal-report.json"]),
+          ],
           limits.timeoutMs,
         );
         if (code !== 0 && code !== -1)
           throw new Error(
             `ffprobe exited with status ${code}. See its log above.`,
           );
-        const text = await engine.readFile("cli-internal-report.json", "utf8");
+        const text = await engine.readFile(
+          job.output ?? "cli-internal-report.json",
+          "utf8",
+        );
         if (typeof text !== "string")
           throw new Error("ffprobe returned no report.");
         const report = JSON.parse(text) as Record<string, unknown>;
@@ -400,5 +407,59 @@ export async function runTool(
     },
     onLog,
     true,
+  );
+}
+
+/** Actual decoded pictures for the command-led edit check. */
+export async function inspectEdit(
+  output: Blob,
+  source: Blob,
+  onLog?: (line: string) => void,
+) {
+  return withEngine(
+    async () => [
+      {
+        name: "submission.mp4",
+        data: new Uint8Array(await output.arrayBuffer()),
+      },
+      {
+        name: "reference.mp4",
+        data: new Uint8Array(await source.arrayBuffer()),
+      },
+    ],
+    async (engine) => {
+      const probe = await probeFile(engine, "submission.mp4");
+      const decoded: Uint8Array<ArrayBuffer>[] = [];
+      for (const name of ["submission.mp4", "reference.mp4"]) {
+        const code = await engine.exec(
+          [
+            "-i",
+            name,
+            "-map",
+            "0:v:0",
+            "-vsync",
+            "0",
+            "-vf",
+            "scale=160:90:flags=area",
+            "-pix_fmt",
+            "rgb24",
+            "-f",
+            "rawvideo",
+            "pictures.rgb",
+          ],
+          limits.timeoutMs,
+        );
+        if (code !== 0)
+          throw new Error(
+            "The submitted pictures could not be decoded for checking.",
+          );
+        const data = await engine.readFile("pictures.rgb");
+        if (!(data instanceof Uint8Array))
+          throw new Error("No decoded pictures were returned.");
+        decoded.push(new Uint8Array(data));
+      }
+      return { probe, output: decoded[0]!, source: decoded[1]! };
+    },
+    onLog,
   );
 }

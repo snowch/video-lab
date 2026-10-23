@@ -41,7 +41,7 @@ vi.mock("@ffmpeg/ffmpeg", () => ({
       return mock.execCode;
     }
     async ffprobe(args: string[]) {
-      this.files.set(args.at(-1)!, mock.probe);
+      this.files.set(args[args.indexOf("-o") + 1]!, mock.probe);
       return mock.probeCode;
     }
     async readFile(name: string) {
@@ -208,4 +208,14 @@ it("allows FFmpeg version/help with an empty workspace but rejects nonzero execu
       output: "output.mp4",
     }),
   ).rejects.toThrow("status 1");
+});
+
+it("saves an actual ffprobe report under the learner's -o destination", async () => {
+  const report = await runTool({
+    tool: "ffprobe",
+    inputs: job().inputs,
+    args: ["-show_streams", "-of", "json", "input.jpg", "-o", "report.json"],
+    output: "report.json",
+  });
+  expect(JSON.parse(report.text!).streams[0].codec_name).toBe("h264");
 });

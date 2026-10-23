@@ -3,6 +3,8 @@ import { test, expect, type Page } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { refStrings } from "../src/cli/reference.strings";
+import { routeFor } from "../src/journey/routes";
 import { cli, lessons } from "../src/cli/strings";
 import { offline } from "../src/offline/strings";
 import { j } from "../src/journey/strings";
@@ -10,7 +12,7 @@ const status = (page: Page) => page.locator(".command-workspace [role=status]");
 async function command(page: Page, text: string, result = cli.done) {
   await expect(page.locator(".cli-lab")).toHaveAttribute(
     "data-step",
-    new URL(page.url()).hash.split("/")[1]!,
+    routeFor(new URL(page.url()).hash).step!,
   );
   await page.getByRole("textbox", { name: cli.input, exact: true }).fill(text);
   await page
@@ -301,11 +303,11 @@ test("imported own media and legacy project migrate without changing reference c
     ),
   );
   await page.goto("./#/module-0/challenge");
-  await expect(page.locator("[data-challenge=inspection]")).toHaveAttribute(
-    "data-complete",
-    "true",
-  );
+  await command(page, "progress");
+  await expect(output(page)).toContainText(refStrings.legacySaved);
   await page.evaluate(async () => {
+    // Simulate an older installation that has not migrated its project yet.
+    localStorage.removeItem("video-lab:cli-migrated");
     const blob = await fetch("media/build-queue.mp4").then((r) => r.blob());
     await new Promise<void>((resolve, reject) => {
       const r = indexedDB.open("video-lab-project", 1);
@@ -366,10 +368,8 @@ test("imported own media and legacy project migrate without changing reference c
   await command(page, "ls");
   expect(await output(page).textContent()).not.toMatch(/^own-edit\.mp4\t/m);
   await page.goto("./#/module-0/challenge");
-  await expect(page.locator("[data-challenge=inspection]")).toHaveAttribute(
-    "data-complete",
-    "true",
-  );
+  await command(page, "progress");
+  await expect(output(page)).toContainText(refStrings.legacySaved);
 });
 test("saved files survive offline reload; processing requires deliberately saved tools and works offline", async ({
   page,

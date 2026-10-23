@@ -77,3 +77,7 @@ On 23 October 2026 the owner explicitly requested full implementation of issue #
 ## CLI-first production labs
 
 On 23 October 2026 the owner required the lab to be CLI, not GUI. Replace production parameter forms with learner-authored FFmpeg/ffprobe WASM commands, real logs and real output files. Browser capture/import permission dialogs, replay, navigation and offline/install controls remain browser UI. Keep browser workspace conveniences explicitly distinct from native media tools and an operating-system shell. Preserve original reference routes and progress. Use `docs/notes/cli/` for verified command evidence, separate drafting and mandatory reader/sceptic/ranked-fix/checker review. Reviewed deployment straight to main remains authorised.
+
+## All labs use commands
+
+On 23 October 2026 the owner extended CLI-first work to all labs, including both detailed references and their old deep links. Preserve existing progress as earlier answer-based achievements, separately from new real-artifact checks. Use `docs/notes/all-labs-cli/` for verified facts and the mandatory independent workflow. Reviewed deployment straight to main remains authorised.

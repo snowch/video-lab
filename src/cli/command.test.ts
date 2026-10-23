@@ -50,3 +50,16 @@ it("leaves room for a unique recipe filename instead of truncating different out
     toolPlan(["ffmpeg", "-i", "capture.mp4", "a".repeat(65) + ".mp4"]),
   ).toThrow("68");
 });
+
+it("forwards a named native ffprobe JSON report destination and rejects missing or unsafe paths", () => {
+  expect(
+    toolPlan(["ffprobe", "-of", "json", "source.mp4", "-o", "report.json"])
+      .output,
+  ).toBe("report.json");
+  expect(() =>
+    toolPlan(["ffprobe", "-of", "json", "source.mp4", "-o"]),
+  ).toThrow();
+  expect(() =>
+    toolPlan(["ffprobe", "-of", "json", "source.mp4", "-o", "../report.json"]),
+  ).toThrow();
+});

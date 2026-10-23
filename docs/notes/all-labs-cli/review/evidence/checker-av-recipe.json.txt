@@ -1,0 +1,56 @@
+{
+  "tool": "ffmpeg",
+  "args": [
+    "-i",
+    "reference-cuts.mp4",
+    "-filter_complex",
+    "[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS[p0];[0:a:0]atrim=start=0:end=2,asetpts=PTS-STARTPTS[s0];[0:v:0]trim=start=4:end=6,setpts=PTS-STARTPTS[p1];[0:a:0]atrim=start=4:end=6,asetpts=PTS-STARTPTS[s1];[p0][s0][p1][s1]concat=n=2:v=1:a=1[p][s]",
+    "-map",
+    "[p]",
+    "-map",
+    "[s]",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "veryfast",
+    "-pix_fmt",
+    "yuv420p",
+    "-r",
+    "12",
+    "-c:a",
+    "aac",
+    "-movflags",
+    "+faststart",
+    "checker-av.mp4"
+  ],
+  "command": "ffmpeg -i reference-cuts.mp4 -filter_complex \"[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS[p0];[0:a:0]atrim=start=0:end=2,asetpts=PTS-STARTPTS[s0];[0:v:0]trim=start=4:end=6,setpts=PTS-STARTPTS[p1];[0:a:0]atrim=start=4:end=6,asetpts=PTS-STARTPTS[s1];[p0][s0][p1][s1]concat=n=2:v=1:a=1[p][s]\" -map \"[p]\" -map \"[s]\" -c:v libx264 -preset veryfast -pix_fmt yuv420p -r 12 -c:a aac -movflags +faststart checker-av.mp4",
+  "created": "2026-10-23T13:10:00.151Z",
+  "inputs": [
+    {
+      "name": "reference-inspect.mp4",
+      "bytes": 128737,
+      "sha256": "502e9579c705521b805ec576d77b8f11038da3b245182ea31996e7305d991349"
+    },
+    {
+      "name": "checker-incomplete.json",
+      "bytes": 4131,
+      "sha256": "b3fc6a8bbea4c77291a67e76410640c500bbd4dbbb31df517ed654584339ad82"
+    },
+    {
+      "name": "checker-report.json",
+      "bytes": 393523,
+      "sha256": "8d4a797887021262afd70ca596bb2b0e5b94be324fe0c8cd2940d24137c296aa"
+    },
+    {
+      "name": "checker-note.txt",
+      "bytes": 55,
+      "sha256": "0f6ffe7c80b2deb249a63301b1a6a3602047eee2663133440cdfd8bbfdb7078e"
+    },
+    {
+      "name": "reference-cuts.mp4",
+      "bytes": 248744,
+      "sha256": "162707319b5c8dfbca57cbe3e54ae3cdc8e8f5a8a6d33dcfa6073c60bf45175d"
+    }
+  ],
+  "output": "checker-av.mp4"
+}

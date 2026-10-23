@@ -62,16 +62,27 @@ export function toolPlan(words: string[]) {
   if (args.some((a) => a.length > 4000))
     throw new Error("An argument exceeds the workspace limit.");
   if (tool === "ffprobe") {
-    if (args.includes("-o") || args.includes("-output"))
-      throw new Error(
-        "Probe results appear in the terminal. Omit -o in this browser workspace.",
-      );
     const format = args.findIndex(
       (a) => a === "-of" || a === "-print_format" || a === "-output_format",
     );
     if (format < 0 || args[format + 1] !== "json")
       throw new Error("Use -of json for ffprobe in this browser workspace.");
-    return { tool, args } as const;
+    const outputs = args.flatMap((arg, index) =>
+      arg === "-o" || arg === "-output" ? [index] : [],
+    );
+    if (outputs.length > 1) throw new Error("Use one JSON report output.");
+    const output = outputs.length ? args[outputs[0]! + 1] : undefined;
+    if (
+      outputs.length &&
+      (!output ||
+        !validFilename(output) ||
+        !output.endsWith(".json") ||
+        output.length > 68)
+    )
+      throw new Error(
+        "Use -o with a simple JSON report filename of at most 68 characters.",
+      );
+    return { tool, args, output } as const;
   }
   if (
     args.length === 1 &&

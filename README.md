@@ -16,7 +16,7 @@ Make a short software demo: record or adopt an original recording, inspect it, r
 
 Modules 4–7 and 9–10 remain planned. Publish is the initial complete-demo checkpoint; it does not require those later modules. Processing stays in the browser. Viewing a provided result supports reading and comparison but does not produce a project export.
 
-The original inspection and cut/join lessons remain detailed, graded references at `#/inspect/reference` and `#/edit/reference`. Their recorded measurements and challenges still use their own fixed fixtures. Old `#/module-0` and `#/module-2` bookmarks, including section links, redirect to these references. Existing lesson IDs and saved challenge work are retained.
+The original inspection and cut/join lessons remain detailed, graded references at `#/inspect/reference` and `#/edit/reference`. Both now use the same real command workspace, with fixed teaching sources, saved ffprobe reports and checks of actual output artifacts. Use `hint inspect 1` through `5`, `solution inspect`, or their `edit` equivalents; `note FILE.txt "TEXT"` saves a reflection. `progress` shows new artifact checks separately from earlier answer-based achievements. Old `#/module-0` and `#/module-2` bookmarks, including section links, redirect to these references. Existing lesson IDs and saved challenge work are retained.
 
 ## Run and check
 
@@ -45,7 +45,7 @@ The capture exercise stops at 15 seconds and limits output to 20 MiB. Workspace 
 
 Enter one command in **Command** and press Enter, or use **Run command**. Shift+Enter continues the same command; it does not start a second command. Up/Down recall history. `help` describes supported workspace commands. `ffmpeg` runs learner arguments against actual files; `ffprobe` requires `-of json` and prints the real report. The adapter appends `-show_error` and a private JSON output destination for probing. Its pinned core's -1 cleanup sentinel is accepted only with valid nonempty JSON and no error report; it is never displayed as native exit status zero.
 
-The workspace is not an OS shell: no pipes, redirection, variable expansion or folders. Use quoted filter graphs. Output filenames are explicit; existing outputs require `-y` to replace. `play FILE` replays actual bytes, `download FILE` exports them, and `download OUTPUT.recipe.json` exports command arguments plus hashes of all workspace media (including unrelated files). `rm FILE` removes one file after you download important work. `reference build`/`reference edit` load identified supplied output, and `comparison` opts into the credited external excerpt; none claims to execute a learner edit. Saved old production media is copied into the new workspace once, retaining the original store and reference challenge progress.
+The workspace is not an OS shell: no pipes, redirection, variable expansion or folders. Use quoted filter graphs. Output filenames are explicit; existing outputs require `-y` to replace. `play FILE` replays actual bytes, `download FILE` exports them, and `download OUTPUT.recipe.json` exports command arguments plus hashes of all workspace input files (including unrelated files). `rm FILE` removes one file after you download important work. `reference build`/`reference edit` load identified supplied output, and `comparison` opts into the credited external excerpt; none claims to execute a learner edit. Saved old production media is copied into the new workspace once, retaining the original store and reference challenge progress.
 
 ## Offline access and app installation
 

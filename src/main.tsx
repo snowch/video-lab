@@ -1,36 +1,9 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  LessonView,
-  browserStorage,
-  DEFAULT_STRINGS,
-  type Book,
-} from "@platform/lesson-runtime";
-import { lesson } from "./content/lesson";
-import { lesson2 } from "./module2/lesson";
-import { prose as prose2 } from "./module2/prose";
-import { m2 } from "./module2/strings";
-import {
-  CutSource,
-  CutPrediction,
-  CutExplorer,
-  JoinExplorer,
-  ClockExperiment,
-  EditReflection,
-} from "./module2/components";
-import { prose } from "./content/module0.prose";
+import { browserStorage } from "@platform/lesson-runtime";
 import { ui } from "./content/ui.strings";
 import { home, modules } from "./content/home.strings";
-import {
-  Explorer,
-  Streams,
-  Prediction,
-  Failure,
-  Editor,
-  Reflection,
-} from "./components";
-import { grade } from "./grade";
 import { asset, frames } from "./media/model";
 import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
@@ -38,47 +11,9 @@ import { ProjectProvider } from "./journey/project";
 import { CommandLab } from "./cli/Workspace";
 import { routeFor } from "./journey/routes";
 import { j } from "./journey/strings";
+import { referenceLessons } from "./cli/reference.strings";
 import { ReleaseStatus } from "./release/ReleaseStatus";
 const storage = browserStorage();
-const book: Book = {
-  id: "video-lab",
-  title: home.title,
-  lessons: [lesson, lesson2],
-  interactives: {
-    explorer: Explorer,
-    streams: Streams,
-    prediction: Prediction,
-    failure: Failure,
-    reflection: Reflection,
-    "cut-source": CutSource,
-    "cut-prediction": CutPrediction,
-    "cut-explorer": CutExplorer,
-    "join-explorer": JoinExplorer,
-    "edit-clock": ClockExperiment,
-    "edit-reflection": EditReflection,
-  },
-  ChallengeEditor: Editor,
-  grade,
-  timeModelNotes: {
-    recorded: prose.modelNote,
-    "recorded-cuts": prose2.modelNote,
-    "edit-clock": prose2.clockNote,
-  },
-};
-const strings = {
-  ...DEFAULT_STRINGS,
-  lesson: {
-    ...DEFAULT_STRINGS.lesson,
-    timeModel: {
-      recorded: ui.modelHeading,
-      "recorded-cuts": m2.recordedLabel,
-      "edit-clock": m2.clockLabel,
-    },
-    modelNote: ui.modelHeading,
-    modelVsReality: ui.limitsHeading,
-    modelVsRealityNoSimulator: ui.limitsHeading,
-  },
-};
 function Home() {
   return (
     <div className="wrap">
@@ -161,21 +96,19 @@ function App() {
     storage.set("video-lab:theme", theme);
   }, [theme]);
   const resolved = routeFor(route);
-  const activeLesson = resolved.reference
-    ? resolved.step === "inspect"
-      ? lesson
-      : lesson2
-    : undefined;
   const step = resolved.step;
-  const inLesson = !!activeLesson;
-  const pageTitle = step ? j[step].title : home.subtitle;
+  const pageTitle = step
+    ? resolved.reference && (step === "inspect" || step === "edit")
+      ? referenceLessons[step].title
+      : j[step].title
+    : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
       setRoute(resolved.canonical);
       return;
     }
-    document.title = `${activeLesson?.title ?? pageTitle} · ${home.title}`;
+    document.title = `${pageTitle} · ${home.title}`;
     if (resolved.section) {
       requestAnimationFrame(() =>
         document
@@ -187,7 +120,7 @@ function App() {
       if (!initial.current) main.current?.focus();
     }
     initial.current = false;
-  }, [route, inLesson, activeLesson, pageTitle]);
+  }, [route, pageTitle]);
   return (
     <>
       <a
@@ -237,51 +170,27 @@ function App() {
         </nav>
       )}
       <main id="content" ref={main} tabIndex={-1}>
-        {activeLesson ? (
-          <div className="course-layout">
-            <aside className="lesson-nav">
-              <a href="#/">{ui.back}</a>
-              <span className="eyebrow">{ui.onPage}</span>
-              <ol>
-                {activeLesson.sections.map((s, i) => (
-                  <li key={s.kind}>
-                    <a href={`#/${step}/reference/${s.kind}`}>
-                      {String(i + 1).padStart(2, "0")} {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </aside>
-            <div>
-              <p>
-                {step === "inspect"
-                  ? j.inspect.referenceNote
-                  : j.edit.referenceNote}
-              </p>
-              <a className="button" href={`#/${step}`}>
-                {step === "inspect" ? j.inspect.title : j.edit.title}
-              </a>
-              <LessonView
-                key={activeLesson.id}
-                book={book}
-                lesson={activeLesson}
-                lessonHref={(id) =>
-                  id === lesson.id ? "#/inspect/reference" : "#/edit/reference"
-                }
-                storage={storage}
-                strings={strings}
-              />
-            </div>
-          </div>
-        ) : step ? (
+        {step ? (
           <div className="wrap journey-wrap">
             <a href="#/">{ui.back}</a>
-            <CommandLab step={step} />
+            <CommandLab
+              step={step}
+              reference={
+                resolved.reference && (step === "inspect" || step === "edit")
+                  ? step
+                  : undefined
+              }
+            />
             {(step === "inspect" || step === "edit") && (
-              <a className="reference-link button" href={`#/${step}/reference`}>
-                {step === "inspect"
-                  ? j.inspect.referenceTitle
-                  : j.edit.referenceTitle}
+              <a
+                className="reference-link button"
+                href={resolved.reference ? `#/${step}` : `#/${step}/reference`}
+              >
+                {resolved.reference
+                  ? j[step].title
+                  : step === "inspect"
+                    ? j.inspect.referenceTitle
+                    : j.edit.referenceTitle}
               </a>
             )}
           </div>
