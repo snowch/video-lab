@@ -9,6 +9,7 @@ import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
 import { ProjectProvider } from "./journey/project";
 import { CommandLab } from "./cli/Workspace";
+import { progressiveUI as flow } from "./cli/progressive.strings";
 import { routeFor } from "./journey/routes";
 import { j } from "./journey/strings";
 import { referenceLessons } from "./cli/reference.strings";
@@ -55,23 +56,36 @@ function Home() {
           <p className="muted">{home.planNote}</p>
         </div>
         <ol className="module-list">
-          {modules.map((m) => (
-            <li key={m.id}>
-              <span className="module-number">
-                {String(m.id).padStart(2, "0")}
-              </span>
-              <div>
-                <small>{m.available ? ui.available : ui.planned}</small>
-                <h3>{m.title}</h3>
-                <p>{m.summary}</p>
-              </div>
-              {m.available && (
-                <a className="button" href={`#/${m.route}`}>
-                  {ui.open} →
-                </a>
-              )}
-            </li>
-          ))}
+          {[...modules]
+            .sort((a, b) => {
+              const order = [0, 2, 3, 1, 8, 4, 5, 6, 7, 9, 10];
+              return order.indexOf(a.id) - order.indexOf(b.id);
+            })
+            .map((m) => (
+              <li key={m.id}>
+                <span className="module-number">
+                  {m.available
+                    ? [
+                        "capture",
+                        "inspect",
+                        "edit",
+                        "build",
+                        "publish",
+                      ].indexOf(m.route!) + 1
+                    : "·"}
+                </span>
+                <div>
+                  <small>{m.available ? ui.available : ui.planned}</small>
+                  <h3>{m.title}</h3>
+                  <p>{m.summary}</p>
+                </div>
+                {m.available && (
+                  <a className="button" href={`#/${m.route}`}>
+                    {ui.open} →
+                  </a>
+                )}
+              </li>
+            ))}
         </ol>
       </section>
     </div>
@@ -158,13 +172,28 @@ function App() {
         <nav className="journey-nav" aria-label={home.planTitle}>
           {modules
             .filter((module) => module.available)
+            .sort(
+              (a, b) =>
+                ["capture", "inspect", "edit", "build", "publish"].indexOf(
+                  a.route!,
+                ) -
+                ["capture", "inspect", "edit", "build", "publish"].indexOf(
+                  b.route!,
+                ),
+            )
             .map((module) => (
               <a
                 key={module.id}
                 href={`#/${module.route}`}
                 aria-current={module.route === step ? "step" : undefined}
+                aria-label={flow.nav[module.route!]}
               >
-                {module.id} · {module.title}
+                <span aria-hidden="true">
+                  {["capture", "inspect", "edit", "build", "publish"].indexOf(
+                    module.route!,
+                  ) + 1}
+                </span>{" "}
+                {flow.nav[module.route!]}
               </a>
             ))}
         </nav>

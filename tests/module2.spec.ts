@@ -48,6 +48,9 @@ test("audio/video joined output passes real decoded-picture check; reversed orde
   await command(page, joinedCommand);
   await command(page, "check edit joined-check.mp4");
   await expect(terminal(page)).toContainText(refStrings.checkPassed);
+  await expect(
+    page.getByLabel("Workspace feedback", { exact: true }),
+  ).not.toContainText("Aborted()");
   const p = native(await downloaded(page, "joined-check.mp4"));
   expect(Number(p.format.duration)).toBeCloseTo(4, 1);
   expect(p.streams.map((s: { codec_type: string }) => s.codec_type)).toEqual([

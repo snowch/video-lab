@@ -1,7 +1,6 @@
 // Copyright © 2026 Christopher Snow
-import { guided } from "./guided.strings";
-import { lessons } from "./strings";
 import { referenceLessons } from "./reference.strings";
+import { productionTasks } from "./progressive.strings";
 import type { StepName } from "../journey/routes";
 import type { ReferenceLab } from "./reference-model";
 export type Task = {
@@ -10,77 +9,20 @@ export type Task = {
   paragraphs: string[];
   examples: { note: string; command: string }[];
 };
-const paragraphIndexes: Record<StepName, number[][]> = {
-  capture: [],
-  build: [[0], [1], [2], [3], [4]],
-  inspect: [[0], [1, 2], [3]],
-  edit: [[0, 1], [2, 3], [4]],
-  publish: [[0], [0], [1, 2], [1]],
-};
 export function lessonTasks(step: StepName, reference?: ReferenceLab): Task[] {
-  if (reference) return referenceLessons[reference].sections;
-  const lesson = lessons[step];
-  return [
-    ...lesson.examples.map((example, index) => ({
-      id: `task-${index + 1}`,
-      title:
-        step === "capture" ? lesson.heading : guided.taskTitles[step][index]!,
-      paragraphs:
-        paragraphIndexes[step][index]?.map((i) => lesson.paragraphs[i]!) ?? [],
-      examples: [example],
-    })),
-    {
-      id: "review",
-      title:
-        step === "capture" ? lesson.heading : guided.taskTitles[step].at(-1)!,
-      paragraphs: [lesson.challenge],
-      examples: [],
-    },
-  ];
+  return reference
+    ? referenceLessons[reference].sections
+    : productionTasks[step];
 }
-
 export function captureTasks(
-  sourceName: string,
+  _sourceName: string,
   captureSupported: boolean,
-  hasSource: boolean,
+  _hasSource: boolean,
 ): Task[] {
-  return [
-    {
-      id: "source",
-      title: guided.capture.getSource,
-      paragraphs: [
-        guided.capture.getSourceIntro,
-        !captureSupported ? guided.capture.unsupported : "",
-        hasSource ? guided.capture.existingSource : "",
-      ].filter(Boolean),
-      examples: [
-        { note: guided.capture.sampleIntro, command: "sample" },
-        { note: guided.capture.importIntro, command: "import" },
-        ...(captureSupported
-          ? [
-              { note: guided.capture.recordIntro, command: "capture" },
-              { note: "", command: "stop" },
-            ]
-          : []),
-      ],
-    },
-    {
-      id: "files",
-      title: guided.capture.listFiles,
-      paragraphs: [guided.capture.listIntro],
-      examples: [{ note: "", command: "ls" }],
-    },
-    {
-      id: "replay",
-      title: guided.capture.replaySource,
-      paragraphs: [guided.capture.replayIntro],
-      examples: [{ note: "", command: `play ${sourceName}` }],
-    },
-    {
-      id: "backup",
-      title: guided.capture.keepCopy,
-      paragraphs: [guided.capture.keepCopyIntro],
-      examples: [{ note: "", command: `download ${sourceName}` }],
-    },
-  ];
+  return productionTasks.capture.map((task) => ({
+    ...task,
+    examples: task.examples.filter(
+      (example) => captureSupported || !example.command.startsWith("capture"),
+    ),
+  }));
 }

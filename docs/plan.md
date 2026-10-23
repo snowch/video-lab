@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Issue 5, 23 October 2026:** [Prototype fidelity and progressive concepts](notes/issue-5/plan.md) supersedes the old task-per-file-action presentation. Get video → Inspect → Edit → Build → Publish uses one focused instruction/action/result layout, verified minimal first cuts, and later concepts introduced when needed. Old route IDs, controlled reference evidence and learner storage are retained. UX fidelity and concept prerequisites are explicit independent-review gates.
+
 **Course-wide workbench migration, 23 October 2026:** [the migration slice](notes/course-workbench/plan.md) extends the approved native-command/editor/builder approach to all five available production routes and both detailed references. Browser actions use app controls, ordinary probes start bare, actual logs remain raw and structured reports are explicit. Production practice uses Mousepad; fixed reference data and saved work are preserved. [Quality and public deployment verification](notes/course-workbench/08-deployment.md) close the migration. The sections below record the previous implementation history where they describe invented workspace commands.
 
 **Raw CLI output, 23 October 2026:** the owner requested authentic command output as the primary result. The [presentation revision](notes/raw-cli-output/plan.md) removes derived metadata badges and result headings, exposes actual JSON/logs directly, and moves browser wrapper diagnostics into optional help. The default command is bare `ffprobe SOURCE`; `-of json` is optional for structured reports.

@@ -1,11 +1,11 @@
 // Copyright © 2026 Christopher Snow
 export const guided = {
-  currentTask: "Current task",
+  currentTask: "Step",
   task: "Task",
   of: "of",
-  next: "Next task",
-  previous: "Previous task",
-  navigation: "All tasks",
+  next: "Next step",
+  previous: "Back",
+  navigation: "Lesson steps",
   usage: "Using the command workspace",
   background: "Background and explanation",
   scope:

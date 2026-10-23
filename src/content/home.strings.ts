@@ -10,11 +10,11 @@ export const home = {
     "For software and data engineers with ordinary terminal, browser and file familiarity. Media concepts and FFmpeg options are explained as you use them. The optional command builder helps with typing on phones and tablets while keeping the real command visible. No video knowledge is assumed.",
   outcomeTitle: "A complete first demo",
   outcome:
-    "Follow Capture, Build, Inspect, Edit and Publish in a shared workspace. Build is a separate experiment with supplied pictures; your project source stays unchanged. Inspect and edit the chosen source, then replay and download your output and its execution recipe. Detailed reference labs add checked reports and edits, progressive hints and saved notes. Processing stays on your device.",
-  start: "Start with Capture",
+    "Follow Get video, Inspect, Edit, Build and Publish in a shared workspace. Build is a separate experiment with supplied pictures; your project source stays unchanged. Inspect and edit the chosen source, then replay and download your output and its execution recipe. Detailed reference labs add checked reports and edits, progressive hints and saved notes. Processing stays on your device.",
+  start: "Get a video",
   planTitle: "Your route through Video Lab",
   planNote:
-    "All available labs use real FFmpeg and ffprobe commands, with an optional command builder. Follow Capture, Build, Inspect, Edit and the initial Publish checkpoint. Detailed reference checks use separate controlled media and actual execution evidence; earlier answer-based achievements remain available. Modules 4–7 and 9–10 are planned.",
+    "All available labs use real FFmpeg and ffprobe commands, with an optional command builder. Follow Get video, Inspect, Edit, Build and the initial Publish checkpoint. Detailed reference checks use separate controlled media and actual execution evidence; earlier answer-based achievements remain available. Further production lessons are planned.",
 };
 
 export const modules = [

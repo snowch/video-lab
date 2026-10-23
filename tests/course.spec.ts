@@ -30,7 +30,7 @@ test("introduction, theme, reference deep links and navigation all lead to comma
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     referenceLessons.inspect.title,
   );
-  await page.getByText("All tasks", { exact: true }).click();
+  await page.getByText("Lesson steps", { exact: true }).click();
   await page
     .getByRole("link", {
       name: referenceLessons.inspect.sections.find((s) => s.id === "challenge")!
@@ -159,9 +159,19 @@ test("every reachable production and reference lab is CLI on desktop and phone",
   ]) {
     await page.goto(`./#/${route}`);
     const input = page.getByRole("textbox", { name: cli.input, exact: true });
-    if (route === "capture" || route === "publish") {
-      await expect(input).toBeHidden();
-      await page.locator(".native-tools > summary").click();
+    if (!(await input.isVisible())) {
+      const hiddenInput = page.getByRole("textbox", {
+        name: cli.input,
+        exact: true,
+        includeHidden: true,
+      });
+      for (const detail of await page
+        .locator("details")
+        .filter({ has: hiddenInput })
+        .all()) {
+        if ((await detail.getAttribute("open")) === null)
+          await detail.locator(":scope > summary").click();
+      }
     }
     await expect(input).toBeVisible();
     expect(
@@ -233,6 +243,15 @@ test("reflection opens a personal draft without saving an answer and downloads t
       cli.done,
     );
     expect(readFileSync(await downloaded(page, name), "utf8")).toBe(text);
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = "200%";
+    });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
     await page.reload();
     await command(page, `cat ${name}`);
     await expect(terminal(page)).toContainText(text);

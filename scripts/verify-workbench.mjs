@@ -114,6 +114,39 @@ try {
   console.log(
     "Mousepad still bytes and actual 1/2 fps three-picture outputs verified.",
   );
+  // First edits deliberately rely on measured defaults of this source/build.
+  for (const [name, seek, duration] of [
+    ["first-cut", undefined, 6],
+    ["cut", 2, 6],
+    ["shorter", 2, 4],
+  ]) {
+    const output = join(directory, `${name}.mp4`);
+    execFileSync("ffmpeg", [
+      "-v",
+      "error",
+      "-i",
+      path,
+      ...(seek === undefined ? [] : ["-ss", String(seek)]),
+      "-t",
+      String(duration),
+      output,
+    ]);
+    const probe = JSON.parse(
+      execFileSync(
+        "ffprobe",
+        ["-v", "error", "-show_streams", "-show_format", "-of", "json", output],
+        { encoding: "utf8" },
+      ),
+    );
+    assert.equal(Number(probe.format.duration), duration);
+    assert.equal(probe.streams.length, 1);
+    assert.equal(probe.streams[0].codec_name, "h264");
+    assert.equal(probe.streams[0].pix_fmt, "yuv420p");
+    assert.equal(Number(probe.streams[0].nb_frames), duration * 15);
+  }
+  console.log(
+    "Native minimal first/start/shorter cuts: actual duration, H.264/yuv420p and picture counts verified.",
+  );
 } finally {
   rmSync(directory, { recursive: true, force: true });
 }

@@ -116,7 +116,7 @@ test("workbench runs real probe and trim, downloads measured media and exact rec
   const recipe = JSON.parse(
     readFileSync(await getDownload(page, C.live.downloadRecipe), "utf8"),
   );
-  expect(recipe.command).toContain("-ss 2 -t 6");
+  expect(recipe.command).toBe("ffmpeg -i mousepad-demo.mp4 -t 6 demo.mp4");
   expect(recipe.inputs[0].sha256).toBe(
     createHash("sha256")
       .update(readFileSync("public/media/mousepad-demo.mp4"))

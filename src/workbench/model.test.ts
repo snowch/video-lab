@@ -9,7 +9,7 @@ const files: Files = Object.fromEntries(
   ]),
 );
 describe("native workbench boundary", () => {
-  it("starts with readable ffprobe output and composes native optional-audio edits", () => {
+  it("starts with readable ffprobe output and composes a minimal duration-first edit", () => {
     expect(buildCommand(1, "source.mp4", defaults())).toBe(
       "ffprobe source.mp4",
     );
@@ -19,7 +19,7 @@ describe("native workbench boundary", () => {
         files,
         "source.mp4",
       ).args,
-    ).toContain("0:a?");
+    ).toEqual(["-i", "source.mp4", "-t", "6", "new.mp4"]);
     expect(
       planRun(buildCommand(1, "source.mp4", defaults()), files, "source.mp4")
         .tool,

@@ -5,6 +5,11 @@ import { browserAction, courseUI as ux } from "../src/cli/course.strings";
 import { routeFor } from "../src/journey/routes";
 import { parseCommand } from "../src/cli/command";
 export async function clickAction(page: Page, name: string) {
+  const visible = page.getByRole("button", { name, exact: true }).first();
+  if (await visible.isVisible()) {
+    await visible.click();
+    return;
+  }
   const hidden = page
     .getByRole("button", { name, exact: true, includeHidden: true })
     .first();
@@ -48,20 +53,23 @@ export async function runCommand(page: Page, text: string, result = cli.done) {
     "data-reference",
     route.reference ? route.step! : "",
   );
-  await expect(
-    page.getByRole("button", {
-      name: cli.run,
+  await expect(page.locator(".cli-lab")).toHaveAttribute(
+    "data-workspace-ready",
+    "true",
+  );
+  if (!(await workspaceAction(page, text))) {
+    const entry = page.getByRole("textbox", {
+      name: cli.input,
       exact: true,
       includeHidden: true,
-    }),
-  ).toBeEnabled();
-  if (!(await workspaceAction(page, text))) {
-    if (
-      !(await page
-        .getByRole("textbox", { name: cli.input, exact: true })
-        .isVisible())
-    )
-      await page.locator(".native-tools > summary").click();
+    });
+    for (const detail of await page
+      .locator("details")
+      .filter({ has: entry })
+      .all()) {
+      if ((await detail.getAttribute("open")) === null)
+        await detail.locator(":scope > summary").click();
+    }
     await page
       .getByRole("textbox", { name: cli.input, exact: true })
       .fill(text);

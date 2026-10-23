@@ -67,8 +67,7 @@ export const cli = {
     "That output filename already exists. Choose another name to keep both versions, or add -y to explicitly replace it.",
   fetchFailed:
     "The provided source could not be loaded. Connect to the internet and retry, or save the lessons for offline use before disconnecting.",
-  sampleSaved:
-    "The provided Mousepad recording is ready. It demonstrates Find and Replace without sound. Check Files for its exact workspace name.",
+  sampleSaved: "Practice video loaded. Replay it, then inspect its duration.",
   fixturesSaved:
     "Loaded frame000.jpg, frame001.jpg, frame002.jpg and tone.wav. These supplied pictures and synthetic sound are a separate experiment; your recording is unchanged.",
   captureFailure:

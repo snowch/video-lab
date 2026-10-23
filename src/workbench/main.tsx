@@ -753,24 +753,15 @@ function App() {
                 <p className="help-note">{C.live.replayTip}</p>
                 {source && <Playback key={source.name} file={source} />}
               </details>
-              <details className="lesson-details">
-                <summary>{C.flags.heading}</summary>
-                {(stage === 1
-                  ? ["probeDefault", "probeJson"]
-                  : [
-                      "input",
-                      "start",
-                      "duration",
-                      "mapVideo",
-                      "mapAudio",
-                      "encode",
-                      "pixels",
-                    ]
-                ).map((k) => (
-                  <p key={k}>{C.flags[k as keyof typeof C.flags]}</p>
-                ))}
+              <section className="lesson-details" aria-label={C.flags.heading}>
+                <h2>{C.flags.heading}</h2>
+                {(stage === 1 ? ["probeDefault"] : ["input", "duration"]).map(
+                  (k) => (
+                    <p key={k}>{C.flags[k as keyof typeof C.flags]}</p>
+                  ),
+                )}
                 <p>{stage === 1 ? C.inspect.predict : C.trim.predict}</p>
-              </details>
+              </section>
             </section>
             <section className="card" aria-labelledby="command-heading">
               <div className="card-head">
@@ -842,20 +833,6 @@ function App() {
                     ) : (
                       <>
                         <label>
-                          {C.command.start}
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.5"
-                            inputMode="decimal"
-                            value={options.start}
-                            onChange={(e) =>
-                              changeOption("start", e.target.value)
-                            }
-                          />
-                          <small>{C.command.seconds}</small>
-                        </label>
-                        <label>
                           {C.command.duration}
                           <input
                             type="number"
@@ -869,24 +846,27 @@ function App() {
                           />
                           <small>{C.command.seconds}</small>
                         </label>
+                        <details className="wide start-experiment">
+                          <summary>{C.flags.startHeading}</summary>
+                          <p>{C.flags.start}</p>
+                          <p>{C.trim.startExperiment}</p>{" "}
+                          <label>
+                            {C.command.start}
+                            <input
+                              type="number"
+                              min="0"
+                              step="0.5"
+                              inputMode="decimal"
+                              value={options.start}
+                              onChange={(e) =>
+                                changeOption("start", e.target.value)
+                              }
+                            />
+                            <small>{C.command.seconds}</small>
+                          </label>
+                        </details>
                         <details className="wide output-settings">
                           <summary>{C.command.outputSettings}</summary>
-                          <label>
-                            {C.command.audio}
-                            <select
-                              value={options.audio}
-                              onChange={(e) =>
-                                changeOption("audio", e.target.value)
-                              }
-                            >
-                              <option value="keep">
-                                {C.command.keepAudio}
-                              </option>
-                              <option value="remove">
-                                {C.command.removeAudio}
-                              </option>
-                            </select>
-                          </label>
                           <label>
                             {C.command.output}
                             <input
