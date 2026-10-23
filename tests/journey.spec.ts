@@ -430,6 +430,31 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
   await expect(wrap).toHaveAttribute("aria-pressed", "false");
   await expect(output(page)).toHaveCSS("white-space", "pre");
   const originalOutput = await output(page).textContent();
+  const right = page.getByRole("button", { name: cli.moreOutput, exact: true });
+  const left = page.getByRole("button", {
+    name: cli.previousOutput,
+    exact: true,
+  });
+  await expect(right).toBeVisible();
+  await expect(left).toHaveCount(0);
+  await expect(page.locator(".terminal-frame")).toHaveAttribute(
+    "data-right",
+    "true",
+  );
+  await right.click();
+  await expect(output(page)).toBeFocused();
+  await expect(left).toBeVisible();
+  await output(page).evaluate((el) => {
+    el.scrollLeft = el.scrollWidth;
+  });
+  await expect(right).toHaveCount(0);
+  await expect(page.locator(".terminal-frame")).toHaveAttribute(
+    "data-right",
+    "false",
+  );
+  await left.click();
+  await expect(right).toBeVisible();
+  expect(await output(page).textContent()).toBe(originalOutput);
   if (page.viewportSize()!.width < 500) {
     expect(
       await output(page).evaluate((el) => {
@@ -442,6 +467,12 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
   await page.keyboard.press("Space");
   await expect(wrap).toHaveAttribute("aria-pressed", "true");
   await expect(output(page)).toHaveCSS("white-space", "pre-wrap");
+  await expect(right).toHaveCount(0);
+  await expect(left).toHaveCount(0);
+  await expect(page.locator(".terminal-frame")).toHaveAttribute(
+    "data-right",
+    "false",
+  );
   expect(await output(page).textContent()).toBe(originalOutput);
   expect(
     await output(page).evaluate((el) => el.scrollWidth <= el.clientWidth),

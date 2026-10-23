@@ -59,6 +59,7 @@ export function CommandLab({
   const [ready, setReady] = useState(false),
     [persistent, setPersistent] = useState(true);
   const [wrapOutput, setWrapOutput] = useState(false);
+  const [outputEdges, setOutputEdges] = useState({ left: false, right: false });
   const [lines, setLines] = useState<string[]>([]),
     [command, setCommand] = useState("");
   const [notice, setNotice] = useState(cli.ready),
@@ -198,6 +199,35 @@ export function CommandLab({
     if (terminal.current)
       terminal.current.scrollTop = terminal.current.scrollHeight;
   }, [lines]);
+  function measureOutput() {
+    const el = terminal.current;
+    if (!el) return;
+    const left = !wrapOutput && el.scrollLeft > 1;
+    const right =
+      !wrapOutput && el.scrollWidth - el.clientWidth - el.scrollLeft > 1;
+    setOutputEdges((previous) =>
+      previous.left === left && previous.right === right
+        ? previous
+        : { left, right },
+    );
+  }
+  useLayoutEffect(() => {
+    measureOutput();
+    const observer = new ResizeObserver(measureOutput);
+    if (terminal.current) observer.observe(terminal.current);
+    window.addEventListener("resize", measureOutput);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measureOutput);
+    };
+  }, [lines, wrapOutput]);
+  function scrollOutput(direction: number) {
+    const el = terminal.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * el.clientWidth * 0.8 });
+    el.focus({ preventScroll: true });
+    measureOutput();
+  }
   const selected = preview ? files[preview] : undefined,
     mediaURL = useBlobURL(selected?.blob);
   useEffect(() => setPlaybackFailed(false), [mediaURL]);
@@ -803,16 +833,46 @@ ${cli.comparisonCredit}`,
           {cli.wrapLines}
         </button>
         <p id="cli-output-scrolling">{cli.outputScrolling}</p>
-        <pre
-          id="cli-output"
-          className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
-          ref={terminal}
-          tabIndex={0}
-          aria-label={cli.output}
-          aria-describedby="cli-output-scrolling"
+        <div
+          className="terminal-frame"
+          data-left={outputEdges.left}
+          data-right={outputEdges.right}
         >
-          {lines.join("\n") || cli.welcome}
-        </pre>
+          <pre
+            id="cli-output"
+            className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
+            ref={terminal}
+            onScroll={measureOutput}
+            tabIndex={0}
+            aria-label={cli.output}
+            aria-describedby="cli-output-scrolling"
+          >
+            {lines.join("\n") || cli.welcome}
+          </pre>
+        </div>
+        {(outputEdges.left || outputEdges.right) && (
+          <div className="terminal-scroll-controls">
+            {outputEdges.left && (
+              <button
+                type="button"
+                aria-controls="cli-output"
+                onClick={() => scrollOutput(-1)}
+              >
+                {cli.previousOutput}
+              </button>
+            )}
+            {outputEdges.right && (
+              <button
+                className="terminal-scroll-right"
+                type="button"
+                aria-controls="cli-output"
+                onClick={() => scrollOutput(1)}
+              >
+                {cli.moreOutput}
+              </button>
+            )}
+          </div>
+        )}
         <form
           onSubmit={(e) => {
             e.preventDefault();
