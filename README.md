@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+An isolated [command-builder UX prototype](https://snowch.github.io/video-lab/optional/command-workbench.html) explores ordinary file controls alongside real FFmpeg syntax and an optional touch-friendly builder. It has its own three-step trial; FFmpeg execution is simulated and labelled. The [prototype plan and review](docs/notes/command-ux/plan.md) describe its scope. The single HTML file includes the practice video and also opens offline. Regenerate it with `node docs/notes/command-ux/build.mjs` before building the site.
+
 The production labs are command-line workspaces. Type and run real FFmpeg/ffprobe WASM commands, inspect logs and actual files, and download the output plus an execution recipe. Screen capture uses explicitly labelled browser commands and the browser permission dialog.
 
 Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The command-first path is independently reviewed, tested and deployed; its [plan and review evidence](docs/notes/cli/plan.md) records 69 unit tests, 125 browser tests, Pages deployment and real installed-app upgrade verification. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).

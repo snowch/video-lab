@@ -1,0 +1,1155 @@
+<!doctype html>
+<!-- Copyright © 2026 Christopher Snow -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <title>Video Lab · command experience prototype</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f3f5f3;
+        --surface: #fff;
+        --ink: #172c2a;
+        --muted: #536662;
+        --line: #d5ded9;
+        --accent: #136e57;
+        --on-accent: #fff;
+        --soft: #e7f3eb;
+        --code: #142a28;
+        --code-ink: #d3f4e5;
+        --warning: #fff1d0;
+        --warning-ink: #594411;
+        --shadow: 0 12px 45px #152e2510;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0e1b1b;
+        --surface: #172928;
+        --ink: #e6f1ec;
+        --muted: #acbeb6;
+        --line: #3c514b;
+        --accent: #a3e8c4;
+        --on-accent: #14382c;
+        --soft: #203e31;
+        --code: #0b1717;
+        --code-ink: #d3f4e5;
+        --warning: #382d12;
+        --warning-ink: #f3d490;
+        --shadow: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: system-ui, sans-serif;
+        line-height: 1.55;
+        font-size: 16px;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        border-radius: 9px;
+        padding: 9px 15px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button:hover:not(:disabled) {
+        border-color: var(--accent);
+        background: var(--soft);
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: default;
+      }
+      button.primary {
+        background: var(--accent);
+        color: var(--on-accent);
+        border-color: var(--accent);
+      }
+      button.primary:hover:not(:disabled) {
+        filter: brightness(0.94);
+        background: var(--accent);
+      }
+      button.quiet {
+        background: transparent;
+        border-color: transparent;
+      }
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .skip {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        z-index: 10;
+        background: var(--surface);
+        padding: 12px;
+        color: var(--ink);
+      }
+      .skip:focus {
+        top: 8px;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(25px, 3vw, 36px);
+        line-height: 1.2;
+        letter-spacing: -0.035em;
+      }
+      h2 {
+        font-size: 20px;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+      h3 {
+        font-size: 16px;
+      }
+      p + p {
+        margin-top: 12px;
+      }
+      .muted,
+      small {
+        color: var(--muted);
+      }
+      small {
+        display: block;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      code,
+      pre,
+      textarea {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+      code {
+        overflow-wrap: anywhere;
+      }
+      header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar {
+        max-width: 1160px;
+        margin: auto;
+        padding: 12px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-size: 18px;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+      }
+      .mark {
+        display: grid;
+        place-items: center;
+        background: var(--accent);
+        color: var(--on-accent);
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        font-size: 15px;
+      }
+      .tag {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 2px 6px;
+        letter-spacing: 0;
+      }
+      .banner {
+        background: var(--warning);
+        color: var(--warning-ink);
+        padding: 8px 20px;
+        text-align: center;
+        font-size: 13px;
+      }
+      main {
+        max-width: 1120px;
+        margin: auto;
+        padding: 26px 24px 40px;
+      }
+      .steps {
+        display: flex;
+        gap: 10px;
+        margin: 0 0 27px;
+        padding: 0;
+        list-style: none;
+      }
+      .steps li {
+        flex: 1;
+      }
+      .steps button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        border: 0;
+        border-bottom: 3px solid var(--line);
+        border-radius: 0;
+        padding: 8px 0 12px;
+        background: transparent;
+        color: var(--muted);
+        text-align: left;
+      }
+      .steps button[aria-current="step"] {
+        border-color: var(--accent);
+        color: var(--ink);
+      }
+      .step-number {
+        width: 26px;
+        height: 26px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        font-size: 13px;
+      }
+      [aria-current="step"] .step-number {
+        background: var(--accent);
+        color: var(--on-accent);
+        border-color: var(--accent);
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        color: var(--accent);
+        margin-bottom: 9px;
+      }
+      .intro {
+        margin-top: 12px;
+        color: var(--muted);
+        max-width: 58ch;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.35fr);
+        gap: 35px;
+        align-items: start;
+      }
+      .layout > *,
+      .source-layout > * {
+        min-width: 0;
+      }
+      .lesson-details {
+        margin-top: 24px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        min-height: 44px;
+        padding: 10px 0;
+      }
+      details p {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+      .source-chip {
+        margin-top: 22px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 10px 12px;
+      }
+      .source-replay summary {
+        font-size: 14px;
+      }
+      .source-replay video {
+        margin-top: 6px;
+        border-radius: 10px;
+      }
+      .source-replay + .lesson-details {
+        margin-top: 2px;
+      }
+      .source-chip code {
+        font-size: 14px;
+      }
+      .source-chip button {
+        font-size: 13px;
+        padding: 8px;
+        flex-shrink: 0;
+      }
+      .task-note {
+        border-left: 3px solid var(--accent);
+        padding-left: 13px;
+        margin-top: 22px;
+        font-size: 14px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+      }
+      .source-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 30px;
+        margin-top: 26px;
+      }
+      .source-options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .source-option button {
+        width: 100%;
+        text-align: left;
+      }
+      .source-option small {
+        margin: 6px 4px 0;
+      }
+      .source-preview {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .source-preview .empty {
+        display: grid;
+        place-items: center;
+        min-height: 220px;
+        background: var(--code);
+        color: var(--code-ink);
+        padding: 24px;
+        text-align: center;
+      }
+      video {
+        width: 100%;
+        max-height: 300px;
+        aspect-ratio: 16/9;
+        background: #101a1b;
+        display: block;
+      }
+      .source-caption {
+        padding: 18px;
+      }
+      .source-caption p {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .source-caption .row {
+        margin-top: 12px;
+      }
+      .privacy {
+        margin-top: 20px;
+        font-size: 13px;
+        color: var(--muted);
+        max-width: 72ch;
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .segmented {
+        display: flex;
+        padding: 4px;
+        gap: 4px;
+        border-radius: 11px;
+        background: var(--bg);
+        margin-bottom: 18px;
+      }
+      .segmented button {
+        flex: 1;
+        border-color: transparent;
+        background: transparent;
+        font-size: 14px;
+      }
+      .segmented button[aria-pressed="true"] {
+        background: var(--surface);
+        color: var(--accent);
+        box-shadow: 0 1px 5px #0001;
+        border-color: var(--line);
+      }
+      .builder {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 13px;
+        margin-bottom: 16px;
+      }
+      .builder label {
+        font-size: 13px;
+        font-weight: 650;
+      }
+      .builder .wide {
+        grid-column: 1/-1;
+      }
+      input,
+      select {
+        width: 100%;
+        min-height: 46px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--ink);
+        padding: 9px 10px;
+        font-size: 16px;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        gap: 10px;
+      }
+      .check input {
+        width: 20px;
+        height: 20px;
+        min-height: 0;
+        margin: 0;
+        accent-color: var(--accent);
+      }
+      .check span {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .command-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        margin: 3px 0 7px;
+      }
+      textarea {
+        width: 100%;
+        resize: vertical;
+        border: 1px solid #456357;
+        border-radius: 10px;
+        min-height: 107px;
+        padding: 13px;
+        font-size: 14px;
+        line-height: 1.7;
+        background: var(--code);
+        color: var(--code-ink);
+        display: block;
+        overflow-wrap: anywhere;
+      }
+      textarea:read-only {
+        cursor: text;
+      }
+      .command-tools {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0 14px;
+      }
+      .command-tools button {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+      .run-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 5px;
+      }
+      .run-row small {
+        text-align: right;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .warning {
+        background: var(--warning);
+        color: var(--warning-ink);
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+      .warning .row {
+        margin-top: 10px;
+      }
+      .error {
+        color: #a12a21;
+        font-size: 14px;
+        padding-top: 8px;
+      }
+      :root[data-theme="dark"] .error {
+        color: #ffb4a9;
+      }
+      .result {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+      .result > p {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 7px;
+      }
+      .result .metrics {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 13px;
+      }
+      .metric {
+        background: var(--soft);
+        padding: 6px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+      }
+      .output-frame {
+        position: relative;
+      }
+      .output-frame[data-overflow="true"]::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 22px;
+        background: linear-gradient(90deg, transparent, var(--code));
+        pointer-events: none;
+        border-radius: 0 8px 8px 0;
+      }
+      pre {
+        max-height: 170px;
+        max-width: 100%;
+        overflow: auto;
+        background: var(--code);
+        color: var(--code-ink);
+        border-radius: 8px;
+        padding: 12px;
+        margin: 8px 0 0;
+        font-size: 13px;
+      }
+      pre.wrapped {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .output-controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+      }
+      .output-controls button {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+      .next-row {
+        margin-top: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .next-row button {
+        font-size: 14px;
+      }
+      .boundary {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 15px;
+      }
+      .status:empty,
+      .error:empty {
+        display: none;
+      }
+      .output-settings label {
+        display: block;
+        margin-top: 10px;
+      }
+      .output-settings {
+        margin: -7px 0 0;
+      }
+      .output-settings summary {
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--accent);
+        min-height: 20px;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        max-width: 1072px;
+        margin: 0 auto;
+        padding: 18px 0 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      footer details {
+        flex-basis: 100%;
+      }
+      footer details p {
+        max-width: 78ch;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .lesson-details {
+          margin-top: 8px;
+        }
+        .task-note {
+          margin-top: 12px;
+        }
+        .source-chip {
+          margin-top: 12px;
+        }
+        .layout .intro {
+          max-width: none;
+        }
+        footer {
+          margin: 0 24px;
+        }
+      }
+      @media (max-width: 540px) {
+        .topbar {
+          padding: 9px 15px;
+        }
+        .brand {
+          font-size: 16px;
+          gap: 7px;
+        }
+        .topbar button {
+          font-size: 12px;
+          padding: 8px;
+        }
+        .tag {
+          font-size: 11px;
+        }
+        .banner {
+          padding: 7px 15px;
+          font-size: 12px;
+          text-align: left;
+        }
+        main {
+          padding: 18px 15px 26px;
+        }
+        .steps {
+          gap: 8px;
+          margin-bottom: 21px;
+        }
+        .steps button {
+          font-size: 13px;
+          gap: 6px;
+        }
+        .step-number {
+          width: 23px;
+          height: 23px;
+          font-size: 12px;
+        }
+        .intro {
+          font-size: 14px;
+          margin-top: 10px;
+        }
+        .source-layout {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 20px;
+        }
+        .source-options {
+          gap: 12px;
+        }
+        .source-preview .empty {
+          min-height: 125px;
+        }
+        .card {
+          padding: 17px;
+          border-radius: 13px;
+        }
+        .layout {
+          gap: 15px;
+        }
+        .task-note {
+          display: none;
+        }
+        .card-head {
+          margin-bottom: 12px;
+        }
+        .segmented {
+          margin-bottom: 14px;
+        }
+        .builder {
+          gap: 10px;
+        }
+        .builder label {
+          font-size: 12px;
+        }
+        .command-tools {
+          margin-bottom: 8px;
+        }
+        .boundary {
+          font-size: 12px;
+        }
+        footer {
+          margin: 0 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      // Copyright © 2026 Christopher Snow
+      const C = "__COPY__";
+      const SOURCE = "__SOURCE__";
+      const REPORT = "__REPORT__";
+      const e = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const q = (s) =>
+        /^[a-zA-Z0-9._%/-]+$/.test(s)
+          ? s
+          : "'" + s.replaceAll("'", "'\\''") + "'";
+      let theme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+      let stage = 0,
+        source = null,
+        sourceURL = "",
+        status = "",
+        switching = false,
+        wrap = false,
+        replayOpen = false,
+        replayTime = 0;
+      const initialDraft = () => ({
+        mode: "builder",
+        text: "",
+        restored: "",
+        result: null,
+        sourceChanged: false,
+      });
+      let drafts = { 1: initialDraft(), 2: initialDraft() };
+      let options = {
+        start: "2",
+        duration: "6",
+        audio: "keep",
+        output: "demo.mp4",
+        streams: true,
+        format: true,
+      };
+      let error = "";
+      const app = document.getElementById("app");
+      function built(s = stage) {
+        const rawName = source?.name || "capture.mp4";
+        const name = q(rawName.startsWith("-") ? "./" + rawName : rawName);
+        if (s === 1)
+          return `ffprobe -v error${options.streams ? " -show_streams" : ""}${options.format ? " -show_format" : ""} -of json ${name}`;
+        return `ffmpeg -i ${name} -ss ${options.start} -t ${options.duration} -map 0:v:0${options.audio === "keep" ? " -map '0:a?'" : ""} -c:v libx264 -pix_fmt yuv420p${options.audio === "keep" ? " -c:a aac" : " -an"} ${q(options.output)}`;
+      }
+      const command = () =>
+        drafts[stage]?.mode === "manual" ? drafts[stage].text : built();
+      function button(action, text, cls = "", extra = "") {
+        return `<button type="button" data-action="${action}" class="${cls}" ${extra}>${e(text)}</button>`;
+      }
+      function nav() {
+        return `<nav aria-label="${e(C.stepsLabel)}"><ol class="steps">${C.steps.map((name, i) => `<li>${button("stage-" + i, "", "", `${i === stage ? 'aria-current="step"' : ""} ${i && !source ? "disabled" : ""}`).replace("</button>", `<span class="step-number">${i + 1}</span>${e(name)}</button>`)}</li>`).join("")}</ol></nav>`;
+      }
+      function header() {
+        return `<a class="skip" href="#lesson">${e(C.actions.skip)}</a><header><div class="topbar"><div class="brand"><span class="mark" aria-hidden="true">▶</span>${e(C.brand)}<span class="tag">${e(C.prototype)}</span></div>${button("theme", theme === "dark" ? C.actions.light : C.actions.dark, "quiet")}</div></header><div class="banner">${e(C.banner)}</div>`;
+      }
+      function footer() {
+        return `<footer><span>${e(C.copyright)}</span>${button("restart", C.actions.reset, "quiet")}<details><summary>${e(C.actions.testHeading)}</summary><p>${e(C.actions.testPrompt)}</p><p>${e(C.actions.feedback)}</p></details></footer>`;
+      }
+      function picker() {
+        return `<input type="file" id="file-picker" accept="video/*" aria-label="${e(C.source.import)}" hidden>`;
+      }
+      function sourceScreen() {
+        return `<div class="eyebrow">${e(C.step)} 1 ${e(C.of)} 3 · ${e(C.title)}</div><h1 id="lesson" tabindex="-1">${e(C.source.heading)}</h1><p class="intro">${e(C.source.intro)}</p><div class="source-layout"><div><div class="source-options"><div class="source-option">${button("sample", C.source.sample, "primary")}<small>${e(C.source.sampleNote)}</small></div><div class="source-option">${button("import", C.source.import)}<small>${e(C.source.importNote)}</small></div><div class="source-option">${button("record", C.source.record, "", 'disabled aria-describedby="record-note"')}<small id="record-note">${e(C.source.recordUnavailable)}</small></div></div><p class="privacy">${e(C.source.privacy)}</p></div><section class="source-preview" aria-label="${e(C.source.chosen)}">${source ? `<video src="${e(sourceURL)}" controls playsinline preload="metadata" aria-label="${e(source.name)}"></video><div class="source-caption"><h2><code>${e(source.name)}</code></h2><small>${e(source.provided ? C.source.provided : C.source.imported)} · ${source.size.toLocaleString()} ${e(C.files.bytes)}</small><p>${e(source.provided ? C.source.watch : C.source.watchImported)}</p><div class="row">${button("source-download", C.source.download, "quiet")}</div></div>` : `<div class="empty"><div><div class="mark" aria-hidden="true" style="margin:0 auto 12px">▶</div>${e(C.source.empty)}</div></div>`}</section></div><p id="error" class="error" role="alert">${e(error)}</p><p id="status" class="status" role="status">${e(status)}</p><div class="next-row"><span></span>${button("stage-1", C.source.next + " →", "primary", source ? "" : "disabled")}</div>`;
+      }
+      function fileChip() {
+        return `<div class="source-chip"><div><small>${e(C.files.source)} · ${e(source.provided ? C.source.provided : C.source.imported)}</small><code>${e(source.name)}</code></div>${button("stage-0", C.source.change, "quiet")}</div><details class="source-replay" id="source-replay" ${replayOpen ? "open" : ""}><summary>${e(C.files.replay)}</summary><video src="${e(sourceURL)}" controls playsinline preload="metadata" aria-label="${e(source.name)}"></video><small>${e(source.provided ? C.source.provided : C.source.imported)}</small></details>`;
+      }
+      function builder() {
+        if (stage === 1)
+          return `<div class="builder"><label class="check wide"><input type="checkbox" data-option="streams" ${options.streams ? "checked" : ""}><span>${e(C.command.streams)}</span></label><label class="check wide"><input type="checkbox" data-option="format" ${options.format ? "checked" : ""}><span>${e(C.command.format)}</span></label><small class="wide">${e(C.command.json)}</small></div>`;
+        return `<div class="builder"><label>${e(C.command.start)}<input aria-label="${e(C.command.start)}" type="number" data-option="start" value="${e(options.start)}" min="0" step="0.5" inputmode="decimal"><small>${e(C.command.seconds)}</small></label><label>${e(C.command.duration)}<input aria-label="${e(C.command.duration)}" type="number" data-option="duration" value="${e(options.duration)}" min="0.1" step="0.5" inputmode="decimal"><small>${e(C.command.seconds)}</small></label><details class="wide output-settings"><summary>${e(C.command.outputSettings)}</summary><label>${e(C.command.audio)}<select data-option="audio"><option value="keep" ${options.audio === "keep" ? "selected" : ""}>${e(C.command.keepAudio)}</option><option value="remove" ${options.audio === "remove" ? "selected" : ""}>${e(C.command.removeAudio)}</option></select></label><label class="wide">${e(C.command.output)}<input data-option="output" value="${e(options.output)}" autocomplete="off" autocapitalize="off" spellcheck="false"><small>${e(C.command.outputHint)}</small></label></details></div>`;
+      }
+      function flags() {
+        const keys =
+          stage === 1
+            ? ["probeStreams", "probeFormat", "probeJson"]
+            : [
+                "input",
+                "start",
+                "duration",
+                "mapVideo",
+                "mapAudio",
+                "encode",
+                "pixels",
+              ];
+        return `<details class="lesson-details"><summary>${e(C.flags.heading)}</summary>${keys.map((k) => `<p>${e(C.flags[k])}</p>`).join("")}<p>${e(stage === 1 ? C.inspect.predict : C.trim.predict)}</p></details>`;
+      }
+      function commandScreen() {
+        const d = drafts[stage],
+          lesson = stage === 1 ? C.inspect : C.trim;
+        return `<div class="layout"><section><div class="eyebrow">${e(C.step)} ${stage + 1} ${e(C.of)} 3 · ${e(C.steps[stage])}</div><h1 id="lesson" tabindex="-1">${e(lesson.heading)}</h1><p class="intro">${e(stage === 2 && !source.provided ? C.trim.importTask : lesson.intro)}</p>${fileChip()}${flags()}</section><section class="card" aria-labelledby="command-heading"><div class="card-head"><h2 id="command-heading">${e(C.command.heading)}</h2><span class="tag">${stage === 1 ? "ffprobe" : "ffmpeg"}</span></div><div class="segmented" role="group" aria-label="${e(C.command.heading)}">${button("builder", C.command.builder, "", `aria-pressed="${d.mode === "builder"}"`)}${button("manual", C.command.manual, "", `aria-pressed="${d.mode === "manual"}"`)}</div>${switching ? `<div class="warning" role="alert">${e(C.command.customWarning)}<div class="row">${button("keep-manual", C.command.keepEditing)}${button("replace", C.command.replace)}</div></div>` : ""}${d.mode === "builder" ? builder() : `<p class="muted" style="font-size:13px;margin-bottom:12px">${e(d.sourceChanged ? C.actions.sourceChanged : C.command.manualNote)}</p>`}<label class="command-label" for="command">${e(C.command.heading)}<span>POSIX</span></label><textarea id="command" aria-label="${e(C.command.heading)}" rows="${stage === 2 ? 4 : 3}" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" ${d.mode === "builder" ? "readonly" : ""}>${e(command())}</textarea><div class="command-tools">${button("copy", C.command.copy, "quiet")}${d.restored ? button("restore", C.command.restoreTyped, "quiet") : ""}</div><div class="run-row">${button("preview", C.command.preview + " →", "primary")}<small>${e(C.command.previewNote)}</small></div><p id="error" class="error" role="alert">${e(error)}</p><div id="result" tabindex="-1" aria-live="polite">${resultHTML()}</div><p id="status" class="status" role="status">${e(status)}</p><div class="next-row">${button("stage-" + (stage - 1), "← " + C.actions.back, "quiet")}${stage === 1 ? button("stage-2", C.inspect.next + " →") : button("command-download", C.command.download)}</div><p class="boundary">${e(C.command.nativeBoundary)}</p></section></div>`;
+      }
+      function resultHTML() {
+        const d = drafts[stage];
+        if (!d?.result) return "";
+        const result = d.result;
+        if (result.command !== command().trim())
+          return `<div class="result"><p>${e(C.trim.tryAgain)}</p><small>${e(C.command.notRun)}</small></div>`;
+        if (!result.known)
+          return `<div class="result"><h3>${e(C.command.previewNote)}</h3><p>${e(C.inspect.customResult)}</p><pre tabindex="0">${e(result.command)}</pre></div>`;
+        if (stage === 1) {
+          if (!source.provided)
+            return `<div class="result"><h3>${e(C.command.previewNote)}</h3><p>${e(C.inspect.importResult)}</p></div>`;
+          const report = {};
+          if (options.streams) report.streams = REPORT.streams;
+          if (options.format) report.format = REPORT.format;
+          return `<section class="result"><h3>${e(C.inspect.resultHeading)}</h3><p>${e(C.inspect.resultNote)}</p>${options.streams || options.format ? `<div class="metrics">${options.streams ? REPORT.streams.map((stream) => `<span class="metric">${e(stream.codec_type === "video" ? C.inspect.video : C.inspect.audio)}: ${e(stream.codec_name.toUpperCase())}${stream.codec_type === "video" ? ` · ${stream.width} × ${stream.height} ${e(C.inspect.pixels)}` : ""}</span>`).join("") : ""}${options.format ? `<span class="metric">${e(C.inspect.duration)}: ${Number(REPORT.format.duration)} s</span>` : ""}</div>` : ""}<details id="report-details"><summary>${e(C.command.rawOutput)}</summary><div class="output-frame"><pre id="output" class="${wrap ? "wrapped" : ""}" tabindex="0" aria-label="${e(C.command.outputLabel)}">${e(JSON.stringify(report, null, 2))}</pre></div><div class="output-controls">${button("wrap", C.command.wrap, "quiet", `aria-pressed="${wrap}"`)}${button("scroll", C.command.more, "quiet", 'id="more-output" hidden')}</div></details></section>`;
+        }
+        return `<section class="result"><h3>${e(C.trim.resultHeading)}</h3><p>${e(C.trim.resultNote)}</p><div class="metrics"><span class="metric"><code>${e(options.output)}</code></span><span class="metric">${e(options.duration)} s · ${e(C.files.proposed)}</span></div><p>${e(C.trim.review)}</p><div class="row" style="margin-top:12px">${button("export", C.trim.export, "", 'disabled aria-describedby="export-note"')}</div><small id="export-note">${e(C.trim.exportUnavailable)}</small></section>`;
+      }
+      function render(focus = false) {
+        const active = document.activeElement;
+        const activeID = active?.id;
+        const activeAction = active?.dataset?.action;
+        document.documentElement.dataset.theme = theme;
+        app.innerHTML = `${header()}<main>${nav()}${stage === 0 ? sourceScreen() : commandScreen()}${picker()}</main>${footer()}`;
+        const video = document.querySelector("video");
+        if (video) {
+          const renderedSource = source,
+            resumeTime = replayTime;
+          const currentVideo = () =>
+            video.isConnected && source === renderedSource;
+          const restoreTime = () => {
+            if (currentVideo() && resumeTime > 0)
+              video.currentTime = resumeTime;
+          };
+          if (video.readyState >= 1) restoreTime();
+          else
+            video.addEventListener("loadedmetadata", restoreTime, {
+              once: true,
+            });
+          video.addEventListener("timeupdate", () => {
+            if (currentVideo()) replayTime = video.currentTime;
+          });
+          video.addEventListener("error", () => {
+            if (currentVideo()) announce(C.source.playbackError, true);
+          });
+        }
+        document
+          .getElementById("file-picker")
+          .addEventListener("change", (event) =>
+            selectFile(event.target.files[0]),
+          );
+        document.querySelectorAll("[data-option]").forEach((el) =>
+          el.addEventListener("input", () => {
+            options[el.dataset.option] =
+              el.type === "checkbox" ? el.checked : el.value;
+            document.getElementById("command").value = built();
+            error = "";
+            document.getElementById("error").textContent = "";
+            document.getElementById("result").innerHTML = resultHTML();
+          }),
+        );
+        document
+          .getElementById("command")
+          ?.addEventListener("input", (event) => {
+            drafts[stage].text = event.target.value;
+            error = "";
+            document.getElementById("error").textContent = "";
+            document.getElementById("result").innerHTML = resultHTML();
+          });
+        if (!focus) {
+          const restore = activeID
+            ? document.getElementById(activeID)
+            : activeAction
+              ? document.querySelector(
+                  `[data-action="${CSS.escape(activeAction)}"]`,
+                )
+              : null;
+          restore?.focus({ preventScroll: true });
+        }
+        if (focus) {
+          document.getElementById("lesson").focus({ preventScroll: true });
+          window.scrollTo(0, 0);
+        }
+      }
+      function announce(message, failure = false) {
+        if (failure) error = message;
+        else status = message;
+        const el = document.getElementById(failure ? "error" : "status");
+        if (el) el.textContent = message;
+      }
+      function setSource(file, provided) {
+        if (sourceURL.startsWith("blob:")) URL.revokeObjectURL(sourceURL);
+        for (const draft of Object.values(drafts)) {
+          if (draft.mode === "manual") draft.sourceChanged = true;
+        }
+        replayTime = 0;
+        replayOpen = false;
+        source = { name: file.name, size: file.size, provided, file };
+        sourceURL = provided ? SOURCE : URL.createObjectURL(file);
+        // Changing a file invalidates example results but preserves manual drafts.
+        drafts[1].result = null;
+        drafts[2].result = null;
+        status = provided ? C.source.loaded : C.source.importedReady;
+        error = "";
+        render();
+      }
+      function selectFile(file) {
+        if (!file) return;
+        if (
+          !file.type.startsWith("video/") ||
+          file.size > 20 * 1024 * 1024 ||
+          file.size === 0
+        ) {
+          announce(C.command.invalidImport, true);
+          return;
+        }
+        setSource(file, false);
+      }
+      function download(blob, name) {
+        const url = URL.createObjectURL(blob),
+          a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+      }
+      function preview() {
+        const value = command().trim(),
+          d = drafts[stage];
+        if (!value) return announce(C.command.empty, true);
+        if (!/^(ffmpeg|ffprobe)(\s|$)/.test(value))
+          return announce(C.command.wrongTool, true);
+        if (d.mode === "builder" && stage === 2) {
+          if (
+            options.start === "" ||
+            !Number.isFinite(+options.start) ||
+            +options.start < 0 ||
+            options.duration === "" ||
+            !Number.isFinite(+options.duration) ||
+            +options.duration <= 0
+          )
+            return announce(C.command.invalidTime, true);
+          if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}\.mp4$/.test(options.output))
+            return announce(C.command.invalidOutput, true);
+          if (options.output === source.name)
+            return announce(C.command.sameOutput, true);
+          if (source.provided && +options.start + +options.duration > 10)
+            return announce(C.command.rangeOutside, true);
+        }
+        if (
+          d.mode === "builder" &&
+          stage === 1 &&
+          !options.streams &&
+          !options.format
+        )
+          return announce(C.command.chooseReport, true);
+        error = "";
+        status = "";
+        d.result = { command: value, known: value === built() };
+        render();
+        requestAnimationFrame(() => {
+          document.getElementById("result").focus({ preventScroll: true });
+          document
+            .getElementById("result")
+            .scrollIntoView({ block: "nearest" });
+        });
+      }
+      document.addEventListener("click", async (event) => {
+        const target = event.target.closest("button[data-action]");
+        if (!target || target.disabled) return;
+        const action = target.dataset.action,
+          d = drafts[stage];
+        if (action.startsWith("stage-")) {
+          const next = Number(action.slice(6));
+          if (next && !source) return;
+          stage = next;
+          switching = false;
+          status = "";
+          error = "";
+          render(true);
+        } else if (action === "theme") {
+          theme = theme === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          target.textContent =
+            theme === "dark" ? C.actions.light : C.actions.dark;
+        } else if (action === "sample") {
+          const bytes = Uint8Array.from(atob(SOURCE.split(",")[1]), (c) =>
+            c.charCodeAt(0),
+          );
+          setSource(
+            new File([bytes], "capture.mp4", { type: "video/mp4" }),
+            true,
+          );
+        } else if (action === "import")
+          document.getElementById("file-picker").click();
+        else if (action === "source-download")
+          download(source.file, source.name);
+        else if (action === "manual") {
+          if (d.mode !== "manual") d.text = built();
+          d.mode = "manual";
+          switching = false;
+          render();
+          document.getElementById("command").focus({ preventScroll: true });
+        } else if (action === "builder") {
+          if (d.mode === "manual" && d.text !== built()) switching = true;
+          else d.mode = "builder";
+          render();
+        } else if (action === "keep-manual") {
+          switching = false;
+          render();
+          document.getElementById("command").focus();
+        } else if (action === "replace") {
+          d.restored = d.text;
+          d.mode = "builder";
+          switching = false;
+          render();
+        } else if (action === "restore") {
+          d.text = d.restored;
+          d.mode = "manual";
+          switching = false;
+          status = C.command.typedRestored;
+          render();
+          document.getElementById("command").focus();
+        } else if (action === "preview") preview();
+        else if (action === "copy") {
+          try {
+            await navigator.clipboard.writeText(command());
+            announce(C.command.copied);
+          } catch {
+            document.getElementById("command").focus();
+            document.getElementById("command").select();
+            announce(C.command.copyFailed);
+          }
+        } else if (action === "command-download") {
+          download(
+            new Blob(
+              [
+                "#!/bin/sh\n# " +
+                  C.copyright +
+                  "\n# " +
+                  C.command.downloadNote +
+                  "\n" +
+                  command() +
+                  "\n",
+              ],
+              { type: "text/plain" },
+            ),
+            "video-lab-command.sh",
+          );
+          announce(C.command.downloadNote);
+        } else if (action === "wrap") {
+          wrap = !wrap;
+          document.getElementById("output").classList.toggle("wrapped", wrap);
+          target.setAttribute("aria-pressed", String(wrap));
+          measureOutput();
+        } else if (action === "scroll") {
+          const out = document.getElementById("output");
+          out.scrollBy({ left: out.clientWidth * 0.8 });
+          out.focus({ preventScroll: true });
+        } else if (action === "restart") {
+          if (sourceURL.startsWith("blob:")) URL.revokeObjectURL(sourceURL);
+          source = null;
+          replayTime = 0;
+          replayOpen = false;
+          sourceURL = "";
+          drafts = { 1: initialDraft(), 2: initialDraft() };
+          options = {
+            start: "2",
+            duration: "6",
+            audio: "keep",
+            output: "demo.mp4",
+            streams: true,
+            format: true,
+          };
+          stage = 0;
+          switching = false;
+          error = "";
+          status = C.actions.resetDone;
+          render(true);
+        }
+      });
+      function measureOutput() {
+        const out = document.getElementById("output");
+        if (!out) return;
+        const more =
+          !wrap && out.scrollWidth - out.clientWidth - out.scrollLeft > 2;
+        document.getElementById("more-output").hidden = !more;
+        out.parentElement.dataset.overflow = String(more);
+      }
+      document.addEventListener(
+        "toggle",
+        (event) => {
+          if (event.target.id === "source-replay")
+            replayOpen = event.target.open;
+          measureOutput();
+        },
+        true,
+      );
+      document.addEventListener("scroll", measureOutput, true);
+      window.addEventListener("resize", measureOutput);
+      render();
+    </script>
+  </body>
+</html>

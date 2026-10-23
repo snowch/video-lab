@@ -1,0 +1,15 @@
+# Prototype verification
+
+Copyright © 2026 Christopher Snow.
+
+Final independently checked standalone HTML: 225956 bytes, SHA-256 `cc98a19bd476d0322dee7b90e5501c3f157c14ec347c086e1eb8c77aafe0f5eb`. Template, separate reviewed copy and embedded original are reproducible with `node docs/notes/command-ux/build.mjs`; the published path is `/video-lab/optional/command-workbench.html`. The optional path is excluded from the existing baseline offline bundle. Downloading this HTML includes its practice video; it has no runtime network dependency or application-storage writes.
+
+Local `npm run check` exited zero: 14 unit files / 75 tests; 130 browser tests, 3.1 minutes; formatting, copyright, platform sync, strict TypeScript, native fixtures and production build passed. The two final isolated prototype fixes (stale video events and trailing-newline comparison) received independent focused checks after that build. `npx prettier --check .` and `git diff --check` passed on the final source. CI will run the complete check on the committed version before deployment.
+
+The builder's focused browser script verified actual original source playback/download bytes, true local import (including spaces, apostrophes and literal shell metacharacters in names), visible native command changes, explicit manual draft replacement/restoration, rejection of invented command names, unmeasured import/custom-command notices, .sh download contents, all three stages without horizontal overflow and enabled buttons at least 44px high. Chromium phone 390 dark, tablet 820 light, desktop 1365 light and Firefox phone 390 light passed. Standalone `file://` original playback and inspection flow also passed.
+
+The downloaded builder command executed with native FFmpeg on `my demo's $(touch nope).mp4`, safely POSIX-quoted, and produced a four-second output verified by ffprobe. This is developer validation of the command text, not execution by the mockup. The prototype's Preview run remains simulated and explicitly labelled; recording and edited-video export remain visibly unconnected.
+
+Separate drafting, reader, sceptic and checker records are adjacent. The final checker exercised five further viewport/theme/browser cases plus standalone offline use, real clipboard and clipboard-denied fallback. Its race regression exercised ten playing-source replacements and restart in each of Chromium and Firefox; new source positions remained zero. Final keyboard/result focus and trailing-newline pasted commands passed. Physical touchscreen keyboards and a screen reader were not tested. This is a usability prototype, not a new completed course or production processing release.
+
+Local logs and scripts are under `/workspace/scratch/command-ux/`, including `check-final.log`, `verify-final.log`, `race-fixed.log`, `format-final.log`, checker reports and the prepared public-site check. Production source, synchronised platform and existing course state code are unchanged. The pre-existing untracked learner audit was preserved.
