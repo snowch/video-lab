@@ -18,6 +18,7 @@ const paths = (await walk("dist"))
     (p) =>
       !p.endsWith("/sw.js") &&
       !p.endsWith("/offline-manifest.json") &&
+      !p.endsWith("/release.json") &&
       !p.startsWith("dist/encoder/") &&
       !p.startsWith("dist/optional/"),
   )

@@ -44,6 +44,7 @@ import {
 } from "./journey/pages";
 import { routeFor } from "./journey/routes";
 import { j } from "./journey/strings";
+import { ReleaseStatus } from "./release/ReleaseStatus";
 const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
@@ -307,6 +308,7 @@ function App() {
       </main>
       <footer className="site-footer">
         <span>{ui.copyright}</span>
+        <ReleaseStatus />
         <a href="https://github.com/snowch/video-lab/blob/main/docs/sources.md">
           {ui.source}
         </a>

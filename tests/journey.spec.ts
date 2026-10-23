@@ -387,7 +387,9 @@ test("cancelled and failed processing leaves no stale output and can retry", asy
   await page
     .getByRole("button", { name: j.common.cancel, exact: true })
     .click();
-  await expect(page.getByRole("status")).toHaveText(j.common.cancelled);
+  await expect(page.getByRole("main").getByRole("status")).toHaveText(
+    j.common.cancelled,
+  );
   release();
   await context.unroute("**/encoder/**", hold);
   await expect(

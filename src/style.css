@@ -1233,3 +1233,18 @@ code {
     flex: 1 1 150px;
   }
 }
+
+.release-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+  max-width: 100%;
+  font-size: 0.875rem;
+}
+.release-status [role="status"] {
+  font-weight: 600;
+}
+.release-status code {
+  font-size: inherit;
+}
