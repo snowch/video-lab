@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-**CLI-first revision, 23 October 2026:** the owner requires the labs to be CLI rather than GUI. The production path now uses editable commands against real FFmpeg/ffprobe WASM and persistent browser files. See [the implementation/review plan](notes/cli/plan.md). Existing fixed-fixture references and saved work remain. Validation and deployment for this revision are recorded separately under `notes/cli/`; the historical closure below applies to the prior interface.
+**CLI-first revision, 23 October 2026:** the owner requires the labs to be CLI rather than GUI. The reviewed and deployed production path now uses editable commands against real FFmpeg/ffprobe WASM and persistent browser files. See [the implementation/review plan](notes/cli/plan.md). Existing fixed-fixture references and saved work remain. Validation and deployment for this revision are recorded separately under `notes/cli/`; the historical closure below applies to the prior interface.
 
 **Previous status, 23 October 2026:** the initial five-step capture-to-export path is implemented. Independent review, the final local/CI quality gates and public deployment verification have passed; [the acceptance ledger](notes/issue-3/acceptance.md) records closure evidence. The [redesign record](notes/curriculum-redesign.md) explains the individual retained sections and migration.
 
@@ -53,7 +53,7 @@ Offline lessons and the approximately 32.4 MB additional processing package have
 
 The Issue 3 owner request authorises the complete initial path while allowing advanced modules 4–7 and 9–10 to remain planned. The first produced demo now belongs to Publish, module 8; the later Final project does not make that outcome provisional.
 
-Separate verified-fact drafting and outline review preceded implementation. The built reader completed an actual provided-source → Build → Inspect → Edit → Publish run and recorded findings, not blanket approval. The sceptic and checker independently verify ranked fixes, including actual downloaded recipes and the sparse-picture timing regression. The final local `npm run check` passed 54 unit and 105 browser tests; [public Pages verification](notes/issue-3/deployment.md) confirms the worker/core paths, actual capture/processing and offline upgrade. See [reviews](notes/issue-3/review/) and [acceptance](notes/issue-3/acceptance.md).
+Separate verified-fact drafting and outline review preceded implementation. The built reader completed an actual provided-source → Build → Inspect → Edit → Publish run and recorded findings, not blanket approval. The sceptic and checker independently verify ranked fixes, including actual downloaded recipes and the sparse-picture timing regression. The historical Issue 3 local `npm run check` passed 54 unit and 105 browser tests (the subsequent CLI revision passes 69 unit and 125 browser tests); [public Pages verification](notes/issue-3/deployment.md) confirms the worker/core paths, actual capture/processing and offline upgrade. See [reviews](notes/issue-3/review/) and [acceptance](notes/issue-3/acceptance.md).
 
 Later production topics must arrive as independent tested slices. Do not describe future filter/audio/caption/AI controls as implemented. Use primary sources and original teaching; the photographed tutorial is a topic inspiration, not a repository source to copy.
 
