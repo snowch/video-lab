@@ -10,18 +10,8 @@ import { cli, lessons } from "../src/cli/strings";
 import { offline } from "../src/offline/strings";
 import { j } from "../src/journey/strings";
 const status = (page: Page) => page.locator(".command-workspace [role=status]");
-async function command(page: Page, text: string, result = cli.done) {
-  await expect(page.locator(".cli-lab")).toHaveAttribute(
-    "data-step",
-    routeFor(new URL(page.url()).hash).step!,
-  );
-  await page.getByRole("textbox", { name: cli.input, exact: true }).fill(text);
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .press("Enter");
-  await expect(status(page)).toHaveText(result, { timeout: 20000 });
-}
-const output = (page: Page) => page.getByLabel(cli.output, { exact: true });
+import { runCommand as command, clickAction } from "./course-actions";
+const output = (page: Page) => page.locator(".command-workspace");
 const probeCommand = (file: string) =>
   `ffprobe -v error -show_streams -show_format -of json ${file}`;
 const buildCommand = (rate: number, name: string) =>
@@ -55,7 +45,9 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   await page.getByRole("link", { name: /1 · How a video/ }).click();
   await command(page, "fixtures");
   await command(page, buildCommand(1, "video.mp4"));
-  await expect(output(page)).toContainText(cli.cleanupNotice);
+  await expect(page.getByLabel(cli.output, { exact: true })).not.toContainText(
+    cli.cleanupNotice,
+  );
   await command(page, probeCommand("video.mp4"));
   await expect(output(page)).toContainText("3.000000");
   await command(page, buildCommand(2, "faster.mp4"));
@@ -70,16 +62,16 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
     muxed.streams.map((s: { codec_type: string }) => s.codec_type),
   ).toEqual(["video", "audio"]);
   await page.getByRole("link", { name: /2 · Inspect and prepare/ }).click();
-  await command(page, probeCommand("capture.mp4"));
-  await expect(output(page)).toContainText("10.000000");
+  await command(page, probeCommand("mousepad-demo.mp4"));
+  await expect(output(page)).toContainText("12.000000");
   await page.getByRole("link", { name: /3 · Cut and join/ }).click();
   const trim = lessons.edit.examples[0]!.command;
   await command(page, trim);
   const trimmed = nativeProbe(await download(page, "cut.mp4"));
-  expect(Number(trimmed.format.duration)).toBeCloseTo(4, 1);
+  expect(Number(trimmed.format.duration)).toBeCloseTo(6, 1);
   expect(
     trimmed.streams.map((s: { codec_type: string }) => s.codec_type),
-  ).toEqual(["video", "audio"]);
+  ).toEqual(["video"]);
   const join = lessons.edit.examples[1]!.command;
   await command(page, join);
   const joined = nativeProbe(await download(page, "joined.mp4"));
@@ -92,11 +84,11 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   expect(recipe.command).toBe(join);
   expect(recipe.args).toContain("-filter_complex");
   expect(
-    recipe.inputs.find((i: { name: string }) => i.name === "capture.mp4")
+    recipe.inputs.find((i: { name: string }) => i.name === "mousepad-demo.mp4")
       .sha256,
   ).toBe(
     createHash("sha256")
-      .update(readFileSync("public/media/build-queue.mp4"))
+      .update(readFileSync("public/media/mousepad-demo.mp4"))
       .digest("hex"),
   );
   await page.reload();
@@ -127,7 +119,7 @@ test("tool errors, quoting errors, cancellation, history and explicit overwrite 
   await command(page, buildCommand(1, "video.mp4"));
   const first = readFileSync(await download(page, "video.mp4"));
   await command(page, "ffmpeg -definitely-not-an-option video.mp4", cli.failed);
-  await expect(output(page)).toContainText(cli.overwrite);
+  await expect(output(page)).toContainText("already exists");
   await command(page, "ffmpeg -i missing.mp4 -c:v libx264 bad.mp4", cli.failed);
   await expect(output(page)).toContainText("missing.mp4");
   await command(page, "clear");
@@ -223,6 +215,7 @@ test("actual MediaRecorder bytes, denied capture, explicit start and navigation 
           .requests,
     ),
   ).toBe(0);
+  await command(page, "sample");
   await command(page, "capture", cli.failed);
   await command(page, "capture", cli.capture.recording);
   await expect
@@ -246,6 +239,9 @@ test("actual MediaRecorder bytes, denied capture, explicit start and navigation 
   const file = await page
     .locator(".cli-preview video")
     .getAttribute("aria-label");
+  await expect(page.locator(".command-workspace")).toContainText(
+    `Selected source: ${file}`,
+  );
   const probe = nativeProbe(await download(page, file!));
   expect(probe.streams[0].codec_type).toBe("video");
   expect(probe.streams[0].width).toBe(640);
@@ -338,12 +334,7 @@ test("imported own media and legacy project migrate without changing reference c
   await command(page, "ls");
   await expect(output(page)).toContainText("capture.mp4");
   const chooser = page.waitForEvent("filechooser");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .fill("import");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .press("Enter");
+  await clickAction(page, "Import file");
   await (
     await chooser
   ).setFiles({
@@ -412,7 +403,7 @@ test("saved files survive offline reload; processing requires deliberately saved
   await command(page, probeCommand("video.mp4"));
   await expect(output(page)).toContainText("3.000000");
 });
-test("keyboard command entry, light/dark layout and session-only fallback remain usable", async ({
+test("native editor, argument builder, output scrolling and session-only files remain usable", async ({
   page,
 }) => {
   await page.addInitScript(() =>
@@ -422,73 +413,150 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
       },
     }),
   );
-  await page.goto("./#/capture");
+  await page.goto("./#/inspect");
   await command(page, "sample");
   await expect(page.getByText(cli.session, { exact: true })).toBeVisible();
-  await command(page, "help all");
-  await expect(output(page)).toContainText("ffmpeg");
-  const wrap = page.getByRole("button", { name: cli.wrapLines, exact: true });
-  await expect(wrap).toHaveAttribute("aria-pressed", "false");
-  await expect(output(page)).toHaveCSS("white-space", "pre");
-  const originalOutput = await output(page).textContent();
-  const right = page.getByRole("button", { name: cli.moreOutput, exact: true });
-  const left = page.getByRole("button", {
-    name: cli.previousOutput,
-    exact: true,
-  });
-  await expect(right).toBeVisible();
-  await expect(left).toHaveCount(0);
-  await expect(page.locator(".terminal-frame")).toHaveAttribute(
-    "data-right",
-    "true",
-  );
-  await right.click();
-  await expect(output(page)).toBeFocused();
-  await expect(left).toBeVisible();
-  await output(page).evaluate((el) => {
-    el.scrollLeft = el.scrollWidth;
-  });
-  await expect(right).toHaveCount(0);
-  await expect(page.locator(".terminal-frame")).toHaveAttribute(
-    "data-right",
-    "false",
-  );
-  await left.click();
-  await expect(right).toBeVisible();
-  expect(await output(page).textContent()).toBe(originalOutput);
-  if (page.viewportSize()!.width < 500) {
-    expect(
-      await output(page).evaluate((el) => {
-        el.scrollLeft = el.scrollWidth;
-        return el.scrollLeft;
-      }),
-    ).toBeGreaterThan(0);
-  }
-  await wrap.focus();
-  await page.keyboard.press("Space");
-  await expect(wrap).toHaveAttribute("aria-pressed", "true");
-  await expect(output(page)).toHaveCSS("white-space", "pre-wrap");
-  await expect(right).toHaveCount(0);
-  await expect(left).toHaveCount(0);
-  await expect(page.locator(".terminal-frame")).toHaveAttribute(
-    "data-right",
-    "false",
-  );
-  expect(await output(page).textContent()).toBe(originalOutput);
-  expect(
-    await output(page).evaluate((el) => el.scrollWidth <= el.clientWidth),
-  ).toBe(true);
-  await wrap.click();
-  await expect(output(page)).toHaveCSS("white-space", "pre");
   const input = page.getByRole("textbox", { name: cli.input, exact: true });
-  await input.fill("ffmpeg -i capture.mp4");
+  await input.fill("ffprobe mousepad-demo.mp4");
+  await page
+    .getByRole("button", { name: "Build command", exact: true })
+    .click();
+  await page.locator(".native-builder input").last().fill("missing.mp4");
+  await page
+    .getByRole("button", { name: "Apply to command", exact: true })
+    .click();
+  await expect(input).toHaveValue("ffprobe mousepad-demo.mp4");
+  await page
+    .getByRole("button", { name: "Keep my draft", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Apply to command", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Replace draft", exact: true })
+    .click();
+  await expect(input).toHaveValue("ffprobe missing.mp4");
+  await page
+    .getByRole("button", { name: "Restore previous draft", exact: true })
+    .click();
+  await expect(input).toHaveValue("ffprobe mousepad-demo.mp4");
+  await input.press("Enter");
+  await expect(status(page)).toHaveText(cli.done, { timeout: 120000 });
+  const raw = page.getByLabel(cli.output, { exact: true });
+  await expect(raw).toContainText("Duration: 00:00:12.00");
+  await expect(raw).toContainText("Stream #0:0");
+  await expect(raw).not.toContainText(cli.probeSuccess);
+  await expect(raw).not.toContainText(cli.done);
+  await expect(raw).toHaveCSS("white-space", "pre");
+  const right = page.getByRole("button", { name: cli.moreOutput, exact: true });
+  await expect(right).toBeVisible();
+  await right.click();
+  await expect(
+    page.getByRole("button", { name: cli.previousOutput, exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: cli.wrapLines, exact: true }).click();
+  await expect(raw).toHaveCSS("white-space", "pre-wrap");
+  await expect(right).toHaveCount(0);
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
+  await input.fill("ffprobe -v error mousepad-demo.mp4");
+  await page.locator(".native-tools > summary").click();
+  await page
+    .getByRole("button", { name: "Use this command", exact: true })
+    .click();
+  await expect(page.locator(".native-tools")).toHaveAttribute("open", "");
+  await expect(
+    page.getByRole("button", { name: "Replace draft", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Replace draft", exact: true }),
+  ).toBeFocused();
+  await page
+    .getByRole("button", { name: "Keep my draft", exact: true })
+    .click();
+  await expect(input).toHaveValue("ffprobe -v error mousepad-demo.mp4");
+  await input.fill("sample");
+  await input.press("Enter");
+  await expect(status(page)).toHaveText(cli.failed);
+  await expect(
+    page.getByLabel("Workspace feedback", { exact: true }),
+  ).toContainText("Enter an ffmpeg or ffprobe command");
+  await expect(raw).not.toContainText("$ sample");
+  await input.fill("ffprobe");
   await input.press("Shift+Enter");
-  await input.press("1");
-  await expect(input).toHaveValue("ffmpeg -i capture.mp4\n1");
-  await command(page, "play capture.mp4");
+  await input.press("m");
+  await expect(input).toHaveValue("ffprobe\nm");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test("source controls retain actual imported names, current tasks, comparisons and downloads", async ({
+  page,
+}) => {
+  await page.goto("./#/capture");
+  const chooser = page.waitForEvent("filechooser");
+  await clickAction(page, "Import file");
+  await (
+    await chooser
+  ).setFiles({
+    name: "my capture.mp4",
+    mimeType: "video/mp4",
+    buffer: readFileSync("public/media/mousepad-demo.mp4"),
+  });
+  await expect(status(page)).toHaveText(cli.done);
+  await expect(
+    page.getByLabel("Workspace feedback", { exact: true }),
+  ).toContainText("my-capture.mp4");
+  const next = page.getByRole("button", { name: guided.next, exact: true });
+  await next.click();
+  await next.click();
+  await expect(page.locator(".task-panel")).toContainText(
+    "Replay my-capture.mp4",
+  );
+  await command(page, "play my-capture.mp4");
+  await expect(page.locator(".cli-preview video")).toHaveAttribute(
+    "aria-label",
+    "my-capture.mp4",
+  );
+  await next.click();
+  await expect(page.locator(".task-panel")).toContainText(
+    "Download my-capture.mp4",
+  );
+  expect(
+    Number(nativeProbe(await download(page, "my-capture.mp4")).format.duration),
+  ).toBe(12);
+  await page.locator(".native-tools > summary").click();
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .fill("ffprobe my-capture.mp4");
+  await page.reload();
+  await page.locator(".native-tools > summary").click();
+  await expect(
+    page.getByRole("textbox", { name: cli.input, exact: true }),
+  ).toHaveValue("ffprobe my-capture.mp4");
+  await page.getByRole("link", { name: /2 · Inspect and prepare/ }).click();
+  await expect(page.locator(".cli-lab")).toHaveAttribute(
+    "data-step",
+    "inspect",
+  );
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
+  await expect(page.locator(".task-panel pre code")).toHaveText(
+    "ffprobe my-capture.mp4",
+  );
+  await page
+    .getByRole("button", { name: "Use this command", exact: true })
+    .click();
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .press("Enter");
+  await expect(status(page)).toHaveText(cli.done, { timeout: 120000 });
+  await expect(page.getByLabel(cli.output, { exact: true })).toContainText(
+    "Duration: 00:00:12.00",
+  );
   await command(page, "reference build");
   await command(page, "reference edit");
-  await expect(output(page)).toContainText(cli.referenceSaved);
   expect(
     Number(
       nativeProbe(await download(page, "reference-edit.mp4")).format.duration,
@@ -501,107 +569,4 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await expect(page.locator(".cli-preview video")).toBeVisible();
-});
-
-test("guided tasks keep source choices, current help and actual imported filenames beside the prompt", async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    if (navigator.mediaDevices)
-      Object.defineProperty(navigator.mediaDevices, "getDisplayMedia", {
-        value: undefined,
-        configurable: true,
-      });
-  });
-  await page.goto("./#/capture");
-  const task = page.locator(".task-panel");
-  await expect(task.getByRole("heading", { level: 2 })).toHaveText(
-    guided.capture.getSource,
-  );
-  await expect(task).toContainText(guided.capture.unsupported);
-  await expect(
-    page.getByRole("button", {
-      name: guided.capture.recordChoice,
-      exact: true,
-    }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("button", {
-      name: guided.capture.sampleChoice,
-      exact: true,
-    }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await command(page, "help");
-  await expect(output(page)).toContainText(guided.helpAll);
-  await expect(output(page)).toContainText("sample");
-  await expect(output(page)).not.toContainText("Limits:");
-  await command(page, "help all");
-  await expect(output(page)).toContainText("Limits:");
-  await page
-    .getByRole("button", { name: guided.capture.importChoice, exact: true })
-    .click();
-  await command(page, "ls");
-  await expect(output(page)).toContainText(cli.empty);
-  const chooser = page.waitForEvent("filechooser");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .fill("import");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .press("Enter");
-  await (
-    await chooser
-  ).setFiles({
-    name: "my-source.mp4",
-    mimeType: "video/mp4",
-    buffer: readFileSync("public/media/build-queue.mp4"),
-  });
-  await expect(status(page)).toHaveText(cli.done);
-  const next = page
-    .locator(".command-workspace")
-    .getByRole("button", { name: guided.next, exact: true });
-  await next.click();
-  await expect(task.getByRole("heading", { level: 2 })).toHaveText(
-    guided.capture.listFiles,
-  );
-  await command(page, "ls");
-  await next.click();
-  await expect(task).toContainText("play my-source.mp4");
-  await command(page, "help");
-  await expect(output(page)).toContainText("play my-source.mp4");
-  await command(page, "play my-source.mp4");
-  await expect(page.locator(".cli-preview video")).toHaveAttribute(
-    "aria-label",
-    "my-source.mp4",
-  );
-  await next.click();
-  await expect(task).toContainText("download my-source.mp4");
-  expect(
-    Number(nativeProbe(await download(page, "my-source.mp4")).format.duration),
-  ).toBeCloseTo(10, 1);
-  await page
-    .getByRole("button", { name: guided.previous, exact: true })
-    .click();
-  await expect(task).toContainText("play my-source.mp4");
-  const positions = await page.evaluate(() => ({
-    task: document
-      .querySelector(".task-panel")!
-      .getBoundingClientRect()
-      .toJSON(),
-    terminal: document
-      .querySelector(".command-workspace")!
-      .getBoundingClientRect()
-      .toJSON(),
-    width: innerWidth,
-    documentWidth: document.documentElement.scrollWidth,
-  }));
-  if (positions.width >= 900)
-    expect(positions.task.right).toBeLessThanOrEqual(positions.terminal.left);
-  else
-    expect(positions.task.bottom).toBeLessThanOrEqual(positions.terminal.top);
-  expect(positions.documentWidth).toBe(positions.width);
-  expect(
-    await output(page).evaluate((el) => el.clientHeight),
-  ).toBeLessThanOrEqual(256);
 });

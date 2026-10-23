@@ -5,6 +5,7 @@ import { home } from "../src/content/home.strings";
 import { cli } from "../src/cli/strings";
 import { referenceLessons, refStrings } from "../src/cli/reference.strings";
 import { inspectionCommand } from "../src/cli/reference-model";
+import { clickAction } from "./course-actions";
 import { command, terminal, downloaded, visiblePlay } from "./cli-helpers";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -22,7 +23,7 @@ test("introduction, theme, reference deep links and navigation all lead to comma
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
   await page.getByRole("link", { name: home.start, exact: true }).click();
   await expect(
-    page.getByRole("textbox", { name: cli.input, exact: true }),
+    page.getByRole("button", { name: "Import file", exact: true }).first(),
   ).toBeVisible();
   await page.goto("./#/module-0/investigation");
   await expect(page).toHaveURL(/inspect\/reference\/investigation$/);
@@ -119,12 +120,7 @@ test("incomplete or imported report fails; progressive command hints and correct
   await expect(terminal(page)).toContainText(refStrings.checkPassed);
   const report = readFileSync(await downloaded(page, "inspect-report.json"));
   const chooser = page.waitForEvent("filechooser");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .fill("import");
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .press("Enter");
+  await clickAction(page, "Import file");
   await (
     await chooser
   ).setFiles({
@@ -134,6 +130,9 @@ test("incomplete or imported report fails; progressive command hints and correct
   });
   await expect(page.locator(".command-workspace [role=status]")).toHaveText(
     cli.done,
+  );
+  await expect(page.locator(".selected-source code")).not.toHaveText(
+    "imported-report.json",
   );
   await command(page, "check inspect imported-report.json", cli.failed);
   await expect(terminal(page)).toContainText(refStrings.missingEvidence);
@@ -159,9 +158,12 @@ test("every reachable production and reference lab is CLI on desktop and phone",
     "module-2",
   ]) {
     await page.goto(`./#/${route}`);
-    await expect(
-      page.getByRole("textbox", { name: cli.input, exact: true }),
-    ).toBeVisible();
+    const input = page.getByRole("textbox", { name: cli.input, exact: true });
+    if (route === "capture" || route === "publish") {
+      await expect(input).toBeHidden();
+      await page.locator(".native-tools > summary").click();
+    }
+    await expect(input).toBeVisible();
     expect(
       await page
         .locator(
@@ -197,4 +199,42 @@ test("offline reading and provided playback do not silently load the processing 
     cli.failed,
   );
   await expect(terminal(page)).toContainText("absent.mp4");
+});
+
+test("reflection opens a personal draft without saving an answer and downloads the actual custom note", async ({
+  page,
+}) => {
+  for (const lab of ["inspect", "edit"]) {
+    await page.goto(`./#/${lab}/reference/reflection`);
+    await page
+      .getByRole("button", { name: "Write a note", exact: true })
+      .click();
+    await expect(page.getByLabel("Note text", { exact: true })).toBeFocused();
+    await expect(page.getByLabel("Note text", { exact: true })).toHaveValue("");
+    await expect(page.locator(".workspace-files")).not.toContainText(
+      "inspection-notes.txt",
+    );
+    const name = `my-${lab}.txt`,
+      text = `My own ${lab} observation.`;
+    await page.getByLabel("Note filename", { exact: true }).fill(name);
+    await page.getByLabel("Note text", { exact: true }).fill(text);
+    await page
+      .getByRole("button", { name: "Write a note", exact: true })
+      .click();
+    await expect(page.getByLabel("Note filename", { exact: true })).toHaveValue(
+      name,
+    );
+    await expect(page.getByLabel("Note text", { exact: true })).toHaveValue(
+      text,
+    );
+    await expect(page.locator(".workspace-files")).not.toContainText(name);
+    await page.getByRole("button", { name: "Save note", exact: true }).click();
+    await expect(page.locator(".command-workspace [role=status]")).toHaveText(
+      cli.done,
+    );
+    expect(readFileSync(await downloaded(page, name), "utf8")).toBe(text);
+    await page.reload();
+    await command(page, `cat ${name}`);
+    await expect(terminal(page)).toContainText(text);
+  }
 });

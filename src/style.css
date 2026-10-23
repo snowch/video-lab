@@ -1419,3 +1419,65 @@ code {
     top: 1rem;
   }
 }
+
+/* Course workspaces share native commands and ordinary file controls. */
+.course-actions button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 0.75rem;
+}
+.workspace-feedback {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 18rem;
+  overflow: auto;
+}
+.workspace-feedback:empty {
+  display: none;
+}
+.workspace-files li {
+  padding-block: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.workspace-files button {
+  font-size: 0.9rem;
+}
+.native-builder {
+  border: 1px solid var(--line);
+  padding: 1rem;
+  margin-block: 1rem;
+  min-width: 0;
+}
+.native-builder label,
+.reference-controls label {
+  display: block;
+  margin-block: 0.75rem;
+}
+.native-builder input,
+.reference-controls input,
+.reference-controls textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem;
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+.native-builder pre,
+.draft-confirm pre {
+  overflow: auto;
+  white-space: pre;
+  max-width: 100%;
+}
+.workspace-transcripts {
+  min-width: 0;
+}

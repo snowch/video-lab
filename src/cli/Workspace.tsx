@@ -7,7 +7,7 @@ import { assetURL, EncoderOffline } from "../journey/shared";
 import { routeFor, type StepName } from "../journey/routes";
 import { guided } from "./guided.strings";
 import { lessonTasks, captureTasks } from "./tasks";
-import { parseCommand, toolPlan, validFilename } from "./command";
+import { parseCommand, validFilename } from "./command";
 import {
   checkFiles,
   disk,
@@ -27,6 +27,9 @@ import {
   type CheckItem,
 } from "./reference-model";
 import { legacyProgress, loadChecks, progressKey } from "./progress";
+import { availableName, planRun } from "../workbench/model";
+import { NativeBuilder } from "./NativeBuilder";
+import { courseUI as ux, browserAction } from "./course.strings";
 const historyKey = "video-lab:cli-history";
 function savedHistory(): string[] {
   try {
@@ -63,14 +66,32 @@ export function CommandLab({
   const captureSupported =
     typeof navigator.mediaDevices?.getDisplayMedia === "function" &&
     typeof MediaRecorder !== "undefined";
-  const [sourcePath, setSourcePath] = useState<"record" | "sample" | "import">(
-    () => (captureSupported ? "record" : "sample"),
-  );
   const [taskIndex, setTaskIndex] = useState(0);
   const [wrapOutput, setWrapOutput] = useState(false);
   const [outputEdges, setOutputEdges] = useState({ left: false, right: false });
   const [lines, setLines] = useState<string[]>([]),
-    [command, setCommand] = useState("");
+    [command, setCommand] = useState(() => {
+      try {
+        return localStorage.getItem("video-lab:course-command-draft") ?? "";
+      } catch {
+        return "";
+      }
+    });
+  const [feedback, setFeedback] = useState<string[]>([]);
+  const [diagnostic, setDiagnostic] = useState("");
+  const [pendingCommand, setPendingCommand] = useState<string>();
+  const [previousDraft, setPreviousDraft] = useState<string>();
+  const [builder, setBuilder] = useState(false);
+  const [noteName, setNoteName] = useState("reflection.txt"),
+    [noteText, setNoteText] = useState("");
+  const [sourceChoice, setSourceChoice] = useState(() => {
+    try {
+      return localStorage.getItem("video-lab:source") ?? "";
+    } catch {
+      return "";
+    }
+  });
+  const followOutput = useRef(true);
   const [notice, setNotice] = useState(cli.ready),
     [busy, setBusy] = useState(false);
   const [captureState, setCaptureState] = useState<CaptureState>("idle");
@@ -82,6 +103,10 @@ export function CommandLab({
   const input = useRef<HTMLTextAreaElement>(null),
     picker = useRef<HTMLInputElement>(null),
     terminal = useRef<HTMLPreElement>(null);
+  const nativeTools = useRef<HTMLDetailsElement>(null);
+  const replacement = useRef<HTMLButtonElement>(null);
+  const noteForm = useRef<HTMLDetailsElement>(null),
+    noteInput = useRef<HTMLTextAreaElement>(null);
   const generation = useRef(0),
     locked = useRef(false),
     mounted = useRef(true),
@@ -89,7 +114,38 @@ export function CommandLab({
   const current = useRef({ step, project });
   current.current = { step, project };
   function print(line: string) {
-    if (mounted.current) setLines((old) => [...old, line].slice(-400));
+    if (mounted.current) setFeedback((old) => [...old, line].slice(-100));
+  }
+  function raw(line: string) {
+    if (mounted.current) setLines((old) => [...old, line].slice(-2000));
+  }
+  function useCommand(value: string) {
+    if (nativeTools.current) nativeTools.current.open = true;
+    if (command.trim() && command !== value) {
+      setPendingCommand(value);
+      requestAnimationFrame(() => replacement.current?.focus());
+    } else {
+      setCommand(value);
+      input.current?.focus();
+    }
+  }
+  useEffect(() => {
+    try {
+      localStorage.setItem("video-lab:course-command-draft", command);
+    } catch {
+      /* The current draft still works in this session. */
+    }
+  }, [command]);
+  // Private legacy action IDs never enter the learner's native command editor or transcript.
+  function action(value: string, example = false) {
+    if (example && value.startsWith("note ")) {
+      const words = parseCommand(value);
+      if (!noteText && noteName === "reflection.txt") setNoteName(words[1]!);
+      if (noteForm.current) noteForm.current.open = true;
+      requestAnimationFrame(() => noteInput.current?.focus());
+      return;
+    }
+    void execute(value, true);
   }
   async function put(additions: WorkspaceFile[], live = () => {}) {
     live();
@@ -177,7 +233,6 @@ export function CommandLab({
       }
       if (live) {
         setReady(true);
-        print(cli.welcome);
       }
     })();
     return () => {
@@ -206,12 +261,14 @@ export function CommandLab({
     return () => project.setActive(false);
   }, [busy, captureState, project.setActive]);
   useEffect(() => {
-    if (terminal.current)
+    if (terminal.current && followOutput.current)
       terminal.current.scrollTop = terminal.current.scrollHeight;
   }, [lines]);
   function measureOutput() {
     const el = terminal.current;
     if (!el) return;
+    followOutput.current =
+      el.scrollHeight - el.clientHeight - el.scrollTop < 32;
     const left = !wrapOutput && el.scrollLeft > 1;
     const right =
       !wrapOutput && el.scrollWidth - el.clientWidth - el.scrollLeft > 1;
@@ -266,6 +323,7 @@ export function CommandLab({
             );
             setNotice(cli.done);
             setPreview(name);
+            selectSource(name);
           })
           .catch((e) => {
             print(String(e));
@@ -293,7 +351,7 @@ export function CommandLab({
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
-  async function execute(text: string) {
+  async function execute(text: string, browser = false) {
     let words: string[];
     try {
       words = parseCommand(text);
@@ -304,7 +362,17 @@ export function CommandLab({
     }
     if (!words.length) return;
     const [tool, ...args] = words;
-    print(`$ ${text}`);
+    if (!browser && tool !== "ffmpeg" && tool !== "ffprobe") {
+      print(ux.nativeOnly);
+      setNotice(cli.failed);
+      return;
+    }
+    if (!browser) {
+      setLines([`$ ${text}`]);
+      followOutput.current = true;
+      setDiagnostic("");
+    }
+    setFeedback([]);
     const simple = (count: number) => {
       if (args.length !== count) throw new Error(cli.arguments);
     };
@@ -318,15 +386,7 @@ export function CommandLab({
         if (args.length > 1 || (args.length === 1 && args[0] !== "all"))
           throw new Error(guided.helpAll);
         if (!locked.current) setNotice(cli.done);
-        print(
-          args[0] === "all"
-            ? `${cli.help}\n${refStrings.helpExtra}`
-            : `${guided.helpIntro}
-${currentTask.examples.map((example) => `${example.command}  ${example.note}`).join("\n")}
-
-${guided.helpBasics}
-${guided.helpAll}`,
-        );
+        print(cli.help);
         return;
       }
       if (tool === "clear") {
@@ -380,7 +440,7 @@ ${guided.helpAll}`,
       if (tool === "scene") {
         simple(0);
         if (!locked.current) setNotice(cli.done);
-        window.open(assetURL("demo.html"), "_blank", "noopener,noreferrer");
+        print(ux.recordAdvice);
         return;
       }
       if (tool === "capture") {
@@ -627,11 +687,16 @@ ${guided.helpAll}`,
                       ],
                     ]
                 : tool === "sample"
-                  ? [["media/build-queue.mp4", "capture.mp4"]]
+                  ? [
+                      [
+                        "media/mousepad-demo.mp4",
+                        availableName("mousepad-demo.mp4", filesRef.current),
+                      ],
+                    ]
                   : [
-                      ["media/frames/000.jpg", "frame000.jpg"],
-                      ["media/frames/048.jpg", "frame001.jpg"],
-                      ["media/frames/072.jpg", "frame002.jpg"],
+                      ["media/mousepad-frames/frame000.jpg", "frame000.jpg"],
+                      ["media/mousepad-frames/frame001.jpg", "frame001.jpg"],
+                      ["media/mousepad-frames/frame002.jpg", "frame002.jpg"],
                       ["media/journey/tone.wav", "tone.wav"],
                     ];
           if (paths.some(([, name]) => filesRef.current[name!]))
@@ -662,10 +727,14 @@ ${guided.helpAll}`,
                   : `${cli.comparisonSaved}
 ${cli.comparisonCredit}`,
           );
+          if (tool === "sample") {
+            selectSource(additions[0]!.name);
+            setPreview(additions[0]!.name);
+          }
           if (tool === "reference" || tool === "comparison")
             setPreview(additions[0]!.name);
         } else {
-          const plan = toolPlan(words);
+          const plan = planRun(text, filesRef.current, sourceChoice);
           if (
             plan.output &&
             filesRef.current[plan.output] &&
@@ -687,10 +756,16 @@ ${cli.comparisonCredit}`,
           let sawBareAbort = false;
           const result = await runTool({ ...plan, inputs }, (line) => {
             if (line === "Aborted()") sawBareAbort = true;
-            if (operation === generation.current) print(line);
+            if (operation === generation.current) raw(line);
           });
           live();
-          if (result.text) print(result.text);
+          if (result.text) {
+            followOutput.current = false;
+            raw(result.text);
+            requestAnimationFrame(() => {
+              if (terminal.current) terminal.current.scrollTop = 0;
+            });
+          }
           const written =
             result.bytes ??
             (result.text && plan.output
@@ -747,8 +822,8 @@ ${cli.comparisonCredit}`,
             if (plan.tool === "ffmpeg") setPreview(plan.output);
           }
           if (plan.tool === "ffmpeg" && result.code === 0 && sawBareAbort)
-            print(cli.cleanupNotice);
-          print(
+            setDiagnostic(cli.cleanupNotice);
+          setDiagnostic(
             result.code === -1
               ? cli.probeSuccess
               : `${cli.exit} ${result.code}`,
@@ -779,7 +854,6 @@ ${cli.comparisonCredit}`,
     } catch {
       /* Session history remains usable. */
     }
-    setCommand("");
     void execute(value);
     input.current?.focus();
   }
@@ -798,13 +872,13 @@ ${cli.comparisonCredit}`,
     setBusy(true);
     setNotice(cli.running);
     try {
-      if (filesRef.current[file.name]) throw new Error(cli.exists);
+      const name = availableName(file.name, filesRef.current);
       const bytes = await file.arrayBuffer();
       live();
       await put(
         [
           {
-            name: file.name,
+            name,
             blob: new Blob([bytes], { type: file.type || mimeFor(file.name) }),
             origin: "imported",
           },
@@ -812,7 +886,8 @@ ${cli.comparisonCredit}`,
         live,
       );
       live();
-      print(`${cli.imported} ${file.name}`);
+      if ((file.type || mimeFor(name)).startsWith("video/")) selectSource(name);
+      print(`${cli.imported} ${name}`);
       setNotice(cli.done);
     } catch (e) {
       if ((e as Error).name !== "AbortError") {
@@ -827,26 +902,24 @@ ${cli.comparisonCredit}`,
     }
   }
   const lesson = reference ? referenceLessons[reference] : lessons[step];
-  const source = Object.values(files)
-    .slice()
-    .reverse()
-    .find(
-      (file) =>
-        file.blob.type.startsWith("video/") &&
-        file.origin !== "generated" &&
-        !file.name.startsWith("reference-") &&
-        file.name !== "comparison.mp4",
-    );
-  const sourceName = source?.name ?? "capture.mp4";
-  const chosen =
-    sourcePath === "record" && captureSupported
-      ? "record"
-      : sourcePath === "import"
-        ? "import"
-        : "sample";
+  const source =
+    (files[sourceChoice]?.blob.type.startsWith("video/")
+      ? files[sourceChoice]
+      : undefined) ??
+    Object.values(files)
+      .slice()
+      .reverse()
+      .find(
+        (file) =>
+          file.blob.type.startsWith("video/") &&
+          file.origin !== "generated" &&
+          !file.name.startsWith("reference-") &&
+          file.name !== "comparison.mp4",
+      );
+  const sourceName = source?.name ?? "mousepad-demo.mp4";
   const tasks =
     step === "capture" && !reference
-      ? captureTasks(chosen, sourceName, captureSupported, !!source)
+      ? captureTasks(sourceName, captureSupported, !!source)
       : lessonTasks(step, reference);
   const section = reference
     ? routeFor(window.location.hash).section
@@ -858,6 +931,27 @@ ${cli.comparisonCredit}`,
       )
     : Math.min(taskIndex, tasks.length - 1);
   const currentTask = tasks[activeTask]!;
+  const examples = currentTask.examples.map((example) => ({
+    ...example,
+    command: reference
+      ? example.command
+      : example.command.replace(
+          /(?<![a-zA-Z0-9._-])(?:mousepad-demo|capture)\.mp4(?![a-zA-Z0-9._-])/g,
+          () => sourceName,
+        ),
+  }));
+  const nativeExample = examples.find((e) =>
+    /^ff(mpeg|probe)\b/.test(e.command),
+  )?.command;
+  function selectSource(name: string) {
+    setSourceChoice(name);
+    try {
+      localStorage.setItem("video-lab:source", name);
+    } catch {
+      /* Session source remains available. */
+    }
+  }
+
   function chooseTask(index: number) {
     if (reference)
       window.location.hash = `#/${step}/reference/${tasks[index]!.id}`;
@@ -889,47 +983,46 @@ ${cli.comparisonCredit}`,
           <h2 id="current-task" tabIndex={-1}>
             {currentTask.title}
           </h2>
-          {step === "capture" && activeTask === 0 && (
-            <div className="source-paths">
-              {captureSupported && (
-                <button
-                  type="button"
-                  aria-pressed={chosen === "record"}
-                  onClick={() => setSourcePath("record")}
-                >
-                  {guided.capture.recordChoice}
-                </button>
-              )}
-              <button
-                type="button"
-                aria-pressed={chosen === "sample"}
-                onClick={() => setSourcePath("sample")}
-              >
-                {guided.capture.sampleChoice}
-              </button>
-              <button
-                type="button"
-                aria-pressed={chosen === "import"}
-                onClick={() => setSourcePath("import")}
-              >
-                {guided.capture.importChoice}
-              </button>
-            </div>
-          )}
           {currentTask.paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
           <ol className="command-lessons">
-            {currentTask.examples.map((example, index) => (
+            {examples.map((example, index) => (
               <li key={index}>
                 {example.note && <p>{example.note}</p>}
-                <pre>
-                  <code>{example.command}</code>
-                </pre>
+                {/^ff(mpeg|probe)\b/.test(example.command) ? (
+                  <>
+                    <pre>
+                      <code>{example.command}</code>
+                    </pre>
+                    <button
+                      type="button"
+                      onClick={() => useCommand(example.command)}
+                    >
+                      {ux.useCommand}
+                    </button>
+                  </>
+                ) : reference &&
+                  currentTask.id === "reflection" &&
+                  /^download .*\.(txt|md)$/.test(example.command) ? null : (
+                  <button
+                    type="button"
+                    disabled={
+                      busy ||
+                      !ready ||
+                      (example.command === "stop"
+                        ? captureState !== "recording"
+                        : captureState !== "idle")
+                    }
+                    onClick={() => action(example.command, true)}
+                  >
+                    {browserAction(example.command)}
+                  </button>
+                )}
               </li>
             ))}
           </ol>
-          {step === "capture" && activeTask === 0 && chosen === "record" && (
+          {step === "capture" && activeTask === 0 && captureSupported && (
             <details>
               <summary>{guided.capture.recordingDetailTitle}</summary>
               {guided.capture.recordingDetails.map((paragraph) => (
@@ -971,120 +1064,272 @@ ${cli.comparisonCredit}`,
           aria-labelledby="cli-heading"
           aria-busy={busy}
         >
-          <h2 id="cli-heading">{cli.title}</h2>
-          <p>{guided.scope}</p>
-          <p>{guided.keyboard}</p>
-          <details className="workspace-usage">
-            <summary>{guided.usage}</summary>
-            <p>{cli.scope}</p>
-            <p>{cli.keyboard}</p>
-            <p>{cli.outputScrolling}</p>
-            <p>{cli.storage}</p>
-          </details>
-          <button
-            type="button"
-            aria-pressed={wrapOutput}
-            aria-controls="cli-output"
-            onClick={() => setWrapOutput((value) => !value)}
-          >
-            {cli.wrapLines}
-          </button>
-          <span id="cli-output-scrolling" className="sr-only">
-            {cli.outputScrolling}
-          </span>
-          <div
-            className="terminal-frame"
-            data-left={outputEdges.left}
-            data-right={outputEdges.right}
-          >
-            <pre
-              id="cli-output"
-              className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
-              ref={terminal}
-              onScroll={measureOutput}
-              tabIndex={0}
-              aria-label={cli.output}
-              aria-describedby="cli-output-scrolling"
-            >
-              {lines.join("\n") || cli.welcome}
-            </pre>
-          </div>
-          {(outputEdges.left || outputEdges.right) && (
-            <div className="terminal-scroll-controls">
-              {outputEdges.left && (
+          <h2 id="cli-heading">
+            {step === "capture"
+              ? ux.sourceFiles
+              : step === "publish"
+                ? ux.publishFiles
+                : cli.title}
+          </h2>
+          <details className="workspace-actions">
+            <summary>{ux.setup}</summary>
+            <div className="course-actions">
+              {[
+                "sample",
+                "fixtures",
+                "import",
+                "ls",
+                "progress",
+                ...(reference
+                  ? [
+                      reference === "inspect"
+                        ? "reference inspect"
+                        : "reference cuts",
+                    ]
+                  : []),
+              ].map((value) => (
                 <button
                   type="button"
-                  aria-controls="cli-output"
-                  onClick={() => scrollOutput(-1)}
+                  key={value}
+                  disabled={busy || !ready}
+                  onClick={() => action(value)}
                 >
-                  {cli.previousOutput}
+                  {browserAction(value)}
+                </button>
+              ))}
+              {captureSupported && (
+                <button
+                  type="button"
+                  disabled={busy || !ready || captureState !== "idle"}
+                  onClick={() => action("capture")}
+                >
+                  {ux.record}
                 </button>
               )}
-              {outputEdges.right && (
+              {captureSupported && (
                 <button
-                  className="terminal-scroll-right"
                   type="button"
-                  aria-controls="cli-output"
-                  onClick={() => scrollOutput(1)}
+                  disabled={busy || !ready || captureState !== "idle"}
+                  onClick={() => action("capture --audio")}
                 >
-                  {cli.moreOutput}
+                  {ux.recordAudio}
                 </button>
+              )}
+              <button
+                type="button"
+                disabled={captureState !== "recording"}
+                onClick={() => action("stop")}
+              >
+                {ux.stop}
+              </button>
+            </div>
+          </details>
+          <p className="selected-source">
+            {ux.source}: <code>{source?.name ?? ux.noSource}</code>
+          </p>
+          <details
+            className="native-tools"
+            ref={nativeTools}
+            open={step !== "capture" && step !== "publish"}
+          >
+            <summary>{ux.nativeTools}</summary>
+            <div className="course-actions">
+              <button
+                type="button"
+                aria-pressed={builder}
+                onClick={() => setBuilder(true)}
+              >
+                {ux.builder}
+              </button>
+              <button
+                type="button"
+                aria-pressed={!builder}
+                onClick={() => setBuilder(false)}
+              >
+                {ux.manual}
+              </button>
+            </div>
+            {builder && (
+              <NativeBuilder
+                command={command || nativeExample || `ffprobe ${sourceName}`}
+                onChange={useCommand}
+              />
+            )}
+            {pendingCommand && (
+              <section role="alert" className="draft-confirm">
+                <p>{ux.replaceQuestion}</p>
+                <pre>{pendingCommand}</pre>
+                <button
+                  type="button"
+                  ref={replacement}
+                  onClick={() => {
+                    setPreviousDraft(command);
+                    setCommand(pendingCommand);
+                    setPendingCommand(undefined);
+                  }}
+                >
+                  {ux.replace}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPendingCommand(undefined)}
+                >
+                  {ux.keepDraft}
+                </button>
+              </section>
+            )}
+            {previousDraft !== undefined && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCommand(previousDraft);
+                  setPreviousDraft(undefined);
+                }}
+              >
+                {ux.restore}
+              </button>
+            )}
+            <div className="workspace-transcripts">
+              <p>{guided.scope}</p>
+              <p>{guided.keyboard}</p>
+              <details className="workspace-usage">
+                <summary>{guided.usage}</summary>
+                <p>{cli.scope}</p>
+                <p>{cli.keyboard}</p>
+                <p>{cli.outputScrolling}</p>
+                <p>{cli.storage}</p>
+                <p>{ux.limits}</p>
+              </details>
+              <button
+                type="button"
+                aria-pressed={wrapOutput}
+                aria-controls="cli-output"
+                onClick={() => setWrapOutput((value) => !value)}
+              >
+                {cli.wrapLines}
+              </button>
+              <span id="cli-output-scrolling" className="sr-only">
+                {cli.outputScrolling}
+              </span>
+              <div
+                className="terminal-frame"
+                data-left={outputEdges.left}
+                data-right={outputEdges.right}
+              >
+                <pre
+                  id="cli-output"
+                  className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
+                  ref={terminal}
+                  onScroll={measureOutput}
+                  tabIndex={0}
+                  aria-label={cli.output}
+                  aria-describedby="cli-output-scrolling"
+                >
+                  {lines.join("\n")}
+                </pre>
+              </div>
+              {(outputEdges.left || outputEdges.right) && (
+                <div className="terminal-scroll-controls">
+                  {outputEdges.left && (
+                    <button
+                      type="button"
+                      aria-controls="cli-output"
+                      onClick={() => scrollOutput(-1)}
+                    >
+                      {cli.previousOutput}
+                    </button>
+                  )}
+                  {outputEdges.right && (
+                    <button
+                      className="terminal-scroll-right"
+                      type="button"
+                      aria-controls="cli-output"
+                      onClick={() => scrollOutput(1)}
+                    >
+                      {cli.moreOutput}
+                    </button>
+                  )}
+                </div>
               )}
             </div>
-          )}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submit();
-            }}
-          >
-            <label htmlFor="cli-input">{cli.input}</label>
-            <textarea
-              id="cli-input"
-              ref={input}
-              value={command}
-              autoCapitalize="off"
-              autoCorrect="off"
-              spellCheck={false}
-              rows={3}
-              onChange={(e) => setCommand(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  submit();
-                }
-                if (
-                  e.key === "c" &&
-                  e.ctrlKey &&
-                  (busy || captureState !== "idle")
-                ) {
-                  e.preventDefault();
-                  cancel();
-                }
-                if (
-                  (e.key === "ArrowUp" || e.key === "ArrowDown") &&
-                  !command.includes("\n")
-                ) {
-                  e.preventDefault();
-                  if (historyIndex.current === history.current.length)
-                    draft.current = command;
-                  historyIndex.current = Math.max(
-                    0,
-                    Math.min(
-                      history.current.length,
-                      historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
-                    ),
-                  );
-                  setCommand(
-                    history.current[historyIndex.current] ?? draft.current,
-                  );
-                }
+            <details>
+              <summary>{ux.diagnostics}</summary>
+              <p>{diagnostic || ux.noDiagnostics}</p>
+            </details>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submit();
               }}
-            />
-            <button type="submit" disabled={!ready}>
-              {cli.run}
+            >
+              <label htmlFor="cli-input">{cli.input}</label>
+              <textarea
+                id="cli-input"
+                ref={input}
+                value={command}
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
+                rows={3}
+                onChange={(e) => setCommand(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    submit();
+                  }
+                  if (
+                    e.key === "c" &&
+                    e.ctrlKey &&
+                    (busy || captureState !== "idle")
+                  ) {
+                    e.preventDefault();
+                    cancel();
+                  }
+                  if (
+                    (e.key === "ArrowUp" || e.key === "ArrowDown") &&
+                    !command.includes("\n")
+                  ) {
+                    e.preventDefault();
+                    if (historyIndex.current === history.current.length)
+                      draft.current = command;
+                    historyIndex.current = Math.max(
+                      0,
+                      Math.min(
+                        history.current.length,
+                        historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
+                      ),
+                    );
+                    setCommand(
+                      history.current[historyIndex.current] ?? draft.current,
+                    );
+                  }
+                }}
+              />
+              <button type="submit" disabled={!ready}>
+                {cli.run}
+              </button>
+            </form>
+          </details>
+          <pre className="workspace-feedback" aria-label={ux.feedback}>
+            {feedback.join("\n")}
+          </pre>
+          <div className="course-actions">
+            <button
+              type="button"
+              onClick={cancel}
+              disabled={!busy && captureState === "idle"}
+            >
+              {ux.cancel}
             </button>
-          </form>
+            <button
+              type="button"
+              onClick={() => {
+                action("clear");
+              }}
+            >
+              {ux.clear}
+            </button>
+          </div>
           <p role="status">{notice}</p>
           <div className="task-controls">
             <button
@@ -1120,17 +1365,131 @@ ${cli.comparisonCredit}`,
               e.target.value = "";
             }}
           />
-          <details>
+          <details open className="workspace-files">
             <summary>{cli.files}</summary>
             <ul>
               {Object.values(files).map((f) => (
                 <li key={f.name}>
                   <code>{f.name}</code> · {f.blob.size.toLocaleString()} B ·{" "}
                   {f.origin}
+                  <div className="course-actions">
+                    {/^(video|audio|image)\//.test(f.blob.type) ? (
+                      <button
+                        type="button"
+                        disabled={busy || !ready}
+                        onClick={() => action(`play ${f.name}`)}
+                      >
+                        {ux.replay} {f.name}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={busy || !ready}
+                        onClick={() => action(`cat ${f.name}`)}
+                      >
+                        {ux.read} {f.name}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => action(`download ${f.name}`)}
+                    >
+                      {ux.download} {f.name}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy || !ready}
+                      onClick={() => action(`rm ${f.name}`)}
+                    >
+                      {ux.delete} {f.name}
+                    </button>
+                    {f.blob.type.startsWith("video/") && (
+                      <button
+                        type="button"
+                        disabled={busy || !ready}
+                        onClick={() => selectSource(f.name)}
+                      >
+                        {ux.useSource} {f.name}
+                      </button>
+                    )}
+                    {reference && (
+                      <button
+                        type="button"
+                        disabled={busy || !ready}
+                        onClick={() => action(`check ${reference} ${f.name}`)}
+                      >
+                        {ux.check} {f.name}
+                      </button>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
           </details>
+          {reference && (
+            <details className="reference-controls" ref={noteForm}>
+              <summary>{ux.referenceTools}</summary>
+              <div className="course-actions">
+                {[1, 2, 3, 4, 5].map((level) => (
+                  <button
+                    type="button"
+                    key={level}
+                    onClick={() => action(`hint ${reference} ${level}`)}
+                  >
+                    {ux.hint} {level}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => action(`solution ${reference}`)}
+                >
+                  {ux.solution}
+                </button>
+                <button type="button" onClick={() => action("progress")}>
+                  {ux.progress}
+                </button>
+              </div>
+              <label htmlFor="personal-note-name">{ux.noteName}</label>
+              <input
+                id="personal-note-name"
+                value={noteName}
+                onChange={(e) => setNoteName(e.target.value)}
+              />
+              <label htmlFor="personal-note-text">{ux.noteText}</label>
+              <textarea
+                id="personal-note-text"
+                ref={noteInput}
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+              />
+              <button
+                type="button"
+                disabled={busy || !ready}
+                onClick={() =>
+                  action(`note ${noteName} ${JSON.stringify(noteText)}`)
+                }
+              >
+                {ux.saveNote}
+              </button>
+            </details>
+          )}
+          {
+            <details>
+              <summary>{ux.comparisons}</summary>
+              {["reference build", "reference edit", "comparison"].map(
+                (value) => (
+                  <button
+                    type="button"
+                    key={value}
+                    disabled={busy || !ready}
+                    onClick={() => action(value)}
+                  >
+                    {browserAction(value)}
+                  </button>
+                ),
+              )}
+            </details>
+          }
           {selected && mediaURL && (
             <section className="cli-preview">
               <h2>

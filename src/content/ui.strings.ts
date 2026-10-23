@@ -17,8 +17,9 @@ export const ui = {
   lessonNumber: "MODULE 0 / MEDIA FUNDAMENTALS",
   onPage: "In this lesson",
   heroCaption:
-    "Original build-queue recording · picture and sound inspected separately",
-  heroAlt: "The build queue after sorting: payments is the longest build.",
+    "Provided Mousepad recording · Find and Replace in a fictional configuration file · no sound",
+  heroAlt:
+    "Mousepad showing a fictional configuration with environment = staging and queue = staging-jobs.",
   play: "Play preview",
   pause: "Pause preview",
   mute: "Mute preview",

@@ -32,19 +32,19 @@ const noReset = joinedCommand
 
 export const refStrings = {
   checkUsage:
-    "Use check inspect REPORT.json or check edit OUTPUT.mp4. Submit an actual executed report or edit, not a provided example.",
+    "Choose Check artefact for a JSON inspection report or an edited MP4. Submit a file produced by your own executed command, not a provided example.",
   missingEvidence:
-    "Executed evidence is missing for this file. Run the required probe or edit in this workspace, then check the saved result.",
+    "Executed evidence is missing for this file. Run the required ffprobe or FFmpeg command in this workspace, then choose Check artefact for its saved result.",
   wrongSource:
-    "This work does not use the required original reference source. Load reference inspect or reference cuts, then run the command against that exact file.",
+    "This work does not use the required reference source. Choose Load inspection source or Load cutting source, then run the command against that exact file.",
   checkPassed:
     "The submitted artefact passed every measured check. Replay media and review its meaning separately.",
   checkFailed:
     "The submitted artefact did not pass every check. Read the measured results, revise the command and check the new output.",
   reportSaved: "Actual ffprobe JSON report saved:",
-  catUsage: "Use cat FILE to display a saved text report, recipe or note.",
+  catUsage: "Choose Read beside a text report, recipe or note in Files.",
   noteUsage:
-    'Use note FILE.txt "Your text" or note FILE.md "Your text". Quote the text as one argument.',
+    "Enter a filename ending in .txt or .md and your own text, then choose Save note.",
   noteSaved: "Note saved:",
   progressTitle: "Checked artefacts and earlier achievements",
   progressSession:
@@ -52,41 +52,39 @@ export const refStrings = {
   notChecked: "No current artefact has passed this lab's executed checks.",
   checked: "Artefact passed the executed checks",
   changed:
-    "The file has changed since it was checked. Run check again for the current bytes.",
+    "The file has changed since it was checked. Choose Check artefact again for the current file.",
   legacyTitle: "Earlier answer-based reference achievements",
   legacySaved:
     "Earlier saved achievement retained. It is not an executed-artefact check for this command lab.",
   legacyNone: "No earlier saved achievement was found.",
   legacyNotes: "Earlier reference notes, retained separately",
-  helpExtra: `Reference sources and command-lab checks:
-reference inspect       Load the original reference-inspect.mp4
-reference cuts          Load the controlled-keyframe reference-cuts.mp4
-ffprobe ... -o FILE.json Save an actual JSON report; use -of json
-cat FILE                Display a saved report, recipe or note
-note FILE.txt "TEXT"    Save an optional text note; .md also supported
-check inspect FILE.json Check an actually executed report of the original source
-check edit FILE.mp4     Inspect/decode an actual edit and compare source pictures
-hint inspect|edit 1     Show a hint; choose 1 through 5 for progressive help
-solution inspect|edit   Print a complete runnable reference command
-progress                Show checked artefact hashes and retained earlier work
+  helpExtra: `Reference lab controls:
+Load inspection source supplies reference-inspect.mp4.
+Load cutting source supplies the controlled-keyframe reference-cuts.mp4.
+Read displays a saved report, recipe or note from Files.
+Save note stores your text under the filename you choose.
+Check artefact evaluates a report or edit produced by an executed command.
+Hints offers Hint 1 through Hint 5; Show reference command reveals a complete example.
+Earlier achievements keeps prior answer-based work separate from current artefact checks.
 
-Run each command separately. Report/output names must fit the output-name limit.
+Use ffprobe with the required report options, -of json and -o FILE.json to save measured evidence.
+Run media commands separately. Report and output names must fit the workspace filename limit.
 A supplied output or imported report is not proof that you ran the exercise.
-Different correct commands can pass: the checks inspect evidence and actual media, not exact spelling.`,
+Different correct commands can pass: checks inspect execution evidence and actual media, not exact spelling.`,
   hints: {
     inspect: [
-      "Load reference inspect. Run an actual ffprobe inspection of reference-inspect.mp4; a copied or imported JSON file does not establish execution.",
+      "Choose Load inspection source, then run ffprobe against reference-inspect.mp4. A copied or imported JSON file does not establish execution.",
       "Include -show_streams and -show_format. The report must identify this original MP4, its H.264 video and AAC audio.",
       "Include -show_frames too. Count only entries whose media_type is video; sound blocks are separate entries, not extra pictures.",
       "The required report contains 120 video pictures. Counting from zero, picture 75 has PTS 76800 ticks, or 6.25 seconds at time base 1/12288 second per tick. Save the complete report with -o inspect-report.json.",
-      `Run: ${inspectionCommand}\nThen, as a separate command: check inspect inspect-report.json`,
+      `Run: ${inspectionCommand}\nThen choose Check artefact for inspect-report.json.`,
     ],
     edit: [
-      "Load reference cuts and use reference-cuts.mp4 as the actual input. The required order is opening [0,2), then result [4,6), with both sound and pictures.",
+      "Choose Load cutting source and use reference-cuts.mp4 as the input. Keep opening [0,2), then result [4,6), with both sound and pictures.",
       "Trim video and audio separately: trim for pictures, atrim for sound. Keep start inclusive and end exclusive. Their requested durations add to four seconds.",
       "Reset every kept segment's clock before concat: setpts=PTS-STARTPTS for pictures and asetpts=PTS-STARTPTS for sound. Feed each segment's video and audio together to the join.",
       "The required output is H.264/AAC MP4, 960 × 540, with 48 pictures in the original order and clocks beginning at zero. A reversed join can have the right duration but the wrong pictures.",
-      `Run: ${joinedCommand}\nThen, as a separate command: check edit joined-check.mp4`,
+      `Run: ${joinedCommand}\nThen choose Check artefact for joined-check.mp4.`,
     ],
   } satisfies Record<ReferenceLab, string[]>,
   criterionLabels: {
@@ -108,23 +106,23 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
   inspect: {
     title: "What is a digital video?",
     intro:
-      "Inspect a known original recording with real commands. Extract pictures and sound, explain their timing, then submit the JSON report you actually produced. This fixed-source lab is separate from your project recording.",
+      "Inspect a controlled reference recording with real commands. Extract pictures and sound, explain their timing, then check the JSON report you produced. This ten-second build-queue fixture is distinct from the Mousepad practice video and your project source.",
     heading: "Inspect the original, then check the evidence",
     paragraphs: [],
     examples: [],
     challenge:
-      "Use typed commands throughout. Your report, extracted media and notes are workspace files you can inspect and download.",
+      "Use FFmpeg and ffprobe for media work. Your report, extracted media and notes are workspace files; use Read, Replay and Download to review and keep them.",
     sections: [
       {
         id: "question",
         title: "What does the recording contain?",
         paragraphs: [
-          "Type one example in the Command field and press Enter. Run separate examples separately; Shift+Enter continues the same command. help shows current-task commands; help all gives the full reference and limits. Up/Down recalls one-line history, and cancel discards active work. These are browser workspace commands, not an operating-system shell; no pipes or redirection are available.",
-          "A quiet player does not establish that a file lacks sound. We will inspect the file, then create a genuinely video-only version to distinguish a playback choice from changed file contents. If workspace space is full, download important files before removing unneeded ones with rm.",
+          "Enter one FFmpeg or ffprobe command, or use the command builder, then choose Run command. Read its actual output before continuing. File setup and lesson checks use the app controls. Open Using the command workspace for keyboard guidance and limits; shell pipes and redirection are unavailable.",
+          "A quiet player does not establish that a file lacks sound. Inspect the file, then create a video-only copy to distinguish muted playback from changed file contents. If the workspace is full, open Files, download important work and choose Delete for unneeded files.",
         ],
         examples: [
           {
-            note: "See the command vocabulary and workspace limits.",
+            note: "Open the workspace usage and limits.",
             command: "help all",
           },
         ],
@@ -133,18 +131,17 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "motivation",
         title: "Load the named original",
         paragraphs: [
-          "reference inspect loads reference-inspect.mp4, the original build-queue recording. It shows an unsorted queue, a Sort action and the sorted result. Its quiet synthetic tone is not narration; listening is optional. This is supplied source material, not a recording you made.",
-          "A container organises streams and their timing in one file. A stream carries pictures or sound; a codec specifies how that data is encoded and reconstructed. ffprobe reads this file's properties. -v error suppresses routine logging, -show_streams lists its streams, -show_format describes the whole file and -of json requests structured text.",
+          "Load inspection source supplies reference-inspect.mp4, the controlled build-queue recording used by this lab. It shows an unsorted queue, a Sort action and the sorted result. It has 960 × 540 pictures at 12 frames per second and a quiet synthetic tone. This reference fixture is separate from the silent Mousepad practice recording; it is not a recording you made.",
+          "A container organises streams and their timing in one file. A stream carries pictures or sound; a codec specifies how that data is encoded and reconstructed. Run ffprobe with the filename and read its Duration and Stream lines. Later tasks request structured reports when they need individual frame fields.",
         ],
         examples: [
           {
-            note: "Load this lab's source without replacing another file.",
+            note: "Choose Load inspection source to obtain this lab's controlled input.",
             command: "reference inspect",
           },
           {
             note: "Read its actual container, stream indexes, codecs, dimensions and sound properties.",
-            command:
-              "ffprobe -v error -show_streams -show_format -of json reference-inspect.mp4",
+            command: "ffprobe reference-inspect.mp4",
           },
         ],
       },
@@ -163,8 +160,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
           },
           {
             note: "Check the actual new file rather than inferring its streams from silence.",
-            command:
-              "ffprobe -v error -show_streams -show_format -of json pictures.mp4",
+            command: "ffprobe pictures.mp4",
           },
         ],
       },
@@ -173,7 +169,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "Locate a picture by presentation time",
         paragraphs: [
           "A frame is one picture; count video frames from zero. A presentation timestamp, or PTS, says when a decoded picture is due for display, not how long decoding took. This original has 120 pictures; video picture 75 is due at 6.25 seconds. The full report also includes decoded audio blocks, so its combined entry number is not a video index.",
-          "-show_frames reports decoded pictures and sound blocks. -o saves the actual JSON as a workspace file; cat displays it. For extraction, -vf supplies a picture filter. select=eq(n\\,75) keeps the picture whose zero-based counter n equals 75; the escaped comma belongs to that expression. -frames:v 1 writes one picture. The PNG comes from real decoding, not an estimated browser playback position.",
+          "-show_streams and -show_format request stream and container details; -show_frames adds decoded pictures and sound blocks. -of json makes the report structured text, -v error hides routine logs, and -o saves the report as a workspace file. Choose Read beside that file. For extraction, -vf supplies a picture filter. select=eq(n\\,75) keeps the picture whose zero-based counter n equals 75; the escaped comma belongs to that expression. -frames:v 1 writes one decoded picture to PNG.",
         ],
         examples: [
           {
@@ -181,7 +177,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
             command: inspectionCommand,
           },
           {
-            note: "Read the saved report; identify video entries separately from sound blocks.",
+            note: "Choose Read beside inspect-report.json; identify video entries separately from sound blocks.",
             command: "cat inspect-report.json",
           },
           {
@@ -189,7 +185,10 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
             command:
               'ffmpeg -i reference-inspect.mp4 -vf "select=eq(n\\,75)" -frames:v 1 frame75.png',
           },
-          { note: "View the extracted picture.", command: "play frame75.png" },
+          {
+            note: "Choose Replay beside frame75.png to view the extracted picture.",
+            command: "play frame75.png",
+          },
         ],
       },
       {
@@ -217,7 +216,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "Test an invalid stream choice and recover",
         paragraphs: [
           "Stream indexes and codec names are concrete file/tool properties. This source has no tenth audio stream; 0:a:9 asks for one because those stream counters begin at zero. Run the first command and read the failure. No successful new sound file should be saved.",
-          "The second command names a codec that does not exist. Failure does not mean your original was erased. Run ls, keep the source, and correct the mapping or encoder using the earlier working examples. Sharing a playback clock also does not make audio sample indexes interchangeable with video picture indexes.",
+          "The second command names a codec that does not exist. Failure does not erase the original. Open Files to check the source remains, then correct the mapping or encoder using an earlier working example. Sharing a playback clock does not make audio sample indexes interchangeable with video picture indexes.",
         ],
         examples: [
           {
@@ -231,7 +230,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
               "ffmpeg -i reference-inspect.mp4 -c:v no_such_codec impossible.mp4",
           },
           {
-            note: "Confirm the original and earlier successful outputs remain.",
+            note: "Open Files and confirm the original and earlier successful outputs remain.",
             command: "ls",
           },
         ],
@@ -256,7 +255,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "Keep another file's evidence separate",
         paragraphs: [
           "This source has equally spaced pictures, called constant frame rate. Other recordings can have unequal intervals, called variable frame rate. An average rate cannot locate every picture in those files. Inspect their actual timestamps rather than reusing this source's counts, stream positions or time base.",
-          "A browser player's playback position can be approximate and is not a reliable frame index. A missing declared duration, common in some browser recordings, is not zero; an observed timestamp span may omit the final picture's hold. Use import and a different filename for your own recording. This reference checker intentionally requires the known original source, not every possible valid recording.",
+          "A browser player's playback position can be approximate and is not a reliable frame index. A missing declared duration, common in some browser recordings, is not zero; an observed timestamp span may omit the final picture's hold. Choose Import file for your own recording and check its exact workspace name. This reference checker intentionally requires the known original source, not every possible valid recording.",
         ],
         examples: [
           {
@@ -270,19 +269,19 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "Check the report you actually produced",
         paragraphs: [
           "Submit the report created by the complete inspection command. The check reads actual source identity, MP4 format, H.264 video with its time base, AAC audio, 120 video pictures and picture 75's PTS. It also requires executed probe evidence against the original source; importing convincing-looking JSON is not execution.",
-          "If a criterion fails, read its measured value, correct the probe and save a fresh report. hint inspect 1 through hint inspect 5 provides progressive help; solution inspect prints a runnable reference command. A successful artefact check is recorded separately from earlier answer-form achievements.",
+          "If a criterion fails, read its measured value, correct the probe and save a fresh report. Open Hints and choose Hint 1 through Hint 5 for progressively more detail. Show reference command reveals a runnable example. Successful artefact checks are recorded separately from Earlier achievements.",
         ],
         examples: [
           {
-            note: "Check the saved report, not a filename standing in for an unexecuted command.",
+            note: "Choose Check artefact for the saved inspect-report.json produced by your command.",
             command: "check inspect inspect-report.json",
           },
           {
-            note: "Request the first hint when needed; increase the number for more detail.",
+            note: "Open Hints and choose Hint 1 when needed; later hints provide more detail.",
             command: "hint inspect 1",
           },
           {
-            note: "See current checked artefacts and separately retained earlier work.",
+            note: "Open Earlier achievements to review retained work separately from current artefact checks.",
             command: "progress",
           },
         ],
@@ -291,16 +290,16 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "reflection",
         title: "Plan how to investigate silent narration",
         paragraphs: [
-          "A colleague says the narration is silent. What would you inspect before deciding to record again? Consider stream presence, actual sound content and playback settings. This original's tone is not narration. Save your own optional note with note FILE.txt followed by quoted text; the note is not graded.",
+          "A colleague says the narration is silent. What would you inspect before recording again? Consider stream presence, sound content and playback settings. This reference file's tone is not narration. Choose Write a note to open the note form, enter a filename and your own inspection plan, then choose Save note. The note is optional and is not graded.",
         ],
         examples: [
           {
-            note: "Replace this text with your own inspection plan.",
+            note: "Choose Write a note. Use Note filename for a name such as inspection-notes.txt and Note text for your own inspection plan, then choose Save note.",
             command:
               'note inspection-notes.txt "I will check the audio stream, listen deliberately and check playback settings before recording again."',
           },
           {
-            note: "Keep a copy outside browser storage.",
+            note: "In Files, choose Download beside the note you saved to keep a copy outside browser storage.",
             command: "download inspection-notes.txt",
           },
         ],
@@ -310,7 +309,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
   edit: {
     title: "Cutting and joining",
     intro:
-      "Run real cut and join commands on a controlled original recording. Compare requested and actual boundaries, test a failed clock reset, then submit an edit whose decoded pictures and sound can be checked.",
+      "Run cut and join commands on a controlled build-queue recording, separate from the Mousepad practice video. Compare requested and actual boundaries, test a failed clock reset, then check your edit's decoded pictures and sound.",
     heading: "Keep the opening, then the readable result",
     paragraphs: [],
     examples: [],
@@ -322,11 +321,11 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "What must survive a cut?",
         paragraphs: [
           "Keep the opening context and readable result while removing waiting. For this challenge, retain source [0,2) followed by [4,6), with both pictures and sound. The notation includes each start and excludes its end. These ranges are two seconds each and request four seconds in total.",
-          "Use the Command field to run one command at a time. Commands operate on actual workspace files; a provided finished example does not show that your edit ran. Run help all for the complete workspace commands and limits. Download important work before using rm to make space.",
+          "Use the command editor or builder to run one FFmpeg or ffprobe command at a time. Commands operate on workspace files; a provided finished example is not evidence that your edit ran. Open Using the command workspace for limits. Download important files before choosing Delete to make room.",
         ],
         examples: [
           {
-            note: "See the available commands and bounds.",
+            note: "Open the workspace usage and limits.",
             command: "help all",
           },
         ],
@@ -335,18 +334,17 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "motivation",
         title: "Load the controlled original",
         paragraphs: [
-          "reference cuts loads reference-cuts.mp4, a separately encoded version of the provided original build-queue recording. It is not a re-encoding of your personal capture. The source has H.264 pictures, AAC synthetic sound and a known presentation schedule; the tone is not narration.",
-          "ffprobe inspects rather than edits. -show_streams reports pictures/sound, -show_format reports the whole file, and -of json requests structured text. FFmpeg -i names an input and the final filename names the output. In mapping notation, input and stream counters start at zero: 0:v:0 is the first input's first video stream, 0:a:0 its first audio stream.",
+          "Load cutting source supplies reference-cuts.mp4, a controlled encoding of the original build-queue recording. It is separate from your project and the Mousepad practice video. This ten-second fixture has 960 × 540 H.264 pictures at 12 frames per second, AAC synthetic sound and a known presentation schedule; the tone is not narration.",
+          "Run ffprobe with the source filename and read the Duration and Stream lines. It inspects without editing. In an FFmpeg command, -i names an input and the final filename names the output. Input and stream counters start at zero: 0:v:0 is the first input's first video stream, and 0:a:0 its first audio stream.",
         ],
         examples: [
           {
-            note: "Load this lab's original source, not a provided completed edit.",
+            note: "Choose Load cutting source to obtain the original required by this lab.",
             command: "reference cuts",
           },
           {
-            note: "Read actual stream and file information before cutting. -v error keeps routine logging quiet.",
-            command:
-              "ffprobe -v error -show_streams -show_format -of json reference-cuts.mp4",
+            note: "Read the source's usual media summary before cutting.",
+            command: "ffprobe reference-cuts.mp4",
           },
         ],
       },
@@ -359,7 +357,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         ],
         examples: [
           {
-            note: "Read key_frame and presentation times for the video stream. -select_streams v:0 excludes sound entries; -show_entries limits the fields.",
+            note: "Read key_frame and presentation times for the video stream. -select_streams v:0 excludes sound; -show_entries limits the fields, -of json requests structured text and -v error hides routine logs.",
             command:
               "ffprobe -v error -select_streams v:0 -show_frames -show_entries frame=key_frame,pts_time -of json reference-cuts.mp4",
           },
@@ -374,7 +372,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "investigation",
         title: "Compare the request with an accurate trim",
         paragraphs: [
-          "The recorded native copy experiment begins with source time 2, not the requested 3, and contains three seconds of pictures. Earlier material was preserved at the preceding keyframe for that command. Run ffprobe on your actual output: container duration can differ slightly from picture duration because audio has its own boundaries. Rewritten output PTS values are not original source timestamps.",
+          "The recorded native copy experiment begins with source time 2 rather than the requested 3 and contains three seconds of pictures. That command preserves earlier material at the preceding keyframe. To compare individual stream starts and durations, the probe below requests -show_streams and -show_format with -of json; -v error hides routine logs. Container duration can differ from picture duration because audio has its own boundaries. Rewritten output PTS values are not original source timestamps.",
           "For an accurate picture-boundary cut, -filter_complex introduces linked operations, called a filter graph. trim selects pictures; atrim selects sound. start=3:end=5 keeps source [3,5). setpts=PTS-STARTPTS and asetpts=PTS-STARTPTS subtract each first timestamp so its clock starts at zero. [v] and [a] name the results selected by -map. Quote the whole graph so semicolons stay inside one argument.",
           "-c:v libx264 and -c:a aac encode H.264 pictures and AAC sound. -preset ultrafast selects encoder speed settings, -pix_fmt yuv420p chooses a widely supported picture colour format, -r 12 requests twelve output pictures per second, and -movflags +faststart places MP4 playback information near the start. This controlled trim requests two seconds; verify the actual bytes rather than generalising its result to arbitrary timestamps or sources.",
         ],
@@ -389,7 +387,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
             command: accurateCut,
           },
           {
-            note: "Inspect the accurate output and compare it with the copy, then replay each using play FILE.",
+            note: "Compare the accurate output's stream starts and durations with the copy. Then choose Replay beside each file.",
             command:
               "ffprobe -v error -show_streams -show_format -of json accurate-3.mp4",
           },
@@ -408,7 +406,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
             command: joinedCommand,
           },
           {
-            note: "Replay the actual created file.",
+            note: "Choose Replay beside joined-check.mp4.",
             command: "play joined-check.mp4",
           },
         ],
@@ -426,7 +424,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
             command: noReset,
           },
           {
-            note: "Measure the generated file and compare its timing with joined-check.mp4. Add -count_frames and read nb_read_frames if you want decoded picture counts.",
+            note: "Measure the generated file and compare it with joined-check.mp4. -count_frames counts decoded pictures; read nb_read_frames in the structured report.",
             command:
               "ffprobe -v error -count_frames -show_streams -show_format -of json no-reset.mp4",
           },
@@ -451,12 +449,12 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "generalisation",
         title: "Change order or result hold deliberately",
         paragraphs: [
-          "Recall the working join command and use a new output name. Before concat, replace [v0][a0][v1][a1] with [v1][a1][v0][a0] to compare result-before-opening against opening-before-result. A reversed four-second output can have the right count but the wrong explanation. To give the result longer, change the second segment's video and audio end together from 6 to 8, keep both resets and use another output name. Replay and inspect each experiment.",
+          "Copy the working join command into the editor and use a new output name. Before concat, replace [v0][a0][v1][a1] with [v1][a1][v0][a0] to compare result-before-opening against opening-before-result. A reversed four-second output can have the right count but the wrong explanation. To give the result longer, change the second segment's video and audio end together from 6 to 8, keep both resets and use another output name. Replay and inspect each experiment.",
           "These alternatives are useful experiments but differ from the challenge's required ranges and order. For another source, inspect actual keyframes, presentation intervals, dimensions and sound layout. They are not inherited from this fixture. The concat filter used here is distinct from FFmpeg's similarly named concat file reader; do not transfer one mechanism's requirements to the other.",
         ],
         examples: [
           {
-            note: "Recall the join with Up/Down, edit its arguments and output name, then inspect the new file with the earlier probe command.",
+            note: "Use Files to track the distinct outputs. Edit a copy of the working join command, run it, then inspect the new file.",
             command: "ls",
           },
         ],
@@ -466,19 +464,19 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "Check the edit's actual pictures and sound",
         paragraphs: [
           "Submit an executed MP4 from the controlled source, keeping [0,2) then [4,6), both video and audio, with reset clocks. The check measures approximately four seconds, H.264/AAC, 960 × 540 dimensions and 48 decoded pictures. It compares the opening source pictures followed by the required result pictures, not just the command's spelling. A different command can pass if it makes the required media with valid execution provenance. The checker compares decoded pictures reduced to 160 × 90, allowing small encoding differences rather than demanding identical pixels or compressed bytes. Its reported RMS is the square root of the mean squared differences in red, green and blue values; each picture must be below 2. No identical output bytes across encoder versions are promised.",
-          "Read each criterion's actual evidence before revising. A provided completed edit or imported media does not establish this execution. hint edit 1 through hint edit 5 offers progressive help; solution edit prints a full reference command. Check the current bytes again after changing a file; archived achievements remain separate.",
+          "Read each criterion's evidence before revising. A provided completed edit or imported media does not establish this execution. Open Hints and choose Hint 1 through Hint 5 for more help, or choose Show reference command. Check the current file again after changing it; Earlier achievements remain separate.",
         ],
         examples: [
           {
-            note: "Submit the actual candidate output, not a supplied finished example.",
+            note: "Choose Check artefact for joined-check.mp4 produced by your command.",
             command: "check edit joined-check.mp4",
           },
           {
-            note: "Ask for a progressively more specific hint by increasing the number through 5.",
+            note: "Open Hints and choose Hint 1 through Hint 5 for progressively more detail.",
             command: "hint edit 1",
           },
           {
-            note: "Inspect checked artefact hashes and retained earlier achievements/notes.",
+            note: "Open Earlier achievements to review retained achievements and notes separately from the current checks.",
             command: "progress",
           },
         ],
@@ -487,20 +485,20 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "reflection",
         title: "Give the viewer enough time",
         paragraphs: [
-          "Compare your original and longer result hold. How much time does a viewer need to read the sorted result and connect it to the opening? With narration, cutting time also changes sound. Save an optional note and download your chosen output with its execution recipe. The note is not graded; actual output checks and viewer understanding are different evidence.",
+          "Compare your original and longer result hold. How much time does a viewer need to read the sorted result and connect it to the opening? With narration, cutting time also changes sound. Choose Write a note to open the form, enter your own observation and choose Save note. Download the chosen output and its execution recipe. The note is optional and is not graded; measured output checks and viewer understanding are different evidence.",
         ],
         examples: [
           {
-            note: "Replace this text with your observation from the real outputs.",
+            note: "Choose Write a note. Use Note filename for a name such as editing-notes.txt and Note text for your own observation, then choose Save note.",
             command:
               'note editing-notes.txt "I compared the result holds and will keep enough time for the viewer to read the sorted queue."',
           },
           {
-            note: "Preserve the checked media outside browser storage.",
+            note: "Choose Download beside the checked media to keep a copy outside browser storage.",
             command: "download joined-check.mp4",
           },
           {
-            note: "Keep its executed command and source inventory with it.",
+            note: "Choose Download beside the execution recipe to keep its command and source inventory.",
             command: "download joined-check.mp4.recipe.json",
           },
         ],

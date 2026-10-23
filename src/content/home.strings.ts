@@ -4,17 +4,17 @@ export const home = {
   subtitle: "From Frames to Finished Demos",
   eyebrow: "A command-line lab for software demos",
   intro:
-    "Use a browser command workspace to capture, inspect, edit and download a short software demo. Run actual FFmpeg and ffprobe commands, change their arguments and check the resulting files. A provided original recording supports the same editing path when screen capture is unavailable.",
+    "Make a short software demo with real FFmpeg and ffprobe commands. Type commands or compose them with the command builder, then read the tools' output and check the resulting files. Browser controls handle recording, imports, replay and downloads. A provided Mousepad recording supports the same editing path when capture is unavailable.",
   audienceTitle: "Who this course is for",
   audience:
-    "For software and data engineers with ordinary terminal, browser and file familiarity. Commands are the main lab interface; media concepts and FFmpeg flags are explained as you use them. No video knowledge is assumed.",
+    "For software and data engineers with ordinary terminal, browser and file familiarity. Media concepts and FFmpeg options are explained as you use them. The optional command builder helps with typing on phones and tablets while keeping the real command visible. No video knowledge is assumed.",
   outcomeTitle: "A complete first demo",
   outcome:
-    "Follow Capture, Build, Inspect, Edit and Publish in a shared command workspace. Build is a separate experiment with supplied pictures; your recording stays unchanged. Inspect and edit your chosen source with typed commands, then replay and download the actual output and execution recipe. The detailed command labs let you check real reports and decoded edits, with progressive hints and saved text notes. Processing stays local to your browser.",
+    "Follow Capture, Build, Inspect, Edit and Publish in a shared workspace. Build is a separate experiment with supplied pictures; your project source stays unchanged. Inspect and edit the chosen source, then replay and download your output and its execution recipe. Detailed reference labs add checked reports and edits, progressive hints and saved notes. Processing stays on your device.",
   start: "Start with Capture",
   planTitle: "Your route through Video Lab",
   planNote:
-    "All available labs use typed commands, including the detailed inspection and cutting references. Follow Capture, Build, Inspect, Edit and the initial Publish checkpoint. Modules 4–7 and 9–10 are planned. Reference checks grade actual executed reports and media; earlier answer-based achievements are preserved separately.",
+    "All available labs use real FFmpeg and ffprobe commands, with an optional command builder. Follow Capture, Build, Inspect, Edit and the initial Publish checkpoint. Detailed reference checks use separate controlled media and actual execution evidence; earlier answer-based achievements remain available. Modules 4–7 and 9–10 are planned.",
 };
 
 export const modules = [
@@ -22,7 +22,7 @@ export const modules = [
     id: 0,
     title: "Capture your first software demo",
     summary:
-      "Use capture, sample or import to establish a source, then replay and download it with commands.",
+      "Record an independent application, use the practice video or import a source. Replay it and keep a downloaded copy.",
     route: "capture",
     available: true,
   },
@@ -30,7 +30,7 @@ export const modules = [
     id: 1,
     title: "How a video file is created",
     summary:
-      "Type FFmpeg commands to encode supplied pictures, add synthetic sound and inspect the real MP4.",
+      "Use FFmpeg to encode three supplied Mousepad pictures, add synthetic sound and inspect the real MP4.",
     route: "build",
     available: true,
   },
@@ -38,7 +38,7 @@ export const modules = [
     id: 2,
     title: "Inspect and prepare real media",
     summary:
-      "Run ffprobe against the exact workspace filename and compare its real report with your intended capture.",
+      "Run ffprobe on your selected source and compare its media summary with the recording you intended.",
     route: "inspect",
     available: true,
   },
@@ -46,7 +46,7 @@ export const modules = [
     id: 3,
     title: "Cut and join: tell the story",
     summary:
-      "Write trim and join commands, inspect their actual outputs and keep the source-hashed execution recipe.",
+      "Write trim and join commands, inspect their outputs and keep the execution recipe with its source-file hashes.",
     route: "edit",
     available: true,
   },

@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { browserStorage } from "@platform/lesson-runtime";
 import { ui } from "./content/ui.strings";
 import { home, modules } from "./content/home.strings";
-import { asset, frames } from "./media/model";
+import { asset } from "./media/model";
 import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
 import { ProjectProvider } from "./journey/project";
@@ -29,10 +29,10 @@ function Home() {
         </div>
         <figure className="hero-media">
           <img
-            src={asset(frames[72]!.image)}
+            src={asset("media/mousepad-frames/frame000.jpg")}
             alt={ui.heroAlt}
-            width="960"
-            height="540"
+            width="1280"
+            height="720"
             style={{ height: "auto" }}
           />
           <div className="mini-timeline" aria-hidden="true" />

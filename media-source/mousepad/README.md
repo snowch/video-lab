@@ -18,3 +18,15 @@ ffprobe -v error -show_streams -show_format -of json /workspace/scratch/mousepad
 ```
 
 Native FFmpeg and ffprobe: 7.1.5-0+deb13u1. Recorded JSON under `docs/notes/live-workbench/media/`. Source: one H.264/yuv420p video stream, 1280×720, 15fps, 180 frames, 12s, 74,303 bytes; no audio. Default trim: six seconds, 90 frames, one H.264 video stream, no audio. Optional audio mapping does not invent sound. Independently replay the real output to judge whether the six-second edit gives a viewer enough time.
+
+## Build experiment stills
+
+The course-wide workbench uses JPEGs extracted from this recording at source picture indexes 0, 90 and 150 (source times 0, 6 and 10 seconds at 15 pictures/second). `frame000.jpg` shows the initial configuration; the later pictures show the replacement result. These three stills do not reproduce continuous interaction. Their output holds are set by the learner's `-framerate`, independently of source timestamps.
+
+Generated with FFmpeg 7.1.5:
+
+```sh
+ffmpeg -hide_banner -loglevel error -i public/media/mousepad-demo.mp4 -vf 'select=eq(n\,0)+eq(n\,90)+eq(n\,150)' -fps_mode vfr -start_number 0 public/media/mousepad-frames/frame%03d.jpg
+```
+
+The separate quiet synthetic tone remains the original generated `media/journey/tone.wav`; neither it nor the stills imply that the Mousepad recording contains audio.

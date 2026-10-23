@@ -85,3 +85,7 @@ On 23 October 2026 the owner extended CLI-first work to all labs, including both
 ## Guided command tasks
 
 The owner requested less scrolling between instructions and terminal on 23 October 2026. Apply a current-task layout throughout available labs, preserve actual typed commands, reference section links, source files and achievements, and distinguish manual navigation from measured success. Use `docs/notes/guided-labs/` for the mandatory separate drafting and independent reviews. Reviewed deployment straight to main remains authorised.
+
+## Native-tool workbench throughout the course
+
+On 23 October 2026 the owner requested migrating all available lessons to the approved workbench. Teach only genuine FFmpeg/ffprobe commands in the editor. File setup, capture, replay, downloads, notes, hints and checks are ordinary app controls, with optional command building for touch devices. Show raw requested tool output; keep app feedback and optional browser diagnostics separate. Begin ordinary inspection with bare ffprobe; request JSON only when structured fields are needed. Production media uses the independent Mousepad recording, while explicitly labelled controlled reference fixtures retain their grading identities. Preserve route IDs, existing files and achievements. Use `docs/notes/course-workbench/` for the mandatory independent workflow. Reviewed main deployment remains authorised.

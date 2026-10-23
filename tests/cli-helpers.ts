@@ -2,30 +2,9 @@
 import { expect, type Page } from "@playwright/test";
 import { cli } from "../src/cli/strings";
 import { routeFor } from "../src/journey/routes";
-export const terminal = (page: Page) =>
-  page.getByLabel(cli.output, { exact: true });
-export async function command(page: Page, text: string, result = cli.done) {
-  const route = routeFor(new URL(page.url()).hash);
-  await expect(page.locator(".cli-lab")).toHaveAttribute(
-    "data-step",
-    route.step!,
-  );
-  await expect(page.locator(".cli-lab")).toHaveAttribute(
-    "data-reference",
-    route.reference ? route.step! : "",
-  );
-  await expect(
-    page.getByRole("button", { name: cli.run, exact: true }),
-  ).toBeEnabled();
-  await page.getByRole("textbox", { name: cli.input, exact: true }).fill(text);
-  await page
-    .getByRole("textbox", { name: cli.input, exact: true })
-    .press("Enter");
-  await expect(page.locator(".command-workspace [role=status]")).toHaveText(
-    result,
-    { timeout: 120000 },
-  );
-}
+export const terminal = (page: Page) => page.locator(".command-workspace");
+export { runCommand as command } from "./course-actions";
+import { runCommand as command } from "./course-actions";
 export async function downloaded(page: Page, name: string) {
   const waiting = page.waitForEvent("download");
   await command(page, `download ${name}`);

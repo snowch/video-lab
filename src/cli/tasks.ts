@@ -40,7 +40,6 @@ export function lessonTasks(step: StepName, reference?: ReferenceLab): Task[] {
 }
 
 export function captureTasks(
-  chosen: "record" | "sample" | "import",
   sourceName: string,
   captureSupported: boolean,
   hasSource: boolean,
@@ -50,20 +49,20 @@ export function captureTasks(
       id: "source",
       title: guided.capture.getSource,
       paragraphs: [
+        guided.capture.getSourceIntro,
         !captureSupported ? guided.capture.unsupported : "",
-        chosen === "record"
-          ? guided.capture.recordIntro
-          : chosen === "sample"
-            ? guided.capture.sampleIntro
-            : guided.capture.importIntro,
         hasSource ? guided.capture.existingSource : "",
       ].filter(Boolean),
-      examples:
-        chosen === "record"
-          ? lessons.capture.examples.slice(0, 3)
-          : chosen === "sample"
-            ? [{ note: "", command: "sample" }]
-            : [{ note: "", command: "import" }],
+      examples: [
+        { note: guided.capture.sampleIntro, command: "sample" },
+        { note: guided.capture.importIntro, command: "import" },
+        ...(captureSupported
+          ? [
+              { note: guided.capture.recordIntro, command: "capture" },
+              { note: "", command: "stop" },
+            ]
+          : []),
+      ],
     },
     {
       id: "files",
