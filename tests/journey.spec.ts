@@ -426,6 +426,28 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
   await expect(page.getByText(cli.session, { exact: true })).toBeVisible();
   await command(page, "help");
   await expect(output(page)).toContainText("ffmpeg");
+  const wrap = page.getByRole("button", { name: cli.wrapLines, exact: true });
+  await expect(wrap).toHaveAttribute("aria-pressed", "false");
+  await expect(output(page)).toHaveCSS("white-space", "pre");
+  const originalOutput = await output(page).textContent();
+  if (page.viewportSize()!.width < 500) {
+    expect(
+      await output(page).evaluate((el) => {
+        el.scrollLeft = el.scrollWidth;
+        return el.scrollLeft;
+      }),
+    ).toBeGreaterThan(0);
+  }
+  await wrap.focus();
+  await page.keyboard.press("Space");
+  await expect(wrap).toHaveAttribute("aria-pressed", "true");
+  await expect(output(page)).toHaveCSS("white-space", "pre-wrap");
+  expect(await output(page).textContent()).toBe(originalOutput);
+  expect(
+    await output(page).evaluate((el) => el.scrollWidth <= el.clientWidth),
+  ).toBe(true);
+  await wrap.click();
+  await expect(output(page)).toHaveCSS("white-space", "pre");
   const input = page.getByRole("textbox", { name: cli.input, exact: true });
   await input.fill("ffmpeg -i capture.mp4");
   await input.press("Shift+Enter");

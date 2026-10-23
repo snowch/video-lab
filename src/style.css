@@ -1277,13 +1277,22 @@ code {
     monospace;
   max-width: 100%;
 }
-.terminal-output {
+.command-workspace .terminal-output {
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+  box-sizing: border-box;
   max-height: 26rem;
   overflow: auto;
   min-height: 8rem;
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
+}
+.command-workspace .terminal-output-wrapped {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .cli-file-picker {
   display: none;

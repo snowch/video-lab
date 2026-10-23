@@ -58,6 +58,7 @@ export function CommandLab({
     filesRef = useRef<Files>({});
   const [ready, setReady] = useState(false),
     [persistent, setPersistent] = useState(true);
+  const [wrapOutput, setWrapOutput] = useState(false);
   const [lines, setLines] = useState<string[]>([]),
     [command, setCommand] = useState("");
   const [notice, setNotice] = useState(cli.ready),
@@ -793,11 +794,22 @@ ${cli.comparisonCredit}`,
         <h2 id="cli-heading">{cli.title}</h2>
         <p>{cli.scope}</p>
         <p>{cli.keyboard}</p>
+        <button
+          type="button"
+          aria-pressed={wrapOutput}
+          aria-controls="cli-output"
+          onClick={() => setWrapOutput((value) => !value)}
+        >
+          {cli.wrapLines}
+        </button>
+        <p id="cli-output-scrolling">{cli.outputScrolling}</p>
         <pre
-          className="terminal-output"
+          id="cli-output"
+          className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
           ref={terminal}
           tabIndex={0}
           aria-label={cli.output}
+          aria-describedby="cli-output-scrolling"
         >
           {lines.join("\n") || cli.welcome}
         </pre>

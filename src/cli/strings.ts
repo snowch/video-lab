@@ -12,6 +12,9 @@ export const cli = {
   input: "Command",
   run: "Run command",
   output: "Command output",
+  wrapLines: "Wrap lines",
+  outputScrolling:
+    "Scroll sideways to read long output lines, or turn on Wrap lines to fit them to the available width.",
   file: "Import a file into the workspace",
   files: "Workspace files",
   storage:
