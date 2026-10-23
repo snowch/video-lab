@@ -1088,3 +1088,148 @@ code {
 .install-access li + li {
   margin-top: 12px;
 }
+
+.journey-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+.journey-nav a {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  text-decoration: none;
+}
+.journey-nav a[aria-current] {
+  background: var(--accent);
+  color: var(--bg);
+}
+.journey-page {
+  max-width: 940px;
+  margin: auto;
+  padding-bottom: 24px;
+}
+.journey-page > section,
+.journey-page > figure {
+  margin: 28px 0;
+}
+.journey-page .workbench {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.journey-page video {
+  display: block;
+  width: 100%;
+  max-height: 540px;
+  background: #0b1821;
+  margin: 14px 0;
+  border-radius: 10px;
+}
+.journey-page .actions,
+.journey-page .form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+}
+.journey-page label {
+  display: block;
+  margin: 12px 0;
+}
+.journey-page input[type="number"],
+.journey-page select {
+  display: block;
+  max-width: 100%;
+  min-height: 44px;
+  margin-top: 6px;
+}
+.journey-page .check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.journey-page .check-label input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.journey-page pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 350px;
+  overflow: auto;
+  font-size: 0.9rem;
+}
+.filmstrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.filmstrip figure {
+  margin: 0;
+  min-width: 0;
+}
+.filmstrip img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.static-pipeline {
+  padding: 20px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.static-pipeline figcaption {
+  font-weight: 700;
+}
+.static-pipeline ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding-left: 24px;
+}
+.static-pipeline li {
+  padding: 8px;
+  flex: 1;
+  min-width: 160px;
+}
+.project-status {
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+  padding-top: 16px;
+  font-size: 0.95rem;
+}
+.encoder-offline {
+  border: 1px solid var(--line);
+  padding: 16px;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+.review-checklist label {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 600px) {
+  .filmstrip {
+    grid-template-columns: 1fr;
+  }
+  .journey-page .workbench {
+    padding: 14px;
+  }
+  .journey-nav a {
+    font-size: 0.9rem;
+    flex: 1 1 150px;
+  }
+  .journey-page h1 {
+    font-size: 2rem;
+  }
+  .journey-page .form-grid > label {
+    flex: 1 1 150px;
+  }
+}

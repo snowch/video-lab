@@ -2,60 +2,55 @@
 
 Copyright © 2026 Christopher Snow.
 
-**Status:** redesigned direction. This document sets direction, not evidence that modules exist. The redesign record, current-to-target map and migration plan are in `docs/notes/curriculum-redesign.md` (issue #3, Phase 1).
+**Status, 23 October 2026:** the initial five-step capture-to-export path is implemented. The final local quality gate has passed; reviewed deployment and public verification follow in the release record; [the acceptance ledger](notes/issue-3/acceptance.md) records closure evidence. The [redesign record](notes/curriculum-redesign.md) explains the individual retained sections and migration.
 
-## Purpose
+## Purpose and prerequisites
 
-Teach a technically experienced learner to **record, understand, edit and publish** a clear, high-quality software demonstration. The organising question is: *how do I record, improve, and publish a demo that viewers can understand?* FFmpeg, codecs, timestamps and file formats are means to that end, not the syllabus. The course is not a catalogue of command flags, nor an attempt to build a replacement for DaVinci Resolve.
+Help a software or data engineer make a short demo whose action and result a viewer can understand. The learner needs ordinary browser/file skills; terminal and code familiarity help with optional command evidence. Media terms are introduced beside the operation that needs them. Capture is optional: a labelled original recording supports the same real edit/export path.
 
-The course's guiding idea: **A video editor chooses what the viewer sees, hears, and has time to understand.** Media formats and processing tools constrain how that choice can be implemented.
+The initial completion outcome is a playable edited MP4, the source-linked command/recipe, and a viewer-centred review. Reading a provided output does not establish that an edit was executed. Publishing here means preparing and checking a downloadable deliverable; the course does not upload it to a hosting account.
 
-## Learner prerequisites
+## Curriculum and routes
 
-Comfortable with a terminal, files, basic code and an ordinary browser. No prior video capture, editing, FFmpeg, codec or audio-production knowledge. Screen capture is not a prerequisite: a labelled pre-recorded fixture carries learners whose device or browser cannot capture. Native FFmpeg capture exercises are clearly optional.
+| # | Module | Current outcome | Status / canonical route |
+| --- | --- | --- | --- |
+| 0 | Capture your first software demo | Record one action, replay/download, or import/adopt a source. | Implemented · `#/capture` |
+| 1 | How a video file is created | Encode supplied pictures, add synthetic audio, inspect actual MP4s. | Implemented · `#/build` |
+| 2 | Inspect and prepare real media | Probe the selected file; compare actual content with intended capture. | Implemented · `#/inspect` |
+| 3 | Cut and join: tell the story | Trim one or two ranges, reset/join/encode and download a real edit recipe. | Implemented · `#/edit` |
+| 4 | Make the action readable | Crop, zoom, pace and add minimal callouts. | Planned |
+| 5 | Make the sound clear | Improve narration, levels, noise and timing. | Planned |
+| 6 | Compression and picture quality | Compare encoded size, detail and screen-text readability. | Planned |
+| 7 | Captions, overlays and automation | Add and validate captions and overlays. | Planned |
+| 8 | Export, publish and verify | Complete the initial demo: replay/download actual output and recipe, check intended sound, readability, size and playback elsewhere. | Implemented initial checkpoint · `#/publish` |
+| 9 | AI-assisted production | Review assisted transcripts, captions and edit proposals against actual media. | Planned, optional |
+| 10 | Final project | Integrate later production techniques in a further complete demo. | Planned |
 
-## Curriculum
+The initial path is **0 → 1 → 2 → 3 → 8**, not a requirement to wait for advanced modules. Build is a separate structure experiment. It preserves the capture/import/adopted recording as the project source; it does not turn that recording into a three-picture filmstrip. Inspect may examine experiment outputs explicitly, while Edit uses the project source.
 
-The journey makes something first, then explains it. Each step hands the learner a real artefact to the next. The current implementation is the Phase 2/3 vertical slice in progress: the existing Module 0 inspection lesson and Module 2 cutting-and-joining lesson are retained and relocated into steps 2 and 3; their fixtures, verified measurements, graders and components are reused. Module numbering below is the redesigned order; stored progress survives because lesson IDs are unchanged and old routes are redirected.
+## Actual evidence and interaction choices
 
-| # | Module | What it teaches | Signature hands-on activity | Status |
-| --- | --- | --- | --- | --- |
-| 0 | Capture your first software demo | record one visible software action; replay, download; notice dead time and legibility | real `getDisplayMedia` + `MediaRecorder` capture, or labelled pre-recorded fallback | planned (Phase 2) |
-| 1 | How a video file is created | pictures over time; encoding versus muxing; container | build a real MP4 from original stills with `ffmpeg.wasm`, add audio, mux, probe | planned (Phase 2) |
-| 2 | Inspect and prepare real media | read container/stream/timing evidence; diagnose a capture problem | inspect the learner's own recording (relocated Module 0 material) | relocating (Phase 3) |
-| 3 | Cut and join: tell the story | keep the action and result; copy versus re-encode; keyframes; concat | cut/join explorers on real outputs (relocated Module 2 material) | relocating (Phase 3) |
-| 4 | Make the action readable | crop, zoom, frame, pace, minimal callouts | real filter runs; before/after stills | planned (Phase 4) |
-| 5 | Make the sound clear | audio basics, levels, noise, narration, sync | inspect and improve a real recording's audio | planned (Phase 4) |
-| 6 | Compression and picture quality | resolution, codec settings, bitrate; readability of small text | real encoded comparisons, measured size and stills | planned (Phase 4) |
-| 7 | Captions, overlays and automation | captions, overlays, filter chains | build and validate a caption track on real media | planned (Phase 4) |
-| 8 | Export, publish and verify | export profiles; verify playback, sound, captions, size | verify the finished deliverable | planned (Phase 4) |
-| 9 | AI-assisted production (optional) | transcripts and suggested edits; hallucination and timing review | judge assisted edits against real media | planned (Phase 4) |
-| 10 | Final project | the whole journey, integrated | complete concise demo + reproducible recipe + self-review | planned (Phase 4) |
+- Capture is a real consent-based browser recording with correctly named MIME-derived output, lifecycle cleanup and a provided-source fallback. Optional native commands are separate: only Linux/X11 and managed Chromium virtual-display capture were actually executed; other command forms received source review.
+- Build runs single-thread FFmpeg WASM to encode real original stills 000/048/072, then AAC-encode the synthetic sound while copying video into MP4. The stills show initial state, sorted result and later hold, not a continuous click/action. Changing presentation rate requires new bytes; stale audio output is invalidated.
+- Inspect runs real ffprobe on explicit request. A missing declared duration remains missing; observed packet timing is labelled separately, including uncertain final hold. Audio absence is compared with intention, not treated as an automatic fault.
+- Edit operates on the actual source, with one or two half-open ranges, reset clocks, optional concatenation and encoding. It preserves the source, invalidates stale exports and supplies actual output measurements, command and recipe.
+- Publish provides replay, MP4/recipe downloads and a checklist. It does not automatically certify another device's playback or a viewer's understanding.
+- Capture, encode/mux and edit-pipeline diagrams are static explanatory shapes. The Build filmstrip is static source evidence with a calculated output schedule. Recorded reference players select verified output files; their clock comparison is an explicitly mathematical model. No diagram pretends to be a live processor or measured waveform.
 
-Streaming, devices, chapters, attachments and hardware acceleration are optional reference sections, not required for the core journey.
+## Architecture and compatibility
 
-## Technology decisions
+React/TypeScript/Vite uses the unchanged shared lesson platform through checked-copy sync. Original reference lesson IDs `what-is-video` and `cutting-and-joining` and saved challenge keys remain. Canonical routes use names; old `#/module-0[/section]` maps to `#/inspect/reference[/section]`, and old `#/module-2[/section]` to `#/edit/reference[/section]`. The same numeric string is never repurposed for the new module number. Reference graders remain tied to fixed fixtures, not learner recordings.
 
-1. Reuse `snowch/learning-platform` under its existing checked-copy synchronisation mechanism, and use Assembly Lab's authoring conventions. Prefer React, TypeScript and Vite consistent with the family.
-2. Host at `https://snowch.github.io/video-lab/` via GitHub Pages. Static, no login.
-3. Build course-specific media model and visualisation components separately from the platform. Use actual short media fixtures, recorded `ffprobe` facts and browser player behaviour. Explanatory diagrams are static, accessible and deterministic; no decorative animations or pseudo-processors.
-4. Real in-browser processing with `ffmpeg.wasm` (single-thread core, version-pinned, loaded on demand in a worker only when an encoding lesson runs). Never on the home page or initial recording lesson; never in the baseline offline manifest. Verify encoder/muxer/inspection capabilities on the pinned build before authoring UI.
-5. Preserve provenance and reproducibility for every media measurement; CI should verify the fixture if native FFmpeg is available and clearly distinguish skips.
-6. Carry interaction meaning on touch and keyboard, not hover alone. Use clear visuals that explain time and multiple streams without an overlong glossary.
-7. Where screen capture is unsupported, a labelled pre-recorded original fixture keeps the lesson meaningful; the fallback never claims to be a new capture.
+The pinned core 0.12.10 actually includes ffprobe. Wrapper 0.12.15 and util 0.12.2 are pinned; the core is loaded only by explicit processing or additional offline-tool saving. Probe output is validated against real JSON/streams/format/errors, including the documented pinned return sentinel; encoder output requires success, bytes and a valid real probe. [The spike](notes/issue-3/wasm-spike.md) is the capability evidence.
 
-## Scope, checkpoints and definition of done
+Processing and media stay local. One operation runs at a time; cancel/navigation terminates it and supports retry. Exercise imports are bounded to 20 MiB; editing requires inspected timing within 30 seconds and supported dimensions. The engine has separate 32 MiB total-input and 120-second processing bounds. Project media uses browser storage with explicit session-only fallback and clear-project control. Download important work.
 
-**Phase 1 (this checkpoint):** written redesign, current-to-target map, static-versus-interactive audit, capture/privacy support matrix and WASM compatibility spike. Recorded in `docs/notes/curriculum-redesign.md`.
+Offline lessons and the approximately 32.4 MB additional processing package have separate manifests/readiness. Encoder and optional comparison media are excluded from the baseline. Installation does not imply either download is complete. GPL/MIT notices and exact source references accompany the shipped optional core.
 
-**Phase 2 (next):** first runnable learner path — real capture exercise with fallback, then frames → MP4 → audio/mux → probe with real `ffmpeg.wasm`. Prioritise this complete vertical slice before broad lesson proliferation.
+## Delivery and remaining work
 
-**Phase 3:** relocate and reconnect the existing inspection and cutting/joining lessons; fix routes, progress migration, copy and term gates; demonstrate an actual short edited result.
+The Issue 3 owner request authorises the complete initial path while allowing advanced modules 4–7 and 9–10 to remain planned. The first produced demo now belongs to Publish, module 8; the later Final project does not make that outcome provisional.
 
-**Phase 4:** remaining modules in independently tested slices; planned modules stay explicitly labelled until implemented.
+Separate verified-fact drafting and outline review preceded implementation. The built reader completed an actual provided-source → Build → Inspect → Edit → Publish run and recorded findings, not blanket approval. The sceptic and checker independently verify ranked fixes, including actual downloaded recipes and the sparse-picture timing regression. The final local `npm run check` passed 50 unit and 105 browser tests; public Pages verification is recorded after deployment. See [reviews](notes/issue-3/review/) and [acceptance](notes/issue-3/acceptance.md).
 
-A module is complete only when its experiments work on real bytes, claims are checked against real media, tests pass, browser interactions have been exercised at phone and desktop widths, review findings have been resolved or documented, and a short module note records design tradeoffs.
-
-## Originality and source restrictions
-
-The photographed 11-page *FFmpeg Basics: A Tutorial Introduction* supplied in conversation is an inspiration for topic coverage, **not available as a repository source text** and must not be copied or paraphrased from unseen pages. Use primary FFmpeg and browser media documentation. All lessons, situations, examples, interactive illustrations, exercises and graphics are original. Record exact source URLs and licences in `docs/sources.md`. Any recognised third-party sample (e.g. a Big Buck Bunny excerpt) is reproducibly derived, small, licensed and attributed, and never a baseline download.
+Later production topics must arrive as independent tested slices. Do not describe future filter/audio/caption/AI controls as implemented. Use primary sources and original teaching; the photographed tutorial is a topic inspiration, not a repository source to copy.

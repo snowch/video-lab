@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- Copyright © 2026 Christopher Snow -->
+<html lang="en">
+  <meta charset="utf-8" /><title>Build queue demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #0b1821;
+      color: #e8f5f6;
+      font: 24px system-ui;
+      padding: clamp(16px, 4vw, 42px);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      color: #6ee7c0;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 30px 0 8px;
+    }
+    p {
+      color: #adc6cf;
+      margin: 0 0 24px;
+    }
+    button {
+      background: #6ee7c0;
+      color: #0b1821;
+      border: 0;
+      border-radius: 10px;
+      padding: 14px 24px;
+      font: inherit;
+    }
+    table {
+      width: 100%;
+      margin-top: 24px;
+      border-collapse: collapse;
+    }
+    td,
+    th {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid #30434d;
+    }
+    th {
+      color: #adc6cf;
+      font-size: 18px;
+    }
+    footer {
+      margin-top: 24px;
+      color: #6ee7c0;
+    }
+    progress {
+      width: 100%;
+      height: 8px;
+      accent-color: #6ee7c0;
+    }
+    #clock {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+  <header>
+    <span>BUILD QUEUE / ORIGINAL SOFTWARE DEMO</span><span id="clock"></span>
+  </header>
+  <h1>Find the slowest build</h1>
+  <p>Sort the recorded runs to decide what to investigate.</p>
+  <button id="sort">Sort by duration ↓</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Duration</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <footer id="status"></footer>
+
+  <script>
+    // Copyright © 2026 Christopher Snow
+    const runs = [
+      { name: "catalogue", seconds: 24 },
+      { name: "payments", seconds: 61 },
+      { name: "search", seconds: 38 },
+    ];
+    let sorted = false;
+    function draw() {
+      document.querySelector("#rows").innerHTML = (
+        sorted ? [...runs].sort((a, b) => b.seconds - a.seconds) : runs
+      )
+        .map(
+          (r) =>
+            `<tr><td>${r.name}</td><td>${r.seconds} s</td><td>Passed</td></tr>`,
+        )
+        .join("");
+      document.querySelector("#status").textContent = sorted
+        ? "Payments takes longest. Inspect this build next."
+        : "Recorded order. Which build needs attention?";
+    }
+    document.querySelector("#sort").onclick = () => {
+      sorted = true;
+      draw();
+    };
+    draw();
+  </script>
+</html>

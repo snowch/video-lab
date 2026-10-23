@@ -1,0 +1,38 @@
+{
+  "source": "chromium-muxed.mp4",
+  "workingInputName": "capture.mp4",
+  "sourceSha256": "fc91e122c552b9f5efda0e87aec50aeb69ff670f9d6d9ba59e6f284fbfa70f58",
+  "ranges": [
+    {
+      "start": 0,
+      "end": 1.25
+    }
+  ],
+  "command": [
+    "-i",
+    "capture.mp4",
+    "-filter_complex",
+    "[0:v:0]fps=12,trim=start=0:end=1.25,setpts=PTS-STARTPTS,scale=w='trunc(min(1280,iw)/2)*2':h=-2[v0];[0:a:0]atrim=start=0:end=1.25,asetpts=PTS-STARTPTS[a0];[v0][a0]concat=n=1:v=1:a=1[v][a]",
+    "-map",
+    "[v]",
+    "-map",
+    "[a]",
+    "-c:a",
+    "aac",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-crf",
+    "23",
+    "-pix_fmt",
+    "yuv420p",
+    "-r",
+    "12",
+    "-movflags",
+    "+faststart",
+    "edited-demo.mp4"
+  ],
+  "created": "2026-10-23T10:16:46.424Z",
+  "commandLine": "ffmpeg -i capture.mp4 -filter_complex '[0:v:0]fps=12,trim=start=0:end=1.25,setpts=PTS-STARTPTS,scale=w='\\''trunc(min(1280,iw)/2)*2'\\'':h=-2[v0];[0:a:0]atrim=start=0:end=1.25,asetpts=PTS-STARTPTS[a0];[v0][a0]concat=n=1:v=1:a=1[v][a]' -map '[v]' -map '[a]' -c:a aac -c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p -r 12 -movflags +faststart edited-demo.mp4"
+}

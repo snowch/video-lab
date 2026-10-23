@@ -34,6 +34,16 @@ import { grade } from "./grade";
 import { asset, frames } from "./media/model";
 import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
+import { ProjectProvider } from "./journey/project";
+import {
+  CapturePage,
+  BuildPage,
+  InspectPage,
+  EditPage,
+  PublishPage,
+} from "./journey/pages";
+import { routeFor } from "./journey/routes";
+import { j } from "./journey/strings";
 const storage = browserStorage();
 const book: Book = {
   id: "video-lab",
@@ -82,7 +92,7 @@ function Home() {
           <span className="eyebrow">{home.eyebrow}</span>
           <h1>{home.subtitle}</h1>
           <p>{home.intro}</p>
-          <a className="button primary" href="#/module-0">
+          <a className="button primary" href="#/capture">
             {home.start}
             <span aria-hidden="true">→</span>
           </a>
@@ -121,16 +131,12 @@ function Home() {
                 {String(m.id).padStart(2, "0")}
               </span>
               <div>
-                <small>
-                  {book.lessons.some((l) => l.module === m.id)
-                    ? ui.available
-                    : ui.planned}
-                </small>
+                <small>{m.available ? ui.available : ui.planned}</small>
                 <h3>{m.title}</h3>
                 <p>{m.summary}</p>
               </div>
-              {book.lessons.some((l) => l.module === m.id) && (
-                <a className="button" href={`#/module-${m.id}`}>
+              {m.available && (
+                <a className="button" href={`#/${m.route}`}>
                   {ui.open} →
                 </a>
               )}
@@ -159,22 +165,34 @@ function App() {
     document.documentElement.dataset.theme = theme;
     storage.set("video-lab:theme", theme);
   }, [theme]);
-  const activeLesson = book.lessons.find(
-    (l) =>
-      l.module === Number(route.match(/^#\/module-(\d+)(?:\/|$)/)?.[1] ?? -1),
-  );
+  const resolved = routeFor(route);
+  const activeLesson = resolved.reference
+    ? resolved.step === "inspect"
+      ? lesson
+      : lesson2
+    : undefined;
+  const step = resolved.step;
   const inLesson = !!activeLesson;
+  const pageTitle = step ? j[step].title : home.subtitle;
   useEffect(() => {
-    document.title = `${activeLesson ? activeLesson.title : home.subtitle} · ${home.title}`;
-    const section = route.split("/")[2];
-    if (section) {
-      document.getElementById(`section-${section}`)?.scrollIntoView();
+    if (resolved.canonical) {
+      history.replaceState(null, "", resolved.canonical);
+      setRoute(resolved.canonical);
+      return;
+    }
+    document.title = `${activeLesson?.title ?? pageTitle} · ${home.title}`;
+    if (resolved.section) {
+      requestAnimationFrame(() =>
+        document
+          .getElementById(`section-${resolved.section}`)
+          ?.scrollIntoView(),
+      );
     } else {
       window.scrollTo(0, 0);
       if (!initial.current) main.current?.focus();
     }
     initial.current = false;
-  }, [route, inLesson, activeLesson]);
+  }, [route, inLesson, activeLesson, pageTitle]);
   return (
     <>
       <a
@@ -208,6 +226,21 @@ function App() {
         </div>
       </header>
       <OfflineAccess />
+      {step && (
+        <nav className="journey-nav" aria-label={home.planTitle}>
+          {modules
+            .filter((module) => module.available)
+            .map((module) => (
+              <a
+                key={module.id}
+                href={`#/${module.route}`}
+                aria-current={module.route === step ? "step" : undefined}
+              >
+                {module.id} · {module.title}
+              </a>
+            ))}
+        </nav>
+      )}
       <main id="content" ref={main} tabIndex={-1}>
         {activeLesson ? (
           <div className="course-layout">
@@ -217,7 +250,7 @@ function App() {
               <ol>
                 {activeLesson.sections.map((s, i) => (
                   <li key={s.kind}>
-                    <a href={`#/module-${activeLesson.module}/${s.kind}`}>
+                    <a href={`#/${step}/reference/${s.kind}`}>
                       {String(i + 1).padStart(2, "0")} {s.title}
                     </a>
                   </li>
@@ -225,20 +258,48 @@ function App() {
               </ol>
             </aside>
             <div>
-              <span className="eyebrow">
-                {activeLesson.module === 0 ? ui.lessonNumber : m2.lessonNumber}
-              </span>
+              <p>
+                {step === "inspect"
+                  ? j.inspect.referenceNote
+                  : j.edit.referenceNote}
+              </p>
+              <a className="button" href={`#/${step}`}>
+                {step === "inspect" ? j.inspect.title : j.edit.title}
+              </a>
               <LessonView
                 key={activeLesson.id}
                 book={book}
                 lesson={activeLesson}
                 lessonHref={(id) =>
-                  `#/module-${book.lessons.find((l) => l.id === id)?.module ?? 0}`
+                  id === lesson.id ? "#/inspect/reference" : "#/edit/reference"
                 }
                 storage={storage}
                 strings={strings}
               />
             </div>
+          </div>
+        ) : step ? (
+          <div className="wrap journey-wrap">
+            <a href="#/">{ui.back}</a>
+            {step === "capture" && <CapturePage />}
+            {step === "build" && <BuildPage />}
+            {step === "inspect" && (
+              <>
+                <InspectPage />
+                <a className="reference-link button" href="#/inspect/reference">
+                  {j.inspect.referenceTitle}
+                </a>
+              </>
+            )}
+            {step === "edit" && (
+              <>
+                <EditPage />
+                <a className="reference-link button" href="#/edit/reference">
+                  {j.edit.referenceTitle}
+                </a>
+              </>
+            )}
+            {step === "publish" && <PublishPage />}
           </div>
         ) : (
           <Home />
@@ -253,4 +314,8 @@ function App() {
     </>
   );
 }
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <ProjectProvider>
+    <App />
+  </ProjectProvider>,
+);

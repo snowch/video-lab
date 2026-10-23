@@ -8,5 +8,6 @@ npx tsc --noEmit
 npm run test
 npm run media:verify
 node scripts/module2-media.mjs
+node scripts/journey-media.mjs
 npm run build
 npm run test:browser

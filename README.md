@@ -2,60 +2,72 @@
 
 Copyright © 2026 Christopher Snow.
 
-An interactive course for software and data engineers making clearer demonstrations. The introduction, **Module 0: What is a digital video?** and **Module 2: Cutting and joining** are implemented. Module 1 and Modules 3–9 remain planned. Module 2 supplies its own short FFmpeg introduction and links to Module 0 for media fundamentals.
+Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The initial path is implemented; Issue 3's final verification and deployment are in progress. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) for evidence and outstanding checks.
 
-Module 0 uses an original browser-app recording, genuine H.264/AAC MP4, recorded ffprobe evidence and extracted frames. The player, frame inspector, streams diagram, prediction, failure experiment and graded inspection challenge work without a remote service. The challenge has useful failed-test feedback, five progressive hints, retries, reset and locally saved work regraded on reload.
+| Step | Route | What you do |
+| --- | --- | --- |
+| 0 · Capture | `#/capture` | Record one action with the browser's chooser, import an MP4/WebM, or adopt the labelled original fallback. |
+| 1 · Build | `#/build` | Run a separate experiment: encode three provided pictures into video, add synthetic sound, then inspect and download the actual files. This does not convert the project recording. |
+| 2 · Inspect | `#/inspect` | Measure the selected file and compare its pictures and optional sound with your intention. |
+| 3 · Edit | `#/edit` | Keep one or two source ranges, run a real trim/reset/join/encode, then replay the output. |
+| 8 · Publish | `#/publish` | Review and download the edited MP4 and source-linked recipe; check playback, readability, sound expectations and file size before sharing. |
 
-Module 2 compares six real stream-copy/encoded cuts and four real joined outputs from the same original recording. Learners inspect boundary pictures, arrange clips, compare source and output clocks, and complete a six-field edit challenge. The browser selects verified pre-generated results; it does not run FFmpeg or render arbitrary edits.
+Modules 4–7 and 9–10 remain planned. Publish is the initial complete-demo checkpoint; it does not require those later modules. Processing stays in the browser. Viewing a provided result supports reading and comparison but does not produce a project export.
 
-See the [Module 2 plan](docs/notes/module-2-plan.md), [media commands and verification](docs/notes/module-2/media/README.md), and [independent reviews](docs/notes/module-2/review/).
+The original inspection and cut/join lessons remain detailed, graded references at `#/inspect/reference` and `#/edit/reference`. Their recorded measurements and challenges still use their own fixed fixtures. Old `#/module-0` and `#/module-2` bookmarks, including section links, redirect to these references. Existing lesson IDs and saved challenge work are retained.
 
 ## Run and check
 
-Node 24 and native FFmpeg/ffprobe are required for the full check. On a machine where browser system dependencies can be installed:
+Use Node 24 and native FFmpeg/ffprobe for the full check:
 
 ```sh
 npm ci
 npx playwright install --with-deps chromium firefox
 npm run dev
-npm run check
 ```
 
-Open the URL Vite prints with `/video-lab/`. `npm run check` is exactly the command CI runs: formatting, source copyright, unedited platform copy, strict typecheck, model/schema/term/reference tests, required native verification of both modules’ media, production build and Playwright. `npm run build && npm run preview` serves the production bundle. Browser tests cover Chromium desktop/phone in light/dark plus desktop Firefox; WebKit/Safari are not yet a verified baseline.
+Open the printed Vite URL under `/video-lab/`. For a production preview:
 
-See [media provenance and commands](docs/notes/module-0/media/README.md), [sources and licences](docs/sources.md), [module plan](docs/notes/module-0-plan.md), and [independent review records](docs/notes/module-0/review/).
+```sh
+npm run build
+npm run preview
+```
 
-## Use offline
+`npm run check` is the same entry point CI runs. It covers formatting, copyright, the unchanged shared-platform copy, strict TypeScript, unit/schema/term/reference tests, native verification of original, cut/join and journey fixtures, the production build, and Playwright. The journey browser tests execute real WASM encode, mux, probe and edit operations rather than supplying invented outputs. Capture tests include controlled lifecycle scenarios; separate [native/browser capture evidence](docs/notes/issue-3/native-capture.md) records a real virtual-desktop run. A test's presence is not a claim that the final integrated check has passed; consult the acceptance ledger.
 
-Open [Video Lab](https://snowch.github.io/video-lab/) while connected. Expand **Offline access and app installation**, choose **Download for offline use**, and keep the page open until it reports that the complete copy is ready. Both available modules, all recordings and pictures, challenges and local notes then work offline, including reopening a saved lesson URL in the same browser. The current bundle is about 9 MB before transfer compression.
+Processing uses pinned single-thread `@ffmpeg/core` 0.12.10, wrapper 0.12.15 and util 0.12.2. The build copies the unmodified core into `dist/encoder/0.12.10/`, publishes notices and source references, and generates its hashed manifest. It is not loaded merely by opening a lesson. [The compatibility spike](docs/notes/issue-3/wasm-spike.md) records actual Chromium/Firefox encoding, playback and probing, including missing-duration handling for real WebM recordings.
 
-Use **Check for updates** while connected. A complete update offers **Reload to use update**; other open Video Lab tabs reload too. Already saved challenge work, notes and theme remain in this browser. External source links require a connection. Browser storage can be cleared or evicted, and private sessions are temporary; this is not a backup or synchronisation service.
+The capture exercise stops at 15 seconds and limits output to 20 MiB. Imported exercise files are limited to 20 MiB; editing requires inspected timing within 30 seconds and the supported picture-size bound. Browser/device recording support varies. Windows, macOS, physical phones and actual microphone/system-audio permissions are not certified by Linux browser emulation. Use the provided original source when capture is unavailable; real editing still requires working processing tools.
 
-Offline saving uses standard service workers and Cache Storage on HTTPS (or localhost). It is enabled only after requesting a download. For local offline testing use `npm run build && npm run preview`, not the development server. The build generates `dist/sw.js` and `dist/offline-manifest.json` from all production assets. Native video seeking is served from complete saved recordings using HTTP byte ranges. No additional runtime dependency is installed. See [offline plan](docs/notes/offline-plan.md) and [review records](docs/notes/offline/review/).
+## Offline access and app installation
 
-## App icon and installation
+While connected, expand **Offline access and app installation**, choose **Download for offline use**, and wait until the complete lesson copy is ready. This saves the lessons, original recordings, recorded references, pictures, styles and fonts. It excludes `encoder/` and `optional/`.
 
-Open **Offline access and app installation** and find **Add a Video Lab icon**. When the browser offers installation, **Install Video Lab** opens its prompt. Otherwise, expand the browser instructions: Chrome/Edge offer address-bar or menu installation; Chrome on Android offers **More → Install and create shortcut → Install**; Safari on Mac offers **File → Add to Dock**; iPhone/iPad use **Share → Add to Home Screen**. Firefox web-app support varies by operating system and version. The browser chooses where the app shortcut appears.
+For offline processing, first finish the lesson download, then explicitly save the additional processing tools from the journey's tools panel. The pinned package and notices total **32,367,068 bytes**, about **32.4 MB**, separate from lesson readiness. Without those tools, saved reading and recorded comparisons remain useful, but viewing a reference is not an executed edit. Offline saving uses a service worker over HTTPS or localhost; test the production preview rather than the development server.
 
-The app has its own original play icon, stable identity and standalone launch configuration. Installing it does not itself save every lesson: complete **Download for offline use** before disconnecting. Previously downloaded copies should use **Check for updates**, then **Reload to use update**, to receive the installation controls and icon metadata.
+**Check for updates** downloads a complete new lesson copy before offering **Reload to use update**. Other open Video Lab tabs reload too. Existing saved challenge work, notes and theme remain local. Browser storage may be cleared or evicted, private sessions are temporary, and external source links need internet. Project media is stored locally when available; if storage fails, the UI says session-only. Download important source files, outputs and recipes; there is no account synchronisation or permanent-backup promise.
 
-Icons are generated from `public/icons/video-lab.svg` by `node scripts/generate-icons.mjs`. No additional dependency is required. The manifest and icons are included in offline downloads. See the [installation plan](docs/notes/install-plan.md) and [independent reviews](docs/notes/install/review/).
+The same disclosure contains **Add a Video Lab icon**. A real browser installation prompt is offered only when available; otherwise, use the browser-specific instructions. Installation does not itself save lessons or processing tools. Icons are original and reproducible with `node scripts/generate-icons.mjs`. See the [offline](docs/notes/offline-plan.md) and [installation](docs/notes/install-plan.md) records.
+
+## Media, rights and evidence
+
+The build-queue app, original capture, synthetic tone and original diagrams have reproducible sources. Native fixture verification checks real media and extracted pictures. The optional Big Buck Bunny comparison is loaded only by a Publish-page click: a five-second, 86,088-byte H.264/AAC excerpt, credited to © 2008 Blender Foundation, licensed CC BY 3.0. It is outside the baseline offline download and is never presented as the learner's recording. [The provenance record](docs/notes/issue-3/media/big-buck-bunny.json) pins the official source archive, transformation and hashes.
+
+FFmpeg is now also distributed as an optional browser core, declared GPL-2.0-or-later; its wrapper/util are MIT. Distributed notices, exact source references and licence boundaries are described in [sources and licences](docs/sources.md). Earlier native-only FFmpeg statements no longer describe this implementation.
 
 ## Shared platform
 
-`platform/` is an unchanged copy of `snowch/learning-platform`, with the upstream commit and file hashes in `platform/SOURCE.json`. To update, clone that repository, make and commit any upstream changes there, then run:
+`platform/` is an unchanged copy of `snowch/learning-platform`; `platform/SOURCE.json` records upstream commit and hashes. Make upstream changes in its own repository, then copy through the documented workflow:
 
 ```sh
 node scripts/sync-platform.mjs ../learning-platform
 node scripts/sync-platform.mjs --check
 ```
 
-Do not edit the copied platform. The course provides its shell, original prose, figures, media model and grader separately.
+The course owns its shell, prose, capture/processing features, models and graders separately.
 
 ## GitHub Pages
 
-The Vite base path is `/video-lab/`; hash routes support direct lesson links, reloads and back/forward navigation on static hosting. The Pages workflow runs the full check before uploading `dist/` and deploying. It runs on pushes to `main` and supports manual dispatch from Actions.
+The base path is `/video-lab/`; named hash routes support static hosting, reloads and browser navigation. In **Settings → Pages**, choose **GitHub Actions**. The deployment workflow checks the app before publishing `dist/` from `main`; manual dispatch is supported. The owner has authorised reviewed main deployments. Workflow success and a live-site check establish deployment, not this configuration note. The current Issue 3 release remains pending final check and deployment verification in the acceptance ledger.
 
-In **Settings → Pages**, select **GitHub Actions** as the source. The existing `github-pages` environment permits `main`, so its deployment protection is retained. On 17 October 2026 the owner authorised deploying the reviewed implementation directly to `main`, superseding the initial project-branch-only delivery constraint.
-
-The course address is https://snowch.github.io/video-lab/ . The **Deploy GitHub Pages** workflow reports each deployment result; [PR #2](https://github.com/snowch/video-lab/pull/2) records the live-site verification. Deployment success is established by the workflow and live check, not by this configuration note.
+Course: https://snowch.github.io/video-lab/

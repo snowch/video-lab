@@ -34,13 +34,13 @@ const test = base.extend<{ site: Site }>({
           data = Buffer.from("wrong file contents");
         if (relative === "sw.js" && site.revision) {
           // Change only the cache version to exercise a second complete deployment.
+          const baselineVersion = JSON.parse(
+            await readFile(resolve(root, "offline-manifest.json"), "utf8"),
+          ).version;
           data = Buffer.from(
             data
               .toString()
-              .replace(
-                /(version: ")([^"]+)/,
-                `$1test-release-${site.revision}`,
-              ),
+              .replace(baselineVersion, `test-release-${site.revision}`),
           );
         }
         const types: Record<string, string> = {

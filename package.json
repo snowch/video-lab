@@ -5,16 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build && node scripts/build-offline.mjs",
+    "build": "vite build && node scripts/prepare-encoder.mjs && node scripts/build-offline.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "test:browser": "playwright test",
     "media:generate": "node scripts/generate-media.mjs",
     "media:verify": "node scripts/verify-media.mjs",
     "check": "bash scripts/check.sh",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "media:journey": "node scripts/journey-media.mjs"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "0.12.15",
+    "@ffmpeg/util": "0.12.2",
     "katex": "^0.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -25,6 +28,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@ffmpeg/core": "0.12.10",
     "@playwright/test": "^1.56.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",

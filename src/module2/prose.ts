@@ -18,7 +18,7 @@ const b = clipsFor("AB", Number(referenceAnswers.end))[1]!;
 export const prose = {
   question:
     "How can you remove waiting from a software demo while keeping the opening context and the result? A cut must choose both the pictures to keep and where they belong in the finished recording.",
-  motivation: `The sample recording, \`${fixture.source.file}\`, shows a build queue before and after Sort. It is a separately encoded version of the Module 0 recording, made for comparing cuts. Watch where the action happens, then decide which opening context and result you need. The sound is a quiet synthetic tone, not narration; listening is optional.
+  motivation: `The sample recording, \`${fixture.source.file}\`, shows a build queue before and after Sort. It is a separately encoded version of the provided original build-queue recording, made for comparing cuts. Watch where the action happens, then decide which opening context and result you need. The sound is a quiet synthetic tone, not narration; listening is optional.
 
 FFmpeg is a command-line tool for processing media. A command reads an input file and writes an output file: \`-i\` introduces an input filename; the final filename names the destination. This lesson selects recorded outputs made with FFmpeg. You do not need to install it or run commands.`,
   prediction: `A keyframe is a picture from which decoding can start independently. Other pictures can depend on earlier pictures. This sample was encoded with keyframes at ${keyframes.map((f) => f.time).join(", ")} seconds; the strip below marks them.

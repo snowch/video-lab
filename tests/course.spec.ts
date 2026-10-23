@@ -2,6 +2,7 @@
 import { test, expect } from "@playwright/test";
 import { ui } from "../src/content/ui.strings";
 import { labels } from "../src/content/module0.labels";
+import { j } from "../src/journey/strings";
 import { home } from "../src/content/home.strings";
 const open = async (page: import("@playwright/test").Page) => {
   await page.goto("./#/module-0");
@@ -19,7 +20,7 @@ test("introduction, theme persistence and browser navigation", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     home.subtitle,
   );
-  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(8);
+  await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(6);
   const theme = await page.locator("html").getAttribute("data-theme");
   if (isMobile) await page.getByRole("button", { name: ui.theme }).tap();
   else await page.getByRole("button", { name: ui.theme }).click();
@@ -28,7 +29,7 @@ test("introduction, theme persistence and browser navigation", async ({
   await expect(page.locator("html")).not.toHaveAttribute("data-theme", theme!);
   await page.getByRole("link", { name: home.start }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    labels.title,
+    j.capture.title,
   );
   await page.getByRole("link", { name: ui.back }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -36,7 +37,7 @@ test("introduction, theme persistence and browser navigation", async ({
   );
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    labels.title,
+    j.capture.title,
   );
   await page.goForward();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(

@@ -32,16 +32,19 @@ The first three web references were fetched during the implementation. Codec ide
 
 ## Asset and software rights
 
-The complete sample source, generation commands, version record, measurement output and rights statement are in [the media record](notes/module-0/media/README.md). All sample data, screen captures, synthetic tone and graphics are original, Copyright © 2026 Christopher Snow. No proprietary tutorial text, stock media or remote image/font assets are used. System fonts are used rather than redistributed.
+The complete sample source, generation commands, version record, measurement output and rights statement are in [the media record](notes/module-0/media/README.md). The build-queue data, original captures, synthetic tone and original diagrams are Copyright © 2026 Christopher Snow. The optional Big Buck Bunny excerpt is a separately credited CC BY 3.0 asset, described below. No proprietary tutorial text is copied. Fonts are served locally; bundled KaTeX assets retain their MIT licence, while ordinary interface text uses system fonts.
 
 The copied learning platform and adapted sync script retain Christopher Snow's copyright headers; no upstream licence file was present in the referenced checkout. Their reuse is explicitly required by this repository's owner. No new blanket software licence is invented here.
 
-FFmpeg is used as a build/test tool, not shipped to the browser. FFmpeg licensing depends on its build configuration (LGPL 2.1+ normally, GPL when enabled components such as libx264 are used); https://ffmpeg.org/legal.html. The generation environment's build includes GPL/libx264; see its recorded version and the tool's `ffmpeg -L`/`-buildconf`. Chromium and Firefox are test/capture tools, not redistributed in the site (Chromium BSD-style and third-party notices; Firefox MPL 2.0). Playwright bundles its own FFmpeg helper for browser test video; that helper is not the native media generator.
+FFmpeg is used natively for fixture generation/tests and is now also shipped as an optional browser WebAssembly core. The pinned `@ffmpeg/core` 0.12.10 package declares GPL-2.0-or-later; wrapper 0.12.15 and util 0.12.2 declare MIT. The distributed files, notices and exact source references are recorded below. Native FFmpeg licensing is build-specific (see https://ffmpeg.org/legal.html); the generation build includes GPL/libx264. Chromium and Firefox are test/capture tools, not redistributed in the site (Chromium BSD-style and third-party notices; Firefox MPL 2.0). Playwright's own FFmpeg helper is separate from the native fixture generator and shipped WASM core.
 
 Direct npm dependencies and their installed declared licences are listed below. Exact transitive versions and package provenance are in `package-lock.json`; each installed package retains its licence notices. No third-party source is relabelled as original course work.
 
 | Package | Installed version | Declared licence |
 | --- | --- | --- |
+| @ffmpeg/core | 0.12.10 | GPL-2.0-or-later |
+| @ffmpeg/ffmpeg | 0.12.15 | MIT |
+| @ffmpeg/util | 0.12.2 | MIT |
 | @playwright/test | 1.64.1 | Apache-2.0 |
 | @types/node | 24.19.2 | MIT |
 | @types/react | 19.3.0 | MIT |
@@ -92,3 +95,41 @@ Accessed 18 October 2026:
 The icon is an original vector rendering of Video Lab's existing teal/orange play mark, not a third-party asset. `public/icons/video-lab.svg` is the source; `scripts/generate-icons.mjs` reproduces the PNG sizes and maskable version with the existing Playwright dependency. Copyright © 2026 Christopher Snow applies; no new blanket licence is invented. Browser-specific placement of an app icon is controlled by that browser/operating system, not by the web app.
 - https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/id and https://www.w3.org/TR/appmanifest/#id-member — independently checked during review: relative app ids resolve against the start URL's origin, unlike manifest-relative start/scope URLs. The explicit `/video-lab/` id is checked against Chromium's parsed manifest.
 - https://support.google.com/chrome/answer/9658361?co=GENIE.Platform%3DAndroid — the separate drafter and sceptic fetched current Android guidance: More → Install and create shortcut → Install. Menu wording is qualified by version.
+
+
+## Issue 3: local capture, processing and original journey fixtures
+
+Recorded 23 October 2026. [The compatibility spike](notes/issue-3/wasm-spike.md) documents real production-built Chromium/Firefox H.264 encoding, AAC muxing, MP4 playback and ffprobe JSON. The pinned core includes ffprobe; the previous assumption that it lacked the tool is withdrawn. The adapter validates actual returned evidence, including the pinned cleanup-return quirk; it does not infer contents from filenames. [Native capture evidence](notes/issue-3/native-capture.md) separates executed virtual-Linux/X11 and real Chromium display capture from source-reviewed Windows/macOS command forms and untested physical-device permissions.
+
+| Reference | Use and evidence boundary |
+| --- | --- |
+| https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia | Explicit user-initiated browser chooser and display-capture constraints; no promise that all surfaces supply audio. |
+| https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder | Real recording chunks, negotiated MIME and stop lifecycle. Actual observed output is recorded separately from API capability. |
+| https://ffmpegwasm.netlify.app/docs/overview/ | Browser wrapper/core architecture; the pinned execution spike, rather than a general support claim, establishes the exercised encoders and probe. |
+| https://ffmpeg.org/ffmpeg-filters.html#trim and #atrim, #setpts_002c-asetpts, #concat | Separate video/audio trim, clock reset and consecutive join for actual project output. |
+| https://ffmpeg.org/ffmpeg-devices.html | Optional native gdigrab, AVFoundation and x11grab forms. Versioned `n7.1.5/doc/indevs.texi` was checked when the documentation site failed; see native-capture record. |
+
+`media-source/demo.html` and the existing native-verified frames remain original. Build uses 000/048/072: source times 0/4/6 seconds, initial state/sorted result/later hold. They are not continuous action pictures. `scripts/journey-media.mjs` generates and verifies the provided video-only/audio examples, synthetic WAV and six-second edited reference; `public/media/journey/evidence.json` pins their real native measurements and hashes. A provided example is not an encoding produced by the learner's current settings.
+
+### Distributed encoder source and licences
+
+`@ffmpeg/core` **0.12.10** is copied without modification from the pinned npm package into `dist/encoder/0.12.10/`. Runtime identifies FFmpeg **5.1.4**, Emscripten **3.1.40**, single-thread `--disable-pthreads` and `--enable-gpl`. The core package declares **GPL-2.0-or-later**. `@ffmpeg/ffmpeg` **0.12.15** and `@ffmpeg/util` **0.12.2** are **MIT**. Declaring the core a development dependency does not mean its emitted runtime files are absent from the site.
+
+- Exact release source: https://github.com/ffmpegwasm/ffmpeg.wasm/tree/71aa99d37c02a7b4c435275ca9ef50e612f6efa1
+- Source archive: https://github.com/ffmpegwasm/ffmpeg.wasm/archive/71aa99d37c02a7b4c435275ca9ef50e612f6efa1.tar.gz
+- Build recipe: the Dockerfile, Makefile, `build/` library scripts and `src/` bindings at that commit; run `make prd` as documented in [the shipped source notice](../src/processing/licences/SOURCE.md).
+- Published binary package: https://registry.npmjs.org/@ffmpeg/core/-/core-0.12.10.tgz
+
+This is the **January 2025 core release commit**, not the older December 2023 wrapper tag also named v0.12.10. The release recipe references some moving dependency branches, so future byte-identical source rebuilding is not claimed. Package-lock integrity and the emitted manifest separately pin the exact distributed npm bytes.
+
+`scripts/prepare-encoder.mjs` copies `ffmpeg-core.js`, `ffmpeg-core.wasm`, `COPYING.GPLv2.txt`, `FFMPEG-WASM-LICENSE.txt` and `SOURCE.md`, then generates `encoder-manifest.json` with sizes and SHA-256 integrity. The current additional package is **32,367,068 bytes** including notices; the generated manifest remains authoritative if notices change. Licence/source documents originate in `src/processing/licences/` and are published alongside the core under `/video-lab/encoder/0.12.10/`. The MIT wrapper notice also ships in the baseline at `public/legal/FFMPEG-WASM-LICENSE.txt`. No new blanket course licence is invented.
+
+The core files and optional comparison media are excluded from the baseline offline manifest. Explicit processing or an explicit additional-tools download requests the core. The first-run/offline UI distinguishes tool readiness from lesson readiness.
+
+### Optional Big Buck Bunny comparison
+
+**Credit:** © 2008 Blender Foundation | peach.blender.org. **Licence:** [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/), verified against https://peach.blender.org/about/. No endorsement is implied.
+
+The [complete provenance JSON](notes/issue-3/media/big-buck-bunny.json) records the official source archive https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4.zip, its 64,657,225-byte size and SHA-256, member filename/hash, exact native command and FFmpeg version. The derivative extracts source 60–65 seconds, re-encodes 320×180 H.264/AAC and is **86,088 bytes**, with SHA-256 `d0b7384aaef30fcc97bcfbd3039ebc2c9e06f31e6e1339452efe2c5fc2ce48df`.
+
+The file is served as `optional/big-buck-bunny-5s.mp4`; Publish loads it only after an explicit click and displays credit/licence links. `dist/optional/` is excluded from the baseline offline download. It is a provided comparison, not the learner's captured source or exported project, and does not make the planned compression module available.

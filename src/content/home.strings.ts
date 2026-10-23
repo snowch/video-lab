@@ -2,76 +2,106 @@
 export const home = {
   title: "Video Lab",
   subtitle: "From Frames to Finished Demos",
-  eyebrow: "A practical course for technical demo makers",
+  eyebrow: "Make a short software demo",
   intro:
-    "A useful software demo lets viewers follow an action and understand its result. Editing starts with knowing what you recorded. Inspect a short screen recording, trace its pictures and sound, and locate a picture by its presentation time.",
+    "Capture one visible software action, inspect the recording, cut the waiting and keep a readable result. Finish with a playable MP4 and the recipe used to make it. A provided original recording lets you follow the same editing path when screen capture is unavailable.",
   audienceTitle: "Who this course is for",
   audience:
-    "For software and data engineers who want to make clearer demos. You need ordinary file handling, a browser and basic code or terminal familiarity. No video editing vocabulary is assumed.",
-  outcomeTitle: "What you can do here",
+    "For software and data engineers who want to explain a task through a short demo. You need ordinary browser and file skills; terminal and code familiarity help with optional command evidence. No video vocabulary is assumed.",
+  outcomeTitle: "A complete first demo",
   outcome:
-    "Modules 0 and 2 are complete lessons with real recordings and inspection challenges. Inspect a file’s pictures, sound and timing, then compare cuts and arrange clips into a clearer demo.",
-  start: "Start Module 0",
-  planTitle: "Course plan",
+    "Follow Capture, Build, Inspect, Edit and Publish. Build is a separate experiment with supplied pictures that explains file structure; your recording remains the project source. Inspect and edit that source, then review and download the actual output. Processing runs locally in your browser.",
+  start: "Start with Capture",
+  planTitle: "Your route through Video Lab",
   planNote:
-    "Modules 0 and 2 are available. Module 1 and the remaining modules describe the planned curriculum.",
+    "Capture, Build, Inspect, Edit and the initial Publish checkpoint are available. Modules 4–7 and 9–10 are planned. The detailed recording and cutting references remain within Inspect and Edit.",
 };
 
 export const modules = [
   {
     id: 0,
-    title: "What is a digital video?",
+    title: "Capture your first software demo",
     summary:
-      "Inspect pictures, sound, presentation times and the structure of a recording.",
+      "Record one action, replay it and keep a source file, or adopt the provided original recording.",
+    route: "capture",
+    available: true,
   },
   {
     id: 1,
-    title: "How FFmpeg sees media",
+    title: "How a video file is created",
     summary:
-      "Read media inspection output and choose input and output streams.",
+      "Build a separate picture-sequence experiment, then add synthetic sound and inspect the real MP4.",
+    route: "build",
+    available: true,
   },
   {
     id: 2,
-    title: "Cutting and joining",
+    title: "Inspect and prepare real media",
     summary:
-      "Choose cut points and understand how timing affects joined recordings.",
+      "Measure your selected recording and compare its contents with what you intended to capture.",
+    route: "inspect",
+    available: true,
   },
   {
     id: 3,
-    title: "Compression and quality",
+    title: "Cut and join: tell the story",
     summary:
-      "Compare file size, picture detail and the readability of screen text.",
+      "Keep the action and readable result, create an actual edited MP4 and save its recipe.",
+    route: "edit",
+    available: true,
   },
   {
     id: 4,
-    title: "Editing for understanding",
-    summary: "Use pacing, framing and callouts to explain a technical action.",
+    title: "Make the action readable",
+    summary: "Plan better framing, pacing, zoom and minimal callouts.",
+    route: undefined,
+    available: false,
   },
   {
     id: 5,
-    title: "Audio",
-    summary: "Inspect and improve the clarity of narration and other sound.",
+    title: "Make the sound clear",
+    summary: "Inspect and improve narration, sound levels and timing.",
+    route: undefined,
+    available: false,
   },
   {
     id: 6,
-    title: "Filters and compositing",
-    summary: "Combine picture changes, overlays, images and subtitles.",
+    title: "Compression and picture quality",
+    summary:
+      "Compare encoded file size, picture detail and the readability of small text.",
+    route: undefined,
+    available: false,
   },
   {
     id: 7,
-    title: "Publish and deliver",
-    summary: "Choose an export format and check the result before sharing.",
+    title: "Captions, overlays and automation",
+    summary:
+      "Add explanatory captions and overlays through reproducible processing.",
+    route: undefined,
+    available: false,
   },
   {
     id: 8,
-    title: "AI-assisted editing",
+    title: "Export, publish and verify",
     summary:
-      "Review suggested transcripts, captions and cuts against the explanation you intend.",
+      "Finish the initial demo: replay the output, download the MP4 and recipe, and check them before sharing.",
+    route: "publish",
+    available: true,
   },
   {
     id: 9,
+    title: "AI-assisted production",
+    summary:
+      "Review proposed transcripts, captions and edits against the actual recording.",
+    route: undefined,
+    available: false,
+  },
+  {
+    id: 10,
     title: "Final project",
     summary:
-      "Turn a raw technical recording into a concise demo with repeatable editing steps.",
+      "Combine the later production techniques in a further complete demo and review.",
+    route: undefined,
+    available: false,
   },
 ] as const;

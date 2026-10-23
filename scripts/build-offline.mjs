@@ -14,7 +14,13 @@ async function walk(path) {
   ).flat();
 }
 const paths = (await walk("dist"))
-  .filter((p) => !p.endsWith("/sw.js") && !p.endsWith("/offline-manifest.json"))
+  .filter(
+    (p) =>
+      !p.endsWith("/sw.js") &&
+      !p.endsWith("/offline-manifest.json") &&
+      !p.startsWith("dist/encoder/") &&
+      !p.startsWith("dist/optional/"),
+  )
   .sort();
 const files = await Promise.all(
   paths.map(async (path) => {
@@ -26,15 +32,17 @@ const files = await Promise.all(
     };
   }),
 );
+const encoderManifest = JSON.parse(
+  await readFile("dist/encoder-manifest.json", "utf8"),
+);
 const sources = await Promise.all(
   ["src/offline/worker.ts", "src/offline/range.ts"].map((p) =>
     readFile(p, "utf8"),
   ),
 );
-const version = digest(JSON.stringify(files) + sources.join("")).replaceAll(
-  "/",
-  "_",
-);
+const version = digest(
+  JSON.stringify(files) + JSON.stringify(encoderManifest) + sources.join(""),
+).replaceAll("/", "_");
 const manifest = {
   version,
   bytes: files.reduce((n, f) => n + f.bytes, 0),
@@ -44,7 +52,10 @@ await writeFile("dist/offline-manifest.json", JSON.stringify(manifest));
 await build({
   configFile: false,
   publicDir: false,
-  define: { __OFFLINE_MANIFEST__: JSON.stringify(manifest) },
+  define: {
+    __OFFLINE_MANIFEST__: JSON.stringify(manifest),
+    __ENCODER_MANIFEST__: JSON.stringify(encoderManifest),
+  },
   build: {
     outDir: "dist",
     emptyOutDir: false,

@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { j } from "../src/journey/strings";
 import { test, expect } from "@playwright/test";
 import { m2 } from "../src/module2/strings";
 import { ui } from "../src/content/ui.strings";
@@ -196,14 +197,22 @@ test("course routes, keyboard controls, both themes and responsive diagrams", as
   await page.goto("./");
   await page
     .locator(".module-list li")
-    .filter({ has: page.getByRole("heading", { name: m2.title, exact: true }) })
+    .filter({
+      has: page.getByRole("heading", { name: j.edit.title, exact: true }),
+    })
     .getByRole("link", { name: /Open lesson/ })
+    .click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    j.edit.title,
+  );
+  await page
+    .getByRole("link", { name: j.edit.referenceTitle, exact: true })
     .click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(m2.title);
   await page
     .getByRole("link", { name: /04 Compare requested and actual cuts/ })
     .click();
-  await expect(page).toHaveURL(/module-2\/investigation$/);
+  await expect(page).toHaveURL(/edit\/reference\/investigation$/);
   await page.reload();
   await expect(page.locator("#section-investigation")).toBeInViewport();
   const choice = page.locator("#ix-cut-prediction input").first();

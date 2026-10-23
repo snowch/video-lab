@@ -68,3 +68,7 @@ No full nonlinear video editor, timeline compositor, AI API, accounts, payment, 
 On 18 October 2026 the owner requested offline app support. Apply the same mandatory workflow to this slice using `docs/notes/offline-plan.md` and `docs/notes/offline/review/`. The standing authorisation to deploy reviewed changes to `main` applies.
 
 The owner additionally requested a desktop icon on 18 October 2026. Extend offline support with installable app metadata and icons; use `docs/notes/install-plan.md` and `docs/notes/install/review/` for its mandatory drafting and review workflow.
+
+## Issue 3 implementation scope
+
+On 23 October 2026 the owner explicitly requested full implementation of issue #3. Its producer-first redesign supersedes the original module ordering and the earlier deferral of browser capture/FFmpeg WASM. Complete the initial redesigned capture → build → inspect → edit → publish path and every applicable initial-path acceptance criterion in that issue. Later advanced modules remain honestly planned as permitted by the issue. Use `docs/notes/issue-3/` for capability evidence, drafting, independent reader/sceptic/fix/checker records and the acceptance ledger. Preserve the synchronised platform and existing progress; prefer short coherent new lesson pages over artificial ten-section filler. Reviewed deployment to main remains authorised.

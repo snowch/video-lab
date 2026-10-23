@@ -1,0 +1,41 @@
+{
+  "source": "build-queue.mp4",
+  "sourceSha256": "502e9579c705521b805ec576d77b8f11038da3b245182ea31996e7305d991349",
+  "ranges": [
+    {
+      "start": 0,
+      "end": 2
+    },
+    {
+      "start": 3,
+      "end": 7
+    }
+  ],
+  "command": [
+    "-i",
+    "capture.mp4",
+    "-filter_complex",
+    "[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS,scale=w='trunc(min(1280,iw)/2)*2':h=-2[v0];[0:a:0]atrim=start=0:end=2,asetpts=PTS-STARTPTS[a0];[0:v:0]trim=start=3:end=7,setpts=PTS-STARTPTS,scale=w='trunc(min(1280,iw)/2)*2':h=-2[v1];[0:a:0]atrim=start=3:end=7,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]",
+    "-map",
+    "[v]",
+    "-map",
+    "[a]",
+    "-c:a",
+    "aac",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-crf",
+    "23",
+    "-pix_fmt",
+    "yuv420p",
+    "-r",
+    "12",
+    "-movflags",
+    "+faststart",
+    "edited-demo.mp4"
+  ],
+  "created": "2026-10-23T09:45:42.674Z",
+  "commandLine": "ffmpeg -i capture.mp4 -filter_complex '[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS,scale=w='\\''trunc(min(1280,iw)/2)*2'\\'':h=-2[v0];[0:a:0]atrim=start=0:end=2,asetpts=PTS-STARTPTS[a0];[0:v:0]trim=start=3:end=7,setpts=PTS-STARTPTS,scale=w='\\''trunc(min(1280,iw)/2)*2'\\'':h=-2[v1];[0:a:0]atrim=start=3:end=7,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]' -map '[v]' -map '[a]' -c:a aac -c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p -r 12 -movflags +faststart edited-demo.mp4"
+}

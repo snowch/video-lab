@@ -71,7 +71,7 @@ const figures: Record<
 };
 export const lesson2 = parseLesson({
   id: "cutting-and-joining",
-  module: 2,
+  module: 3,
   order: 0,
   title: m2.title,
   objectives: m2.objectives,
