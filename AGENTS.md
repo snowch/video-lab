@@ -81,3 +81,7 @@ On 23 October 2026 the owner required the lab to be CLI, not GUI. Replace produc
 ## All labs use commands
 
 On 23 October 2026 the owner extended CLI-first work to all labs, including both detailed references and their old deep links. Preserve existing progress as earlier answer-based achievements, separately from new real-artifact checks. Use `docs/notes/all-labs-cli/` for verified facts and the mandatory independent workflow. Reviewed deployment straight to main remains authorised.
+
+## Guided command tasks
+
+The owner requested less scrolling between instructions and terminal on 23 October 2026. Apply a current-task layout throughout available labs, preserve actual typed commands, reference section links, source files and achievements, and distinguish manual navigation from measured success. Use `docs/notes/guided-labs/` for the mandatory separate drafting and independent reviews. Reviewed deployment straight to main remains authorised.

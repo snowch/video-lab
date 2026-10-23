@@ -79,3 +79,9 @@ The course owns its shell, prose, capture/processing features, models and grader
 The base path is `/video-lab/`; named hash routes support static hosting, reloads and browser navigation. In **Settings → Pages**, choose **GitHub Actions**. The deployment workflow checks the app before publishing `dist/` from `main`; manual dispatch is supported. The owner has authorised reviewed main deployments. Workflow success and a live-site check establish deployment, not this configuration note. The verified Issue 3 release, workflow results and exact tested app hash are recorded in the [deployment record](docs/notes/issue-3/deployment.md).
 
 Course: https://snowch.github.io/video-lab/
+
+## Guided command tasks
+
+Each available lab now keeps one current task beside the command workspace on desktop and immediately before it on phones. Previous/Next changes instructions only; inspect results yourself. Capture offers recording only when the browser exposes the required APIs, otherwise starting with provided-source/import instructions. Source choices do not execute commands. Replay/download tasks use an existing source recording's actual filename.
+
+`help` shows the current task's commands and a short workspace guide; `help all` prints the complete command reference. Workspace usage, background explanations and task navigation are expandable. All original detailed reference sections remain available as individual tasks, including old section bookmarks and browser history.

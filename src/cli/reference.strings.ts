@@ -119,13 +119,13 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "question",
         title: "What does the recording contain?",
         paragraphs: [
-          "Type one example in the Command field and press Enter. Run separate examples separately; Shift+Enter continues the same command. help lists commands, Up/Down recalls one-line history, and cancel discards active work. These are browser workspace commands, not an operating-system shell; no pipes or redirection are available.",
+          "Type one example in the Command field and press Enter. Run separate examples separately; Shift+Enter continues the same command. help shows current-task commands; help all gives the full reference and limits. Up/Down recalls one-line history, and cancel discards active work. These are browser workspace commands, not an operating-system shell; no pipes or redirection are available.",
           "A quiet player does not establish that a file lacks sound. We will inspect the file, then create a genuinely video-only version to distinguish a playback choice from changed file contents. If workspace space is full, download important files before removing unneeded ones with rm.",
         ],
         examples: [
           {
             note: "See the command vocabulary and workspace limits.",
-            command: "help",
+            command: "help all",
           },
         ],
       },
@@ -322,10 +322,13 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "What must survive a cut?",
         paragraphs: [
           "Keep the opening context and readable result while removing waiting. For this challenge, retain source [0,2) followed by [4,6), with both pictures and sound. The notation includes each start and excludes its end. These ranges are two seconds each and request four seconds in total.",
-          "Use the Command field to run one command at a time. Commands operate on actual workspace files; a provided finished example does not show that your edit ran. Run help for workspace commands and limits. Download important work before using rm to make space.",
+          "Use the Command field to run one command at a time. Commands operate on actual workspace files; a provided finished example does not show that your edit ran. Run help all for the complete workspace commands and limits. Download important work before using rm to make space.",
         ],
         examples: [
-          { note: "See the available commands and bounds.", command: "help" },
+          {
+            note: "See the available commands and bounds.",
+            command: "help all",
+          },
         ],
       },
       {

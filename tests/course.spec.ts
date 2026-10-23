@@ -29,6 +29,7 @@ test("introduction, theme, reference deep links and navigation all lead to comma
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     referenceLessons.inspect.title,
   );
+  await page.getByText("All tasks", { exact: true }).click();
   await page
     .getByRole("link", {
       name: referenceLessons.inspect.sections.find((s) => s.id === "challenge")!

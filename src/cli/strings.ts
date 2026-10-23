@@ -4,7 +4,7 @@ export const cli = {
   title: "Command workspace",
   ready: "Ready for a command.",
   welcome:
-    "Type help in the Command field and press Enter to list workspace commands.",
+    "Type help in the Command field for current-task commands, or help all for the complete workspace reference.",
   scope:
     "Run one command at a time against files saved in this browser workspace. FFmpeg and ffprobe process actual media locally; they do not upload it or read your computer's folders. This is not an operating-system shell: pipes, redirection and variable expansion are unavailable. Put a whole filter expression inside quotes. ffprobe reports must use -of json.",
   keyboard:
@@ -49,7 +49,8 @@ export const cli = {
     "No workspace files yet. Record, import or load the provided source before processing it.",
   missing: "File not found:",
   useLs: "Run ls and use the exact workspace filename.",
-  arguments: "Check the arguments with help, then run one command at a time.",
+  arguments:
+    "Use help for current-task examples or help all for complete workspace syntax. Run one command at a time.",
   wait: "Another operation is active. Use stop to finish recording, or cancel to discard active work, before starting a new operation.",
   loading: "Wait for saved workspace files to finish loading, then retry.",
   captureUsage:
@@ -90,7 +91,8 @@ export const cli = {
     stopping: "Finishing the recording and releasing the shared surface.",
   },
   help: `Browser workspace commands, not native shell commands:
-help                 List commands
+help                 Show current-task commands and short usage guidance
+help all             Show the complete workspace command reference and limits
 ls                   List exact filenames, sizes and origins
 scene                Open the original build-queue scene in a new tab
 capture [--audio]    Request browser recording; optional shared sound, no microphone
@@ -139,7 +141,7 @@ export const lessons: Record<StepName, Lesson> = {
       "Make or adopt a source recording: the original file you will inspect and edit. Commands are the primary controls throughout these labs.",
     heading: "Use the prompt, then record one action",
     paragraphs: [
-      "Type or paste one example into the Command field, without a leading $ prompt, then press Enter or Run command. Read the output before running the next example. Shift+Enter adds a line to the same command; run separate commands separately. Type help to list available commands, and use Up/Down to recall a one-line command. The files and command history carry across lesson steps.",
+      "Type or paste one example into the Command field, without a leading $ prompt, then press Enter or Run command. Read the output before running the next example. Shift+Enter adds a line to the same command; run separate commands separately. Type help for current-task commands or help all for the full workspace reference, and use Up/Down to recall a one-line command. The files and command history carry across lesson steps.",
       "Plan an initial state, one visible action and a readable result. Close unrelated notifications and windows, and check that the shared surface contains no sensitive material. Run scene to open the original build queue. Return here, run capture, choose the scene's tab or window, then click Sort in the scene. Hold the sorted result before returning here to run stop. Aim for about 5–15 seconds; capture stops at 15 seconds and rejects output over 20 MiB.",
       "capture uses your browser's screen-sharing and recording facilities. It is not FFmpeg accessing desktop devices. Sound is off by default. capture --audio requests sound from the shared surface, not a microphone; the browser and selected surface may provide none. Intentional silence is valid. FFmpeg processes files in later steps; native desktop capture with FFmpeg needs platform-specific devices outside this lab.",
       "The actual recording may be WebM or MP4. Run ls and use its exact filename later; a name may gain a number to preserve an existing capture. If recording is unavailable, run sample to load the provided original, or import to choose your own existing file. Imported files keep their valid filename and stay local. sample refuses to replace an existing capture.mp4: keep your recording rather than loading the alternative unnecessarily.",
@@ -188,7 +190,7 @@ export const lessons: Record<StepName, Lesson> = {
       "Encoding represents pictures as stored video data; the ordered picture sequence is a video stream. A codec specifies how that data is encoded and reconstructed for playback. In the first FFmpeg command, -framerate 1 sets one input picture per second and -i names the input. -c:v libx264 chooses the H.264 video encoder. -pix_fmt yuv420p chooses a widely supported way to store picture colour. The output name video.mp4 selects the MP4 container, which organises streams and their timing.",
       "ffprobe inspects a file without editing it. In the probe command, -v error shows errors without routine log messages, -show_streams reports each picture or sound stream, and -show_format reports the whole file. -of json requests structured text. Read format.duration: the three-picture experiment lasts three seconds at one picture per second, or 1.5 seconds at two. The report may name MP4 as the family mov,mp4,m4a,3gp,3g2,mj2; those are related formats recognised together, not multiple containers inside your file. Changing the input rate changes the holds, not the missing action detail.",
       "The sound example has two inputs: video.mp4 is input 0 and tone.wav is input 1. -map 0:v:0 selects input 0's first video stream; -map 1:a:0 selects input 1's first audio stream. -c:v copy copies encoded pictures without encoding them again; -c:a aac encodes the sound as AAC. The sound is a quiet synthetic tone, not narration. -shortest ends output at the shorter input. Muxing means organising these encoded streams together in a container: adding sound here does not re-encode the video.",
-      "Keep experiments under distinct output names. To rerun a name that already exists, explicitly add -y to replace it, or use a new name to compare versions. Load fixtures only once unless you have deliberately removed them. Run help for file and processing limits. Reading the lesson does not load the processing tools; the first actual processing command needs a connection unless the additional tools were saved for offline use.",
+      "Keep experiments under distinct output names. To rerun a name that already exists, explicitly add -y to replace it, or use a new name to compare versions. Load fixtures only once unless you have deliberately removed them. Run help all for file and processing limits. Reading the lesson does not load the processing tools; the first actual processing command needs a connection unless the additional tools were saved for offline use.",
     ],
     examples: [
       {

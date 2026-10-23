@@ -4,7 +4,9 @@ import { CaptureController, type CaptureState } from "../capture/controller";
 import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
 import { useBlobURL, useProject } from "../journey/project";
 import { assetURL, EncoderOffline } from "../journey/shared";
-import type { StepName } from "../journey/routes";
+import { routeFor, type StepName } from "../journey/routes";
+import { guided } from "./guided.strings";
+import { lessonTasks, captureTasks } from "./tasks";
 import { parseCommand, toolPlan, validFilename } from "./command";
 import {
   checkFiles,
@@ -58,6 +60,13 @@ export function CommandLab({
     filesRef = useRef<Files>({});
   const [ready, setReady] = useState(false),
     [persistent, setPersistent] = useState(true);
+  const captureSupported =
+    typeof navigator.mediaDevices?.getDisplayMedia === "function" &&
+    typeof MediaRecorder !== "undefined";
+  const [sourcePath, setSourcePath] = useState<"record" | "sample" | "import">(
+    () => (captureSupported ? "record" : "sample"),
+  );
+  const [taskIndex, setTaskIndex] = useState(0);
   const [wrapOutput, setWrapOutput] = useState(false);
   const [outputEdges, setOutputEdges] = useState({ left: false, right: false });
   const [lines, setLines] = useState<string[]>([]),
@@ -184,6 +193,7 @@ export function CommandLab({
     setCaptureState("idle");
     capture.current = makeCapture();
     setNotice(cli.ready);
+    setTaskIndex(0);
     return () => {
       generation.current++;
       locked.current = false;
@@ -305,9 +315,18 @@ export function CommandLab({
         return;
       }
       if (tool === "help") {
-        simple(0);
+        if (args.length > 1 || (args.length === 1 && args[0] !== "all"))
+          throw new Error(guided.helpAll);
         if (!locked.current) setNotice(cli.done);
-        print(`${cli.help}\n${refStrings.helpExtra}`);
+        print(
+          args[0] === "all"
+            ? `${cli.help}\n${refStrings.helpExtra}`
+            : `${guided.helpIntro}
+${currentTask.examples.map((example) => `${example.command}  ${example.note}`).join("\n")}
+
+${guided.helpBasics}
+${guided.helpAll}`,
+        );
         return;
       }
       if (tool === "clear") {
@@ -808,6 +827,48 @@ ${cli.comparisonCredit}`,
     }
   }
   const lesson = reference ? referenceLessons[reference] : lessons[step];
+  const source = Object.values(files)
+    .slice()
+    .reverse()
+    .find(
+      (file) =>
+        file.blob.type.startsWith("video/") &&
+        file.origin !== "generated" &&
+        !file.name.startsWith("reference-") &&
+        file.name !== "comparison.mp4",
+    );
+  const sourceName = source?.name ?? "capture.mp4";
+  const chosen =
+    sourcePath === "record" && captureSupported
+      ? "record"
+      : sourcePath === "import"
+        ? "import"
+        : "sample";
+  const tasks =
+    step === "capture" && !reference
+      ? captureTasks(chosen, sourceName, captureSupported, !!source)
+      : lessonTasks(step, reference);
+  const section = reference
+    ? routeFor(window.location.hash).section
+    : undefined;
+  const activeTask = reference
+    ? Math.max(
+        0,
+        tasks.findIndex((task) => task.id === section),
+      )
+    : Math.min(taskIndex, tasks.length - 1);
+  const currentTask = tasks[activeTask]!;
+  function chooseTask(index: number) {
+    if (reference)
+      window.location.hash = `#/${step}/reference/${tasks[index]!.id}`;
+    else setTaskIndex(index);
+    requestAnimationFrame(() => {
+      const heading = document.getElementById("current-task");
+      heading?.focus({ preventScroll: true });
+      if (window.innerWidth < 900) heading?.scrollIntoView({ block: "start" });
+    });
+  }
+
   return (
     <article
       className="journey-page cli-lab"
@@ -816,236 +877,317 @@ ${cli.comparisonCredit}`,
     >
       <h1>{lesson.title}</h1>
       <p className="lesson-intro">{lesson.intro}</p>
-      <section
-        className="command-workspace"
-        aria-labelledby="cli-heading"
-        aria-busy={busy}
-      >
-        <h2 id="cli-heading">{cli.title}</h2>
-        <p>{cli.scope}</p>
-        <p>{cli.keyboard}</p>
-        <button
-          type="button"
-          aria-pressed={wrapOutput}
-          aria-controls="cli-output"
-          onClick={() => setWrapOutput((value) => !value)}
+      <div className="lab-workbench">
+        <section
+          className="task-panel"
+          aria-labelledby="current-task"
+          id={reference ? `section-${currentTask.id}` : undefined}
         >
-          {cli.wrapLines}
-        </button>
-        <p id="cli-output-scrolling">{cli.outputScrolling}</p>
-        <div
-          className="terminal-frame"
-          data-left={outputEdges.left}
-          data-right={outputEdges.right}
-        >
-          <pre
-            id="cli-output"
-            className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
-            ref={terminal}
-            onScroll={measureOutput}
-            tabIndex={0}
-            aria-label={cli.output}
-            aria-describedby="cli-output-scrolling"
-          >
-            {lines.join("\n") || cli.welcome}
-          </pre>
-        </div>
-        {(outputEdges.left || outputEdges.right) && (
-          <div className="terminal-scroll-controls">
-            {outputEdges.left && (
-              <button
-                type="button"
-                aria-controls="cli-output"
-                onClick={() => scrollOutput(-1)}
-              >
-                {cli.previousOutput}
-              </button>
-            )}
-            {outputEdges.right && (
-              <button
-                className="terminal-scroll-right"
-                type="button"
-                aria-controls="cli-output"
-                onClick={() => scrollOutput(1)}
-              >
-                {cli.moreOutput}
-              </button>
-            )}
-          </div>
-        )}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            submit();
-          }}
-        >
-          <label htmlFor="cli-input">{cli.input}</label>
-          <textarea
-            id="cli-input"
-            ref={input}
-            value={command}
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck={false}
-            rows={3}
-            onChange={(e) => setCommand(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                submit();
-              }
-              if (
-                e.key === "c" &&
-                e.ctrlKey &&
-                (busy || captureState !== "idle")
-              ) {
-                e.preventDefault();
-                cancel();
-              }
-              if (
-                (e.key === "ArrowUp" || e.key === "ArrowDown") &&
-                !command.includes("\n")
-              ) {
-                e.preventDefault();
-                if (historyIndex.current === history.current.length)
-                  draft.current = command;
-                historyIndex.current = Math.max(
-                  0,
-                  Math.min(
-                    history.current.length,
-                    historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
-                  ),
-                );
-                setCommand(
-                  history.current[historyIndex.current] ?? draft.current,
-                );
-              }
-            }}
-          />
-          <button type="submit" disabled={!ready}>
-            {cli.run}
-          </button>
-        </form>
-        <p role="status">{notice}</p>
-        <p>{persistent ? cli.storage : cli.session}</p>
-        <input
-          ref={picker}
-          className="cli-file-picker"
-          type="file"
-          aria-label={cli.file}
-          accept="video/*,audio/*,image/*,.json"
-          onChange={(e) => {
-            void imported(e.target.files?.[0]);
-            e.target.value = "";
-          }}
-        />
-        <details>
-          <summary>{cli.files}</summary>
-          <ul>
-            {Object.values(files).map((f) => (
-              <li key={f.name}>
-                <code>{f.name}</code> · {f.blob.size.toLocaleString()} B ·{" "}
-                {f.origin}
-              </li>
-            ))}
-          </ul>
-        </details>
-      </section>
-      {selected && mediaURL && (
-        <section className="cli-preview">
-          <h2>
-            {cli.preview} {selected.name}
-          </h2>
-          <p>
-            {selected.origin} · {selected.blob.size.toLocaleString()} B
+          <p className="task-count">
+            {guided.currentTask} · {activeTask + 1} {guided.of} {tasks.length}
           </p>
-          {selected.blob.type.startsWith("image/") ? (
-            <img src={mediaURL} alt={selected.name} />
-          ) : selected.blob.type.startsWith("audio/") ? (
-            <audio
-              src={mediaURL}
-              controls
-              aria-label={selected.name}
-              onError={() => setPlaybackFailed(true)}
-            />
-          ) : (
-            <video
-              src={mediaURL}
-              controls
-              playsInline
-              preload="metadata"
-              aria-label={selected.name}
-              onError={() => setPlaybackFailed(true)}
-            />
+          <h2 id="current-task" tabIndex={-1}>
+            {currentTask.title}
+          </h2>
+          {step === "capture" && activeTask === 0 && (
+            <div className="source-paths">
+              {captureSupported && (
+                <button
+                  type="button"
+                  aria-pressed={chosen === "record"}
+                  onClick={() => setSourcePath("record")}
+                >
+                  {guided.capture.recordChoice}
+                </button>
+              )}
+              <button
+                type="button"
+                aria-pressed={chosen === "sample"}
+                onClick={() => setSourcePath("sample")}
+              >
+                {guided.capture.sampleChoice}
+              </button>
+              <button
+                type="button"
+                aria-pressed={chosen === "import"}
+                onClick={() => setSourcePath("import")}
+              >
+                {guided.capture.importChoice}
+              </button>
+            </div>
           )}
-          {selected.name === "comparison.mp4" && (
-            <p>
-              {cli.comparisonCredit}{" "}
-              <a href="https://peach.blender.org/about/">Blender Foundation</a>{" "}
-              ·{" "}
-              <a href="https://creativecommons.org/licenses/by/3.0/">
-                CC BY 3.0
-              </a>
-            </p>
-          )}
-          {playbackFailed && <p role="alert">{cli.playbackError}</p>}
-        </section>
-      )}
-      {reference && (
-        <nav aria-label={lesson.heading}>
-          <ol>
-            {referenceLessons[reference].sections.map((section) => (
-              <li key={section.id}>
-                <a href={`#/${step}/reference/${section.id}`}>
-                  {section.title}
-                </a>
+          {currentTask.paragraphs.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+          <ol className="command-lessons">
+            {currentTask.examples.map((example, index) => (
+              <li key={index}>
+                {example.note && <p>{example.note}</p>}
+                <pre>
+                  <code>{example.command}</code>
+                </pre>
               </li>
             ))}
           </ol>
-        </nav>
-      )}
-      <section aria-labelledby="cli-instructions">
-        <h2 id="cli-instructions">{lesson.heading}</h2>
-        {lesson.paragraphs.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
-        <ol className="command-lessons">
-          {lesson.examples.map((example) => (
-            <li key={example.command}>
-              <p>{example.note}</p>
-              <pre>
-                <code>{example.command}</code>
-              </pre>
-            </li>
-          ))}
-        </ol>
-        <p>{lesson.challenge}</p>
-      </section>
-      {reference &&
-        referenceLessons[reference].sections.map((section) => (
-          <section id={`section-${section.id}`} key={section.id}>
-            <h2>{section.title}</h2>
-            {section.paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-            <ol className="command-lessons">
-              {section.examples.map((example, i) => (
-                <li key={i}>
-                  <p>{example.note}</p>
-                  <pre>
-                    <code>{example.command}</code>
-                  </pre>
+          {step === "capture" && activeTask === 0 && chosen === "record" && (
+            <details>
+              <summary>{guided.capture.recordingDetailTitle}</summary>
+              {guided.capture.recordingDetails.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </details>
+          )}
+          <p className="task-navigation-note">{guided.manualNavigation}</p>
+          <details>
+            <summary>{guided.navigation}</summary>
+            <nav aria-label={guided.navigation}>
+              <ol>
+                {tasks.map((task, index) => (
+                  <li key={task.id}>
+                    {reference ? (
+                      <a
+                        href={`#/${step}/reference/${task.id}`}
+                        aria-current={index === activeTask ? "step" : undefined}
+                      >
+                        {task.title}
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        aria-current={index === activeTask ? "step" : undefined}
+                        onClick={() => chooseTask(index)}
+                      >
+                        {index + 1} · {task.examples[0]?.note || task.title}
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        </section>
+        <section
+          className="command-workspace"
+          aria-labelledby="cli-heading"
+          aria-busy={busy}
+        >
+          <h2 id="cli-heading">{cli.title}</h2>
+          <p>{guided.scope}</p>
+          <p>{guided.keyboard}</p>
+          <details className="workspace-usage">
+            <summary>{guided.usage}</summary>
+            <p>{cli.scope}</p>
+            <p>{cli.keyboard}</p>
+            <p>{cli.outputScrolling}</p>
+            <p>{cli.storage}</p>
+          </details>
+          <button
+            type="button"
+            aria-pressed={wrapOutput}
+            aria-controls="cli-output"
+            onClick={() => setWrapOutput((value) => !value)}
+          >
+            {cli.wrapLines}
+          </button>
+          <span id="cli-output-scrolling" className="sr-only">
+            {cli.outputScrolling}
+          </span>
+          <div
+            className="terminal-frame"
+            data-left={outputEdges.left}
+            data-right={outputEdges.right}
+          >
+            <pre
+              id="cli-output"
+              className={`terminal-output${wrapOutput ? " terminal-output-wrapped" : ""}`}
+              ref={terminal}
+              onScroll={measureOutput}
+              tabIndex={0}
+              aria-label={cli.output}
+              aria-describedby="cli-output-scrolling"
+            >
+              {lines.join("\n") || cli.welcome}
+            </pre>
+          </div>
+          {(outputEdges.left || outputEdges.right) && (
+            <div className="terminal-scroll-controls">
+              {outputEdges.left && (
+                <button
+                  type="button"
+                  aria-controls="cli-output"
+                  onClick={() => scrollOutput(-1)}
+                >
+                  {cli.previousOutput}
+                </button>
+              )}
+              {outputEdges.right && (
+                <button
+                  className="terminal-scroll-right"
+                  type="button"
+                  aria-controls="cli-output"
+                  onClick={() => scrollOutput(1)}
+                >
+                  {cli.moreOutput}
+                </button>
+              )}
+            </div>
+          )}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit();
+            }}
+          >
+            <label htmlFor="cli-input">{cli.input}</label>
+            <textarea
+              id="cli-input"
+              ref={input}
+              value={command}
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
+              rows={3}
+              onChange={(e) => setCommand(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  submit();
+                }
+                if (
+                  e.key === "c" &&
+                  e.ctrlKey &&
+                  (busy || captureState !== "idle")
+                ) {
+                  e.preventDefault();
+                  cancel();
+                }
+                if (
+                  (e.key === "ArrowUp" || e.key === "ArrowDown") &&
+                  !command.includes("\n")
+                ) {
+                  e.preventDefault();
+                  if (historyIndex.current === history.current.length)
+                    draft.current = command;
+                  historyIndex.current = Math.max(
+                    0,
+                    Math.min(
+                      history.current.length,
+                      historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
+                    ),
+                  );
+                  setCommand(
+                    history.current[historyIndex.current] ?? draft.current,
+                  );
+                }
+              }}
+            />
+            <button type="submit" disabled={!ready}>
+              {cli.run}
+            </button>
+          </form>
+          <p role="status">{notice}</p>
+          <div className="task-controls">
+            <button
+              type="button"
+              disabled={activeTask === 0}
+              onClick={() => chooseTask(activeTask - 1)}
+            >
+              {guided.previous}
+            </button>
+            <button
+              type="button"
+              disabled={activeTask === tasks.length - 1}
+              onClick={() => chooseTask(activeTask + 1)}
+            >
+              {guided.next}
+            </button>
+          </div>
+          {activeTask === tasks.length - 1 && lesson.next && (
+            <a className="button" href={`#/${lesson.next}`}>
+              {cli.next} {lessons[lesson.next].title}
+            </a>
+          )}
+
+          {!persistent && <p>{cli.session}</p>}
+          <input
+            ref={picker}
+            className="cli-file-picker"
+            type="file"
+            aria-label={cli.file}
+            accept="video/*,audio/*,image/*,.json"
+            onChange={(e) => {
+              void imported(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
+          <details>
+            <summary>{cli.files}</summary>
+            <ul>
+              {Object.values(files).map((f) => (
+                <li key={f.name}>
+                  <code>{f.name}</code> · {f.blob.size.toLocaleString()} B ·{" "}
+                  {f.origin}
                 </li>
               ))}
-            </ol>
-          </section>
+            </ul>
+          </details>
+          {selected && mediaURL && (
+            <section className="cli-preview">
+              <h2>
+                {cli.preview} {selected.name}
+              </h2>
+              <p>
+                {selected.origin} · {selected.blob.size.toLocaleString()} B
+              </p>
+              {selected.blob.type.startsWith("image/") ? (
+                <img src={mediaURL} alt={selected.name} />
+              ) : selected.blob.type.startsWith("audio/") ? (
+                <audio
+                  src={mediaURL}
+                  controls
+                  aria-label={selected.name}
+                  onError={() => setPlaybackFailed(true)}
+                />
+              ) : (
+                <video
+                  src={mediaURL}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label={selected.name}
+                  onError={() => setPlaybackFailed(true)}
+                />
+              )}
+              {selected.name === "comparison.mp4" && (
+                <p>
+                  {cli.comparisonCredit}{" "}
+                  <a href="https://peach.blender.org/about/">
+                    Blender Foundation
+                  </a>{" "}
+                  ·{" "}
+                  <a href="https://creativecommons.org/licenses/by/3.0/">
+                    CC BY 3.0
+                  </a>
+                </p>
+              )}
+              {playbackFailed && <p role="alert">{cli.playbackError}</p>}
+            </section>
+          )}
+        </section>
+      </div>
+      <details className="lesson-background">
+        <summary>{guided.background}</summary>
+        <h2>{lesson.heading}</h2>
+        {lesson.paragraphs.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
         ))}
+        <p>{lesson.challenge}</p>
+        {step === "capture" &&
+          guided.capture.recordingDetails.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+      </details>
       <EncoderOffline />
-      {lesson.next && (
-        <a className="button" href={`#/${lesson.next}`}>
-          {cli.next} {lessons[lesson.next].title}
-        </a>
-      )}
     </article>
   );
 }

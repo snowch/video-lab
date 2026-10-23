@@ -3,6 +3,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { guided } from "../src/cli/guided.strings";
 import { refStrings } from "../src/cli/reference.strings";
 import { routeFor } from "../src/journey/routes";
 import { cli, lessons } from "../src/cli/strings";
@@ -424,7 +425,7 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
   await page.goto("./#/capture");
   await command(page, "sample");
   await expect(page.getByText(cli.session, { exact: true })).toBeVisible();
-  await command(page, "help");
+  await command(page, "help all");
   await expect(output(page)).toContainText("ffmpeg");
   const wrap = page.getByRole("button", { name: cli.wrapLines, exact: true });
   await expect(wrap).toHaveAttribute("aria-pressed", "false");
@@ -501,4 +502,106 @@ test("keyboard command entry, light/dark layout and session-only fallback remain
     ),
   ).toBe(true);
   await expect(page.locator(".cli-preview video")).toBeVisible();
+});
+
+test("guided tasks keep source choices, current help and actual imported filenames beside the prompt", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    if (navigator.mediaDevices)
+      Object.defineProperty(navigator.mediaDevices, "getDisplayMedia", {
+        value: undefined,
+        configurable: true,
+      });
+  });
+  await page.goto("./#/capture");
+  const task = page.locator(".task-panel");
+  await expect(task.getByRole("heading", { level: 2 })).toHaveText(
+    guided.capture.getSource,
+  );
+  await expect(task).toContainText(guided.capture.unsupported);
+  await expect(
+    page.getByRole("button", {
+      name: guided.capture.recordChoice,
+      exact: true,
+    }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", {
+      name: guided.capture.sampleChoice,
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await command(page, "help");
+  await expect(output(page)).toContainText(guided.helpAll);
+  await expect(output(page)).toContainText("sample");
+  await expect(output(page)).not.toContainText("Limits:");
+  await command(page, "help all");
+  await expect(output(page)).toContainText("Limits:");
+  await page
+    .getByRole("button", { name: guided.capture.importChoice, exact: true })
+    .click();
+  await command(page, "ls");
+  await expect(output(page)).toContainText(cli.empty);
+  const chooser = page.waitForEvent("filechooser");
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .fill("import");
+  await page
+    .getByRole("textbox", { name: cli.input, exact: true })
+    .press("Enter");
+  await (
+    await chooser
+  ).setFiles({
+    name: "my-source.mp4",
+    mimeType: "video/mp4",
+    buffer: readFileSync("public/media/build-queue.mp4"),
+  });
+  await expect(status(page)).toHaveText(cli.done);
+  const next = page
+    .locator(".command-workspace")
+    .getByRole("button", { name: guided.next, exact: true });
+  await next.click();
+  await expect(task.getByRole("heading", { level: 2 })).toHaveText(
+    guided.capture.listFiles,
+  );
+  await command(page, "ls");
+  await next.click();
+  await expect(task).toContainText("play my-source.mp4");
+  await command(page, "help");
+  await expect(output(page)).toContainText("play my-source.mp4");
+  await command(page, "play my-source.mp4");
+  await expect(page.locator(".cli-preview video")).toHaveAttribute(
+    "aria-label",
+    "my-source.mp4",
+  );
+  await next.click();
+  await expect(task).toContainText("download my-source.mp4");
+  expect(
+    Number(nativeProbe(await download(page, "my-source.mp4")).format.duration),
+  ).toBeCloseTo(10, 1);
+  await page
+    .getByRole("button", { name: guided.previous, exact: true })
+    .click();
+  await expect(task).toContainText("play my-source.mp4");
+  const positions = await page.evaluate(() => ({
+    task: document
+      .querySelector(".task-panel")!
+      .getBoundingClientRect()
+      .toJSON(),
+    terminal: document
+      .querySelector(".command-workspace")!
+      .getBoundingClientRect()
+      .toJSON(),
+    width: innerWidth,
+    documentWidth: document.documentElement.scrollWidth,
+  }));
+  if (positions.width >= 900)
+    expect(positions.task.right).toBeLessThanOrEqual(positions.terminal.left);
+  else
+    expect(positions.task.bottom).toBeLessThanOrEqual(positions.terminal.top);
+  expect(positions.documentWidth).toBe(positions.width);
+  expect(
+    await output(page).evaluate((el) => el.clientHeight),
+  ).toBeLessThanOrEqual(256);
 });
