@@ -519,18 +519,6 @@ textarea:read-only {
   color: var(--muted);
   margin-top: 7px;
 }
-.result .metrics {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 13px;
-}
-.metric {
-  background: var(--soft);
-  padding: 6px 10px;
-  border-radius: 7px;
-  font-size: 14px;
-}
 .output-frame {
   position: relative;
 }
@@ -818,4 +806,12 @@ a {
   .run-row {
     flex-wrap: wrap;
   }
+}
+
+.terminal {
+  margin-top: 16px;
+}
+.command-echo {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

@@ -39,7 +39,10 @@ it("keeps probe output explicit and output paths within the browser workspace", 
   expect(
     toolPlan(["ffprobe", "-show_streams", "-of", "json", "capture.mp4"]).tool,
   ).toBe("ffprobe");
-  expect(() => toolPlan(["ffprobe", "capture.mp4"])).toThrow("-of json");
+  expect(toolPlan(["ffprobe", "capture.mp4"]).args).toEqual(["capture.mp4"]);
+  expect(() =>
+    toolPlan(["ffprobe", "capture.mp4", "-o", "report.json"]),
+  ).toThrow("-of json");
   expect(() =>
     toolPlan(["ffmpeg", "-i", "capture.mp4", "../out.mp4"]),
   ).toThrow();

@@ -14,12 +14,11 @@ export const defaults = (): Options => ({
   duration: "6",
   audio: "keep",
   output: "demo.mp4",
-  streams: true,
-  format: true,
+  streams: false,
+  format: false,
 });
 export function buildCommand(stage: number, name: string, o: Options) {
-  if (stage === 1)
-    return `ffprobe -v error${o.streams ? " -show_streams" : ""}${o.format ? " -show_format" : ""} -of json ${name}`;
+  if (stage === 1) return `ffprobe ${name}`;
   return `ffmpeg -i ${name} -ss ${o.start} -t ${o.duration} -map 0:v:0${o.audio === "keep" ? " -map '0:a?'" : ""} -c:v libx264 -pix_fmt yuv420p${o.audio === "keep" ? " -c:a aac" : " -an"} ${o.output}`;
 }
 export function availableName(original: string, files: Files) {

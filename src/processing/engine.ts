@@ -358,10 +358,63 @@ export async function runTool(
   onLog?: (line: string) => void,
 ): Promise<{ text?: string; bytes?: Uint8Array<ArrayBuffer>; code: number }> {
   if (job.output) filename(job.output);
+  let forwardLogs = true;
   return withEngine(
     job.inputs,
     async (engine) => {
       if (job.tool === "ffprobe") {
+        const json = job.args.some(
+          (arg, i) =>
+            ["-of", "-print_format", "-output_format"].includes(arg) &&
+            job.args[i + 1] === "json",
+        );
+        if (!json) {
+          const code = await engine.ffprobe(job.args, limits.timeoutMs);
+          if (code !== 0 && code !== -1)
+            throw new Error(
+              `ffprobe exited with status ${code}. See its log above.`,
+            );
+          if (code === 0) return { code };
+          // The pinned wrapper returns -1 for both readable success and missing input.
+          // Keep the requested command's genuine output, then independently validate
+          // the same arguments with an internal error-report file. Never invent zero.
+          forwardLogs = false;
+          const validationCode = await engine.ffprobe(
+            [
+              ...job.args,
+              "-v",
+              "error",
+              "-show_error",
+              "-show_format",
+              "-of",
+              "json",
+              "-o",
+              "cli-internal-validation.json",
+            ],
+            limits.timeoutMs,
+          );
+          if (validationCode !== 0 && validationCode !== -1)
+            throw new Error(
+              "ffprobe could not inspect that input. See its log above.",
+            );
+          const validation = await engine.readFile(
+            "cli-internal-validation.json",
+            "utf8",
+          );
+          if (typeof validation !== "string")
+            throw new Error("ffprobe returned no validation report.");
+          const report = JSON.parse(validation) as Record<string, unknown>;
+          if (
+            !report ||
+            typeof report !== "object" ||
+            Array.isArray(report) ||
+            report.error
+          )
+            throw new Error(
+              "ffprobe could not inspect that input. See its log above.",
+            );
+          return { code };
+        }
         const code = await engine.ffprobe(
           [
             ...job.args,
@@ -405,7 +458,9 @@ export async function runTool(
         throw new Error("The output exceeds the workspace's 20 MiB limit.");
       return { bytes: new Uint8Array(bytes), code };
     },
-    onLog,
+    (line) => {
+      if (forwardLogs) onLog?.(line);
+    },
     true,
   );
 }

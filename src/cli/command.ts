@@ -65,13 +65,17 @@ export function toolPlan(words: string[]) {
     const format = args.findIndex(
       (a) => a === "-of" || a === "-print_format" || a === "-output_format",
     );
-    if (format < 0 || args[format + 1] !== "json")
-      throw new Error("Use -of json for ffprobe in this browser workspace.");
+    if (format >= 0 && args[format + 1] !== "json")
+      throw new Error(
+        "Use readable ffprobe output, or -of json for a structured report.",
+      );
     const outputs = args.flatMap((arg, index) =>
       arg === "-o" || arg === "-output" ? [index] : [],
     );
     if (outputs.length > 1) throw new Error("Use one JSON report output.");
     const output = outputs.length ? args[outputs[0]! + 1] : undefined;
+    if (outputs.length && format < 0)
+      throw new Error("Add -of json when saving a JSON report with -o.");
     if (
       outputs.length &&
       (!output ||

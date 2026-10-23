@@ -36,15 +36,71 @@ test("workbench runs real probe and trim, downloads measured media and exact rec
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await start(page);
+  await expect(
+    page.getByRole("textbox", { name: C.command.heading, exact: true }),
+  ).toHaveValue("ffprobe mousepad-demo.mp4");
   await run(page);
-  const report = JSON.parse(
-    (await page.getByLabel(C.command.outputLabel).textContent()) ?? "{}",
+  await expect(page.getByLabel(C.live.logs)).toBeVisible();
+  await expect(page.getByLabel(C.live.logs)).toContainText(
+    "Duration: 00:00:12.00",
   );
+  await expect(page.getByLabel(C.live.logs)).toContainText("Video: h264");
+  await expect(page.getByLabel(C.live.logs)).not.toContainText('"format_name"');
+  const readable = page.getByLabel(C.live.logs);
+  await expect
+    .poll(() =>
+      readable.evaluate(
+        (el) => el.scrollHeight - el.clientHeight - el.scrollTop,
+      ),
+    )
+    .toBeLessThanOrEqual(2);
+  await readable.evaluate((el) => {
+    el.scrollTop = 0;
+  });
+  await page.getByRole("button", { name: /theme/ }).click();
+  await expect.poll(() => readable.evaluate((el) => el.scrollTop)).toBe(0);
+  await page
+    .getByRole("button", { name: C.command.manual, exact: true })
+    .click();
+  const probeEntry = page.getByRole("textbox", {
+    name: C.command.heading,
+    exact: true,
+  });
+  await probeEntry.fill("ffprobe missing.mp4");
+  await page
+    .getByRole("button", { name: C.live.run + " →", exact: true })
+    .click();
+  await expect(page.locator("main p.status")).toHaveText(C.live.failed, {
+    timeout: 30000,
+  });
+  await expect(page.getByLabel(C.live.logs)).toContainText(
+    "No such file or directory",
+  );
+  await expect(page.getByLabel(C.live.logs)).not.toContainText('"error"');
+  await probeEntry.fill(
+    "ffprobe -v error -show_streams -show_format -of json mousepad-demo.mp4",
+  );
+  await run(page);
+  const reportText = await page.getByLabel(C.command.outputLabel).textContent();
+  const report = JSON.parse(reportText ?? "{}");
+  await expect(page.getByLabel(C.command.outputLabel)).toBeVisible();
+  expect(
+    await page.getByLabel(C.command.outputLabel).evaluate((el) => el.scrollTop),
+  ).toBe(0);
+  await expect(page.locator(".metric")).toHaveCount(0);
+  await expect(page.getByText(C.live.result, { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByText(C.live.probeCleanup, { exact: true }),
+  ).not.toBeVisible();
+  const reportFile = await getDownload(page, C.live.downloadReport);
+  expect(readFileSync(reportFile, "utf8")).toEqual(reportText);
   expect(report.streams).toHaveLength(1);
   expect(report.streams[0].codec_name).toBe("h264");
   expect(+report.format.duration).toBe(12);
   await page.getByRole("button", { name: C.inspect.next + " →" }).click();
   await run(page);
+  await expect(page.getByLabel(C.live.logs)).toBeVisible();
+  await expect(page.getByLabel(C.live.logs)).toContainText("Output #0");
   const output = getDownload(page, C.trim.export);
   const path = await output;
   const native = JSON.parse(
@@ -205,8 +261,68 @@ test("working entry and separately saved WASM run offline after reload", async (
   await context.setOffline(true);
   await page.reload();
   await run(page);
-  await expect(page.getByLabel(C.command.outputLabel)).toContainText(
-    "12.000000",
+  await expect(page.getByLabel(C.live.logs)).toContainText(
+    "Duration: 00:00:12.00",
   );
   await context.setOffline(false);
+});
+
+test("readable ffprobe validates corrupt input and quiet success without leaking its internal check", async ({
+  page,
+}) => {
+  test.setTimeout(90000);
+  await page.goto("optional/command-workbench.html");
+  await page.getByLabel(C.source.import, { exact: true }).setInputFiles({
+    name: "broken.mp4",
+    mimeType: "video/mp4",
+    buffer: Buffer.from("This is not a media file."),
+  });
+  await page.getByRole("button", { name: C.source.next + " →" }).click();
+  await page
+    .getByRole("button", { name: C.live.run + " →", exact: true })
+    .click();
+  await expect(page.locator("main p.status")).toHaveText(C.live.failed, {
+    timeout: 30000,
+  });
+  await expect(page.getByLabel(C.live.logs)).toContainText(
+    "Invalid data found when processing input",
+  );
+  await expect(page.getByLabel(C.live.logs)).not.toContainText('"error"');
+  await page
+    .getByRole("button", { name: C.command.manual, exact: true })
+    .click();
+  await page
+    .getByRole("textbox", { name: C.command.heading, exact: true })
+    .fill("ffprobe -madeup broken.mp4");
+  await page
+    .getByRole("button", { name: C.live.run + " →", exact: true })
+    .click();
+  await expect(page.locator("main p.status")).toHaveText(C.live.failed, {
+    timeout: 30000,
+  });
+  await expect(page.locator("main .error")).toContainText("status 1");
+  await page
+    .getByRole("button", { name: C.source.change, exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: C.source.sample, exact: true })
+    .click();
+  await page.getByRole("button", { name: C.source.next + " →" }).click();
+  await page
+    .getByRole("button", { name: C.command.manual, exact: true })
+    .click();
+  await page
+    .getByRole("textbox", { name: C.command.heading, exact: true })
+    .fill("ffprobe -v error mousepad-demo.mp4");
+  await run(page);
+  await expect(page.locator(".command-echo")).toHaveText(
+    "$ ffprobe -v error mousepad-demo.mp4",
+  );
+  await expect(page.getByLabel(C.live.logs)).toHaveCount(0);
+  await expect(page.getByLabel(C.command.outputLabel)).toHaveCount(0);
+  await page
+    .getByRole("textbox", { name: C.command.heading, exact: true })
+    .fill("ffprobe -version");
+  await run(page);
+  await expect(page.getByLabel(C.live.logs)).toContainText("version 5.1.4");
 });

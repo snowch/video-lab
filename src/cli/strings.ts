@@ -6,7 +6,7 @@ export const cli = {
   welcome:
     "Type help in the Command field for current-task commands, or help all for the complete workspace reference.",
   scope:
-    "Run one command at a time against files saved in this browser workspace. FFmpeg and ffprobe process actual media locally; they do not upload it or read your computer's folders. This is not an operating-system shell: pipes, redirection and variable expansion are unavailable. Put a whole filter expression inside quotes. ffprobe reports must use -of json.",
+    "Run one command at a time against files saved in this browser workspace. FFmpeg and ffprobe process actual media locally; they do not upload it or read your computer's folders. This is not an operating-system shell: pipes, redirection and variable expansion are unavailable. Put a whole filter expression inside quotes. ffprobe shows its usual media summary; use -of json with report options for saved reports and lab checks.",
   keyboard:
     "Enter runs the command; Shift+Enter continues the same command on a new line. A new line does not start a second command. Up and Down recall history when the entry is one line. Ctrl+C or the cancel command discards active work. Use stop to finish and keep a recording.",
   input: "Command",
@@ -37,7 +37,7 @@ export const cli = {
     "Active work was cancelled. No incomplete output was saved; existing files remain available.",
   exit: "Process exit status:",
   probeSuccess:
-    "The ffprobe JSON report was validated. This pinned browser build returns -1 after cleanup; that is not a native success exit status.",
+    "ffprobe completed and the media check passed. This pinned browser build returns -1 after cleanup; that is not a native success exit status.",
   cleanupNotice:
     "This browser's pinned FFmpeg build can print the bare line Aborted() during cleanup even when the operation completes. This command returned status 0; any saved output is listed above. A nonzero status still means failure. Inspect and replay the output to check it.",
   saved: "Saved",
@@ -113,7 +113,7 @@ cancel               Discard active processing or recording; keep existing files
 
 Real media tools:
 ffmpeg ARGUMENTS     Run one command with one named output, or a supported help query
-ffprobe ARGUMENTS    Inspect with -of json; add -o REPORT.json to save the report
+ffprobe ARGUMENTS    Read the usual media summary; use -of json and report options for a saved report
 
 Run each command separately. Multiple lines continue ONE command.
 Use simple filenames without folders: letters, digits, dots, hyphens or underscores, beginning with a letter or digit. Source filenames may be up to 80 characters; output filenames are limited to 68 so the recipe name also fits.
@@ -122,7 +122,7 @@ Each processing operation has a 120-second time limit. Cancel and retry if neede
 Choose a new output name, or add -y to explicitly replace an existing output.
 Reference loading and comparison refuse to overwrite existing files. They load provided bytes, not a new encode. reference inspect/cuts supplies lab inputs; reference build/edit supplies completed comparisons. The optional comparison is excluded from the baseline offline download.
 The browser build supports fewer devices, codecs and protocols than some native installations.
-ffprobe uses JSON reports only here. -o REPORT.json saves actual executed evidence; cat reads it. Checks require the correct source and execution, not imported or provided finished work. Evaluation can finish normally while printing failed criteria; read each result. Notes refuse overwrites. Earlier saved answer achievements remain separate from new checked artefacts.`,
+ffprobe reads the usual media summary by default. For lab checks, request a JSON report with -of json and the required report options; -o REPORT.json saves actual executed evidence, and cat reads it. Checks require the correct source and execution, not imported or provided finished work. Evaluation can finish normally while printing failed criteria; read each result. Notes refuse overwrites. Earlier saved answer achievements remain separate from new checked artefacts.`,
 };
 
 type Lesson = {

@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { disk, checkFiles, mimeFor } from "../cli/files";
 import type { Files, WorkspaceFile } from "../cli/files";
@@ -18,6 +18,7 @@ type Result = {
   command: string;
   tool: string;
   code: number;
+  logs: string;
   text?: string;
   file?: WorkspaceFile;
   recipe?: WorkspaceFile;
@@ -70,8 +71,17 @@ function Playback({ file }: { file: WorkspaceFile }) {
     </>
   );
 }
-function Output({ text }: { text: string }) {
+function Output({
+  text,
+  label = C.command.outputLabel,
+  followTail = false,
+}: {
+  text: string;
+  label?: string;
+  followTail?: boolean;
+}) {
   const ref = useRef<HTMLPreElement>(null),
+    following = useRef(true),
     [wrap, setWrap] = useState(false),
     [more, setMore] = useState(false);
   const measure = () => {
@@ -79,6 +89,10 @@ function Output({ text }: { text: string }) {
     if (el)
       setMore(!wrap && el.scrollWidth - el.scrollLeft - el.clientWidth > 2);
   };
+  useLayoutEffect(() => {
+    if (followTail && following.current && ref.current)
+      ref.current.scrollTop = ref.current.scrollHeight;
+  }, [text, followTail]);
   useEffect(() => {
     measure();
     const ro = new ResizeObserver(measure);
@@ -92,8 +106,14 @@ function Output({ text }: { text: string }) {
           ref={ref}
           className={wrap ? "wrapped" : ""}
           tabIndex={0}
-          onScroll={measure}
-          aria-label={C.command.outputLabel}
+          onScroll={() => {
+            measure();
+            const el = ref.current;
+            if (el)
+              following.current =
+                el.scrollHeight - el.clientHeight - el.scrollTop <= 2;
+          }}
+          aria-label={label}
         >
           {text}
         </pre>
@@ -115,39 +135,6 @@ function Output({ text }: { text: string }) {
     </>
   );
 }
-function ReportSummary({ text }: { text: string }) {
-  try {
-    const report = JSON.parse(text);
-    return (
-      <div className="metrics">
-        {Array.isArray(report.streams) &&
-          report.streams.map((stream: Record<string, unknown>, i: number) => (
-            <span className="metric" key={i}>
-              {stream.codec_type === "video"
-                ? C.inspect.video
-                : stream.codec_type === "audio"
-                  ? C.inspect.audio
-                  : String(stream.codec_type ?? "")}
-              : {String(stream.codec_name ?? "")}
-              {typeof stream.width === "number" &&
-              typeof stream.height === "number"
-                ? ` · ${stream.width} × ${stream.height} ${C.inspect.pixels}`
-                : ""}
-            </span>
-          ))}
-        {report.format?.duration !== undefined &&
-          Number.isFinite(Number(report.format.duration)) && (
-            <span className="metric">
-              {C.inspect.duration}: {Number(report.format.duration)}{" "}
-              {C.command.seconds}
-            </span>
-          )}
-      </div>
-    );
-  } catch {
-    return null;
-  }
-}
 function App() {
   const [files, setFiles] = useState<Files>({}),
     [sourceName, setSourceName] = useState(""),
@@ -167,6 +154,8 @@ function App() {
     [busy, setBusy] = useState(false),
     [saving, setSaving] = useState(false),
     [logs, setLogs] = useState(""),
+    [logStage, setLogStage] = useState(0),
+    [logCommand, setLogCommand] = useState(""),
     [remove, setRemove] = useState("");
   const [capture, setCapture] = useState<CaptureState>("idle");
   const controller = useRef<CaptureController | null>(null),
@@ -311,6 +300,8 @@ function App() {
     setFiles(next);
   }
   function select(file: WorkspaceFile) {
+    setLogs("");
+    setLogCommand("");
     setSourceName(file.name);
     setDrafts((old) => ({
       1: { ...old[1]!, result: undefined },
@@ -442,8 +433,6 @@ function App() {
       if (!source) throw new Error(C.command.selectSource);
       if (!command.trim()) throw new Error(C.command.empty);
       if (d.mode === "builder") {
-        if (stage === 1 && !options.streams && !options.format)
-          throw new Error(C.command.chooseReport);
         if (stage === 2) {
           if (
             !options.start ||
@@ -471,9 +460,12 @@ function App() {
     locked.current = true;
     setBusy(true);
     setLogs("");
+    setLogStage(stage);
+    setLogCommand(value);
     patchDraft({ result: undefined });
     setStatus(C.live.running);
     const active = () => generation.current === id;
+    let runLog = "";
     try {
       const inputs = await Promise.all(
         snapshot.map(async (f) => ({
@@ -483,13 +475,18 @@ function App() {
       );
       if (!active()) return;
       const result = await runTool({ ...plan, inputs }, (line) => {
-        if (active()) setLogs((old) => (old + "\n" + line).slice(-60000));
+        if (active()) {
+          runLog = (runLog ? runLog + "\n" : "") + line;
+          runLog = runLog.slice(-60000);
+          setLogs(runLog);
+        }
       });
       if (!active()) return;
       const completed: Result = {
         command: value,
         tool: plan.tool,
         code: result.code,
+        logs: runLog,
         text: result.text,
       };
       if (plan.output) {
@@ -759,7 +756,7 @@ function App() {
               <details className="lesson-details">
                 <summary>{C.flags.heading}</summary>
                 {(stage === 1
-                  ? ["probeStreams", "probeFormat", "probeJson"]
+                  ? ["probeDefault", "probeJson"]
                   : [
                       "input",
                       "start",
@@ -841,29 +838,7 @@ function App() {
                 {d.mode === "builder" ? (
                   <div className="builder">
                     {stage === 1 ? (
-                      <>
-                        <label className="check wide">
-                          <input
-                            type="checkbox"
-                            checked={options.streams}
-                            onChange={(e) =>
-                              changeOption("streams", e.target.checked)
-                            }
-                          />
-                          {C.command.streams}
-                        </label>
-                        <label className="check wide">
-                          <input
-                            type="checkbox"
-                            checked={options.format}
-                            onChange={(e) =>
-                              changeOption("format", e.target.checked)
-                            }
-                          />
-                          {C.command.format}
-                        </label>
-                        <small className="wide">{C.command.json}</small>
-                      </>
+                      <p className="wide help-note">{C.command.probeDefault}</p>
                     ) : (
                       <>
                         <label>
@@ -987,31 +962,25 @@ function App() {
               <p className="status" role="status">
                 {status}
               </p>
-              <div
-                ref={resultRef}
-                tabIndex={-1}
-                className={result ? "result" : ""}
-              >
+              {stale && <p className="warning">{C.live.stale}</p>}
+              {(result || (logStage === stage && logCommand)) && (
+                <div className="terminal" ref={resultRef} tabIndex={-1}>
+                  <pre className="command-echo">
+                    $ {result?.command ?? logCommand}
+                  </pre>
+                  {(result?.logs || (logStage === stage && logs)) && (
+                    <Output
+                      text={result?.logs ?? logs}
+                      label={C.live.logs}
+                      followTail
+                    />
+                  )}
+                  {result?.text && <Output text={result.text} />}
+                </div>
+              )}
+              <div className={result ? "result" : ""}>
                 {result && (
                   <>
-                    {stale && <p className="warning">{C.live.stale}</p>}
-                    <h3>{C.live.result}</h3>
-                    <details>
-                      <summary>{C.live.outputCommand}</summary>
-                      <pre>{result.command}</pre>
-                    </details>
-                    {result.code === -1 && (
-                      <p className="help-note">{C.live.probeCleanup}</p>
-                    )}
-                    {result.text && (
-                      <>
-                        <ReportSummary text={result.text} />
-                        <details>
-                          <summary>{C.command.rawOutput}</summary>
-                          <Output text={result.text} />
-                        </details>
-                      </>
-                    )}{" "}
                     {result.file && (
                       <>
                         <code>{result.file.name}</code>
@@ -1063,22 +1032,6 @@ function App() {
                   </>
                 )}
               </div>
-              {logs && (
-                <details className="lesson-details">
-                  <summary>{C.live.logs}</summary>
-                  {result && (
-                    <p>
-                      {C.live.exitStatus}: {result.code}
-                    </p>
-                  )}
-                  {result?.tool === "ffmpeg" &&
-                    result.code === 0 &&
-                    logs.split("\n").includes("Aborted()") && (
-                      <p>{C.live.encodingCleanup}</p>
-                    )}
-                  <Output text={logs} />
-                </details>
-              )}
               <p className="help-note">{C.live.firstRun}</p>
               <div className="next-row">
                 <button
@@ -1120,6 +1073,18 @@ function App() {
                 <p>{C.command.browserBoundary}</p>
                 <p>{C.live.limits}</p>
                 <p>{C.live.toolLimit}</p>
+                <details>
+                  <summary>{C.live.toolNotes}</summary>
+                  {result?.tool === "ffprobe" && result.code === -1 && (
+                    <p>{C.live.probeCleanup}</p>
+                  )}
+                  <p>{C.live.encodingCleanup}</p>
+                  {result && (
+                    <p>
+                      {C.live.exitStatus}: {result.code}
+                    </p>
+                  )}
+                </details>
               </details>
             </section>
           </div>

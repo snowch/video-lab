@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Raw CLI output, 23 October 2026:** the owner requested authentic command output as the primary result. The [presentation revision](notes/raw-cli-output/plan.md) removes derived metadata badges and result headings, exposes actual JSON/logs directly, and moves browser wrapper diagnostics into optional help. The default command is bare `ffprobe SOURCE`; `-of json` is optional for structured reports.
+
 **Working command workbench, 23 October 2026:** the owner approved the proposed interface, rejected using the course as sample footage and asked for actual WASM execution. The [live workbench slice](notes/live-workbench/plan.md) connects that three-step interface to the existing real runner and persistent workspace, with an original recording of Mousepad. It remains available at the preview URL; historical course routes and progress are preserved.
 
 **Historical UX prototype, 23 October 2026:** after finding invented workspace commands confusing, the owner requested a standalone HTML mockup of ordinary file controls plus authentic FFmpeg/ffprobe commands and an optional mobile/tablet builder. The [prototype slice](notes/command-ux/plan.md) is an isolated three-step usability trial with disclosed simulated execution. It does not yet replace the production curriculum below.

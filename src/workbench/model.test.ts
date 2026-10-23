@@ -9,7 +9,10 @@ const files: Files = Object.fromEntries(
   ]),
 );
 describe("native workbench boundary", () => {
-  it("composes executable native arguments with optional audio", () => {
+  it("starts with readable ffprobe output and composes native optional-audio edits", () => {
+    expect(buildCommand(1, "source.mp4", defaults())).toBe(
+      "ffprobe source.mp4",
+    );
     expect(
       planRun(
         buildCommand(2, "source.mp4", { ...defaults(), output: "new.mp4" }),

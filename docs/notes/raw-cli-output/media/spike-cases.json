@@ -1,0 +1,165 @@
+[
+  {
+    "args": ["mousepad-demo.mp4"],
+    "code": -1,
+    "validationCode": -1,
+    "validation": "{\n    \"format\": {\n        \"filename\": \"mousepad-demo.mp4\",\n        \"nb_streams\": 1,\n        \"nb_programs\": 0,\n        \"format_name\": \"mov,mp4,m4a,3gp,3g2,mj2\",\n        \"format_long_name\": \"QuickTime / MOV\",\n        \"start_time\": \"0.000000\",\n        \"duration\": \"12.000000\",\n        \"size\": \"74303\",\n        \"bit_rate\": \"49535\",\n        \"probe_score\": 100,\n        \"tags\": {\n            \"major_brand\": \"isom\",\n            \"minor_version\": \"512\",\n            \"compatible_brands\": \"isomiso2avc1mp41\",\n            \"encoder\": \"Lavf61.7.103\"\n        }\n    }\n}\n",
+    "logs": [
+      {
+        "type": "stderr",
+        "message": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      {
+        "type": "stderr",
+        "message": "  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)"
+      },
+      {
+        "type": "stderr",
+        "message": "  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavutil      57. 28.100 / 57. 28.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavcodec     59. 37.100 / 59. 37.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavformat    59. 27.100 / 59. 27.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavdevice    59.  7.100 / 59.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavfilter     8. 44.100 /  8. 44.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libswscale      6.  7.100 /  6.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libswresample   4.  7.100 /  4.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libpostproc    56.  6.100 / 56.  6.100"
+      },
+      {
+        "type": "stderr",
+        "message": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'mousepad-demo.mp4':"
+      },
+      {
+        "type": "stderr",
+        "message": "  Metadata:"
+      },
+      {
+        "type": "stderr",
+        "message": "    major_brand     : isom"
+      },
+      {
+        "type": "stderr",
+        "message": "    minor_version   : 512"
+      },
+      {
+        "type": "stderr",
+        "message": "    compatible_brands: isomiso2avc1mp41"
+      },
+      {
+        "type": "stderr",
+        "message": "    encoder         : Lavf61.7.103"
+      },
+      {
+        "type": "stderr",
+        "message": "  Duration: 00:00:12.00, start: 0.000000, bitrate: 49 kb/s"
+      },
+      {
+        "type": "stderr",
+        "message": "  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1280x720, 47 kb/s, 15 fps, 15 tbr, 15360 tbn (default)"
+      },
+      {
+        "type": "stderr",
+        "message": "    Metadata:"
+      },
+      {
+        "type": "stderr",
+        "message": "      handler_name    : VideoHandler"
+      },
+      {
+        "type": "stderr",
+        "message": "      vendor_id       : [0][0][0][0]"
+      },
+      {
+        "type": "stderr",
+        "message": "      encoder         : Lavc61.19.101 libx264"
+      }
+    ]
+  },
+  {
+    "args": ["missing.mp4"],
+    "code": -1,
+    "validationCode": -1,
+    "validation": "{\n    \"error\": {\n        \"code\": -44,\n        \"string\": \"No such file or directory\"\n    }\n}\n",
+    "logs": [
+      {
+        "type": "stderr",
+        "message": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers"
+      },
+      {
+        "type": "stderr",
+        "message": "  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)"
+      },
+      {
+        "type": "stderr",
+        "message": "  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavutil      57. 28.100 / 57. 28.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavcodec     59. 37.100 / 59. 37.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavformat    59. 27.100 / 59. 27.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavdevice    59.  7.100 / 59.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libavfilter     8. 44.100 /  8. 44.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libswscale      6.  7.100 /  6.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libswresample   4.  7.100 /  4.  7.100"
+      },
+      {
+        "type": "stderr",
+        "message": "  libpostproc    56.  6.100 / 56.  6.100"
+      },
+      {
+        "type": "stderr",
+        "message": "missing.mp4: No such file or directory"
+      }
+    ]
+  },
+  {
+    "args": ["-v", "error", "mousepad-demo.mp4"],
+    "code": -1,
+    "validationCode": -1,
+    "validation": "{\n    \"format\": {\n        \"filename\": \"mousepad-demo.mp4\",\n        \"nb_streams\": 1,\n        \"nb_programs\": 0,\n        \"format_name\": \"mov,mp4,m4a,3gp,3g2,mj2\",\n        \"format_long_name\": \"QuickTime / MOV\",\n        \"start_time\": \"0.000000\",\n        \"duration\": \"12.000000\",\n        \"size\": \"74303\",\n        \"bit_rate\": \"49535\",\n        \"probe_score\": 100,\n        \"tags\": {\n            \"major_brand\": \"isom\",\n            \"minor_version\": \"512\",\n            \"compatible_brands\": \"isomiso2avc1mp41\",\n            \"encoder\": \"Lavf61.7.103\"\n        }\n    }\n}\n",
+    "logs": []
+  }
+]
