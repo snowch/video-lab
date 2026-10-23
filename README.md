@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The initial path is implemented; Issue 3's final verification and deployment are in progress. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) for evidence and outstanding checks.
+Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The complete initial path is implemented, independently reviewed, tested and deployed. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).
 
 | Step | Route | What you do |
 | --- | --- | --- |
@@ -68,6 +68,6 @@ The course owns its shell, prose, capture/processing features, models and grader
 
 ## GitHub Pages
 
-The base path is `/video-lab/`; named hash routes support static hosting, reloads and browser navigation. In **Settings → Pages**, choose **GitHub Actions**. The deployment workflow checks the app before publishing `dist/` from `main`; manual dispatch is supported. The owner has authorised reviewed main deployments. Workflow success and a live-site check establish deployment, not this configuration note. The current Issue 3 release remains pending final check and deployment verification in the acceptance ledger.
+The base path is `/video-lab/`; named hash routes support static hosting, reloads and browser navigation. In **Settings → Pages**, choose **GitHub Actions**. The deployment workflow checks the app before publishing `dist/` from `main`; manual dispatch is supported. The owner has authorised reviewed main deployments. Workflow success and a live-site check establish deployment, not this configuration note. The verified Issue 3 release, workflow results and exact tested app hash are recorded in the [deployment record](docs/notes/issue-3/deployment.md).
 
 Course: https://snowch.github.io/video-lab/

@@ -27,3 +27,17 @@ node /workspace/scratch/issue3-live-optional.mjs
 ```
 
 The scratch configuration changes only hosting/proxy/profile trust and output locations; the four enduring journey cases are `tests/journey.spec.ts`. Original failed attempts and passing Chromium/Firefox rerun logs remain under `/workspace/scratch/issue3-*`. Physical phones/tablets, Safari, audible quality, Windows/macOS capture execution and universal external-player support remain outside the executed evidence.
+
+## Final verified release
+
+Application commit **`c8521671d34e275ed7873c7d3e5fe724282d2393`** passed both [Quality checks 39941781209](https://github.com/snowch/video-lab/actions/runs/39941781209) and [Pages 39941781226](https://github.com/snowch/video-lab/actions/runs/39941781226), including full quality validation before successful deployment. The final local gate passed **54 unit tests and 105 browser cases**. The public app matches `index-YA4xirVA.js`, SHA-256 `e29c4816704e6798c4d0bd56ed3652e15f0b6cb1f1fe5e982e6a2ce5dd0d6e57`.
+
+The four public journey cases passed in each browser. Seven passed in the combined final run; Chromium's full-path case encountered an HTTP503 for `media/module-2/encode-3-0.jpg` during baseline download. The UI reported failure rather than false readiness. The asset subsequently returned200, and the targeted full-path rerun passed, including actual offline processing. These are recorded as separate runs rather than claiming an initially clean eight-case run.
+
+The new public update UI was additionally tested in Chromium and Firefox. In each isolated context, registering a query-versioned copy of the actual same-origin worker created a real waiting worker. Deliberately dropping the first activation message produced the pending and failure states; keyboard retry activated the genuine worker, reloaded both tabs and preserved a saved marker. This changes only isolated browser registrations, not server files.
+
+Real public getDisplayMedia capture was repeated on the final build; all tracks ended and the actual WebM replayed/downloaded. Its actual bytes then passed public inspection, two-range editing, Publish download, recipe/source hash, persistence and playback, with native ffprobe measuring the new H.264 output at **3.750 seconds**. [Machine-readable verification](public-verification.json) records exact source/output sizes, hashes, clocks versus packet evidence, commands and environment limits.
+
+The old persistent offline profile completed its transition to the new `Es9JGUdJWORxS8c+BnW9eY5fFE9Lx0Rno2fX0YDR5+A=` cache, removed the prior cache and kept its marker. An initial verifier read raced the successful reload because old/new home links were identical; reopening the profile independently confirmed the new bundle/cache and preserved data, then passed offline reload, missing-tools error and supplied-reference playback. Both public optional-media/bundle-hash checks also passed.
+
+The implementation, independent review, full local/CI checks and public deployment requirements for the initial path are complete. Advanced modules remain honestly planned. A final documentation-only record commit uses `[skip ci]`: it changes no app, worker, media, dependency, build or test input; the deployed application commit and exact tested hash remain those above.

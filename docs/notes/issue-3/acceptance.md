@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-23 October 2026. The complete initial capture → build → inspect → edit → publish path is implemented. The final local `npm run check` passed **54 unit tests and 105 browser tests**, alongside formatting, strict types, synchronised-platform and native-media checks. Independent review found and corrected the reference timing, recipe mapping, first-use terminology, format-family presentation, imported origin and sparse-picture edit timing. [Public deployment evidence](deployment.md) records actual workflow and live-site results, including the first Quality workflow failure and the reviewed update follow-up.
+23 October 2026. The complete initial capture → build → inspect → edit → publish path is implemented. The final local `npm run check` passed **54 unit tests and 105 browser tests**, alongside formatting, strict types, synchronised-platform and native-media checks. Both final GitHub workflows passed and the public deployment was verified in Chromium and Firefox. Independent review found and corrected the reference timing, recipe mapping, first-use terminology, format-family presentation, imported origin and sparse-picture edit timing. [Public deployment evidence](deployment.md) records actual workflow and live-site results, including the first Quality workflow failure and the reviewed update follow-up.
 
 | Initial-path requirement | Executed evidence |
 | --- | --- |
@@ -18,7 +18,7 @@ Copyright © 2026 Christopher Snow.
 | Reproducible, licensed and opt-in comparison | [BBB provenance](media/big-buck-bunny.json) pins official source/member hashes, exact transformation, FFmpeg version, CC BY 3.0 attribution and the 86,088-byte, five-second excerpt. Native verification checks derivative hash/codec/dimensions/duration. Loading is an explicit click; baseline manifest excludes it. |
 | Offline reading versus processing | Baseline-only offline cases fail processing promptly and still load labelled reference results. Separate explicit saving downloads the 32,367,068-byte core/notices and enables actual offline encoding in Chromium/Firefox. Existing integrity/failure/repair/update tests pass. Encoder and optional sample paths are excluded from the reading manifest. |
 | Independent drafting and review | [Separate prose draft](review/00-prose.md), outline reader/sceptic, [built reader](review/03-built-reader.md), [built sceptic](review/04-built-sceptic.md), [ranked resolutions](review/05-resolution.md), and [final independent checker](review/06-checker.md) distinguish observed defects, author fixes and verified results. Screenshots and actual downloaded outputs/recipes accompany the review evidence. |
-| Full quality and production verification | [Runtime evidence](runtime-evidence.md) records the final local gate, asset hash, transfer sizes, measured local operation times and limitations. CI/Pages run the identical `npm run check` entry point. Public worker/core, capture, media, optional loading and stale-cache upgrade checks are release checkpoints, recorded after deployment. |
+| Full quality and production verification | [Runtime evidence](runtime-evidence.md) records the final local gate, asset hash, transfer sizes, measured local operation times and limitations. CI/Pages run the identical `npm run check` entry point. Public worker/core, actual capture/edit/output, optional loading, activation failure/retry and stale-cache upgrades passed; [deployment evidence](deployment.md) preserves exact outcomes and intermediate failures. |
 
 ## Scope and limits
 

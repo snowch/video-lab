@@ -1,0 +1,126 @@
+{
+  "copyright": "Copyright © 2026 Christopher Snow",
+  "verifiedAt": "2026-10-23T11:01:22.832Z",
+  "site": "https://snowch.github.io/video-lab/",
+  "applicationCommit": "c8521671d34e275ed7873c7d3e5fe724282d2393",
+  "qualityRun": 39941781209,
+  "pagesRun": 39941781226,
+  "unitTests": 54,
+  "browserTests": 105,
+  "publicJourneyCases": {
+    "chromium": 4,
+    "firefox": 4,
+    "qualification": "Seven passed together; Chromium full-path case hit an HTTP503 on a static JPEG during baseline saving and passed on targeted rerun."
+  },
+  "publicActivationCases": {
+    "chromium": "Lost ACTIVATE → explicit failure → keyboard retry → both tabs reloaded, marker preserved",
+    "firefox": "Same"
+  },
+  "asset": {
+    "path": "assets/index-YA4xirVA.js",
+    "sha256": "e29c4816704e6798c4d0bd56ed3652e15f0b6cb1f1fe5e982e6a2ce5dd0d6e57"
+  },
+  "offlineVersion": "Es9JGUdJWORxS8c+BnW9eY5fFE9Lx0Rno2fX0YDR5+A=",
+  "capture": {
+    "environment": "Headful Chromium, virtual X11 desktop, explicit app Start and automated chooser; no physical-device/chooser claim",
+    "mime": "video/webm;codecs=vp9",
+    "clockEstimateSeconds": 5.78,
+    "stoppedTrackStates": ["ended"],
+    "bytes": 162417,
+    "sha256": "7a9a8f788f868e74a701bd80e94e9b9490a9b28d1c65408a292a84bd329ed8bd",
+    "streams": [
+      {
+        "type": "video",
+        "codec": "vp9",
+        "width": 1280,
+        "height": 720,
+        "frameRate": "12000/1001"
+      }
+    ],
+    "declaredDuration": null,
+    "firstPacket": {
+      "pts_time": "0.000000"
+    },
+    "lastPacket": {
+      "pts_time": "5.680000",
+      "duration_time": "0.083000"
+    }
+  },
+  "editedActualCapture": {
+    "bytes": 415619,
+    "sha256": "9f96bfbefe9d173242ee3509f4cadcdd1031d5bfcb79b32a4d43bee8a50775c1",
+    "streams": [
+      {
+        "type": "video",
+        "codec": "h264",
+        "width": 1280,
+        "height": 720,
+        "frameRate": "12/1"
+      }
+    ],
+    "declaredDuration": "3.750000",
+    "firstPacket": {
+      "pts_time": "0.000000",
+      "duration_time": "0.083333"
+    },
+    "lastPacket": {
+      "pts_time": "3.666667",
+      "duration_time": "0.083333"
+    },
+    "recipe": {
+      "source": "actual-desktop.webm",
+      "workingInputName": "capture.webm",
+      "sourceSha256": "7a9a8f788f868e74a701bd80e94e9b9490a9b28d1c65408a292a84bd329ed8bd",
+      "ranges": [
+        {
+          "start": 0,
+          "end": 1.25
+        },
+        {
+          "start": 2,
+          "end": 4.5
+        }
+      ],
+      "command": [
+        "-i",
+        "capture.webm",
+        "-filter_complex",
+        "[0:v:0]fps=12,trim=start=0:end=1.25,setpts=PTS-STARTPTS,scale=w='trunc(min(1280,iw)/2)*2':h=-2[v0];[0:v:0]fps=12,trim=start=2:end=4.5,setpts=PTS-STARTPTS,scale=w='trunc(min(1280,iw)/2)*2':h=-2[v1];[v0][v1]concat=n=2:v=1:a=0[v]",
+        "-map",
+        "[v]",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "ultrafast",
+        "-crf",
+        "23",
+        "-pix_fmt",
+        "yuv420p",
+        "-r",
+        "12",
+        "-movflags",
+        "+faststart",
+        "edited-demo.mp4"
+      ],
+      "created": "2026-10-23T10:58:30.552Z",
+      "commandLine": "ffmpeg -i capture.webm -filter_complex '[0:v:0]fps=12,trim=start=0:end=1.25,setpts=PTS-STARTPTS,scale=w='\\''trunc(min(1280,iw)/2)*2'\\'':h=-2[v0];[0:v:0]fps=12,trim=start=2:end=4.5,setpts=PTS-STARTPTS,scale=w='\\''trunc(min(1280,iw)/2)*2'\\'':h=-2[v1];[v0][v1]concat=n=2:v=1:a=0[v]' -map '[v]' -an -c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p -r 12 -movflags +faststart edited-demo.mp4"
+    }
+  },
+  "nativeProbeVersion": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+  "upgrade": {
+    "previousVersion": "2qzLe0cIm1yxojl34IPd4Przcac1V0gKC_wb15tcwow=",
+    "oldCacheRemoved": true,
+    "savedMarkerPreserved": true,
+    "offlineReading": true,
+    "missingToolsFailedHonestly": true,
+    "providedReferenceSeconds": 3,
+    "qualification": "Upgrade navigation began successfully; an initial verifier read raced reload. Reopening the persistent profile verified the completed new bundle/cache and preserved marker."
+  },
+  "optionalSample": {
+    "lazy": true,
+    "seconds": 5,
+    "visibleCredit": true
+  },
+  "limits": "Virtual display and device emulation; physical devices, Safari and audible quality unverified. Firefox used the managed proxy CA in an isolated NSS profile; TLS verification stayed enabled."
+}

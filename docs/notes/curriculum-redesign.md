@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-**Design begun:** 21 October 2026. **Implementation reconciliation:** 23 October 2026. This replaces inaccurate assumptions in the initial outline with the actual implementation and dated evidence. The five-step initial path is implemented; final verification and deployment remain tracked in [Issue 3 acceptance](issue-3/acceptance.md).
+**Design begun:** 21 October 2026. **Implementation reconciliation:** 23 October 2026. This replaces inaccurate assumptions in the initial outline with the actual implementation and dated evidence. The five-step initial path is implemented; reviewed quality and public deployment evidence are recorded in [Issue 3 acceptance](issue-3/acceptance.md).
 
 ## Outcome and artefact handoff
 
