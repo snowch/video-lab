@@ -132,7 +132,7 @@ The core files and optional comparison media are excluded from the baseline offl
 
 The [complete provenance JSON](notes/issue-3/media/big-buck-bunny.json) records the official source archive https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4.zip, its 64,657,225-byte size and SHA-256, member filename/hash, exact native command and FFmpeg version. The derivative extracts source 60–65 seconds, re-encodes 320×180 H.264/AAC and is **86,088 bytes**, with SHA-256 `d0b7384aaef30fcc97bcfbd3039ebc2c9e06f31e6e1339452efe2c5fc2ce48df`.
 
-The file is served as `optional/big-buck-bunny-5s.mp4`; Publish loads it only after an explicit click and displays credit/licence links. `dist/optional/` is excluded from the baseline offline download. It is a provided comparison, not the learner's captured source or exported project, and does not make the planned compression module available.
+The file is served as `optional/big-buck-bunny-5s.mp4`; Publish loads it only after an explicit click and displays credit/licence links. Optional comparison media is excluded from the baseline offline download. The working `optional/command-workbench.html` entry is explicitly included. It is a provided comparison, not the learner's captured source or exported project, and does not make the planned compression module available.
 
 ## CLI-first production labs
 
@@ -149,3 +149,10 @@ No new media source or runtime dependency is introduced. Provided reference outp
 [The all-labs plan and reviews](notes/all-labs-cli/plan.md) extend the workspace to the original inspection and cutting lessons. Native FFmpeg/ffprobe 7.1.5 and the pinned WASM core verify the report, stream extraction, frame 75, accurate trim, audio/video concat and deliberately unreset timestamp examples. `ffprobe -o FILE.json` writes its actual JSON bytes. Check feedback measures submitted artifacts rather than comparing command spelling.
 
 The edit check decodes submitted and original source pictures to 160×90 RGB, requiring 48 pictures in the expected opening-then-result order. Its maximum per-frame RGB RMS tolerance is 2; the verified correct re-encode measures approximately 0.5174, while reversed order exceeds 5.47. This is a bounded comparison for this controlled fixture, not byte identity or a general video-similarity metric. Removing both timestamp resets in the supplied example produces eight seconds/96 pictures in the tested versions; it is not a universal concat duration rule. Existing source provenance remains unchanged. Recipes now snapshot all workspace input files, including reports and notes.
+
+
+## Working command builder and Mousepad recording
+
+The live workbench at `optional/command-workbench.html` executes the same native FFmpeg/ffprobe argument arrays whether built or typed. The existing pinned WASM core, worker cancellation, quotas and offline tools are reused. Imported filenames containing unsupported characters are explicitly renamed in the browser workspace. Original device files are untouched. Source overwrite is rejected; generated output replacement requires explicit `-y`. JSON recipes record executed commands and hashes of available inputs; `-i` identifies referenced media.
+
+The original sample is actual Mousepad 0.6.3 pixels, not Video Lab or an imitation editor. [Full provenance, source text, native commands, versions and hash](../media-source/mousepad/README.md) accompany the recording. Mousepad: https://gitlab.xfce.org/apps/mousepad ; GPL-2.0-or-later, application not redistributed. The recording and fictional text carry the repository copyright notice; no new blanket licence is declared. Native JSON is in `notes/live-workbench/media/`; `scripts/verify-workbench.mjs` pins the exact source and measured facts. The browser tests independently inspect actual WASM exports using native ffprobe.

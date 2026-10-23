@@ -1,0 +1,13 @@
+# Run the approved command workbench with real media tools
+
+Copyright © 2026 Christopher Snow.
+
+The owner approved the HTML interaction, rejected recording the course itself as sample material, and asked whether the commands can run in WebAssembly. Make the approved preview a working lab at its existing URL. Use actual FFmpeg/ffprobe execution through the already verified processing engine, with the same argument list whether composed or typed. File selection, browser recording, replay, downloads and cancellation remain app controls. Only FFmpeg/ffprobe run in the editor. Existing course/reference routes and achievements stay available; this slice is the working approved interface, not a claim that every historical lesson has been migrated into it.
+
+Replace the practice video with an original recording of Mousepad, the independently developed open-source text editor. Demonstrate Find and Replace in a small original configuration file, with a readable initial state, visible action and held result. Capture actual application pixels; record app/FFmpeg versions, commands, source text, timings, hash, licence and provenance. Do not imply silent media has an audio stream. Preserve the historical fixed-fixture reference evidence under its existing paths.
+
+Use a Vite HTML entry at `optional/command-workbench.html`, the current preview URL. React/TypeScript and separate reviewed strings replace the static simulated implementation. Reuse the pinned optional WASM core, command parsing/planning, file storage, capture lifecycle, offline controls and release indicator. The interface must show actual logs and JSON; generated media is replayable/downloadable only after execution succeeds. Include cancellation, errors, stale-result handling, explicit overwrite, source protection and execution recipes. Save files in the existing browser workspace without deleting earlier work. A changed command must not relabel an earlier output as current.
+
+Include the live HTML in the baseline offline manifest; the separately saved processing package remains optional. Explain first-run download and browser-build limits. Browser capture remains an API permission action, not an FFmpeg desktop device. Unsupported capture offers import and practice media. Keep the desktop/phone/tablet layout, inline source replay, editable native command and explicit custom-draft replacement/restoration from the approved prototype.
+
+Follow AGENTS: verified media/model and meaningful tests before separate prose draft; independent built learner, sceptic, ranked fixes and checker; full quality checks; authorised reviewed main deployment; live browser and actual exported-file verification. Preserve the pre-existing untracked learner-audit directory.

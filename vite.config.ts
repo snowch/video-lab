@@ -19,6 +19,14 @@ const commit =
     : null;
 export default defineConfig({
   base: "/video-lab/",
+  build: {
+    rollupOptions: {
+      input: {
+        course: resolve("index.html"),
+        workbench: resolve("optional/command-workbench.html"),
+      },
+    },
+  },
   plugins: [
     react(),
     {

@@ -51,11 +51,11 @@ export function checkFiles(files: Files) {
     entries.length > 24
   )
     throw new Error(
-      "The workspace holds at most 12 working files plus 12 recipes. Download important work, then use rm to remove an unneeded file.",
+      "The workspace holds at most 12 working files plus 12 recipes. Download important work, then remove an unneeded file.",
     );
   if (entries.reduce((sum, f) => sum + f.blob.size, 0) > limits.inputBytes)
     throw new Error(
-      "The workspace exceeds 32 MiB. Download important work, then use rm to remove an unneeded file.",
+      "The workspace exceeds 32 MiB. Download important work, then remove an unneeded file.",
     );
   for (const file of entries) {
     if (!validFilename(file.name))

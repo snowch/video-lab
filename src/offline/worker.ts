@@ -136,12 +136,14 @@ self.addEventListener("fetch", (event) => {
   const root = new URL(base);
   if (url.origin !== root.origin || !url.pathname.startsWith(root.pathname))
     return;
-  // Hash routes share one document. Ignore search parameters only for that document.
+  // Known HTML entries share their cached document across hashes and queries.
   const key =
     url.pathname === root.pathname ||
     url.pathname === root.pathname + "index.html"
       ? new URL("index.html", base).href
-      : url.href;
+      : url.pathname === root.pathname + "optional/command-workbench.html"
+        ? new URL("optional/command-workbench.html", base).href
+        : url.href;
   const encoderAsset = encoderUrls.includes(key);
   if (!urls.includes(key) && !encoderAsset) return;
   event.respondWith(

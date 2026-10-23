@@ -20,7 +20,8 @@ const paths = (await walk("dist"))
       !p.endsWith("/offline-manifest.json") &&
       !p.endsWith("/release.json") &&
       !p.startsWith("dist/encoder/") &&
-      !p.startsWith("dist/optional/"),
+      (!p.startsWith("dist/optional/") ||
+        p === "dist/optional/command-workbench.html"),
   )
   .sort();
 const files = await Promise.all(

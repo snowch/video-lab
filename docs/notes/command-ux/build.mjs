@@ -33,6 +33,11 @@ for (const [name, value] of Object.entries({
     JSON.stringify(value).replaceAll("<", "\\u003c"),
   );
 html = await format(html, { parser: "html" });
-await mkdir(new URL("public/optional/", root), { recursive: true });
-await writeFile(new URL("public/optional/command-workbench.html", root), html);
+await mkdir(new URL("docs/notes/command-ux/archive/", root), {
+  recursive: true,
+});
+await writeFile(
+  new URL("docs/notes/command-ux/archive/command-workbench.html", root),
+  html,
+);
 console.log(`Standalone prototype: ${Buffer.byteLength(html)} bytes`);
