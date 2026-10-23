@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-23 October 2026. The complete initial capture → build → inspect → edit → publish path is implemented. The final local `npm run check` passed **50 unit tests and 105 browser tests**, alongside formatting, strict types, synchronised-platform and native-media checks. Independent review found and corrected the reference timing, recipe mapping, first-use terminology, format-family presentation, imported origin and sparse-picture edit timing. Public deployment evidence is recorded separately after the reviewed commit is published.
+23 October 2026. The complete initial capture → build → inspect → edit → publish path is implemented. The final local `npm run check` passed **54 unit tests and 105 browser tests**, alongside formatting, strict types, synchronised-platform and native-media checks. Independent review found and corrected the reference timing, recipe mapping, first-use terminology, format-family presentation, imported origin and sparse-picture edit timing. [Public deployment evidence](deployment.md) records actual workflow and live-site results, including the first Quality workflow failure and the reviewed update follow-up.
 
 | Initial-path requirement | Executed evidence |
 | --- | --- |

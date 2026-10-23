@@ -1,5 +1,9 @@
 // Copyright © 2026 Christopher Snow
 export const offline = {
+  activating:
+    "Switching to the downloaded update. This page will reload when it is ready.",
+  activationFailed:
+    "The update could not be opened. This tab remains open. Retry Reload to use update, or select Check for updates.",
   title: "Offline access and app installation",
   description:
     "Download the available lessons, recordings and pictures so you can use them without an internet connection in this browser.",

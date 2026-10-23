@@ -323,13 +323,52 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   );
   const second = await context.newPage();
   await second.goto(site.url + "#/module-0");
+  // Lose one activation message deliberately: the control must report failure
+  // and offer a working retry rather than remain a silent no-op.
+  await page.evaluate(() => {
+    const original = ServiceWorker.prototype.postMessage as (
+      this: ServiceWorker,
+      message: unknown,
+      transfer?: Transferable[],
+    ) => void;
+    let dropped = false;
+    Object.defineProperty(ServiceWorker.prototype, "postMessage", {
+      configurable: true,
+      value: function (
+        this: ServiceWorker,
+        message: unknown,
+        transfer?: Transferable[],
+      ) {
+        if (message === "ACTIVATE" && !dropped) {
+          dropped = true;
+          return;
+        }
+        original.call(this, message, transfer);
+      },
+    });
+  });
+  await panel
+    .getByRole("button", { name: offline.reload, exact: true })
+    .click();
+  await expect(panel.getByRole("status")).toHaveText(offline.activating);
+  await expect(
+    panel.getByRole("button", { name: offline.reload, exact: true }),
+  ).toBeDisabled();
+  await expect(panel.getByRole("status")).toHaveText(offline.activationFailed, {
+    timeout: 15000,
+  });
+  await expect(
+    panel.getByRole("button", { name: offline.reload, exact: true }),
+  ).toBeEnabled();
   await Promise.all([
     page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
     second.waitForEvent(
       "framenavigated",
       (frame) => frame === second.mainFrame(),
     ),
-    panel.getByRole("button", { name: offline.reload, exact: true }).click(),
+    panel
+      .getByRole("button", { name: offline.reload, exact: true })
+      .press("Enter"),
   ]);
   await page.waitForLoadState();
   await second.waitForLoadState();

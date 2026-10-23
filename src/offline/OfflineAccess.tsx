@@ -1,6 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useRef, useState } from "react";
-import { workerMessage, installed } from "./client";
+import { workerMessage, installed, activateWaiting } from "./client";
 import { offline } from "./strings";
 import { InstallApp } from "../install/InstallApp";
 export function OfflineAccess() {
@@ -11,8 +11,15 @@ export function OfflineAccess() {
   const [online, setOnline] = useState(navigator.onLine);
   const [waiting, setWaiting] = useState(false);
   const [notice, setNotice] = useState<
-    "downloading" | "checking" | "current" | "failed" | null
+    | "downloading"
+    | "checking"
+    | "current"
+    | "failed"
+    | "activating"
+    | "activationFailed"
+    | null
   >(null);
+  const reloadRequested = useRef(false);
   const registration = useRef<ServiceWorkerRegistration | null>(null);
   const scope = new URL(import.meta.env.BASE_URL, location.href).href;
   async function refresh(reg = registration.current) {
@@ -54,14 +61,21 @@ export function OfflineAccess() {
     let controlled = !!navigator.serviceWorker.controller;
     const control = () => {
       // A new release replaces the document and scripts together in every open tab.
-      if (controlled) location.reload();
+      if (controlled && !reloadRequested.current) {
+        reloadRequested.current = true;
+        location.reload();
+      }
       controlled = true;
       void refresh().catch(() => setNotice("failed"));
     };
     const connection = () => {
       setOnline(navigator.onLine);
       setNotice((current) =>
-        current === "downloading" || current === "checking" ? current : null,
+        current === "downloading" ||
+        current === "checking" ||
+        current === "activating"
+          ? current
+          : null,
       );
     };
     const focus = () => {
@@ -135,6 +149,28 @@ export function OfflineAccess() {
       setBusy(false);
     }
   }
+  async function activate() {
+    setBusy(true);
+    setNotice("activating");
+    try {
+      // Refresh the live registration: the waiting worker may have changed
+      // since its availability was rendered, including activation in another tab.
+      const reg = await navigator.serviceWorker.getRegistration(scope);
+      if (!reg || reg.scope !== scope) throw new Error("No saved update");
+      attach(reg);
+      if (reg.waiting)
+        await activateWaiting(reg.waiting, navigator.serviceWorker);
+      else if (!reg.active) throw new Error("No active update");
+      if (!reloadRequested.current) {
+        reloadRequested.current = true;
+        location.reload();
+      }
+    } catch {
+      await refresh().catch(() => {});
+      setNotice("activationFailed");
+      setBusy(false);
+    }
+  }
   const status = !supported
     ? offline.unsupported
     : notice
@@ -172,12 +208,7 @@ export function OfflineAccess() {
               </button>
             )}
             {waiting && (
-              <button
-                disabled={busy}
-                onClick={() =>
-                  registration.current?.waiting?.postMessage("ACTIVATE")
-                }
-              >
+              <button disabled={busy} onClick={() => void activate()}>
                 {offline.reload}
               </button>
             )}

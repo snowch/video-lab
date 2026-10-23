@@ -120,7 +120,10 @@ self.addEventListener("message", (event) => {
         else if (event.data === "DOWNLOAD") {
           await save();
           reply({ ready: true });
-        } else if (event.data === "ACTIVATE") await self.skipWaiting();
+        } else if (event.data === "ACTIVATE") {
+          await self.skipWaiting();
+          reply({ ready: true });
+        }
       } catch {
         reply({ ready: false });
       }
