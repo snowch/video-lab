@@ -2,7 +2,9 @@
 
 Copyright © 2026 Christopher Snow.
 
-Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The complete initial path is implemented, independently reviewed, tested and deployed. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).
+The production labs are command-line workspaces. Type and run real FFmpeg/ffprobe WASM commands, inspect logs and actual files, and download the output plus an execution recipe. Screen capture uses explicitly labelled browser commands and the browser permission dialog.
+
+Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The previous interface completed its review and deployment; the CLI revision has its own [plan and review evidence](docs/notes/cli/plan.md). See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).
 
 | Step | Route | What you do |
 | --- | --- | --- |
@@ -37,7 +39,13 @@ npm run preview
 
 Processing uses pinned single-thread `@ffmpeg/core` 0.12.10, wrapper 0.12.15 and util 0.12.2. The build copies the unmodified core into `dist/encoder/0.12.10/`, publishes notices and source references, and generates its hashed manifest. It is not loaded merely by opening a lesson. [The compatibility spike](docs/notes/issue-3/wasm-spike.md) records actual Chromium/Firefox encoding, playback and probing, including missing-duration handling for real WebM recordings.
 
-The capture exercise stops at 15 seconds and limits output to 20 MiB. Imported exercise files are limited to 20 MiB; editing requires inspected timing within 30 seconds and the supported picture-size bound. Browser/device recording support varies. Windows, macOS, physical phones and actual microphone/system-audio permissions are not certified by Linux browser emulation. Use the provided original source when capture is unavailable; real editing still requires working processing tools.
+The capture exercise stops at 15 seconds and limits output to 20 MiB. Workspace files are limited to 20 MiB each and 32 MiB combined, with up to twelve media files plus twelve execution recipes. Commands select timing and dimensions directly; processing has a 120-second limit. Browser/device recording support varies. Windows, macOS, physical phones and actual microphone/system-audio permissions are not certified by Linux browser emulation. Use the provided original source when capture is unavailable; real editing still requires working processing tools.
+
+## Using the command labs
+
+Enter one command in **Command** and press Enter, or use **Run command**. Shift+Enter continues the same command; it does not start a second command. Up/Down recall history. `help` describes supported workspace commands. `ffmpeg` runs learner arguments against actual files; `ffprobe` requires `-of json` and prints the real report. The adapter appends `-show_error` and a private JSON output destination for probing. Its pinned core's -1 cleanup sentinel is accepted only with valid nonempty JSON and no error report; it is never displayed as native exit status zero.
+
+The workspace is not an OS shell: no pipes, redirection, variable expansion or folders. Use quoted filter graphs. Output filenames are explicit; existing outputs require `-y` to replace. `play FILE` replays actual bytes, `download FILE` exports them, and `download OUTPUT.recipe.json` exports command arguments plus hashes of all workspace media (including unrelated files). `rm FILE` removes one file after you download important work. `reference build`/`reference edit` load identified supplied output, and `comparison` opts into the credited external excerpt; none claims to execute a learner edit. Saved old production media is copied into the new workspace once, retaining the original store and reference challenge progress.
 
 ## Offline access and app installation
 
@@ -51,7 +59,7 @@ The same disclosure contains **Add a Video Lab icon**. A real browser installati
 
 ## Media, rights and evidence
 
-The build-queue app, original capture, synthetic tone and original diagrams have reproducible sources. Native fixture verification checks real media and extracted pictures. The optional Big Buck Bunny comparison is loaded only by a Publish-page click: a five-second, 86,088-byte H.264/AAC excerpt, credited to © 2008 Blender Foundation, licensed CC BY 3.0. It is outside the baseline offline download and is never presented as the learner's recording. [The provenance record](docs/notes/issue-3/media/big-buck-bunny.json) pins the official source archive, transformation and hashes.
+The build-queue app, original capture, synthetic tone and original diagrams have reproducible sources. Native fixture verification checks real media and extracted pictures. The optional Big Buck Bunny comparison is loaded only by the explicit `comparison` workspace command: a five-second, 86,088-byte H.264/AAC excerpt, credited to © 2008 Blender Foundation, licensed CC BY 3.0. It is outside the baseline offline download and is never presented as the learner's recording. [The provenance record](docs/notes/issue-3/media/big-buck-bunny.json) pins the official source archive, transformation and hashes.
 
 FFmpeg is now also distributed as an optional browser core, declared GPL-2.0-or-later; its wrapper/util are MIT. Distributed notices, exact source references and licence boundaries are described in [sources and licences](docs/sources.md). Earlier native-only FFmpeg statements no longer describe this implementation.
 

@@ -72,3 +72,8 @@ The owner additionally requested a desktop icon on 18 October 2026. Extend offli
 ## Issue 3 implementation scope
 
 On 23 October 2026 the owner explicitly requested full implementation of issue #3. Its producer-first redesign supersedes the original module ordering and the earlier deferral of browser capture/FFmpeg WASM. Complete the initial redesigned capture → build → inspect → edit → publish path and every applicable initial-path acceptance criterion in that issue. Later advanced modules remain honestly planned as permitted by the issue. Use `docs/notes/issue-3/` for capability evidence, drafting, independent reader/sceptic/fix/checker records and the acceptance ledger. Preserve the synchronised platform and existing progress; prefer short coherent new lesson pages over artificial ten-section filler. Reviewed deployment to main remains authorised.
+
+
+## CLI-first production labs
+
+On 23 October 2026 the owner required the lab to be CLI, not GUI. Replace production parameter forms with learner-authored FFmpeg/ffprobe WASM commands, real logs and real output files. Browser capture/import permission dialogs, replay, navigation and offline/install controls remain browser UI. Keep browser workspace conveniences explicitly distinct from native media tools and an operating-system shell. Preserve original reference routes and progress. Use `docs/notes/cli/` for verified command evidence, separate drafting and mandatory reader/sceptic/ranked-fix/checker review. Reviewed deployment straight to main remains authorised.

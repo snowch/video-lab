@@ -35,13 +35,7 @@ import { asset, frames } from "./media/model";
 import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
 import { ProjectProvider } from "./journey/project";
-import {
-  CapturePage,
-  BuildPage,
-  InspectPage,
-  EditPage,
-  PublishPage,
-} from "./journey/pages";
+import { CommandLab } from "./cli/Workspace";
 import { routeFor } from "./journey/routes";
 import { j } from "./journey/strings";
 import { ReleaseStatus } from "./release/ReleaseStatus";
@@ -282,25 +276,14 @@ function App() {
         ) : step ? (
           <div className="wrap journey-wrap">
             <a href="#/">{ui.back}</a>
-            {step === "capture" && <CapturePage />}
-            {step === "build" && <BuildPage />}
-            {step === "inspect" && (
-              <>
-                <InspectPage />
-                <a className="reference-link button" href="#/inspect/reference">
-                  {j.inspect.referenceTitle}
-                </a>
-              </>
+            <CommandLab step={step} />
+            {(step === "inspect" || step === "edit") && (
+              <a className="reference-link button" href={`#/${step}/reference`}>
+                {step === "inspect"
+                  ? j.inspect.referenceTitle
+                  : j.edit.referenceTitle}
+              </a>
             )}
-            {step === "edit" && (
-              <>
-                <EditPage />
-                <a className="reference-link button" href="#/edit/reference">
-                  {j.edit.referenceTitle}
-                </a>
-              </>
-            )}
-            {step === "publish" && <PublishPage />}
           </div>
         ) : (
           <Home />

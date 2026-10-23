@@ -6,6 +6,7 @@ import {
   inspectMedia,
   measuredDuration,
   runJob,
+  runTool,
 } from "./engine";
 const mock = vi.hoisted(() => ({
   probeCode: -1,
@@ -39,8 +40,8 @@ vi.mock("@ffmpeg/ffmpeg", () => ({
       this.files.set(args.at(-1)!, new Uint8Array([1, 2, 3]));
       return mock.execCode;
     }
-    async ffprobe() {
-      this.files.set("inspection.json", mock.probe);
+    async ffprobe(args: string[]) {
+      this.files.set(args.at(-1)!, mock.probe);
       return mock.probeCode;
     }
     async readFile(name: string) {
@@ -170,4 +171,41 @@ it("fails promptly offline without saved tools, then permits a connected retry",
   expect(mock.instances).toBe(0);
   vi.stubGlobal("navigator", { onLine: true });
   await expect(runJob(job())).resolves.toHaveProperty("bytes");
+});
+
+it("runs learner arguments without a source preset and retains the probe sentinel as evidence", async () => {
+  const result = await runTool({
+    tool: "ffprobe",
+    inputs: job().inputs,
+    args: ["-show_streams", "-of", "json", "input.jpg"],
+  });
+  expect(result.code).toBe(-1);
+  expect(JSON.parse(result.text!).streams[0].codec_name).toBe("h264");
+});
+it.each(["{}", "{broken", JSON.stringify({ error: { code: -1 } })])(
+  "rejects an empty, corrupt or failed CLI probe report: %s",
+  async (report) => {
+    mock.probe = report;
+    await expect(
+      runTool({
+        tool: "ffprobe",
+        inputs: job().inputs,
+        args: ["-of", "json", "input.jpg"],
+      }),
+    ).rejects.toThrow();
+  },
+);
+it("allows FFmpeg version/help with an empty workspace but rejects nonzero execution", async () => {
+  await expect(
+    runTool({ tool: "ffmpeg", inputs: [], args: ["-version"] }),
+  ).resolves.toEqual({ code: 0 });
+  mock.execCode = 1;
+  await expect(
+    runTool({
+      tool: "ffmpeg",
+      inputs: job().inputs,
+      args: job().args,
+      output: "output.mp4",
+    }),
+  ).rejects.toThrow("status 1");
 });

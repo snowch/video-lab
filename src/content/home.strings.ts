@@ -2,19 +2,19 @@
 export const home = {
   title: "Video Lab",
   subtitle: "From Frames to Finished Demos",
-  eyebrow: "Make a short software demo",
+  eyebrow: "A command-line lab for software demos",
   intro:
-    "Capture one visible software action, inspect the recording, cut the waiting and keep a readable result. Finish with a playable MP4 and the recipe used to make it. A provided original recording lets you follow the same editing path when screen capture is unavailable.",
+    "Use a browser command workspace to capture, inspect, edit and download a short software demo. Run actual FFmpeg and ffprobe commands, change their arguments and check the resulting files. A provided original recording supports the same editing path when screen capture is unavailable.",
   audienceTitle: "Who this course is for",
   audience:
-    "For software and data engineers who want to explain a task through a short demo. You need ordinary browser and file skills; terminal and code familiarity help with optional command evidence. No video vocabulary is assumed.",
+    "For software and data engineers with ordinary terminal, browser and file familiarity. Commands are the main lab interface; media concepts and FFmpeg flags are explained as you use them. No video knowledge is assumed.",
   outcomeTitle: "A complete first demo",
   outcome:
-    "Follow Capture, Build, Inspect, Edit and Publish. Build is a separate experiment with supplied pictures that explains file structure; your recording remains the project source. Inspect and edit that source, then review and download the actual output. Processing runs locally in your browser.",
+    "Follow Capture, Build, Inspect, Edit and Publish in a shared command workspace. Build is a separate experiment with supplied pictures; your recording stays unchanged. Inspect and edit your chosen source with typed commands, then replay and download the actual output and execution recipe. Processing stays local to your browser.",
   start: "Start with Capture",
   planTitle: "Your route through Video Lab",
   planNote:
-    "Capture, Build, Inspect, Edit and the initial Publish checkpoint are available. Modules 4–7 and 9–10 are planned. The detailed recording and cutting references remain within Inspect and Edit.",
+    "The five command labs are available: Capture, Build, Inspect, Edit and the initial Publish checkpoint. Modules 4–7 and 9–10 are planned. Detailed recording and cutting references remain separately labelled within Inspect and Edit.",
 };
 
 export const modules = [
@@ -22,7 +22,7 @@ export const modules = [
     id: 0,
     title: "Capture your first software demo",
     summary:
-      "Record one action, replay it and keep a source file, or adopt the provided original recording.",
+      "Use capture, sample or import to establish a source, then replay and download it with commands.",
     route: "capture",
     available: true,
   },
@@ -30,7 +30,7 @@ export const modules = [
     id: 1,
     title: "How a video file is created",
     summary:
-      "Build a separate picture-sequence experiment, then add synthetic sound and inspect the real MP4.",
+      "Type FFmpeg commands to encode supplied pictures, add synthetic sound and inspect the real MP4.",
     route: "build",
     available: true,
   },
@@ -38,7 +38,7 @@ export const modules = [
     id: 2,
     title: "Inspect and prepare real media",
     summary:
-      "Measure your selected recording and compare its contents with what you intended to capture.",
+      "Run ffprobe against the exact workspace filename and compare its real report with your intended capture.",
     route: "inspect",
     available: true,
   },
@@ -46,7 +46,7 @@ export const modules = [
     id: 3,
     title: "Cut and join: tell the story",
     summary:
-      "Keep the action and readable result, create an actual edited MP4 and save its recipe.",
+      "Write trim and join commands, inspect their actual outputs and keep the source-hashed execution recipe.",
     route: "edit",
     available: true,
   },

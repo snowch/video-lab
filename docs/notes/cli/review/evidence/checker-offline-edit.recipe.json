@@ -1,0 +1,29 @@
+{
+  "tool": "ffmpeg",
+  "args": [
+    "-i",
+    "checker-own-source.webm",
+    "-t",
+    "0.5",
+    "-r",
+    "12",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-pix_fmt",
+    "yuv420p",
+    "offline-own.mp4"
+  ],
+  "command": "ffmpeg -i checker-own-source.webm -t 0.5 -r 12 -an -c:v libx264 -preset ultrafast -pix_fmt yuv420p offline-own.mp4",
+  "created": "2026-10-23T12:29:50.262Z",
+  "inputs": [
+    {
+      "name": "checker-own-source.webm",
+      "bytes": 7218,
+      "sha256": "9ec0722e132ea2e609032e94df39b3b12d0099201b9701d427e43ecbb566e437"
+    }
+  ],
+  "output": "offline-own.mp4"
+}

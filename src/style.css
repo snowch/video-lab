@@ -1248,3 +1248,61 @@ code {
 .release-status code {
   font-size: inherit;
 }
+
+.command-workspace {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  margin-block: 1.5rem;
+  min-width: 0;
+}
+.command-workspace textarea {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  box-sizing: border-box;
+  font:
+    0.95rem/1.6 ui-monospace,
+    monospace;
+  padding: 0.75rem;
+  margin-block: 0.5rem;
+}
+.command-workspace pre,
+.command-lessons pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font:
+    0.9rem/1.6 ui-monospace,
+    monospace;
+  max-width: 100%;
+}
+.terminal-output {
+  max-height: 26rem;
+  overflow: auto;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+.cli-file-picker {
+  display: none;
+}
+.cli-preview video,
+.cli-preview img {
+  max-width: 100%;
+  max-height: 28rem;
+}
+.command-lessons {
+  padding-left: 1.5rem;
+}
+.command-workspace li {
+  overflow-wrap: anywhere;
+}
+
+.command-workspace textarea {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}

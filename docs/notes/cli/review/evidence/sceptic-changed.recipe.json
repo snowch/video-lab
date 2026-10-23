@@ -1,0 +1,56 @@
+{
+  "tool": "ffmpeg",
+  "args": [
+    "-i",
+    "capture.mp4",
+    "-filter_complex",
+    "[0:v:0]trim=start=0:end=1,setpts=PTS-STARTPTS[v0];[0:v:0]trim=start=3:end=5,setpts=PTS-STARTPTS[v1];[v0][v1]concat=n=2:v=1:a=0[v]",
+    "-map",
+    "[v]",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "changed.mp4"
+  ],
+  "command": "ffmpeg -i capture.mp4 -filter_complex \"[0:v:0]trim=start=0:end=1,setpts=PTS-STARTPTS[v0];[0:v:0]trim=start=3:end=5,setpts=PTS-STARTPTS[v1];[v0][v1]concat=n=2:v=1:a=0[v]\" -map \"[v]\" -an -c:v libx264 -preset ultrafast -pix_fmt yuv420p -movflags +faststart changed.mp4",
+  "created": "2026-10-23T12:19:58.452Z",
+  "inputs": [
+    {
+      "name": "capture.mp4",
+      "bytes": 128737,
+      "sha256": "502e9579c705521b805ec576d77b8f11038da3b245182ea31996e7305d991349"
+    },
+    {
+      "name": "frame000.jpg",
+      "bytes": 40197,
+      "sha256": "7809f00661b0ef2620566eb2bf86eb9ab6f04c406151afaad3f3810e5c7b64a3"
+    },
+    {
+      "name": "frame001.jpg",
+      "bytes": 40186,
+      "sha256": "03029ba640ca9582186a39efb4263f0b5e1443364de32d3cd9faa372ea08fc8b"
+    },
+    {
+      "name": "frame002.jpg",
+      "bytes": 40250,
+      "sha256": "c8fd20f24cc8db102919dfabb21ff4763a18be254d1b63f88d302a7ef5bfadb7"
+    },
+    {
+      "name": "tone.wav",
+      "bytes": 288044,
+      "sha256": "9fceb99e44427c27f64b1faea4cde16ed92a5c52144c20f28319cc32a6b056a7"
+    },
+    {
+      "name": "faster.mp4",
+      "bytes": 27543,
+      "sha256": "a3bb2154dc09c8d671e643239573747238fad81aa0343a1bff7873e90e5408ea"
+    }
+  ],
+  "output": "changed.mp4"
+}

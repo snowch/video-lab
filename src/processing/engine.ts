@@ -48,7 +48,11 @@ export interface MediaResult {
   command: string[];
   logs: string[];
 }
-type ActiveJob = { engine?: FFmpeg; cancelled: boolean };
+type ActiveJob = {
+  engine?: FFmpeg;
+  cancelled: boolean;
+  interrupt?: () => void;
+};
 let active: ActiveJob | undefined;
 
 function filename(name: string) {
@@ -124,8 +128,10 @@ async function withEngine<T>(
   inputs: MediaJob["inputs"] | (() => Promise<MediaJob["inputs"]>),
   operation: (engine: FFmpeg, logs: string[]) => Promise<T>,
   onLog?: (text: string) => void,
+  allowEmpty = false,
 ): Promise<T> {
-  if (typeof inputs !== "function") validateInputs(inputs);
+  if (typeof inputs !== "function" && (!allowEmpty || inputs.length))
+    validateInputs(inputs);
   if (active)
     throw new Error("Wait for the current media operation, or cancel it.");
   const job: ActiveJob = { cancelled: false };
@@ -133,11 +139,23 @@ async function withEngine<T>(
   let timer: ReturnType<typeof setTimeout> | undefined;
   let timedOut = false;
   const logs: string[] = [];
+  const deadline = new Promise<never>((_, reject) => {
+    job.interrupt = () =>
+      reject(new DOMException("Media operation cancelled.", "AbortError"));
+    timer = setTimeout(() => {
+      timedOut = true;
+      job.engine?.terminate();
+      reject(new Error("Processing took too long. Try a shorter recording."));
+    }, limits.timeoutMs);
+  });
   try {
-    const files = typeof inputs === "function" ? await inputs() : inputs;
+    const files =
+      typeof inputs === "function"
+        ? await Promise.race([inputs(), deadline])
+        : inputs;
     if (job.cancelled)
       throw new DOMException("Media operation cancelled.", "AbortError");
-    validateInputs(files);
+    if (!allowEmpty || files.length) validateInputs(files);
     // A failed module-worker import can hang in Firefox when offline. Check
     // the deliberately saved binary cache before creating that worker.
     if (navigator.onLine === false) {
@@ -154,8 +172,36 @@ async function withEngine<T>(
           "Save the processing tools while connected before processing offline.",
         );
     }
+    // Network emulation and some browsers can leave navigator.onLine stale.
+    // Check availability before an offline module-worker import can hang.
+    if (typeof window !== "undefined") {
+      const coreURL = new URL(`${encoderBaseUrl}ffmpeg-core.js`, location.href)
+        .href;
+      const cached =
+        "caches" in globalThis
+          ? await Promise.race([caches.match(coreURL), deadline])
+          : undefined;
+      if (!cached) {
+        try {
+          const response = await Promise.race([
+            fetch(coreURL, {
+              cache: "no-store",
+              signal: AbortSignal.timeout(10000),
+            }),
+            deadline,
+          ]);
+          if (!response.ok) throw new Error("Tools unavailable");
+        } catch {
+          if (job.cancelled)
+            throw new DOMException("Media operation cancelled.", "AbortError");
+          throw new Error(
+            "Processing tools are unavailable. Save the processing tools while connected before processing offline.",
+          );
+        }
+      }
+    }
     // Neither the wrapper nor the core is requested by reading the course.
-    const { FFmpeg } = await import("@ffmpeg/ffmpeg");
+    const { FFmpeg } = await Promise.race([import("@ffmpeg/ffmpeg"), deadline]);
     if (job.cancelled)
       throw new DOMException("Media operation cancelled.", "AbortError");
     const engine = new FFmpeg();
@@ -165,21 +211,24 @@ async function withEngine<T>(
       if (logs.length > 200) logs.shift();
       onLog?.(message);
     });
-    timer = setTimeout(() => {
-      timedOut = true;
-      engine.terminate();
-    }, limits.timeoutMs);
-    await engine.load({
-      coreURL: new URL(`${encoderBaseUrl}ffmpeg-core.js`, location.href).href,
-      wasmURL: new URL(`${encoderBaseUrl}ffmpeg-core.wasm`, location.href).href,
-    });
+    await Promise.race([
+      engine.load({
+        coreURL: new URL(`${encoderBaseUrl}ffmpeg-core.js`, location.href).href,
+        wasmURL: new URL(`${encoderBaseUrl}ffmpeg-core.wasm`, location.href)
+          .href,
+      }),
+      deadline,
+    ]);
     for (const input of files) {
       if (job.cancelled)
         throw new DOMException("Media operation cancelled.", "AbortError");
       // The wrapper transfers buffers; leave the shared learner artefact intact.
-      await engine.writeFile(input.name, input.data.slice());
+      await Promise.race([
+        engine.writeFile(input.name, input.data.slice()),
+        deadline,
+      ]);
     }
-    const result = await operation(engine, logs);
+    const result = await Promise.race([operation(engine, logs), deadline]);
     if (job.cancelled)
       throw new DOMException("Media operation cancelled.", "AbortError");
     return result;
@@ -254,6 +303,7 @@ export function cancelProcessing() {
   const job = active;
   if (!job) return;
   job.cancelled = true;
+  job.interrupt?.();
   job.engine?.terminate();
   if (active === job) active = undefined;
 }
@@ -295,4 +345,60 @@ export function durationEvidence(probe: Probe): DurationEvidence | undefined {
 }
 export function measuredDuration(probe: Probe): number | undefined {
   return durationEvidence(probe)?.seconds;
+}
+
+/** Real CLI execution; the caller owns the persistent browser workspace. */
+export async function runTool(
+  job: {
+    tool: "ffmpeg" | "ffprobe";
+    inputs: MediaJob["inputs"];
+    args: string[];
+    output?: string;
+  },
+  onLog?: (line: string) => void,
+): Promise<{ text?: string; bytes?: Uint8Array<ArrayBuffer>; code: number }> {
+  if (job.output) filename(job.output);
+  return withEngine(
+    job.inputs,
+    async (engine) => {
+      if (job.tool === "ffprobe") {
+        const code = await engine.ffprobe(
+          [...job.args, "-show_error", "-o", "cli-internal-report.json"],
+          limits.timeoutMs,
+        );
+        if (code !== 0 && code !== -1)
+          throw new Error(
+            `ffprobe exited with status ${code}. See its log above.`,
+          );
+        const text = await engine.readFile("cli-internal-report.json", "utf8");
+        if (typeof text !== "string")
+          throw new Error("ffprobe returned no report.");
+        const report = JSON.parse(text) as Record<string, unknown>;
+        if (
+          !report ||
+          typeof report !== "object" ||
+          !Object.keys(report).length ||
+          report.error
+        )
+          throw new Error(
+            "ffprobe could not inspect that input. See its log above.",
+          );
+        return { text, code };
+      }
+      const code = await engine.exec(job.args, limits.timeoutMs);
+      if (code !== 0)
+        throw new Error(
+          `ffmpeg exited with status ${code}. See its log above.`,
+        );
+      if (!job.output) return { code };
+      const bytes = await engine.readFile(job.output);
+      if (!(bytes instanceof Uint8Array) || !bytes.byteLength)
+        throw new Error("The command produced no output file.");
+      if (bytes.byteLength > limits.outputBytes)
+        throw new Error("The output exceeds the workspace's 20 MiB limit.");
+      return { bytes: new Uint8Array(bytes), code };
+    },
+    onLog,
+    true,
+  );
 }

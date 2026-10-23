@@ -1,0 +1,66 @@
+{
+  "tool": "ffmpeg",
+  "args": [
+    "-i",
+    "capture.mp4",
+    "-filter_complex",
+    "[0:v:0]trim=start=1:end=2,setpts=PTS-STARTPTS[a];[0:v:0]trim=start=6:end=8,setpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=1:a=0[out]",
+    "-map",
+    "[out]",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "checker-edit.mp4"
+  ],
+  "command": "ffmpeg -i capture.mp4 -filter_complex \"[0:v:0]trim=start=1:end=2,setpts=PTS-STARTPTS[a];[0:v:0]trim=start=6:end=8,setpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=1:a=0[out]\" -map \"[out]\" -an -c:v libx264 -preset ultrafast -pix_fmt yuv420p -movflags +faststart checker-edit.mp4",
+  "created": "2026-10-23T12:29:23.503Z",
+  "inputs": [
+    {
+      "name": "capture.mp4",
+      "bytes": 128737,
+      "sha256": "502e9579c705521b805ec576d77b8f11038da3b245182ea31996e7305d991349"
+    },
+    {
+      "name": "frame000.jpg",
+      "bytes": 40197,
+      "sha256": "7809f00661b0ef2620566eb2bf86eb9ab6f04c406151afaad3f3810e5c7b64a3"
+    },
+    {
+      "name": "frame001.jpg",
+      "bytes": 40186,
+      "sha256": "03029ba640ca9582186a39efb4263f0b5e1443364de32d3cd9faa372ea08fc8b"
+    },
+    {
+      "name": "frame002.jpg",
+      "bytes": 40250,
+      "sha256": "c8fd20f24cc8db102919dfabb21ff4763a18be254d1b63f88d302a7ef5bfadb7"
+    },
+    {
+      "name": "tone.wav",
+      "bytes": 288044,
+      "sha256": "9fceb99e44427c27f64b1faea4cde16ed92a5c52144c20f28319cc32a6b056a7"
+    },
+    {
+      "name": "checker-three.mp4",
+      "bytes": 24954,
+      "sha256": "b57775678666075f42615feee97598bc276d9e66d94ffce92b352554c4c11667"
+    },
+    {
+      "name": "checker-two.mp4",
+      "bytes": 27543,
+      "sha256": "a3bb2154dc09c8d671e643239573747238fad81aa0343a1bff7873e90e5408ea"
+    },
+    {
+      "name": "checker-mux.mp4",
+      "bytes": 34818,
+      "sha256": "8aaa4f0d8c85c9de6dfadc41206233f31f790912a74ea2d16964f010f2327035"
+    }
+  ],
+  "output": "checker-edit.mp4"
+}

@@ -6,3 +6,5 @@ src/media/fixture.json
 docs/notes/module-0/media/*.json
 # Preserve byte-exact downloaded review recipes and their provenance hashes.
 docs/notes/issue-3/review/evidence/06*-recipe.json
+# Preserve raw execution recipes downloaded by independent CLI reviewers.
+docs/notes/cli/review/evidence/*recipe.json

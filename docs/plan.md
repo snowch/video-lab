@@ -2,11 +2,13 @@
 
 Copyright © 2026 Christopher Snow.
 
-**Status, 23 October 2026:** the initial five-step capture-to-export path is implemented. Independent review, the final local/CI quality gates and public deployment verification have passed; [the acceptance ledger](notes/issue-3/acceptance.md) records closure evidence. The [redesign record](notes/curriculum-redesign.md) explains the individual retained sections and migration.
+**CLI-first revision, 23 October 2026:** the owner requires the labs to be CLI rather than GUI. The production path now uses editable commands against real FFmpeg/ffprobe WASM and persistent browser files. See [the implementation/review plan](notes/cli/plan.md). Existing fixed-fixture references and saved work remain. Validation and deployment for this revision are recorded separately under `notes/cli/`; the historical closure below applies to the prior interface.
+
+**Previous status, 23 October 2026:** the initial five-step capture-to-export path is implemented. Independent review, the final local/CI quality gates and public deployment verification have passed; [the acceptance ledger](notes/issue-3/acceptance.md) records closure evidence. The [redesign record](notes/curriculum-redesign.md) explains the individual retained sections and migration.
 
 ## Purpose and prerequisites
 
-Help a software or data engineer make a short demo whose action and result a viewer can understand. The learner needs ordinary browser/file skills; terminal and code familiarity help with optional command evidence. Media terms are introduced beside the operation that needs them. Capture is optional: a labelled original recording supports the same real edit/export path.
+Help a software or data engineer make a short demo whose action and result a viewer can understand. The learner needs ordinary browser/file skills; ordinary terminal familiarity is required for the command-led labs. Media terms are introduced beside the operation that needs them. Capture is optional: a labelled original recording supports the same real edit/export path.
 
 The initial completion outcome is a playable edited MP4, the source-linked command/recipe, and a viewer-centred review. Reading a provided output does not establish that an edit was executed. Publishing here means preparing and checking a downloadable deliverable; the course does not upload it to a hosting account.
 
@@ -43,7 +45,7 @@ React/TypeScript/Vite uses the unchanged shared lesson platform through checked-
 
 The pinned core 0.12.10 actually includes ffprobe. Wrapper 0.12.15 and util 0.12.2 are pinned; the core is loaded only by explicit processing or additional offline-tool saving. Probe output is validated against real JSON/streams/format/errors, including the documented pinned return sentinel; encoder output requires success, bytes and a valid real probe. [The spike](notes/issue-3/wasm-spike.md) is the capability evidence.
 
-Processing and media stay local. One operation runs at a time; cancel/navigation terminates it and supports retry. Exercise imports are bounded to 20 MiB; editing requires inspected timing within 30 seconds and supported dimensions. The engine has separate 32 MiB total-input and 120-second processing bounds. Project media uses browser storage with explicit session-only fallback and clear-project control. Download important work.
+Processing and media stay local. One operation runs at a time; cancel/navigation terminates it and supports retry. Exercise imports are bounded to 20 MiB; learners select times and output settings in their actual commands. The engine has separate 32 MiB total-input and 120-second processing bounds. Project media uses browser storage with explicit session-only fallback and clear-project control. Download important work.
 
 Offline lessons and the approximately 32.4 MB additional processing package have separate manifests/readiness. Encoder and optional comparison media are excluded from the baseline. Installation does not imply either download is complete. GPL/MIT notices and exact source references accompany the shipped optional core.
 
@@ -54,3 +56,12 @@ The Issue 3 owner request authorises the complete initial path while allowing ad
 Separate verified-fact drafting and outline review preceded implementation. The built reader completed an actual provided-source → Build → Inspect → Edit → Publish run and recorded findings, not blanket approval. The sceptic and checker independently verify ranked fixes, including actual downloaded recipes and the sparse-picture timing regression. The final local `npm run check` passed 54 unit and 105 browser tests; [public Pages verification](notes/issue-3/deployment.md) confirms the worker/core paths, actual capture/processing and offline upgrade. See [reviews](notes/issue-3/review/) and [acceptance](notes/issue-3/acceptance.md).
 
 Later production topics must arrive as independent tested slices. Do not describe future filter/audio/caption/AI controls as implemented. Use primary sources and original teaching; the photographed tutorial is a topic inspiration, not a repository source to copy.
+
+
+## Command workspace
+
+The production routes share one command workspace. `capture`/`stop` use browser screen sharing/MediaRecorder, `import` uses the browser chooser, `sample` loads the labelled original source, and `fixtures` loads the separate structure experiment. Learners type `ffmpeg` and JSON `ffprobe` commands, read actual logs, change arguments and compare output bytes. `ls`, `play`, `download`, `rm`, `clear`, `help` and `cancel` are labelled workspace conveniences, not a simulated operating-system shell. No parameter forms generate hidden media commands. Media replay, permissions, navigation and installation remain normal browser UI.
+
+`reference build` and `reference edit` retain clearly labelled provided output comparisons without claiming a tool ran. `comparison` opts into the credited Big Buck Bunny excerpt. These do not count as learner-generated exports.
+
+Workspace storage migrates existing project media once without clearing its source database. Twelve media files plus twelve recipes (twenty-four files total) share a 32 MiB budget; individual files/outputs are bounded to 20 MiB and processing to 120 seconds. Native command semantics replace the old GUI's fixed range/duration/picture-size validation. An execution recipe records the exact command/arguments and hashes of all workspace media; `-i` identifies actual referenced inputs. The browser adapter supports one output and JSON probe reports, no shell pipelines/redirection/expansion. Cancellation/navigation terminate workers and release capture tracks. A failed or cancelled operation retains previous saved files, and replacement requires explicit `-y`.
