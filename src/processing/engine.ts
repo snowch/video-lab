@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import type { FFmpeg } from "@ffmpeg/ffmpeg";
+import { validPath } from "../notebook/model";
 import { encoderBaseUrl, limits } from "./config";
 
 /** Fields come from ffprobe JSON for the bytes supplied to the worker. */
@@ -56,8 +57,23 @@ type ActiveJob = {
 let active: ActiveJob | undefined;
 
 function filename(name: string) {
-  if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/.test(name))
-    throw new Error("Use a simple media filename without folders.");
+  if (!validPath(name))
+    throw new Error(
+      "Use a valid relative media path without parent directories.",
+    );
+}
+async function makeDirectories(engine: FFmpeg, name: string) {
+  const parts = name.split("/").slice(0, -1);
+  let parent = ".";
+  for (const part of parts) {
+    const path = parent === "." ? part : `${parent}/${part}`;
+    const entries = await engine.listDir(parent);
+    const existing = entries.find((entry) => entry.name === part);
+    if (existing && !existing.isDir)
+      throw new Error("A file blocks the requested folder.");
+    if (!existing) await engine.createDir(path);
+    parent = path;
+  }
 }
 function validateInputs(inputs: MediaJob["inputs"]) {
   if (!inputs.length || inputs.length > limits.inputFiles)
@@ -222,6 +238,7 @@ async function withEngine<T>(
     for (const input of files) {
       if (job.cancelled)
         throw new DOMException("Media operation cancelled.", "AbortError");
+      await Promise.race([makeDirectories(engine, input.name), deadline]);
       // The wrapper transfers buffers; leave the shared learner artefact intact.
       await Promise.race([
         engine.writeFile(input.name, input.data.slice()),
@@ -362,6 +379,7 @@ export async function runTool(
   return withEngine(
     job.inputs,
     async (engine) => {
+      if (job.output) await makeDirectories(engine, job.output);
       if (job.tool === "ffprobe") {
         const json = job.args.some(
           (arg, i) =>

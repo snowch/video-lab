@@ -17,6 +17,10 @@ import { chapterTitles, courseUI } from "./course/strings";
 import { referenceLessons } from "./cli/reference.strings";
 import { RecordingGuide } from "./capture/RecordingGuide";
 import { recordingGuide } from "./capture/guide.strings";
+import { NotebookCourse } from "./notebook/Notebook";
+import { notebookRoute } from "./notebook/structure";
+import { courseCopy } from "./notebook/copy";
+import { n as notebookUI } from "./notebook/ui.strings";
 const storage = browserStorage();
 function Home() {
   return (
@@ -24,7 +28,7 @@ function Home() {
       <section className="hero">
         <div className="hero-copy">
           <span className="eyebrow">{home.eyebrow}</span>
-          <h1>{home.subtitle}</h1>
+          <h2>{home.subtitle}</h2>
           <p>{home.intro}</p>
           <a className="button primary" href="#/capture">
             {home.start}
@@ -133,13 +137,22 @@ function App() {
   }, [theme]);
   const resolved = routeFor(route);
   const step = resolved.step;
-  const pageTitle = resolved.appendix
-    ? recordingGuide.title
-    : step
-      ? resolved.reference && (step === "inspect" || step === "edit")
-        ? referenceLessons[step].title
-        : chapterTitles[step]
-      : home.subtitle;
+  const notebook =
+    notebookRoute(route) ??
+    (!step && !resolved.appendix && !route.includes("/earlier")
+      ? { home: true as const }
+      : undefined);
+  const pageTitle = notebook
+    ? !notebook.home
+      ? courseCopy.pages[notebook.page.id]!.title
+      : courseCopy.title
+    : resolved.appendix
+      ? recordingGuide.title
+      : step
+        ? resolved.reference && (step === "inspect" || step === "edit")
+          ? referenceLessons[step].title
+          : chapterTitles[step]
+        : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
@@ -230,10 +243,15 @@ function App() {
         </nav>
       )}
       <main id="content" ref={main} tabIndex={-1}>
-        {resolved.appendix ? (
+        {notebook ? (
+          <NotebookCourse page={notebook.home ? undefined : notebook.page} />
+        ) : resolved.appendix ? (
           <RecordingGuide />
         ) : step ? (
           <div className="wrap journey-wrap">
+            <p className="notebook-legacy-label">
+              {notebookUI.earlier} · <a href="#/">{notebookUI.overview}</a>
+            </p>
             <a href="#/">{ui.back}</a>
             <CommandLab
               step={step}
@@ -257,7 +275,14 @@ function App() {
             )}
           </div>
         ) : (
-          <Home />
+          <>
+            <div className="wrap notebook-archive">
+              <h1>{notebookUI.earlier}</h1>
+              <p>{notebookUI.earlierNote}</p>
+              <a href="#/">{notebookUI.overview} →</a>
+            </div>
+            <Home />
+          </>
         )}
       </main>
       <footer className="site-footer">

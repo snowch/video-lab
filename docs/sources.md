@@ -173,3 +173,11 @@ The Linux session prerequisite uses the desktop-provided `XDG_SESSION_TYPE`, che
 ## Chapter teaching comparisons, 24 October 2026
 
 The three cuts under `public/media/teaching/` derive solely from the original silent Mousepad recording above, with the same original authorship/licence. `src/course/fixtures.json` records the source hash, exact native FFmpeg 7.1.5 commands, output hashes, sizes, source ranges, measured durations and picture counts. Reproduce by running its command arrays from the repository root (choose new output paths or explicitly allow replacement). `scripts/verify-teaching.mjs` independently checks bytes, ffprobe metadata and decoded first/last pictures against the source at the recorded times; the complete quality gate runs it. These are supplied teaching comparisons, distinct from learner-created artefacts. The interactive timing and still-hold diagrams are explicit explanatory calculations, not media processing or inferred measurements of the learner's chosen file.
+
+## Generic notebook course practice media
+
+The main ten-chapter notebook course uses credited **Big Buck Bunny**, © 2008 Blender Foundation, https://peach.blender.org/, under [Creative Commons Attribution 3.0](https://creativecommons.org/licenses/by/3.0/). Its two-minute practice excerpt and eight/six-second companions are included in the complete offline download. This replaces the software-demo theme for the main course; archived lessons retain their original fixtures.
+
+[The provenance record](notes/notebook/media.json) pins the official 480p download URL, source archive/member hashes, exact preparation arguments, native version, transformed bytes and measured properties. The adaptation selects original seconds 60–180, resizes/re-encodes to 854 × 480 at 24 fps, downmixes original sound to stereo AAC, and omits the QuickTime timecode track. The shorter clips are re-encoded extracts. The subtitle file is original example text, not a transcription. No endorsement is implied.
+
+The included DejaVu Sans font is used by actual FFmpeg drawtext/libass commands. Its [distributed licence](../public/media/notebook/FONT-LICENCE.txt) retains the Bitstream/DejaVu notices. No notebook kernel or server is shipped. The existing pinned FFmpeg WASM core executes media commands; native shell scripts are explicitly separate, downloadable terminal exercises.

@@ -18,7 +18,7 @@ test("one chapter sequence matches overview, navigation and headings with separa
 }) => {
   const requests: string[] = [];
   page.on("request", (r) => requests.push(r.url()));
-  await page.goto("./");
+  await page.goto("./#/earlier");
   await expect(page.locator(".module-list>li")).toHaveCount(5);
   const headings = await page.locator(".module-list h3").allTextContents();
   expect(headings).toEqual(chapterOrder.map((step) => chapterTitles[step]));

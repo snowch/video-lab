@@ -9,13 +9,13 @@ import { clickAction } from "./course-actions";
 import { command, terminal, downloaded, visiblePlay } from "./cli-helpers";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-test("introduction, theme, reference deep links and navigation all lead to command workspaces", async ({
+test("archived introduction, theme, reference deep links and navigation all lead to command workspaces", async ({
   page,
 }) => {
-  await page.goto("./");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    home.subtitle,
-  );
+  await page.goto("./#/earlier");
+  await expect(
+    page.getByRole("heading", { name: home.subtitle, exact: true }),
+  ).toBeVisible();
   await expect(page.getByText(ui.planned, { exact: true })).toHaveCount(6);
   const theme = await page.locator("html").getAttribute("data-theme");
   await page.getByRole("button", { name: ui.theme }).click();

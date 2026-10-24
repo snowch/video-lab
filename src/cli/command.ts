@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { validPath } from "../notebook/model";
 /** POSIX-style argument quoting, without an operating-system shell. */
 export function parseCommand(text: string): string[] {
   if (text.length > 12000) throw new Error("The command is too long.");
@@ -51,7 +52,8 @@ export function validFilename(name: string) {
     !name.startsWith("cli-internal")
   );
 }
-export function toolPlan(words: string[]) {
+export function toolPlan(words: string[], folders = false) {
+  const validName = folders ? validPath : validFilename;
   const [tool, ...args] = words;
   if (tool !== "ffmpeg" && tool !== "ffprobe")
     throw new Error("Choose ffmpeg or ffprobe.");
@@ -79,9 +81,9 @@ export function toolPlan(words: string[]) {
     if (
       outputs.length &&
       (!output ||
-        !validFilename(output) ||
+        !validName(output) ||
         !output.endsWith(".json") ||
-        output.length > 68)
+        (folders ? output.split("/").at(-1)!.length : output.length) > 68)
     )
       throw new Error(
         "Use -o with a simple JSON report filename of at most 68 characters.",
@@ -102,16 +104,28 @@ export function toolPlan(words: string[]) {
   )
     return { tool, args } as const;
   const output = args.at(-1)!;
-  if (output.length > 68)
+  if (
+    folders &&
+    output === "-" &&
+    args.some((a, i) => a === "-f" && args[i + 1] === "null")
+  )
+    return { tool, args } as const;
+  if ((folders ? output.split("/").at(-1)!.length : output.length) > 68)
     throw new Error(
       "Use an output filename of at most 68 characters, leaving room for its execution recipe filename.",
     );
   if (
-    !validFilename(output) ||
-    !/\.(mp4|webm|wav|mp3|ogg|png|jpg|gif)$/i.test(output)
+    !validName(output) ||
+    !(
+      folders
+        ? /\.(mp4|webm|wav|mp3|ogg|png|jpg|gif|mkv|mov|flac|opus|srt|txt)$/i
+        : /\.(mp4|webm|wav|mp3|ogg|png|jpg|gif)$/i
+    ).test(output)
   )
     throw new Error(
-      "End the command with one output filename, such as demo.mp4. Folders and multiple outputs are outside this workspace.",
+      folders
+        ? "End with one output path, such as edits/clip.mp4, using a supported media extension."
+        : "End the command with one output filename, such as demo.mp4. Folders and multiple outputs are outside this workspace.",
     );
   return { tool, args, output } as const;
 }

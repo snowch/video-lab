@@ -101,7 +101,7 @@ test("optional recording guide preserves the source and draft without browser sc
     page.getByRole("textbox", { name: "Command", exact: true }),
   ).toHaveValue("ffprobe -v error mousepad-demo.mp4");
   expect(requests.some((url) => url.includes("/encoder/"))).toBe(false);
-  await page.goto("./");
+  await page.goto("./#/earlier");
   await expect(page.locator(".module-list h3").first()).toHaveText(
     text.sourceTitle,
   );

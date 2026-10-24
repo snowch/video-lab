@@ -570,6 +570,10 @@ function App() {
         </div>
       </header>
       <AppStatus />
+      <p className="wrap">
+        Earlier standalone workbench ·{" "}
+        <a href={assetURL("")}>Open the notebook course</a>
+      </p>
       <main>
         <nav aria-label={C.stepsLabel}>
           <ol className="steps">

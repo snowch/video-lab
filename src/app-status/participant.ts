@@ -6,8 +6,13 @@ export function participate() {
     committed = false,
     target: ServiceWorker | null = null,
     timer: ReturnType<typeof setTimeout> | undefined;
+  let dialogs: { element: HTMLDialogElement; inert: boolean }[] = [];
   const release = () => {
     document.documentElement.inert = false;
+    dialogs.forEach(({ element, inert }) => {
+      element.inert = inert;
+    });
+    dialogs = [];
     token = "";
     committed = false;
     clearTimeout(timer);
@@ -42,6 +47,13 @@ export function participate() {
       if (safe) {
         token = data.token;
         document.documentElement.inert = true;
+        // Modal dialogs escape ancestor inertness. Freeze their controls too.
+        dialogs = Array.from(
+          document.querySelectorAll<HTMLDialogElement>("dialog[open]"),
+        ).map((element) => ({ element, inert: element.inert }));
+        dialogs.forEach(({ element }) => {
+          element.inert = true;
+        });
         timer = setTimeout(release, 15000);
       }
       (event.source as ServiceWorker | null)?.postMessage({
