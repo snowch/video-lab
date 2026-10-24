@@ -1,13 +1,12 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { CaptureController, type CaptureState } from "../capture/controller";
 import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
 import { useBlobURL, useProject } from "../journey/project";
 import { assetURL } from "../journey/shared";
 import { j } from "../journey/strings";
 import { routeFor, type StepName } from "../journey/routes";
 import { guided } from "./guided.strings";
-import { lessonTasks, captureTasks } from "./tasks";
+import { lessonTasks } from "./tasks";
 import { parseCommand, validFilename } from "./command";
 import {
   checkFiles,
@@ -66,9 +65,6 @@ export function CommandLab({
     filesRef = useRef<Files>({});
   const [ready, setReady] = useState(false),
     [persistent, setPersistent] = useState(true);
-  const captureSupported =
-    typeof navigator.mediaDevices?.getDisplayMedia === "function" &&
-    typeof MediaRecorder !== "undefined";
   const [taskIndex, setTaskIndex] = useState(0);
   const [wrapOutput, setWrapOutput] = useState(false);
   const [outputEdges, setOutputEdges] = useState({ left: false, right: false });
@@ -98,7 +94,6 @@ export function CommandLab({
   const followOutput = useRef(true);
   const [notice, setNotice] = useState(cli.ready),
     [busy, setBusy] = useState(false);
-  const [captureState, setCaptureState] = useState<CaptureState>("idle");
   const [preview, setPreview] = useState<string>();
   const [playbackFailed, setPlaybackFailed] = useState(false);
   const history = useRef(savedHistory()),
@@ -120,8 +115,7 @@ export function CommandLab({
     noteInput = useRef<HTMLTextAreaElement>(null);
   const generation = useRef(0),
     locked = useRef(false),
-    mounted = useRef(true),
-    capture = useRef<CaptureController | undefined>(undefined);
+    mounted = useRef(true);
   const current = useRef({ step, project });
   current.current = { step, project };
   function print(line: string) {
@@ -172,15 +166,12 @@ export function CommandLab({
       if (mounted.current) setPersistent(false);
     }
   }
-  const putRef = useRef(put);
-  putRef.current = put;
   useEffect(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
       generation.current++;
       cancelProcessing();
-      capture.current?.destroy();
     };
   }, []);
   useEffect(() => {
@@ -255,9 +246,6 @@ export function CommandLab({
     locked.current = false;
     cancelProcessing();
     setBusy(false);
-    capture.current?.destroy();
-    setCaptureState("idle");
-    capture.current = makeCapture();
     setNotice(cli.ready);
     setTaskIndex(0);
     filesDialog.current?.close();
@@ -270,13 +258,12 @@ export function CommandLab({
       generation.current++;
       locked.current = false;
       cancelProcessing();
-      capture.current?.destroy();
     };
   }, [step, reference]);
   useEffect(() => {
-    project.setActive(busy || captureState !== "idle");
+    project.setActive(busy);
     return () => project.setActive(false);
-  }, [busy, captureState, project.setActive]);
+  }, [busy, project.setActive]);
   useEffect(() => {
     if (terminal.current && followOutput.current)
       terminal.current.scrollTop = terminal.current.scrollHeight;
@@ -315,47 +302,10 @@ export function CommandLab({
   const selected = preview ? files[preview] : undefined,
     mediaURL = useBlobURL(selected?.blob);
   useEffect(() => setPlaybackFailed(false), [mediaURL]);
-  function makeCapture() {
-    return new CaptureController({
-      state: (state) => {
-        setCaptureState(state);
-        setNotice(cli.capture[state]);
-      },
-      error: (error) => {
-        print(
-          `${cli.error} ${error instanceof Error ? error.message : String(error)}. ${cli.captureFailure}`,
-        );
-        setNotice(cli.failed);
-      },
-      complete: (result) => {
-        const ext = result.mime.includes("mp4") ? "mp4" : "webm";
-        let name = `capture.${ext}`,
-          index = 2;
-        while (filesRef.current[name]) name = `capture-${index++}.${ext}`;
-        void putRef
-          .current([{ name, blob: result.blob, origin: "captured" }])
-          .then(() => {
-            print(
-              `${cli.saved} ${name} (${result.blob.size} B). ${cli.captureComplete}`,
-            );
-            setNotice(cli.done);
-            setPreview(name);
-            selectSource(name);
-          })
-          .catch((e) => {
-            print(String(e));
-            setNotice(cli.failed);
-          });
-      },
-    });
-  }
   function cancel() {
     generation.current++;
     locked.current = false;
     cancelProcessing();
-    capture.current?.destroy();
-    capture.current = makeCapture();
-    setCaptureState("idle");
     setBusy(false);
     setNotice(cli.cancelled);
     print(cli.cancelled);
@@ -422,13 +372,7 @@ export function CommandLab({
         );
         return;
       }
-      if (tool === "stop") {
-        simple(0);
-        if (captureState !== "recording") throw new Error(cli.notRecording);
-        capture.current?.stop();
-        return;
-      }
-      if (locked.current || captureState !== "idle") throw new Error(cli.wait);
+      if (locked.current) throw new Error(cli.wait);
       if (!ready) throw new Error(cli.loading);
       if (tool === "hint" || tool === "solution") {
         const lab = args[0];
@@ -452,24 +396,6 @@ export function CommandLab({
               : joinedCommand,
         );
         setNotice(cli.done);
-        return;
-      }
-      if (tool === "scene") {
-        simple(0);
-        if (!locked.current) setNotice(cli.done);
-        print(ux.recordAdvice);
-        return;
-      }
-      if (tool === "capture") {
-        if (args.length > 1 || (args.length === 1 && args[0] !== "--audio"))
-          throw new Error(cli.captureUsage);
-        if (
-          !navigator.mediaDevices?.getDisplayMedia ||
-          typeof MediaRecorder === "undefined"
-        )
-          throw new Error(cli.unsupported);
-        // Invoke before any await: getDisplayMedia requires the learner's gesture.
-        void capture.current?.start(args[0] === "--audio");
         return;
       }
       if (tool === "import") {
@@ -883,7 +809,7 @@ ${cli.comparisonCredit}`,
   }
   async function imported(file?: File) {
     if (!file) return;
-    if (locked.current || captureState !== "idle") {
+    if (locked.current) {
       print(cli.wait);
       return;
     }
@@ -969,10 +895,7 @@ ${cli.comparisonCredit}`,
       if (output) setPreview(output.name);
     }
   }, [step, source?.name, ready]);
-  const tasks =
-    step === "capture" && !reference
-      ? captureTasks(sourceName, captureSupported, !!source)
-      : lessonTasks(step, reference);
+  const tasks = lessonTasks(step, reference);
   const section = reference
     ? routeFor(window.location.hash).section
     : undefined;
@@ -1132,11 +1055,7 @@ ${cli.comparisonCredit}`,
               e.preventDefault();
               submit();
             }
-            if (
-              e.key === "c" &&
-              e.ctrlKey &&
-              (busy || captureState !== "idle")
-            ) {
+            if (e.key === "c" && e.ctrlKey && busy) {
               e.preventDefault();
               cancel();
             }
@@ -1163,11 +1082,7 @@ ${cli.comparisonCredit}`,
         <p className="processing-download">
           {j.common.firstProcessingDownload}
         </p>
-        <button
-          className="primary"
-          type="submit"
-          disabled={!ready || busy || captureState !== "idle"}
-        >
+        <button className="primary" type="submit" disabled={!ready || busy}>
           {cli.run}
         </button>
       </form>
@@ -1352,32 +1267,23 @@ ${cli.comparisonCredit}`,
           {currentTask.paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
-          {step === "capture" && (
-            <p>
-              {flow.practiceNote} {!captureSupported && flow.sourceUnsupported}
-            </p>
-          )}
+          {step === "capture" && <p>{flow.practiceNote}</p>}
           <ol className="command-lessons">
             {examples
               .filter(
                 (example) =>
-                  example.command !== "stop" &&
                   example.command !==
-                    (reference === "inspect"
-                      ? "reference inspect"
-                      : reference === "edit"
-                        ? "reference cuts"
-                        : "") &&
-                  (captureSupported || !example.command.startsWith("capture")),
+                  (reference === "inspect"
+                    ? "reference inspect"
+                    : reference === "edit"
+                      ? "reference cuts"
+                      : ""),
               )
               .map((example, index) => (
                 <li key={index}>
                   {example.note &&
                     step !== "capture" &&
                     examples.length > 1 && <p>{example.note}</p>}
-                  {step === "capture" && example.command === "capture" && (
-                    <p>{flow.recordingNote}</p>
-                  )}
                   {/^ff(mpeg|probe)\b/.test(example.command) ? (
                     <>
                       {examples.filter((e) =>
@@ -1409,13 +1315,7 @@ ${cli.comparisonCredit}`,
                     /^download .*\.(txt|md)$/.test(example.command) ? null : (
                     <button
                       type="button"
-                      disabled={
-                        busy ||
-                        !ready ||
-                        (example.command === "stop"
-                          ? captureState !== "recording"
-                          : captureState !== "idle")
-                      }
+                      disabled={busy || !ready}
                       onClick={() => action(example.command, true)}
                     >
                       {browserAction(example.command)}
@@ -1564,14 +1464,9 @@ ${cli.comparisonCredit}`,
             {feedback.join("\n")}
           </pre>
           <div className="course-actions">
-            {(busy || captureState !== "idle") && (
+            {busy && (
               <button type="button" onClick={cancel}>
                 {ux.cancel}
-              </button>
-            )}
-            {captureState === "recording" && (
-              <button type="button" onClick={() => action("stop")}>
-                {ux.stop}
               </button>
             )}
             {lines.length > 0 && (

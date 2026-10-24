@@ -9,37 +9,19 @@ export const recordingGuide = {
   overviewNote:
     "Use this guide if you want to make your own recording. The practice video supports the same inspection and editing lessons.",
   intro:
-    "Make a source recording in the browser, with a desktop FFmpeg installation or with your device's recorder. You can also return to the source lesson and use the practice video.",
+    "Record with a desktop FFmpeg installation or your device's recorder, then import the saved video into the course. You can also use the practice video without making a recording.",
   prepareTitle: "Prepare one action",
   prepare:
     "Show a clear starting state, perform one action and hold a readable result. Make the application text large enough to read, close unrelated windows and notifications, and check that the recorded area contains no sensitive information.",
   methodLabel: "Where will you record?",
   methodNote: "Choose a method to see its instructions.",
+  methodPlaceholder: "Choose your device",
   methods: [
-    { id: "browser", label: "In this browser" },
     { id: "windows", label: "Windows · native FFmpeg" },
     { id: "macos", label: "macOS · native FFmpeg" },
     { id: "linux", label: "Linux · native FFmpeg" },
     { id: "mobile", label: "Phone or tablet" },
   ],
-  browser: {
-    title: "Record with the browser",
-    intro:
-      "Use the recording controls in Get video. The browser asks which tab, window or screen you want to share. This uses browser recording facilities; FFmpeg processes the saved file later.",
-    steps: [
-      "Open the independent application you want to demonstrate and prepare its starting state.",
-      "Return to Get video and choose Record screen. In the browser's sharing dialog, select the application's tab, window or screen and confirm sharing.",
-      "Switch to the selected application, perform the action and hold its result.",
-      "Return to Get video and choose Stop recording. Replay the saved recording and download a source copy before editing.",
-    ],
-    sound:
-      "Record screen has sound off. Record screen with shared sound requests sound from the selected surface, not a microphone. The browser or surface may provide none; silence is valid when you intend it.",
-    limits:
-      "Recording stops automatically after 15 seconds. A recording over 20 MiB is rejected. The browser chooses WebM or MP4; use the filename shown beside the saved preview.",
-    unavailable:
-      "If the recording controls are unavailable, use your device's recorder and import the result, or use the practice video. Browser screen sharing is often unavailable on phones and tablets.",
-    action: "Open source video controls",
-  },
   native: {
     title: "Record in a desktop terminal",
     location:
@@ -138,14 +120,14 @@ export const recordingGuide = {
     sessionIntro:
       "X11 and Wayland are Linux desktop display systems. In a terminal opened from the desktop you want to record, run this shell command to show its reported session type.",
     sessionResult:
-      "If it prints x11, continue with the X11 checks below. If it prints wayland, use the browser's screen chooser or a desktop recorder and import the saved file. If it prints nothing or another value, this check has not identified an X11 desktop; check your desktop settings or use one of those recording alternatives.",
+      "If it prints x11, continue with the X11 checks below. If it prints wayland, use a desktop recorder and import the saved file. If it prints nothing or another value, this check has not identified an X11 desktop; check your desktop settings or use one of those recording alternatives.",
     input: "Find x11grab in the device list.",
     setup:
       "This command is for an X11 desktop. Run it from a terminal in that graphical session, with access to its display. The shell expands ${DISPLAY} to the current X11 display name; this is native terminal syntax, not syntax for the course's Command field.",
     region:
       "Place the application in the upper-left 1280 × 720-pixel region. -video_size 1280x720 sets that region's size and +0,0 starts it at the upper-left corner. Change the size if needed so the region fits your display.",
     wayland:
-      "For a Wayland desktop, use the browser's screen chooser or a desktop recorder that supports your system. An XWayland display or a DISPLAY variable does not mean x11grab can record the whole Wayland desktop.",
+      "For a Wayland desktop, use a desktop recorder that supports your system, then import the saved file. An XWayland display or a DISPLAY variable does not mean x11grab can record the whole Wayland desktop.",
     commandTitle: "Record five seconds from an X11 display",
     sourceTitle: "X11 capture device documentation",
     sourceHref: "https://ffmpeg.org/ffmpeg-devices.html#x11grab",
@@ -185,7 +167,4 @@ export const recordingGuide = {
   scrollHint: "Scroll sideways to read the full command.",
   sourcesTitle: "Further reading",
   sourcesNote: "These external instructions need an internet connection.",
-  browserSourceLabel: "Browser screen-sharing support and permissions",
-  browserSourceHref:
-    "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia",
 } as const;

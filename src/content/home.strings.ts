@@ -4,7 +4,7 @@ export const home = {
   subtitle: "From Frames to Finished Demos",
   eyebrow: "A command-line lab for software demos",
   intro:
-    "Make a short software demo with real FFmpeg and ffprobe commands. Type commands or compose them with the command builder, then read the tools' output and check the resulting files. Browser controls handle recording, imports, replay and downloads. A provided Mousepad recording supports the same editing path when capture is unavailable.",
+    "Make a short software demo with real FFmpeg and ffprobe commands. Type commands or compose them with the command builder, then read the tools' output and check the resulting files. Browser controls handle imports, replay and downloads. Use the provided Mousepad recording or import your own source video.",
   audienceTitle: "Who this course is for",
   audience:
     "For software and data engineers with ordinary terminal, browser and file familiarity. Media concepts and FFmpeg options are explained as you use them. The optional command builder helps with typing on phones and tablets while keeping the real command visible. No video knowledge is assumed.",
@@ -22,7 +22,7 @@ export const modules = [
     id: 0,
     title: "Choose your source video",
     summary:
-      "Record an independent application, use the practice video or import a source. Replay it and keep a downloaded copy.",
+      "Use the practice video or import a source recording. Replay it and keep a downloaded copy.",
     route: "capture",
     available: true,
   },

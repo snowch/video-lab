@@ -165,113 +165,80 @@ test("tool errors, quoting errors, cancellation, history and explicit overwrite 
   expect(Number(revised.format.duration)).toBeCloseTo(1.5, 1);
 });
 
-test("actual MediaRecorder bytes, denied capture, explicit start and navigation cleanup", async ({
+test("removed browser recording never requests capture and earlier captured files remain usable", async ({
   page,
 }) => {
-  test.setTimeout(120000);
-  // Only the browser chooser is replaced; the canvas track and MediaRecorder are real APIs.
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(() => {
-    const state = {
-      frames: 0,
-      requests: 0,
-      tracks: [] as MediaStreamTrack[],
-      denied: true,
-    };
-    Object.assign(window, { captureTest: state });
-    Object.defineProperty(navigator.mediaDevices, "getDisplayMedia", {
+    Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
-      value: async () => {
-        state.requests++;
-        if (state.denied) {
-          state.denied = false;
-          throw new DOMException("Denied", "NotAllowedError");
+      value: {
+        getDisplayMedia: async () => {
+          throw new Error("Browser recording must not be invoked");
+        },
+      },
+    });
+    Object.defineProperty(window, "MediaRecorder", {
+      configurable: true,
+      value: class {
+        constructor() {
+          throw new Error("Retired recorder must not be constructed");
         }
-        const canvas = document.createElement("canvas");
-        canvas.width = 640;
-        canvas.height = 360;
-        const drawing = canvas.getContext("2d")!;
-        const timer = setInterval(() => {
-          state.frames++;
-          drawing.fillStyle = "#12695e";
-          drawing.fillRect(0, 0, 640, 360);
-          drawing.fillStyle = "white";
-          drawing.font = "32px sans-serif";
-          drawing.fillText(`Real capture ${state.frames}`, 30, 100);
-        }, 70);
-        const stream = canvas.captureStream(12);
-        state.tracks.push(...stream.getTracks());
-        stream
-          .getTracks()
-          .forEach((track) =>
-            track.addEventListener("ended", () => clearInterval(timer)),
-          );
-        return stream;
       },
     });
   });
   await page.goto("./#/capture");
-  expect(
-    await page.evaluate(
-      () =>
-        (window as unknown as { captureTest: { requests: number } }).captureTest
-          .requests,
-    ),
-  ).toBe(0);
-  await command(page, "sample");
-  await command(page, "capture", cli.failed);
-  await command(page, "capture", cli.capture.recording);
-  await expect
-    .poll(() =>
-      page.evaluate(
-        () =>
-          (window as unknown as { captureTest: { frames: number } }).captureTest
-            .frames,
-      ),
-    )
-    .toBeGreaterThan(8);
-  await command(page, "stop");
-  await expect(page.locator(".cli-preview")).toHaveCount(1);
-  expect(
-    await page.evaluate(() =>
-      (
-        window as unknown as { captureTest: { tracks: MediaStreamTrack[] } }
-      ).captureTest.tracks.every((track) => track.readyState === "ended"),
-    ),
-  ).toBe(true);
-  const file = await page
-    .locator(".cli-preview video")
-    .getAttribute("aria-label");
-  await expect(page.locator(".command-workspace")).toContainText(
-    `Selected source: ${file}`,
+  await expect(
+    page.getByRole("button", { name: /Record screen|Stop recording/ }),
+  ).toHaveCount(0);
+  await expect(page.locator(".cli-lab")).toHaveAttribute(
+    "data-workspace-ready",
+    "true",
   );
-  const probe = nativeProbe(await download(page, file!));
-  expect(probe.streams[0].codec_type).toBe("video");
-  expect(probe.streams[0].width).toBe(640);
+  await expect(page.locator(".cli-lab")).not.toContainText(
+    "recording is unavailable",
+  );
+  await page.evaluate(async () => {
+    const blob = await fetch("media/mousepad-demo.mp4").then((r) => r.blob());
+    await new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open("video-lab-cli", 1);
+      request.onsuccess = () => {
+        const db = request.result,
+          transaction = db.transaction("files", "readwrite");
+        transaction
+          .objectStore("files")
+          .put({ name: "earlier-recording.mp4", blob, origin: "captured" });
+        transaction.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        transaction.onerror = () => reject(transaction.error);
+      };
+      request.onerror = () => reject(request.error);
+    });
+    localStorage.setItem("video-lab:source", "earlier-recording.mp4");
+  });
+  await page.reload();
+  await expect(page.locator(".cli-preview video")).toHaveAttribute(
+    "aria-label",
+    "earlier-recording.mp4",
+  );
+  const probe = nativeProbe(await download(page, "earlier-recording.mp4"));
+  expect(Number(probe.format.duration)).toBe(12);
   await page.getByRole("link", { name: /^Inspect$/ }).click();
-  await command(page, probeCommand(file!));
-  await command(
-    page,
-    `ffmpeg -i ${file} -t 0.4 -an -c:v libx264 -preset ultrafast short.mp4`,
+  await command(page, "ffprobe earlier-recording.mp4");
+  await expect(page.getByLabel(cli.output, { exact: true })).toContainText(
+    "Duration: 00:00:12.00",
   );
-  expect(nativeProbe(await download(page, "short.mp4")).streams).toHaveLength(
-    1,
-  );
-  await command(page, "capture", cli.capture.recording);
-  await command(page, "cancel", cli.cancelled);
-  await command(page, "capture", cli.capture.recording);
-  await page.getByRole("link", { name: /^Build$/ }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    lessons.build.title,
-  );
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        (
-          window as unknown as { captureTest: { tracks: MediaStreamTrack[] } }
-        ).captureTest.tracks.every((track) => track.readyState === "ended"),
-      ),
-    )
-    .toBe(true);
+  await page.goto("./optional/command-workbench.html");
+  await expect(
+    page.getByRole("button", { name: /Record screen|Finish recording/ }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Use practice video", exact: true }),
+  ).toBeVisible();
+  expect(errors).toEqual([]);
 });
 test("imported own media and legacy project migrate without changing reference challenge progress", async ({
   page,

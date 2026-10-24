@@ -63,7 +63,7 @@ function TerminalExample({
   );
 }
 export function RecordingGuide() {
-  const [method, setMethod] = useState<Method>("browser");
+  const [method, setMethod] = useState<Method | "">("");
   const native =
     method === "windows" || method === "macos" || method === "linux"
       ? text[method]
@@ -83,8 +83,11 @@ export function RecordingGuide() {
             id="recording-method"
             value={method}
             aria-controls="recording-instructions"
-            onChange={(event) => setMethod(event.target.value as Method)}
+            onChange={(event) => setMethod(event.target.value as Method | "")}
           >
+            <option value="" disabled>
+              {text.methodPlaceholder}
+            </option>
             {text.methods.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.label}
@@ -95,18 +98,9 @@ export function RecordingGuide() {
         <section
           className="recording-instructions"
           id="recording-instructions"
-          aria-labelledby="recording-method-title"
+          hidden={!method}
+          aria-labelledby={method ? "recording-method-title" : undefined}
         >
-          {method === "browser" && (
-            <>
-              <h2 id="recording-method-title">{text.browser.title}</h2>
-              <p>{text.browser.intro}</p>
-              <Steps steps={text.browser.steps} />
-              <p>{text.browser.sound}</p>
-              <p>{text.browser.limits}</p>
-              <p>{text.browser.unavailable}</p>
-            </>
-          )}
           {native &&
             (method === "windows" ||
               method === "macos" ||
@@ -206,11 +200,6 @@ export function RecordingGuide() {
             {text.back}
           </a>
         </p>
-        {method === "browser" && (
-          <p>
-            <a href={text.browserSourceHref}>{text.browserSourceLabel}</a>
-          </p>
-        )}
         <p className="muted">{text.sourcesNote}</p>
       </article>
     </div>

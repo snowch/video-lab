@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Browser recording removed, 24 October 2026:** [the removal slice](notes/remove-browser-recording/01-facts.md) removes browser capture from both app entry points and the appendix. Source selection offers practice media or imports; the optional guide covers native FFmpeg and device recorders. Existing captured-origin files and all saved work remain valid. This supersedes browser-capture descriptions below.
+
 **Source video naming and recording appendix, 24 October 2026:** the first lesson is **Choose your source video**, with its existing `#/capture` bookmark retained. The [optional recording guide](notes/capture-guide/01-facts.md) is linked from source selection and the overview. Browser, installed native FFmpeg and phone/tablet instructions remain separate; capture is optional and no browser recording CLI is invented. The appendix is included in offline lessons.
 
 **Contextual workspace controls, 24 October 2026:** [the cleanup slice](notes/workspace-cleanup/01-plan.md) removes general management sections from the lesson ending. Files and command Help live in flat toolbar dialogs, provided comparisons are limited to controlled references, and baseline/tool offline downloads share the existing app-level panel with separate readiness. Files, drafts, evidence and route IDs are preserved.
@@ -30,7 +32,7 @@ The initial completion outcome is a playable edited MP4, the source-linked comma
 
 | # | Module | Current outcome | Status / canonical route |
 | --- | --- | --- | --- |
-| 0 | Choose your source video | Record one action, replay/download, or import/adopt a source. | Implemented · `#/capture` |
+| 0 | Choose your source video | Use the practice source or import an existing recording; replay/download it. | Implemented · `#/capture` |
 | 1 | How a video file is created | Encode supplied pictures, add synthetic audio, inspect actual MP4s. | Implemented · `#/build` |
 | 2 | Inspect and prepare real media | Probe the selected file; compare actual content with intended capture. | Implemented · `#/inspect` |
 | 3 | Cut and join: tell the story | Trim one or two ranges, reset/join/encode and download a real edit recipe. | Implemented · `#/edit` |
@@ -46,7 +48,7 @@ The initial path is **0 → 1 → 2 → 3 → 8**, not a requirement to wait for
 
 ## Actual evidence and interaction choices
 
-- Capture is a real consent-based browser recording with correctly named MIME-derived output, lifecycle cleanup and a provided-source fallback. Optional native commands are separate: only Linux/X11 and managed Chromium virtual-display capture were actually executed; other command forms received source review.
+- Source selection uses the original practice video or imported media. Browser recording has been removed. Optional native FFmpeg/device recording is documented separately, with executed Linux/X11 evidence and source-reviewed Windows/macOS forms. Earlier captured-origin files remain supported.
 - Build runs single-thread FFmpeg WASM to encode real original stills 000/048/072, then AAC-encode the synthetic sound while copying video into MP4. The stills show initial state, sorted result and later hold, not a continuous click/action. Changing presentation rate requires new bytes; stale audio output is invalidated.
 - Inspect runs real ffprobe on explicit request. A missing declared duration remains missing; observed packet timing is labelled separately, including uncertain final hold. Audio absence is compared with intention, not treated as an automatic fault.
 - Edit operates on the actual source, with one or two half-open ranges, reset clocks, optional concatenation and encoding. It preserves the source, invalidates stale exports and supplies actual output measurements, command and recipe.

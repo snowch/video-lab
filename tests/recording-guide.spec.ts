@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { recordingGuide as text } from "../src/capture/guide.strings";
 import { captureCommands } from "../src/capture/native";
 
-test("optional recording guide preserves the source and draft while separating browser and native capture", async ({
+test("optional recording guide preserves the source and draft without browser screen capture", async ({
   page,
 }) => {
   const errors: string[] = [],
@@ -43,9 +43,11 @@ test("optional recording guide preserves the source and draft while separating b
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(text.title);
   await expect(page.locator(".journey-nav,.cli-lab")).toHaveCount(0);
   await expect(page.locator(".recording-command")).toHaveCount(0);
-  await expect(page.getByText(text.browser.sound)).toBeVisible();
+  await expect(
+    page.getByRole("option", { name: "In this browser", exact: true }),
+  ).toHaveCount(0);
   const method = page.getByLabel(text.methodLabel, { exact: true });
-  for (const value of ["windows", "macos", "linux", "mobile", "browser"]) {
+  for (const value of ["windows", "macos", "linux", "mobile"]) {
     await method.selectOption(value);
     await page.evaluate(() => {
       document.documentElement.style.fontSize = "200%";
@@ -87,7 +89,7 @@ test("optional recording guide preserves the source and draft while separating b
     await page.evaluate(() => localStorage.getItem("test:copied-command")),
   ).toBe(captureCommands.linux);
   await page.reload();
-  await expect(method).toHaveValue("browser");
+  await expect(method).toHaveValue("");
   await page.getByRole("link", { name: text.back, exact: true }).click();
   await expect(page.locator(".cli-preview video")).toHaveAttribute(
     "aria-label",

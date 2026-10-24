@@ -8,7 +8,7 @@ export const cli = {
   scope:
     "Run one command at a time against files saved in this browser workspace. FFmpeg and ffprobe process actual media locally; they do not upload it or read your computer's folders. This is not an operating-system shell: pipes, redirection and variable expansion are unavailable. Put a whole filter expression inside quotes. ffprobe shows its usual media summary; use -of json with report options for saved reports and lab checks.",
   keyboard:
-    "Enter runs the command; Shift+Enter continues it on a new line. A new line does not start a second command. Up and Down recall one-line history. Cancel or Ctrl+C discards active processing. Stop recording finishes and keeps a recording.",
+    "Enter runs the command; Shift+Enter continues it on a new line. A new line does not start a second command. Up and Down recall one-line history. Cancel or Ctrl+C discards active processing.",
   input: "Command",
   run: "Run command",
   output: "Command output",
@@ -46,19 +46,13 @@ export const cli = {
   downloaded: "Download requested:",
   removed: "Removed",
   empty:
-    "No workspace files yet. Record, import or load the provided source before processing it.",
+    "No workspace files yet. Import a file or load the practice video before processing it.",
   missing: "File not found:",
   useLs: "Open Files and use the exact workspace filename.",
   arguments:
     "Use the current task's example or the command builder. Run one FFmpeg or ffprobe command at a time.",
-  wait: "Another operation is active. Choose Stop recording to keep a recording, or Cancel to discard active work, before starting another operation.",
+  wait: "Another operation is active. Wait for it to finish, or choose Cancel before starting another operation.",
   loading: "Wait for saved workspace files to finish loading, then retry.",
-  captureUsage:
-    "Choose Record screen for pictures only, or Record screen with shared sound to request audio from the shared surface.",
-  unsupported:
-    "Screen recording is unavailable in this browser. Choose Use practice video or Import file.",
-  notRecording:
-    "No recording is running. Choose Record screen before Stop recording.",
   notMedia:
     "Choose Replay for a video, sound or picture file. Use Read or Download for a text report, recipe or note.",
   exists:
@@ -70,10 +64,6 @@ export const cli = {
   sampleSaved: "Practice video loaded. Replay it, then inspect its duration.",
   fixturesSaved:
     "Loaded frame000.jpg, frame001.jpg, frame002.jpg and tone.wav. These supplied pictures and synthetic sound are a separate experiment; your recording is unchanged.",
-  captureFailure:
-    "Recording did not finish. Sharing may have been declined or the selected surface could not be recorded. Try Record screen again, or choose Use practice video or Import file.",
-  captureComplete:
-    "Check its exact name in Files, choose Replay and download a copy.",
   referenceUsage:
     "Choose Load inspection source or Load cutting source for a detailed reference lab. Provided build and edit comparisons contain work generated in advance.",
   referenceSaved: "Provided reference saved; no processing was run:",
@@ -81,14 +71,6 @@ export const cli = {
     "Provided comparison saved as comparison.mp4: five seconds, 86,088 bytes. This is an optional excerpt, not your captured or edited demo.",
   comparisonCredit:
     "Big Buck Bunny © 2008 Blender Foundation, https://peach.blender.org/. Shortened and re-encoded excerpt. CC BY 3.0: https://creativecommons.org/licenses/by/3.0/. Original licence statement: https://peach.blender.org/about/.",
-  capture: {
-    idle: "Ready to request a recording surface.",
-    requesting:
-      "Choose a tab, window or screen in the browser's sharing dialog, or cancel there.",
-    recording:
-      "Recording the shared surface. Choose Stop recording when the result is readable. Recording also stops at the 15-second limit.",
-    stopping: "Finishing the recording and releasing the shared surface.",
-  },
   help: `The command editor runs real media tools:
 ffmpeg ARGUMENTS     Run one media command with a named output, or a supported help query
 ffprobe FILE         Read the file's usual media summary
@@ -96,12 +78,11 @@ ffprobe FILE         Read the file's usual media summary
 Use the app controls for workspace actions:
 Use practice video loads the provided Mousepad recording.
 Import file opens the device's file chooser.
-Record screen requests browser sharing; Stop recording keeps the result.
 Files lists names, sizes and origins. Use as source selects an input.
 Replay opens media; Read displays text; Download saves a copy; Delete removes a workspace file.
 Load pictures and sound supplies the separate Build experiment.
 Load inspection source and Load cutting source supply controlled reference media.
-Cancel discards active processing or recording; existing files remain available.
+Cancel discards active processing; existing files remain available.
 
 Run each media command separately. Multiple lines continue one command.
 Use simple workspace filenames without folders: letters, digits, dots, hyphens or underscores, beginning with a letter or digit. Source filenames may be up to 80 characters; output names are limited to 68 so the recipe name also fits.
@@ -125,42 +106,30 @@ export const lessons: Record<StepName, Lesson> = {
   capture: {
     title: "Choose your source video",
     intro:
-      "Make or adopt a source recording: the original file you will inspect and edit. Browser controls handle recording and files; FFmpeg and ffprobe commands handle media processing.",
-    heading: "Prepare and record one application action",
+      "Choose the original recording you will inspect and edit. Use the practice video or import an existing recording.",
+    heading: "Choose and replay a source recording",
     paragraphs: [
-      "Use the app controls to obtain, replay and download your source. Later tasks use real FFmpeg and ffprobe commands. Type an example without a leading $ prompt, or use the command builder, then choose Run command. Read the output before running another command. Files carry across lesson steps.",
-      "Plan an initial state, one visible action and a readable result in an independent application. For example, show a text replacement in an editor. Close unrelated notifications and windows and check for sensitive material. Choose Record screen and select the application's window or tab. Perform the action, hold the result, then choose Stop recording. Aim for about 5–15 seconds; recording stops at 15 seconds and rejects output over 20 MiB.",
-      "Record screen uses the browser's sharing and recording facilities without sound. Record screen with shared sound requests audio from the selected surface, not a microphone; the browser may provide none. Intentional silence is valid. FFmpeg processes the saved files in later tasks. Native FFmpeg desktop capture uses platform-specific devices outside this lab.",
-      "The recorded file may be WebM or MP4. Check Files for its exact name before using it in commands. If recording is unavailable, choose Use practice video or Import file. The practice recording is twelve seconds of Find and Replace in Mousepad, an independent editor, with no sound. It starts as mousepad-demo.mp4; the workspace may add a number to preserve an existing file. Keep your own source if you already have the recording you want.",
+      "Use the practice video or choose Import file to bring a recording from your device into this browser workspace. To make your own recording first, use the optional recording guide, then import the saved file.",
+      "The practice video is twelve seconds of Find and Replace in Mousepad, an independent editor, with no sound. It starts as mousepad-demo.mp4; the workspace may add a number to preserve an existing file. Keep an existing source if it is the recording you want to edit.",
+      "Replay the source, check that its action and result are readable, and download a copy before editing. Later tasks use real FFmpeg and ffprobe commands; files carry across lesson steps.",
     ],
     examples: [
+      { note: "Load the supplied original recording.", command: "sample" },
       {
-        note: "Prepare an independent application and the action you want to show before recording.",
-        command: "scene",
+        note: "Alternatively, choose an existing recording from your device.",
+        command: "import",
       },
       {
-        note: "Choose Record screen, select the prepared application, then perform the action.",
-        command: "capture",
-      },
-      {
-        note: "After holding the result, choose Stop recording to keep the file.",
-        command: "stop",
-      },
-      {
-        note: "Use practice video loads the silent Mousepad recording. It is provided source material, not a recording you made.",
-        command: "sample",
-      },
-      {
-        note: "Open Files to check the exact filename, size and origin. Use the selected source's name in subsequent commands.",
+        note: "Open Files to check the exact filename, size and origin.",
         command: "ls",
       },
       {
-        note: "Choose Replay beside your selected source file.",
-        command: "play capture.mp4",
+        note: "Replay the practice source; use your source's exact name if different.",
+        command: "play mousepad-demo.mp4",
       },
       {
-        note: "Choose Download beside your source to keep a copy before editing.",
-        command: "download capture.mp4",
+        note: "Download a source copy before editing.",
+        command: "download mousepad-demo.mp4",
       },
     ],
     challenge:
@@ -170,7 +139,7 @@ export const lessons: Record<StepName, Lesson> = {
   build: {
     title: "How a video file is created",
     intro:
-      "Use FFmpeg commands to create a small video from supplied pictures, then add sound. This separate experiment does not convert or replace your captured recording.",
+      "Use FFmpeg commands to create a small video from supplied pictures, then add sound. This separate experiment does not convert or replace your selected source recording.",
     heading: "Give pictures a display rate, then combine streams",
     paragraphs: [
       "A frame is one picture. Load pictures and sound supplies three JPEG pictures extracted from the Mousepad recording at 0, 6 and 10 seconds, plus a quiet synthetic tone. The pictures are snapshots, not continuous coverage of the action. The new video gives them a new display schedule. frame%03d.jpg tells FFmpeg to read frame000.jpg, frame001.jpg and frame002.jpg; this is an FFmpeg filename pattern, not shell expansion.",

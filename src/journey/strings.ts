@@ -7,7 +7,7 @@ export const j = {
     back: "Previous step",
     source: "Selected source recording",
     provided: "Provided recording",
-    captured: "Your browser recording",
+    captured: "Earlier browser recording",
     imported: "Existing recording selected from this device",
     generated: "Created in this browser",
     download: "Download this recording",
@@ -54,7 +54,7 @@ export const j = {
     sampleCredit:
       "Big Buck Bunny © 2008 Blender Foundation, peach.blender.org. Shortened and re-encoded excerpt, licensed CC BY 3.0.",
     noSource:
-      "Record a demo or choose the provided recording in Capture before continuing with your project.",
+      "Choose the practice video or import an existing recording in Get video before continuing with your project.",
     inspectFirst:
       "Inspect the selected source before choosing edit bounds. Its measured timing determines the available range.",
     runFirst: "Inspect this source first",
@@ -80,64 +80,6 @@ export const j = {
   },
   capture: {
     title: "Choose your source video",
-    intro:
-      "Record one visible action and its result. Use the original build-queue scene, or another small software task you can explain. If screen recording is unavailable, the provided original recording lets you continue through inspection and editing.",
-    planTitle: "Plan what the viewer should see",
-    plan: [
-      "Show the initial state so the viewer has enough context.",
-      "Perform one action. In the build queue, click Sort.",
-      "Hold the result long enough to read it before stopping.",
-    ],
-    prepare:
-      "Aim for a short recording of about 5–15 seconds. Make text readable at the size you plan to share. Keep the pointer deliberate, close unrelated windows and notifications, and check that the selected surface contains no sensitive material.",
-    openScene: "Open the build-queue scene",
-    sceneNote:
-      "Open the scene first, then return here to start recording. In the browser's chooser, select the scene's tab or window. Record its initial state, click Sort, and hold the sorted result.",
-    audio: "Request audio from the shared tab or screen",
-    audioNote:
-      "Shared audio is optional and off by default. Your browser and chosen surface decide whether it is available. This option does not request microphone narration. No audio can be the intended result.",
-    start: "Start screen recording",
-    stop: "Stop recording",
-    idle: "Ready to request a recording surface. Nothing is recorded until you choose what to share.",
-    requesting:
-      "Choose a tab, window or screen in your browser's sharing dialog. You can cancel there without recording.",
-    recording:
-      "Recording the shared surface. Stop when the result is readable; recording stops automatically after 15 seconds.",
-    stopping: "Finishing the recording and releasing the shared surface.",
-    elapsed: "Estimated recording time",
-    elapsedNote:
-      "Elapsed time is estimated from the clock during capture. Inspect measures the resulting file separately.",
-    unsupported:
-      "Screen recording is unavailable in this browser. Use the provided original recording, or try a browser that supports sharing a tab, window or screen.",
-    failed:
-      "Screen recording did not finish. The browser may have declined sharing or could not record the selected surface. Try again, or choose the provided recording.",
-    limit:
-      "This capture is limited to 15 seconds and 20 MiB. Keep the task short; a recording that exceeds the size limit is not retained as a completed capture.",
-    mime: "Recorder-reported media type",
-    sharedAudio: "Shared audio track received",
-    yes: "Yes",
-    no: "No",
-    replayTitle: "Replay the source you will edit",
-    replayNote:
-      "Check that the intended action and readable result are visible. Check sound only if you intended to record it. Download a copy before replacing this recording.",
-    fallback: "Use the provided original recording",
-    importLabel: "Choose your own MP4 or WebM recording",
-    importNote:
-      "Choose a recording no larger than 20 MiB and no longer than 30 seconds. It becomes the project source for Inspect and Edit and stays in your browser. Run inspection to check its actual contents and timing before editing.",
-    fallbackNote:
-      "The provided build-queue recording was generated in advance. It includes the Sort action and a quiet synthetic tone, not narration. Choosing it makes it your project source; it does not claim you recorded it.",
-    sourceSaved:
-      "This recording is now the project source for Inspect and Edit. Build uses separate supplied pictures for its structure experiment.",
-    nativeTitle: "Optional: capture with desktop tools",
-    nativeNote:
-      "A desktop recorder or a native FFmpeg installation can also capture a screen. Device names, permissions and commands depend on your operating system. That capture runs on your computer, not in this browser's processing tools. You can inspect a suitable MP4 or WebM file here afterwards.",
-    diagramTitle: "From shared surface to recording",
-    diagramSurface: "Chosen tab, window or screen",
-    diagramRecorder: "Browser recording",
-    diagramFile: "Your recorded file",
-    diagramNote:
-      "Your browser chooses a supported recording format. The downloaded filename follows the actual file type; recording does not guarantee an MP4.",
-    next: "Continue to the file-building experiment",
   },
   build: {
     title: "How a video file is created",
@@ -302,6 +244,6 @@ export const j = {
       "Download important work. Saved browser media can be removed, and it does not automatically follow you to another browser or device.",
     nextTitle: "Further production topics",
     nextNote:
-      "Readability, sound, compression, captions and AI-assisted production remain planned modules. You can finish this initial capture-to-export path without waiting for them.",
+      "Readability, sound, compression, captions and AI-assisted production remain planned modules. You can finish this initial source-to-export path without waiting for them.",
   },
 } as const;

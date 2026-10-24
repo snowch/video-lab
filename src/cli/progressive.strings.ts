@@ -43,14 +43,10 @@ export const progressiveUI = {
   changeSource: "Change source",
   sourceReview:
     "Replay the video. Can you follow the action and read its result? This original stays available when you create an edit.",
-  sourceUnsupported:
-    "Screen recording is unavailable in this browser. Use the practice video or import a recording.",
   practiceNote:
     "Twelve seconds of Find and Replace in Mousepad, an independent text editor. This provided recording has no sound.",
   importNote:
     "Choose a video up to 20 MiB. It stays on this device; its workspace filename appears beside the preview.",
-  recordingNote:
-    "Prepare one visible action in an independent application, then choose its window or tab in the browser's sharing dialog. Hold the result before choosing Stop recording.",
   inspectSource: "Inspect video",
   beginEdit: "Make a first cut",
   buildNext: "Build a video from pictures",
@@ -121,14 +117,12 @@ export const productionTasks: Record<StepName, Task[]> = {
       id: "source",
       title: "Choose a source video",
       paragraphs: [
-        "Your source is the original recording you will inspect and edit. Use the practice video, import a recording or record one action in an independent application.",
+        "Your source is the original recording you will inspect and edit. Use the practice video or import an existing recording.",
         "Look for a visible starting state, one action and a readable result. The source preview lets you check these before editing.",
       ],
       examples: [
         { note: progressiveUI.practiceNote, command: "sample" },
         { note: progressiveUI.importNote, command: "import" },
-        { note: progressiveUI.recordingNote, command: "capture" },
-        { note: "", command: "capture --audio" },
       ],
     },
   ],

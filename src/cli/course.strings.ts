@@ -1,6 +1,6 @@
 // Copyright © 2026 Christopher Snow
 export const courseUI = {
-  setup: "Files and recording",
+  setup: "Workspace files",
   nativeTools: "FFmpeg and ffprobe commands",
   sourceFiles: "Source files",
   publishFiles: "Review and download files",
@@ -9,7 +9,7 @@ export const courseUI = {
   source: "Selected source",
   noSource: "No source selected",
   nativeOnly:
-    "Enter an ffmpeg or ffprobe command. Use the app controls for files, recording and exercise checks.",
+    "Enter an ffmpeg or ffprobe command. Use the app controls for files and exercise checks.",
   builder: "Build command",
   manual: "Type command",
   useCommand: "Use this command",
@@ -23,11 +23,6 @@ export const courseUI = {
   noDiagnostics: "No processing diagnostics yet.",
   cancel: "Cancel",
   clear: "Clear output",
-  record: "Record screen",
-  recordAudio: "Record screen with shared sound",
-  stop: "Stop recording",
-  recordAdvice:
-    "Open an independent application and prepare one visible action before requesting screen sharing.",
   replay: "Replay",
   read: "Read",
   download: "Download",
@@ -56,10 +51,6 @@ export function browserAction(command: string) {
     sample: "Use practice video",
     fixtures: "Load pictures and sound",
     import: "Import file",
-    scene: courseUI.recordAdvice,
-    capture: courseUI.record,
-    "capture --audio": courseUI.recordAudio,
-    stop: courseUI.stop,
     cancel: courseUI.cancel,
     ls: "View file inventory",
     progress: courseUI.progress,

@@ -14,15 +14,3 @@ export function lessonTasks(step: StepName, reference?: ReferenceLab): Task[] {
     ? referenceLessons[reference].sections
     : productionTasks[step];
 }
-export function captureTasks(
-  _sourceName: string,
-  captureSupported: boolean,
-  _hasSource: boolean,
-): Task[] {
-  return productionTasks.capture.map((task) => ({
-    ...task,
-    examples: task.examples.filter(
-      (example) => captureSupported || !example.command.startsWith("capture"),
-    ),
-  }));
-}

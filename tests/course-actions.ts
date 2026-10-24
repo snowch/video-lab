@@ -72,8 +72,7 @@ export async function workspaceAction(page: Page, text: string) {
   else if (tool === "solution") await clickAction(page, ux.solution);
   else if (tool === "check") await clickAction(page, `${ux.check} ${args[1]}`);
   else {
-    const destination =
-      tool === "capture" ? "Get video" : tool === "fixtures" ? "Build" : null;
+    const destination = tool === "fixtures" ? "Build" : null;
     if (
       text === "reference build" ||
       text === "reference edit" ||

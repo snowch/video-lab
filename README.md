@@ -4,13 +4,13 @@ Copyright © 2026 Christopher Snow.
 
 The [command workbench](https://snowch.github.io/video-lab/optional/command-workbench.html) is a working three-step lab: choose a recording, inspect it and create an edited video. It uses the approved touch-friendly command builder alongside directly editable FFmpeg/ffprobe commands, executed locally in WebAssembly. File setup and downloads use app buttons. The practice recording demonstrates Find and Replace in the independent Mousepad text editor. [Implementation and review](docs/notes/live-workbench/plan.md) and [media provenance](media-source/mousepad/README.md) document this slice; the existing full course and reference routes remain available. The historical simulated prototype can be regenerated into `docs/notes/command-ux/archive/` with `node docs/notes/command-ux/build.mjs`; it no longer overwrites the working route.
 
-The production labs are command-line workspaces. Type and run real FFmpeg/ffprobe WASM commands, inspect logs and actual files, and download the output plus an execution recipe. Screen capture uses app buttons and the browser permission dialog.
+The production labs are command-line workspaces. Type and run real FFmpeg/ffprobe WASM commands, inspect logs and actual files, and download the output plus an execution recipe. Source selection uses practice media or file import. The optional recording appendix covers native FFmpeg and device recorders outside the app.
 
 Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The command-first path is independently reviewed, tested and deployed; its [plan and review evidence](docs/notes/cli/plan.md) records 69 unit tests, 125 browser tests, Pages deployment and real installed-app upgrade verification. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).
 
 | Step | Route | What you do |
 | --- | --- | --- |
-| 0 · Capture | `#/capture` | Record one action with the browser's chooser, import an MP4/WebM, or adopt the labelled original fallback. |
+| 0 · Get video | `#/capture` | Use the practice video or import a recording. The optional recording guide explains making a source outside the app. |
 | 1 · Build | `#/build` | Run a separate experiment: encode three provided pictures into video, add synthetic sound, then inspect and download the actual files. This does not convert the project recording. |
 | 2 · Inspect | `#/inspect` | Measure the selected file and compare its pictures and optional sound with your intention. |
 | 3 · Edit | `#/edit` | Keep one or two source ranges, run a real trim/reset/join/encode, then replay the output. |
@@ -37,11 +37,11 @@ npm run build
 npm run preview
 ```
 
-`npm run check` is the same entry point CI runs. It covers formatting, copyright, the unchanged shared-platform copy, strict TypeScript, unit/schema/term/reference tests, native verification of original, cut/join and journey fixtures, the production build, and Playwright. The journey browser tests execute real WASM encode, mux, probe and edit operations rather than supplying invented outputs. Capture tests include controlled lifecycle scenarios; separate [native/browser capture evidence](docs/notes/issue-3/native-capture.md) records a real virtual-desktop run. A test's presence is not a claim that the final integrated check has passed; consult the acceptance ledger.
+`npm run check` is the same entry point CI runs. It covers formatting, copyright, the unchanged shared-platform copy, strict TypeScript, unit/schema/term/reference tests, native verification of original, cut/join and journey fixtures, the production build, and Playwright. The journey browser tests execute real WASM encode, mux, probe and edit operations rather than supplying invented outputs. Removal tests ensure browser capture APIs are never called and recordings saved by earlier versions remain usable. Separate [native capture evidence](docs/notes/capture-guide/01-facts.md) records the terminal example; older browser-capture notes are historical. A test's presence is not a claim that the final integrated check has passed; consult the acceptance ledger.
 
 Processing uses pinned single-thread `@ffmpeg/core` 0.12.10, wrapper 0.12.15 and util 0.12.2. The build copies the unmodified core into `dist/encoder/0.12.10/`, publishes notices and source references, and generates its hashed manifest. It is not loaded merely by opening a lesson. [The compatibility spike](docs/notes/issue-3/wasm-spike.md) records actual Chromium/Firefox encoding, playback and probing, including missing-duration handling for real WebM recordings.
 
-The capture exercise stops at 15 seconds and limits output to 20 MiB. Workspace files are limited to 20 MiB each and 32 MiB combined, with up to twelve media files plus twelve execution recipes. Commands select timing and dimensions directly; processing has a 120-second limit. Browser/device recording support varies. Windows, macOS, physical phones and actual microphone/system-audio permissions are not certified by Linux browser emulation. Use the provided original source when capture is unavailable; real editing still requires working processing tools.
+Workspace files are limited to 20 MiB each and 32 MiB combined, with up to twelve working files plus twelve execution recipes. Commands select timing and dimensions directly; processing has a 120-second limit. Record with native FFmpeg or a device recorder outside the app, then import the source. The optional [recording guide](https://snowch.github.io/video-lab/#/appendix/recording) gives platform-specific instructions. Browser screen recording has been removed; no sharing or microphone permission is requested. Earlier saved recordings are retained. Native Windows/macOS command forms are source-reviewed, while the Linux/X11 example has virtual-desktop execution evidence.
 
 ## Using the command labs
 
@@ -49,7 +49,7 @@ Enter a genuine `ffmpeg` or `ffprobe` command in **Command** and press Enter or 
 
 Start ordinary inspection with `ffprobe FILENAME` and read its actual Duration and Stream lines. Use `-of json` when the task needs structured packet/frame fields or a saved report. Tool output is raw; workspace feedback and optional browser diagnostics are separate. The pinned ffprobe wrapper's -1 return is validated using private JSON evidence and never presented as native exit status zero.
 
-The workspace is not an operating-system shell: no pipes, redirection, variable expansion or folders. Quote filter graphs. Existing outputs require `-y`; source inputs are protected. File setup, recording, replay, Read, Download, Delete, hints, notes and checks use app controls. Recipes retain the exact command and hashes of all workspace inputs, including unrelated files; read `-i` to identify actual dependencies. Legacy media is copied once without clearing its original store or reference achievements.
+The workspace is not an operating-system shell: no pipes, redirection, variable expansion or folders. Quote filter graphs. Existing outputs require `-y`; source inputs are protected. File setup, replay, Read, Download, Delete, hints, notes and checks use app controls. Recipes retain the exact command and hashes of all workspace inputs, including unrelated files; read `-i` to identify actual dependencies. Legacy media is copied once without clearing its original store or reference achievements.
 
 Production practice media is an original twelve-second silent recording of Mousepad Find and Replace, with extracted stills for the separate Build experiment. Detailed references retain explicitly labelled fixed fixtures for their exact timestamp and decoded-picture checks. [Migration plan and review records](docs/notes/course-workbench/plan.md) document the course-wide change. No advanced planned module is claimed as implemented.
 
@@ -78,7 +78,7 @@ node scripts/sync-platform.mjs ../learning-platform
 node scripts/sync-platform.mjs --check
 ```
 
-The course owns its shell, prose, capture/processing features, models and graders separately.
+The course owns its shell, prose, source/processing features, models and graders separately.
 
 ## GitHub Pages
 
@@ -88,6 +88,6 @@ Course: https://snowch.github.io/video-lab/
 
 ## Guided command tasks
 
-Each available lab now keeps one current task beside the command workspace on desktop and immediately before it on phones. Previous/Next changes instructions only; inspect results yourself. Capture offers recording only when the browser exposes the required APIs, otherwise starting with provided-source/import instructions. Source buttons load/import media or request recording directly. Replay/download tasks use an existing source recording's actual filename.
+Each available lab now keeps one current task beside the command workspace on desktop and immediately before it on phones. Previous/Next changes instructions only; inspect results yourself. Get video consistently offers the practice source and file import. Recording instructions are optional and use tools outside the app. Replay/download tasks use an existing source recording's actual filename.
 
 Use this command copies a native example into the editor; browser actions appear as buttons. Workspace usage, background explanations and task navigation are expandable. All original detailed reference sections remain available as individual tasks, including old section bookmarks and browser history.

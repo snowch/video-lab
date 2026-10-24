@@ -4,8 +4,6 @@ import { createRoot } from "react-dom/client";
 import { disk, checkFiles, mimeFor } from "../cli/files";
 import type { Files, WorkspaceFile } from "../cli/files";
 import { cancelProcessing, inspectMedia, runTool } from "../processing/engine";
-import { CaptureController } from "../capture/controller";
-import type { CaptureState } from "../capture/controller";
 import { OfflineAccess } from "../offline/OfflineAccess";
 import { ReleaseStatus } from "../release/ReleaseStatus";
 import { assetURL } from "../journey/shared";
@@ -157,9 +155,7 @@ function App() {
     [logStage, setLogStage] = useState(0),
     [logCommand, setLogCommand] = useState(""),
     [remove, setRemove] = useState("");
-  const [capture, setCapture] = useState<CaptureState>("idle");
-  const controller = useRef<CaptureController | null>(null),
-    generation = useRef(0),
+  const generation = useRef(0),
     activeMedia = useRef(false),
     locked = useRef(false),
     savingRef = useRef(false),
@@ -231,7 +227,6 @@ function App() {
       alive = false;
       generation.current++;
       cancelProcessing();
-      controller.current?.destroy();
     };
   }, []);
   useEffect(() => {
@@ -365,60 +360,11 @@ function App() {
       );
     });
   }
-  function record() {
-    if (locked.current) return;
-    activeMedia.current = true;
-    locked.current = true;
-    setBusy(true);
-    setError("");
-    controller.current?.destroy();
-    controller.current = new CaptureController({
-      state: setCapture,
-      error: (err) => {
-        activeMedia.current = false;
-        locked.current = false;
-        setBusy(false);
-        setError(
-          `${C.live.captureFailed} ${err instanceof Error ? err.message : ""}`,
-        );
-      },
-      complete: (result) => {
-        void (async () => {
-          try {
-            const name = availableName(
-                result.mime.includes("mp4")
-                  ? "recording.mp4"
-                  : "recording.webm",
-                files,
-              ),
-              file: WorkspaceFile = {
-                name,
-                blob: result.blob,
-                origin: "captured",
-              };
-            await save([file]);
-            select(file);
-            setStatus(C.source.importedReady);
-          } catch (err) {
-            fail(err);
-          } finally {
-            activeMedia.current = false;
-            locked.current = false;
-            setBusy(false);
-          }
-        })();
-      },
-    });
-    void controller.current.start(false);
-  }
   function cancel() {
     if (savingRef.current) return;
     activeMedia.current = false;
     generation.current++;
     cancelProcessing();
-    controller.current?.destroy();
-    controller.current = null;
-    setCapture("idle");
     locked.current = false;
     setBusy(false);
     setStatus(C.live.cancelled);
@@ -582,9 +528,6 @@ function App() {
   const lesson = stage === 1 ? C.inspect : C.trim;
   const result = d.result,
     stale = result && result.command !== command.trim();
-  const canCapture =
-    !!navigator.mediaDevices?.getDisplayMedia &&
-    typeof MediaRecorder !== "undefined";
   return (
     <>
       <a className="skip" href="#lesson">
@@ -653,38 +596,8 @@ function App() {
                       </button>
                       <small>{C.source.importNote}</small>
                     </div>
-                    <div className="source-option">
-                      <button
-                        onClick={record}
-                        disabled={!canCapture}
-                        aria-describedby="record-note"
-                      >
-                        {C.source.record}
-                      </button>
-                      <small id="record-note">
-                        {canCapture
-                          ? C.live.captureNote
-                          : C.live.captureUnavailable}
-                      </small>
-                    </div>
                   </div>
                 </fieldset>
-                {capture !== "idle" && (
-                  <div className="row">
-                    <p role="status">
-                      {capture === "requesting"
-                        ? C.live.requestCapture
-                        : C.live.capturing}
-                    </p>
-                    <button
-                      onClick={() => controller.current?.stop()}
-                      disabled={capture !== "recording"}
-                    >
-                      {C.live.stop}
-                    </button>
-                    <button onClick={cancel}>{C.live.cancel}</button>
-                  </div>
-                )}
                 <p className="privacy">{C.source.privacy}</p>
               </div>
               <section className="source-preview" aria-label={C.source.chosen}>
