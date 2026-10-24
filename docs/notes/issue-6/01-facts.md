@@ -1,0 +1,17 @@
+# Issue 6 — App status facts and implementation plan
+
+Copyright © 2026 Christopher Snow.
+
+Scope: https://github.com/snowch/video-lab/issues/6 . Read the three related issues (Assembly Lab 35, Metadata Systems 2, GPU Lab 22): the common contract is an app-level App status control, Version and Offline access sections, deployed metadata rather than main, explicit preparation/restart and one complete offline download. No lesson redesign.
+
+The current release embeds its commit in both entry bundles and publishes same-origin release.json. Checks already use network-only requests and uncertainty states. The old offline panel verifies lesson and encoder presence separately, requires both for complete readiness, and preserves separate user IndexedDB stores and localStorage. The old worker installs lesson assets before waiting, deletes older caches on activation and the panel automatically reloads every controlled tab. Those behaviours need transactional preparation and explicit coordinated restart. The exact pre-change build is saved in /workspace/scratch/issue6/legacy-dist.
+
+Build deterministic input identity from production source/public/platform/config/lockfile inputs and commit; publish that identity plus the actual offline manifest version and combined bytes. The loaded identity never changes in response to a network check. Neither release.json nor sw.js belongs in offline asset snapshots. Check metadata on open/reconnect/visibility and about every minute, timeout/abort stale responses, throttle event bursts and never fetch processing assets for a release check.
+
+Retain legacy DOWNLOAD/STATUS/encoder messages and base-scoped cache names. Add verified progress, cancellation and preparation messages. Hash cached responses against manifest integrity before completeness/reuse. New releases stage separately and preserve the previous cache on failure/cancellation. New worker installation does not itself opt a fresh user into offline downloads. One-time legacy migration recognises old complete caches and preserves them; never silently delete user files. Scope removal to app caches/registration only.
+
+Restart requires every affected window to acknowledge safe state and lock interaction before activation. Active commands, saves, composition, unsaved drafts/notes or session-only user files prevent acknowledgement. Missing/legacy participation fails closed, with recovery by closing the affected windows after saving. Controller changes alone never reload a current app. An explicit coordinated restart preserves each window's hash, saved files, drafts, notes and achievements.
+
+Separate drafting follows model/protocol construction; fresh built-site reader, separate sceptic, ranked fixes and independent checker precede the full quality gate and reviewed main deployment. Browser evidence must use real staged builds and workers, native-validated offline WASM output and fresh disconnected launches. Exercise corruption, interruption, cancellation, resume, eviction, removal and sibling storage; do not use timer-simulated progress.
+
+Sources: current src/release, src/offline, scripts/build-offline.mjs, src/cli/files.ts and both entry points; repository plan, AGENTS and cached upstream Assembly Lab workflow/authoring/style/platform references. Current full course release is ec04453, with evidence-only main head d392cea. Follow the runtime networking skill; unrestricted policy is currently enforced and no credential bindings are configured.

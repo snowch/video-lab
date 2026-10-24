@@ -6,7 +6,7 @@ import { ui } from "./content/ui.strings";
 import { home, modules } from "./content/home.strings";
 import { asset } from "./media/model";
 import "./style.css";
-import { OfflineAccess } from "./offline/OfflineAccess";
+import { AppStatus } from "./app-status/AppStatus";
 import { j } from "./journey/strings";
 import { ProjectProvider } from "./journey/project";
 import { CommandLab } from "./cli/Workspace";
@@ -17,7 +17,6 @@ import { chapterTitles, courseUI } from "./course/strings";
 import { referenceLessons } from "./cli/reference.strings";
 import { RecordingGuide } from "./capture/RecordingGuide";
 import { recordingGuide } from "./capture/guide.strings";
-import { ReleaseStatus } from "./release/ReleaseStatus";
 const storage = browserStorage();
 function Home() {
   return (
@@ -192,7 +191,7 @@ function App() {
           </nav>
         </div>
       </header>
-      <OfflineAccess />
+      <AppStatus />
       {step && (
         <nav className="journey-nav" aria-label={home.planTitle}>
           <label className="chapter-picker">
@@ -263,7 +262,7 @@ function App() {
       </main>
       <footer className="site-footer">
         <span>{ui.copyright}</span>
-        <ReleaseStatus />
+
         <a href="https://github.com/snowch/video-lab/blob/main/docs/sources.md">
           {ui.source}
         </a>

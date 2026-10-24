@@ -1,0 +1,101 @@
+/* Copyright © 2026 Christopher Snow */
+.app-status {
+  width: min(100% - 2rem, 76rem);
+  margin: 1rem auto;
+  color: var(--text, var(--ink));
+}
+.app-status summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1.5rem;
+  padding: 0.8rem;
+  cursor: pointer;
+}
+.app-status summary::before {
+  content: "▸";
+}
+.app-status details[open] > summary::before {
+  content: "▾";
+}
+.app-status .release-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  font-size: 0.9rem;
+  margin: 0;
+}
+.app-status-content {
+  padding: 0 1rem 1rem;
+  display: grid;
+  gap: 1rem;
+}
+.app-status-content > section + section {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.app-status h2 {
+  font-size: 1.15rem;
+  margin-top: 1rem;
+}
+.app-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.app-update-badge {
+  font-weight: 700;
+  border: 1px solid currentColor;
+  border-radius: 1rem;
+  padding: 0.15rem 0.6rem;
+}
+.app-download-progress {
+  display: grid;
+  gap: 0.6rem;
+}
+.app-download-progress progress {
+  width: 100%;
+  height: 1rem;
+  accent-color: var(--accent);
+}
+.app-status dialog {
+  width: min(34rem, calc(100% - 2rem));
+  max-height: 90dvh;
+  overflow: auto;
+  color: inherit;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+.app-status dialog::backdrop {
+  background: #0008;
+}
+.app-status p,
+.app-status summary,
+.app-status button {
+  overflow-wrap: anywhere;
+}
+.app-status button {
+  min-height: 44px;
+  max-width: 100%;
+}
+@media (max-width: 599px) {
+  .app-status summary {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .app-status .release-status {
+    width: 100%;
+  }
+  .app-status-content {
+    padding-inline: 0.8rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-status * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

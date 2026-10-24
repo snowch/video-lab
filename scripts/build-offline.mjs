@@ -52,12 +52,22 @@ const manifest = {
   files,
 };
 await writeFile("dist/offline-manifest.json", JSON.stringify(manifest));
+const release = JSON.parse(await readFile("dist/release.json", "utf8"));
+await writeFile(
+  "dist/release.json",
+  JSON.stringify({
+    ...release,
+    version,
+    bytes: manifest.bytes + encoderManifest.bytes,
+  }),
+);
 await build({
   configFile: false,
   publicDir: false,
   define: {
     __OFFLINE_MANIFEST__: JSON.stringify(manifest),
     __ENCODER_MANIFEST__: JSON.stringify(encoderManifest),
+    __APP_BUILD__: JSON.stringify(release.build),
   },
   build: {
     outDir: "dist",

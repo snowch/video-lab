@@ -1,85 +1,76 @@
 // Copyright © 2026 Christopher Snow
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { releaseStrings as s } from "../src/release/strings";
-import { offline } from "../src/offline/strings";
-const published = JSON.parse(readFileSync("dist/release.json", "utf8")) as {
-  commit: string;
-};
-test("footer identifies the running commit and detects a different published build without reloading", async ({
+import { appStatusStrings as s } from "../src/app-status/strings";
+const published = JSON.parse(readFileSync("dist/release.json", "utf8"));
+test("running identity stays embedded; deployed metadata is network-only, validated and independent of offline readiness", async ({
   page,
+  context,
 }) => {
   await page.goto("./#/capture");
-  const footer = page.locator(".release-status");
-  await expect(footer).toHaveAttribute("data-release-state", "latest");
-  await expect(footer.getByRole("link")).toHaveText(
+  const control = page.locator(".app-status"),
+    badge = control.locator(".release-status");
+  await expect(badge).toHaveAttribute("data-release-state", "latest");
+  await expect(badge.locator("code")).toContainText(
     published.commit.slice(0, 7),
   );
-  await expect(footer.getByRole("link")).toHaveAttribute(
-    "href",
-    `https://github.com/snowch/video-lab/commit/${published.commit}`,
+  await expect(control).toHaveAttribute("data-running-build", published.build);
+  await page.route("**/release.json?*", (r) =>
+    r.fulfill({ json: { ...published, build: "a".repeat(64) } }),
   );
-  expect(await page.locator("script[src]").count()).toBeGreaterThan(0);
-  const manifest = await (
-    await page.request.get("offline-manifest.json")
-  ).json();
-  expect(
-    manifest.files.some(
-      (file: { path: string }) => file.path === "release.json",
-    ),
-  ).toBe(false);
-  const other =
-    published.commit === "a".repeat(40) ? "b".repeat(40) : "a".repeat(40);
-  await page.route("**/release.json?*", (route) =>
-    route.fulfill({ json: { commit: other } }),
+  await control.locator("summary").click();
+  await expect(control).toHaveAttribute("data-pending-update", "true");
+  await control.locator("summary").click();
+  await expect(badge).toContainText(s.outdated);
+  await expect(badge.locator("code")).toContainText(
+    published.commit.slice(0, 7),
   );
-  await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await expect(footer).toHaveAttribute("data-release-state", "outdated");
-  await expect(footer).toContainText("✕");
-  await expect(footer).toContainText(s.updateHint);
-  await expect(page).toHaveURL(/#\/capture$/);
+  await context.setOffline(true);
+  await expect(badge).toHaveAttribute("data-release-state", "offline");
+  await expect(badge).toContainText(s.outdated);
+  await context.setOffline(false);
+  await page.unroute("**/release.json?*");
+  await control.locator("summary").click();
+  await control.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(badge).toHaveAttribute("data-release-state", "latest");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
 });
-test("offline and failed checks stay unknown, then reconnection can confirm the current version", async ({
+test("failures, malformed metadata, stale responses and timeouts never claim current", async ({
   page,
-  context,
 }) => {
+  test.setTimeout(60000);
   await page.goto("./");
-  const footer = page.locator(".release-status");
-  test.setTimeout(90000);
-  await expect(footer).toHaveAttribute("data-release-state", "latest");
-  await page.locator(".offline-panel > details > summary").click();
-  await page
-    .getByRole("button", { name: offline.download, exact: true })
-    .click();
-  await expect(page.locator("[data-offline-ready]")).toHaveAttribute(
-    "data-offline-ready",
-    "true",
-    { timeout: 30000 },
+  const control = page.locator(".app-status"),
+    badge = control.locator(".release-status");
+  await expect(badge).toHaveAttribute("data-release-state", "latest");
+  await control.locator("summary").click();
+  await page.route("**/release.json?*", (r) =>
+    r.fulfill({ json: { commit: published.commit } }),
   );
-  await context.setOffline(true);
-  await page.reload();
-  await expect(footer.getByRole("link")).toHaveText(
-    published.commit.slice(0, 7),
-  );
-  await expect(footer).toHaveAttribute("data-release-state", "offline");
-  await expect(footer).not.toContainText("✓");
-  await page.route("**/release.json?*", (route) =>
-    route.fulfill({ json: { commit: "invalid" } }),
-  );
-  await context.setOffline(false);
-  // Firefox automation can omit the online event after an offline reload.
-  await page.evaluate(() => dispatchEvent(new Event("online")));
-  await expect(footer).toHaveAttribute("data-release-state", "unavailable");
+  await control.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(badge).toHaveAttribute("data-release-state", "unavailable");
   await page.unroute("**/release.json?*");
-  await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await expect(footer).toHaveAttribute("data-release-state", "latest");
-  await expect(footer).toContainText("✓");
-  await page.route("**/release.json?*", (route) => route.abort());
-  await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await expect(footer).toHaveAttribute("data-release-state", "unavailable");
+  await page.route("**/release.json?*", (r) => r.abort());
+  await control.getByRole("button", { name: s.retry, exact: true }).click();
+  await expect(badge).toHaveAttribute("data-release-state", "unavailable");
+  await page.unroute("**/release.json?*");
+  await page.route("**/release.json?*", async (r) => {
+    await new Promise((resolve) => setTimeout(resolve, 11000));
+    await r.fulfill({ json: published }).catch(() => {});
+  });
+  await control.getByRole("button", { name: s.retry, exact: true }).click();
+  await expect(badge).toHaveAttribute("data-release-state", "unavailable", {
+    timeout: 12000,
+  });
+  await page.unroute("**/release.json?*");
+  await control.getByRole("button", { name: s.retry, exact: true }).click();
+  await expect(badge).toHaveAttribute("data-release-state", "latest");
+  await expect(control.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
+  );
 });

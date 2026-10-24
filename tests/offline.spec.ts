@@ -1,96 +1,31 @@
 // Copyright © 2026 Christopher Snow
-import { test as base, expect, type Locator } from "@playwright/test";
-import { createServer } from "node:http";
+import { expect } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
-import { extname, resolve } from "node:path";
+import { test } from "./status-site";
 import { offline } from "../src/offline/strings";
-import { cli } from "../src/cli/strings";
+import { appStatusStrings as s } from "../src/app-status/strings";
 import { command, terminal } from "./cli-helpers";
-
-const root = resolve("dist");
-type Site = {
-  url: string;
-  fail: string;
-  corrupt: string;
-  revision: number;
-  requests: Record<string, number>;
-};
-// A real HTTP origin (not route mocks) exercises service-worker requests in both browsers.
-const test = base.extend<{ site: Site }>({
-  site: async ({}, use) => {
-    const site: Site = {
-      url: "",
-      fail: "",
-      corrupt: "",
-      revision: 0,
-      requests: {},
-    };
-    const server = createServer(async (req, res) => {
-      try {
-        const path = new URL(req.url!, "http://localhost").pathname;
-        if (!path.startsWith("/video-lab/")) {
-          res.writeHead(404).end();
-          return;
-        }
-        site.requests[path] = (site.requests[path] ?? 0) + 1;
-        if (site.fail && path.endsWith(site.fail)) {
-          res.writeHead(503).end();
-          return;
-        }
-        const relative = path.slice("/video-lab/".length) || "index.html";
-        const file = resolve(root, relative);
-        if (!file.startsWith(root + "/")) {
-          res.writeHead(404).end();
-          return;
-        }
-        let data = await readFile(file);
-        if (site.corrupt && path.endsWith(site.corrupt))
-          data = Buffer.from("wrong file contents");
-        if (relative === "sw.js" && site.revision) {
-          // Change only the cache version to exercise a second complete deployment.
-          const baselineVersion = JSON.parse(
-            await readFile(resolve(root, "offline-manifest.json"), "utf8"),
-          ).version;
-          data = Buffer.from(
-            data
-              .toString()
-              .replace(baselineVersion, `test-release-${site.revision}`),
-          );
-        }
-        const types: Record<string, string> = {
-          ".html": "text/html",
-          ".js": "text/javascript",
-          ".css": "text/css",
-          ".json": "application/json",
-          ".webmanifest": "application/manifest+json",
-          ".png": "image/png",
-          ".svg": "image/svg+xml",
-          ".mp4": "video/mp4",
-          ".jpg": "image/jpeg",
-          ".woff2": "font/woff2",
-          ".woff": "font/woff",
-          ".ttf": "font/ttf",
-        };
-        res.writeHead(200, {
-          "content-type": types[extname(file)] ?? "application/octet-stream",
-          "cache-control": "no-store",
-          "content-length": data.length,
-        });
-        res.end(data);
-      } catch {
-        res.writeHead(404).end();
-      }
-    });
-    await new Promise<void>((done) => server.listen(0, "127.0.0.1", done));
-    const address = server.address() as { port: number };
-    site.url = `http://127.0.0.1:${address.port}/video-lab/`;
-    await use(site);
-    server.closeAllConnections();
-    await new Promise<void>((done, reject) =>
-      server.close((e) => (e ? reject(e) : done())),
-    );
-  },
-});
+test.use({ actionTimeout: 10000 });
+async function panel(page: Page) {
+  const p = page.locator(".app-status");
+  if (
+    !(await p
+      .locator("details")
+      .evaluate((d) => (d as HTMLDetailsElement).open))
+  )
+    await p.locator("summary").click();
+  return p;
+}
+async function save(page: Page) {
+  const p = await panel(page);
+  await p.getByRole("button", { name: s.download, exact: true }).click();
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+    { timeout: 45000 },
+  );
+}
 async function seekAndPlay(video: Locator) {
   await video.scrollIntoViewIfNeeded();
   await expect
@@ -210,388 +145,593 @@ test("complete download survives offline reload and new tab, with all media and 
   );
   await second.close();
 });
-test("incomplete download reports failure and retries; missing storage can be repaired", async ({
+
+test("verified partial saves retry corrupt assets, repair eviction and preserve sibling storage", async ({
   page,
   context,
   site,
 }) => {
+  test.setTimeout(90000);
   site.fail = "media/frames/119.jpg";
   await page.goto(site.url);
-  const panel = page.locator(".offline-panel");
-  await panel.locator(":scope > details > summary").click();
-  await panel
-    .getByRole("button", { name: offline.download, exact: true })
-    .click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.failed,
-    {
-      timeout: 30000,
-    },
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  const p = await panel(page);
+  await p.getByRole("button", { name: s.download, exact: true }).click();
+  await expect(p).toContainText(s.downloadFailed, { timeout: 30000 });
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
   site.fail = "";
   site.corrupt = "media/frames/119.jpg";
-  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.failed,
-  );
-  site.corrupt = "";
-  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.ready,
-    {
-      timeout: 30000,
-    },
-  );
-  // Inject eviction only after the download action settles, with no network repair.
+  await p.getByRole("button", { name: s.repair, exact: true }).click();
   await expect(
-    panel.getByRole("button", { name: offline.check, exact: true }),
+    p.getByRole("button", { name: s.repair, exact: true }),
   ).toBeEnabled();
+  site.corrupt = "";
+  await p.getByRole("button", { name: s.repair, exact: true }).click();
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+    { timeout: 30000 },
+  );
+  const wasm = JSON.parse(
+    await readFile("dist/encoder-manifest.json", "utf8"),
+  ).files.find((f: { path: string }) => f.path.endsWith(".wasm")).path;
+  await page.evaluate(async (path) => {
+    await caches.open("sibling-course");
+    for (const name of await caches.keys())
+      if (name.includes("video-lab-offline:/video-lab/:encoder:"))
+        await (
+          await caches.open(name)
+        ).put(
+          new URL(path, location.href),
+          new Response("corrupted cached bytes"),
+        );
+  }, wasm);
   await context.setOffline(true);
-  expect(
-    await page.evaluate(async () => {
-      await caches.open("another-app-cache");
-      let removed = false;
-      for (const name of await caches.keys())
-        if (name.startsWith("video-lab-offline:")) {
-          const cache = await caches.open(name);
-          removed =
-            (await cache.delete(
-              new URL("media/frames/119.jpg", location.href),
-            )) || removed;
-        }
-      return removed;
-    }),
-  ).toBe(true);
-  await page.reload();
-  await panel.locator(":scope > details > summary").click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  await page.evaluate(() => dispatchEvent(new Event("focus")));
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
   await context.setOffline(false);
-  await panel
-    .getByRole("button", { name: offline.download, exact: true })
+  await page.evaluate(() => dispatchEvent(new Event("online")));
+  await p.getByRole("button", { name: s.resume, exact: true }).click();
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+    { timeout: 30000 },
+  );
+  expect(await page.evaluate(() => caches.has("sibling-course"))).toBe(true);
+});
+
+test("two real builds detect, prepare, defer and safely restart every window, retaining complete offline work", async ({
+  page,
+  context,
+  site,
+}) => {
+  test.setTimeout(150000);
+  await page.goto(site.url + "#/capture");
+  await page
+    .getByRole("button", { name: "Use practice video", exact: true })
     .click();
-  // Firefox's emulated connectivity signal may lag behind restored requests.
-  // The repair contract is a complete saved copy, regardless of that signal.
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  await expect(page.locator(".cli-preview video")).toBeVisible();
+  await save(page);
+  await page.goto(site.url + "#/inspect/reference");
+  await command(page, 'note retained.txt "Keep this through update."');
+  await page.goto(site.url + "#/inspect/lesson/duration");
+  await page
+    .getByRole("textbox", { name: "Command", exact: true })
+    .fill("ffprobe mousepad-demo.mp4");
+  const first = await page
+    .locator(".app-status")
+    .getAttribute("data-running-build");
+  const second = await context.newPage();
+  await second.goto(site.url + "optional/command-workbench.html");
+  await second
+    .getByRole("button", { name: "Use practice video", exact: true })
+    .click();
+  await second
+    .getByRole("button", { name: "Continue to Inspect →", exact: true })
+    .click();
+  const before = Object.entries(site.requests)
+    .filter(([k]) => !["release.json", "sw.js"].includes(k))
+    .reduce((n, [, v]) => n + v, 0);
+  site.release = 1;
+  const p = await panel(page);
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  expect(
+    Object.entries(site.requests)
+      .filter(([k]) => !["release.json", "sw.js"].includes(k))
+      .reduce((n, [, v]) => n + v, 0),
+  ).toBe(before);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 45000,
+  });
+  await p.getByRole("button", { name: s.later, exact: true }).click();
+  await expect(p.locator("summary")).toContainText(s.ready);
+  await expect(p).toHaveAttribute("data-running-build", first!);
+  await second.locator("#command").dispatchEvent("compositionstart");
+  await panel(page);
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.restartFailed, {
+    timeout: 15000,
+  });
+  await expect(p).toHaveAttribute("data-running-build", first!);
+  await second.locator("#command").dispatchEvent("compositionend");
+  // The other real workbench performs actual WASM work; no fake busy timer or mocked engine.
+  await second
+    .getByRole("button", { name: "Type command", exact: true })
+    .click();
+  await second
+    .locator("#command")
+    .fill(
+      'ffmpeg -i mousepad-demo.mp4 -vf "scale=1920:1080" -c:v libx264 -preset veryslow -t 12 running.mp4',
+    );
+  await second
+    .getByRole("button", { name: "Run command →", exact: true })
+    .click();
+  await expect(
+    second.getByRole("button", { name: "Cancel operation", exact: true }),
+  ).toBeVisible();
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.restartFailed, {
+    timeout: 15000,
+  });
+  await expect(p).toHaveAttribute("data-running-build", first!);
+  await second
+    .getByRole("button", { name: "Cancel operation", exact: true })
+    .click();
+  await expect(
+    second.getByRole("button", { name: "Run command →", exact: true }),
+  ).toBeEnabled();
+  // Drop one activation request to prove timeout recovery before a real coordinated restart.
+  await page.evaluate(() => {
+    const original = ServiceWorker.prototype.postMessage;
+    let drop = true;
+    ServiceWorker.prototype.postMessage = function (message, transfer) {
+      if (message === "ACTIVATE" && drop) {
+        drop = false;
+        return;
+      }
+      return original.call(
+        this,
+        message,
+        Array.isArray(transfer) ? { transfer } : transfer,
+      );
+    };
+  });
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.restartFailed, {
+    timeout: 15000,
+  });
+  await Promise.all([
+    page.waitForEvent("framenavigated", (f) => f === page.mainFrame()),
+    second.waitForEvent("framenavigated", (f) => f === second.mainFrame()),
+    p.getByRole("button", { name: s.restart, exact: true }).click(),
+  ]);
+  const replacement = JSON.parse(
+    await readFile(".media-work/status-release/release.json", "utf8"),
+  );
+  await expect(p).toHaveAttribute("data-running-build", replacement.build);
+  await expect(second.locator(".app-status")).toHaveAttribute(
+    "data-running-build",
+    replacement.build,
+  );
+  await expect(page).toHaveURL(/#\/inspect\/lesson\/duration$/);
+  await expect(
+    page.getByRole("textbox", { name: "Command", exact: true }),
+  ).toHaveValue("ffprobe mousepad-demo.mp4");
+  await context.setOffline(true);
+  await page.reload();
+  await panel(page);
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "true",
   );
-  expect(await page.evaluate(() => caches.has("another-app-cache"))).toBe(true);
+  await command(page, "cat retained.txt");
+  await expect(terminal(page)).toContainText("Keep this through update.");
+  await command(page, "ffprobe mousepad-demo.mp4");
+  await expect(
+    page.getByLabel("Command output", { exact: true }),
+  ).toContainText("Duration: 00:00:12.00");
+  await second.close();
 });
-test("updates wait for a complete copy and explicit reload, preserving saved work", async ({
+
+test("cancelled preparation and failed replacement keep the previous release usable, then resume", async ({
   page,
   context,
   site,
 }) => {
   test.setTimeout(90000);
-  await page.goto(site.url + "#/module-2");
-  const panel = page.locator(".offline-panel");
-  await panel.locator(":scope > details > summary").click();
-  await panel
-    .getByRole("button", { name: offline.download, exact: true })
-    .click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.ready,
-    {
-      timeout: 30000,
-    },
-  );
-  await command(page, 'note update.txt "Keep this note through an update."');
-  await page.evaluate(() => caches.open("another-app-cache"));
-  site.revision = 1;
-  site.fail = "media/frames/119.jpg";
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateFailed,
-    {
-      timeout: 30000,
-    },
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  await page.goto(site.url + "#/capture");
+  await save(page);
+  const p = await panel(page),
+    first = await p.getAttribute("data-running-build");
+  site.release = 1;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  site.delay = "app-status-release-fixture.txt";
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.getByRole("progressbar")).toBeVisible();
+  await p.getByRole("button", { name: s.cancel, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.updatePaused, {
+    timeout: 15000,
+  });
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "true",
   );
   await context.setOffline(true);
   await page.reload();
-  await command(page, "reference cuts");
-  await command(page, "play reference-cuts.mp4");
-  await seekAndPlay(page.locator(".cli-preview video"));
-  await panel.locator(":scope > details > summary").click();
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateFailed,
-  );
-  await panel.locator(":scope > details > summary").click();
+  await expect(p).toHaveAttribute("data-running-build", first!);
   await context.setOffline(false);
+  await page.evaluate(() => dispatchEvent(new Event("online")));
+  await panel(page);
+  site.delay = "";
+  site.fail = "app-status-release-fixture.txt";
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator(".release-status")).toHaveAttribute(
+    "data-release-state",
+    "outdated",
+  );
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(
+    s.prepareUnavailable,
+  );
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+  );
   site.fail = "";
-  // A distinct script ensures retry even if the browser remembers the failed update.
-  site.revision = 2;
-  await panel.locator(":scope > details > summary").click();
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateReady,
-    {
-      timeout: 30000,
-    },
-  );
-  await command(page, "cat update.txt");
-  await expect(terminal(page)).toContainText(
-    "Keep this note through an update.",
-  );
-  const second = await context.newPage();
-  await second.goto(site.url + "#/module-0");
-  // Lose one activation message deliberately: the control must report failure
-  // and offer a working retry rather than remain a silent no-op.
-  await page.evaluate(() => {
-    const original = ServiceWorker.prototype.postMessage as (
-      this: ServiceWorker,
-      message: unknown,
-      transfer?: Transferable[],
-    ) => void;
-    let dropped = false;
-    Object.defineProperty(ServiceWorker.prototype, "postMessage", {
-      configurable: true,
-      value: function (
-        this: ServiceWorker,
-        message: unknown,
-        transfer?: Transferable[],
-      ) {
-        if (message === "ACTIVATE" && !dropped) {
-          dropped = true;
-          return;
-        }
-        original.call(this, message, transfer);
-      },
-    });
+  await p.getByRole("button", { name: s.retry, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
   });
-  await panel
-    .getByRole("button", { name: offline.reload, exact: true })
-    .click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.activating,
-  );
-  await expect(
-    panel.getByRole("button", { name: offline.reload, exact: true }),
-  ).toBeDisabled();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.activationFailed,
-    {
-      timeout: 15000,
-    },
-  );
-  await expect(
-    panel.getByRole("button", { name: offline.reload, exact: true }),
-  ).toBeEnabled();
-  await Promise.all([
-    page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
-    second.waitForEvent(
-      "framenavigated",
-      (frame) => frame === second.mainFrame(),
-    ),
-    panel
-      .getByRole("button", { name: offline.reload, exact: true })
-      .press("Enter"),
-  ]);
-  await page.waitForLoadState();
-  await second.waitForLoadState();
-  await expect
-    .poll(() => page.evaluate(() => caches.keys()))
-    .toContain("video-lab-offline:/video-lab/:test-release-2");
-  await command(page, "cat update.txt");
-  await expect(terminal(page)).toContainText(
-    "Keep this note through an update.",
-  );
-  expect(await page.evaluate(() => caches.has("another-app-cache"))).toBe(true);
-  await context.setOffline(true);
-  await second.reload();
-  await command(second, "reference inspect");
-  await command(second, "play reference-inspect.mp4");
-  await seekAndPlay(second.locator(".cli-preview video"));
-  await second.close();
-  await context.setOffline(false);
-  await panel.locator(":scope > details > summary").click();
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.current,
-  );
-  site.revision = 3;
-  // Browser-initiated updates must replace a previous "up to date" status too.
-  await page.evaluate(async () =>
-    (await navigator.serviceWorker.getRegistration())!.update(),
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateReady,
-    {
-      timeout: 30000,
-    },
-  );
-  await context.setOffline(true);
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  // A waiting worker must not let a disconnected check report a fresh success.
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateFailed,
-  );
-  await expect(
-    panel.getByText(offline.updateReady, { exact: true }),
-  ).toBeVisible();
-  await context.setOffline(false);
-  site.revision = 4;
-  site.fail = "media/frames/119.jpg";
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.updateFailed,
-  );
-  await expect(
-    panel.getByText(offline.updateReady, { exact: true }),
-  ).toBeVisible();
-  await expect(
-    panel.getByRole("button", { name: offline.reload, exact: true }),
-  ).toBeEnabled();
 });
 
-test("unsupported browsers keep online lessons usable", async ({
-  page,
-  site,
-}) => {
-  await page.addInitScript(() => {
-    delete (Navigator.prototype as { serviceWorker?: unknown }).serviceWorker;
-  });
-  await page.goto(site.url + "#/module-2");
-  const panel = page.locator(".offline-panel");
-  await panel.locator(":scope > details > summary").focus();
-  await page.keyboard.press("Enter");
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.unsupported,
-  );
-  await expect(panel.getByRole("button")).toHaveCount(0);
-  await command(page, "reference cuts");
-  await command(page, "play reference-cuts.mp4");
-  await seekAndPlay(page.locator(".cli-preview video"));
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
-});
-
-test("legacy lesson-only saves, failed tools and eviction use one resumable download", async ({
+test("one download resumes legacy lesson-only protocol saves; removal preserves all user and sibling stores", async ({
   page,
   context,
   site,
 }) => {
   test.setTimeout(90000);
-  await page.goto(site.url + "#/module-2");
-  // Reproduce the previous release's actual lesson-only save using its retained protocol.
+  await page.goto(site.url + "#/capture");
   await page.evaluate(async () => {
     await navigator.serviceWorker.register("sw.js");
-    const reg = await navigator.serviceWorker.ready;
+    const r = await navigator.serviceWorker.ready;
     await new Promise<void>((resolve, reject) => {
-      const channel = new MessageChannel();
-      channel.port1.onmessage = (e) => {
-        channel.port1.close();
-        e.data.ready ? resolve() : reject(new Error("Legacy save failed"));
+      const c = new MessageChannel();
+      c.port1.onmessage = (e) => {
+        if (e.data.progress) {
+          reject(new Error("Legacy command emitted progress"));
+          return;
+        }
+        c.port1.close();
+        e.data.ready ? resolve() : reject(new Error("Legacy download failed"));
       };
-      reg.active!.postMessage("DOWNLOAD", [channel.port2]);
+      r.active!.postMessage("DOWNLOAD", [c.port2]);
     });
   });
-  await page.reload();
-  const panel = page.locator(".offline-panel");
-  await panel.locator(":scope > details > summary").click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.partial,
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  const p = await panel(page);
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
-  expect(
-    Object.keys(site.requests).some((path) => path.includes("/encoder/")),
-  ).toBe(false);
-  await expect(
-    panel.getByRole("button", { name: /processing tools/i }),
-  ).toHaveCount(0);
-  const [lessons, tools] = await Promise.all(
-    ["offline-manifest.json", "encoder-manifest.json"].map(async (path) =>
-      JSON.parse(await readFile("dist/" + path, "utf8")),
-    ),
+  await expect(p.locator("[data-offline-ready]")).toHaveText(
+    s.offlineIncomplete,
   );
-  await expect(panel).toContainText(
-    (lessons.bytes + tools.bytes).toLocaleString() + " B",
+  expect(Object.keys(site.requests).some((k) => k.startsWith("encoder/"))).toBe(
+    false,
   );
-  const baselineRequests = site.requests["/video-lab/media/frames/119.jpg"];
-  const wasm = tools.files.find((f: { path: string }) =>
-    f.path.endsWith(".wasm"),
-  ).path as string;
-  site.fail = wasm;
-  await panel
-    .getByRole("button", { name: offline.download, exact: true })
-    .click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.failed,
-    { timeout: 30000 },
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
-    "data-offline-ready",
-    "false",
-  );
-  site.fail = "";
-  site.corrupt = wasm;
-  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.failed,
-    { timeout: 30000 },
-  );
-  site.corrupt = "";
-  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.ready,
-    { timeout: 30000 },
-  );
-  expect(site.requests["/video-lab/media/frames/119.jpg"]).toBe(
-    baselineRequests,
-  );
-  await expect(
-    panel.getByRole("button", { name: offline.download, exact: true }),
-  ).toHaveCount(0);
-  await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.current,
-  );
-  await page.evaluate(async (wasm) => {
-    for (const name of await caches.keys())
-      if (name.startsWith("video-lab-offline:") && name.includes(":encoder:"))
-        await (await caches.open(name)).delete(new URL(wasm, location.href));
-  }, wasm);
-  await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.partial,
-  );
+  const count = site.requests["media/frames/119.jpg"];
   await context.setOffline(true);
   await page.reload();
-  await panel.locator(":scope > details > summary").click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveText(
-    offline.partial,
-  );
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  await panel(page);
+  const shipped = JSON.parse(await readFile("dist/release.json", "utf8"));
+  await expect(p).toContainText(shipped.bytes.toLocaleString() + " B");
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
   await context.setOffline(false);
-  await panel
-    .getByRole("button", { name: offline.download, exact: true })
-    .click();
-  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+  await page.evaluate(() => dispatchEvent(new Event("online")));
+  await p.getByRole("button", { name: s.resume, exact: true }).click();
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "true",
     { timeout: 30000 },
   );
-  expect(site.requests["/video-lab/media/frames/119.jpg"]).toBe(
-    baselineRequests,
+  expect(site.requests["media/frames/119.jpg"]).toBe(count);
+  await page.evaluate(async () => {
+    const r = await navigator.serviceWorker.getRegistration();
+    await new Promise<void>((resolve, reject) => {
+      const c = new MessageChannel();
+      c.port1.onmessage = (e) => {
+        c.port1.close();
+        e.data.ready === true && !e.data.progress
+          ? resolve()
+          : reject(new Error("Legacy encoder reply must be final"));
+      };
+      r!.active!.postMessage("DOWNLOAD_ENCODER", [c.port2]);
+    });
+  });
+  await page
+    .getByRole("button", { name: "Use practice video", exact: true })
+    .click();
+  await expect(page.locator(".cli-preview video")).toBeVisible();
+  await page.goto(site.url + "#/inspect/reference");
+  await command(page, 'note kept.txt "Do not remove user work."');
+  await page.evaluate(async () => {
+    localStorage.setItem("sibling:answer", "retained");
+    await (
+      await caches.open("sibling-cache")
+    ).put("/sibling/data", new Response("kept"));
+  });
+  await panel(page);
+  await p.getByRole("button", { name: s.remove, exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: s.removeTitle, exact: true });
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(
+    p.getByRole("button", { name: s.remove, exact: true }),
+  ).toBeFocused();
+  await p.getByRole("button", { name: s.remove, exact: true }).click();
+  await dialog
+    .getByRole("button", { name: s.confirmRemove, exact: true })
+    .click();
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
   );
+  expect(
+    await page.evaluate(async () => ({
+      sibling: localStorage.getItem("sibling:answer"),
+      cached: await caches.has("sibling-cache"),
+    })),
+  ).toEqual({ sibling: "retained", cached: true });
+  await command(page, "cat kept.txt");
+  await expect(terminal(page)).toContainText("Do not remove user work.");
+  await p.getByRole("button", { name: s.download, exact: true }).click();
+
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+    { timeout: 30000 },
+  );
+});
+
+test("unsupported storage keeps the online course and running identity available", async ({
+  page,
+  site,
+}) => {
+  // Feature absence, rather than an unavailable registration, is the unsupported case.
+  await page.addInitScript(() => {
+    delete (Navigator.prototype as unknown as Record<string, unknown>)
+      .serviceWorker;
+    delete (navigator as unknown as Record<string, unknown>).serviceWorker;
+  });
+  await page.goto(site.url);
+  const p = await panel(page);
+  await expect(p.locator("[data-offline-ready]")).toHaveText(
+    s.offlineUnavailable,
+  );
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(p.locator("summary code")).not.toBeEmpty();
+});
+
+test("Later survives closing every app window; only explicit restart selects the prepared saved release", async ({
+  page,
+  context,
+  site,
+}) => {
+  test.setTimeout(90000);
+  await page.goto(site.url + "#/capture");
+  await save(page);
+  const p = await panel(page),
+    first = await p.getAttribute("data-running-build");
+  site.release = 1;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
+  });
+  await p.getByRole("button", { name: s.later, exact: true }).click();
+  await page.close();
+  await context.setOffline(true);
+  const fresh = await context.newPage();
+  await fresh.goto(site.url + "#/capture");
+  const control = await panel(fresh);
+  await expect(control).toHaveAttribute("data-running-build", first!);
+  await expect(control.locator("summary")).toContainText(s.ready);
+  await fresh.evaluate(() => {
+    const original = ServiceWorker.prototype.postMessage;
+    let drop = true;
+    ServiceWorker.prototype.postMessage = function (message, options) {
+      if (message === "ACTIVATE" && drop) {
+        drop = false;
+        return;
+      }
+      return original.call(
+        this,
+        message,
+        Array.isArray(options) ? { transfer: options } : options,
+      );
+    };
+  });
+  await control.getByRole("button", { name: s.restart, exact: true }).click();
+  await expect(control.locator("[data-version-state]")).toHaveText(
+    s.restartFailed,
+    { timeout: 15000 },
+  );
+  await expect(control).toHaveAttribute("data-running-build", first!);
+  await control.getByRole("button", { name: s.restart, exact: true }).click();
+  const replacement = JSON.parse(
+    await readFile(".media-work/status-release/release.json", "utf8"),
+  );
+  await expect(control).toHaveAttribute(
+    "data-running-build",
+    replacement.build,
+  );
+  await expect(control.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+  );
+});
+
+test("online-only update does not opt into the processing-tool offline download", async ({
+  page,
+  site,
+}) => {
+  test.setTimeout(60000);
+  await page.goto(site.url + "#/");
+  const p = await panel(page);
+  site.release = 1;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
+  });
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  const replacement = JSON.parse(
+    await readFile(".media-work/status-release/release.json", "utf8"),
+  );
+  await expect(p).toHaveAttribute("data-running-build", replacement.build);
+  await panel(page);
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
+  );
+  expect(Object.keys(site.requests).some((k) => k.startsWith("encoder/"))).toBe(
+    false,
+  );
+});
+
+test("empty workspaces can restart with unavailable media storage", async ({
+  page,
+  site,
+}) => {
+  test.setTimeout(60000);
+  await page.addInitScript(() => {
+    IDBFactory.prototype.open = function () {
+      throw new DOMException("Media storage unavailable", "InvalidStateError");
+    };
+  });
+  await page.goto(site.url + "#/capture");
+  await expect(page.locator(".cli-lab")).toHaveAttribute(
+    "data-workspace-ready",
+    "true",
+  );
+  const p = await panel(page);
+  site.release = 1;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
+  });
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  const replacement = JSON.parse(
+    await readFile(".media-work/status-release/release.json", "utf8"),
+  );
+  await expect(p).toHaveAttribute("data-running-build", replacement.build);
+});
+
+test("non-durable imported work in another tab blocks restart until it is downloaded and that tab closes", async ({
+  page,
+  context,
+  site,
+}) => {
+  test.setTimeout(60000);
+  await page.goto(site.url + "#/");
+  const p = await panel(page);
+  const first = await p.getAttribute("data-running-build");
+  const other = await context.newPage();
+  await other.addInitScript(() => {
+    IDBFactory.prototype.open = function () {
+      throw new DOMException("Storage unavailable", "InvalidStateError");
+    };
+  });
+  await other.goto(site.url + "#/capture");
+  const original = await readFile("public/media/mousepad-demo.mp4");
+  const chooser = other.waitForEvent("filechooser");
+  await other.getByRole("button", { name: "Import file", exact: true }).click();
+  await (
+    await chooser
+  ).setFiles({ name: "unsaved.mp4", mimeType: "video/mp4", buffer: original });
+  await expect(other.locator(".cli-preview video")).toBeVisible();
+  site.release = 1;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
+  });
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.restartFailed, {
+    timeout: 15000,
+  });
+  await expect(p).toHaveAttribute("data-running-build", first!);
+  const pending = other.waitForEvent("download");
+  await other
+    .getByRole("button", { name: "Download unsaved.mp4", exact: true })
+    .click();
+  expect(await readFile((await (await pending).path())!)).toEqual(original);
+  await other.close();
+  await p.getByRole("button", { name: s.restart, exact: true }).click();
+  const replacement = JSON.parse(
+    await readFile(".media-work/status-release/release.json", "utf8"),
+  );
+  await expect(p).toHaveAttribute("data-running-build", replacement.build);
+});
+
+test("incoherent deployed metadata cannot mark another asset set ready; retry prepares the actual published build", async ({
+  page,
+  site,
+}) => {
+  test.setTimeout(60000);
+  await page.goto(site.url + "#/capture");
+  await save(page);
+  const p = await panel(page);
+  site.release = 1;
+  site.metadata = { build: "c".repeat(64) };
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.outdated);
+  await p.getByRole("button", { name: s.update, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(
+    s.prepareUnavailable,
+    { timeout: 15000 },
+  );
+  await expect(p.locator("summary")).not.toContainText(s.ready);
+  await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+  );
+  expect(
+    await page.evaluate(async () => {
+      const r = await navigator.serviceWorker.getRegistration();
+      return await new Promise((resolve) => {
+        const c = new MessageChannel();
+        c.port1.onmessage = (e) => {
+          c.port1.close();
+          resolve(e.data.prepared);
+        };
+        r!.waiting!.postMessage("DETAILS", [c.port2]);
+      });
+    }),
+  ).toBe(false);
+  site.metadata = undefined;
+  await p.getByRole("button", { name: s.check, exact: true }).click();
+  await expect(p.locator(".release-status")).toHaveAttribute(
+    "data-release-state",
+    "outdated",
+  );
+  await p.getByRole("button", { name: s.retry, exact: true }).click();
+  await expect(p.locator("[data-version-state]")).toHaveText(s.ready, {
+    timeout: 30000,
+  });
 });

@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**App status, 24 October 2026:** [Issue 6](notes/issue-6/01-facts.md) unifies version identity, deployed-release checks, explicit preparation and coordinated restart with complete offline access. Prepared updates remain deferred until Restart; saved files, drafts and sibling apps are protected. This supersedes earlier separate footer/offline update controls.
+
 **Substantive chapters and coherent navigation, 24 October 2026:** [the chapter teaching slice](notes/course-depth/01-facts.md) makes one visible five-chapter sequence: Choose your source video → Inspect your video → Trim and join clips → Build video from pictures → Export and verify. Each chapter teaches purpose and mechanisms, offers observable worked examples and ends in independent practice with progressive help and saved self-review. Real comparison clips and explanatory timing models support visual judgement; neither replaces learner execution evidence. Reference labs, planned topics and optional guides are separate. Historic route IDs and progress remain unchanged; lesson bookmarks add browser back/forward. Installation shows its prompt or one relevant fallback.
 
 **One offline download, 24 October 2026:** [the unified download slice](notes/unified-offline/01-facts.md) supersedes separate lesson/tool controls. One action saves lessons, media and pinned processing tools; readiness requires both manifests. Older partial saves are repaired without deleting user work. Installation stays optional and distinct.

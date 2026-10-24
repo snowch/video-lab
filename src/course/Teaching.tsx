@@ -1,3 +1,4 @@
+import { useRestartGuard } from "../app-status/safety";
 // Copyright © 2026 Christopher Snow
 import { useState } from "react";
 import { assetURL } from "../journey/shared";
@@ -239,6 +240,7 @@ export function PracticeReview({
       }
     }),
     [saved, setSaved] = useState(true);
+  useRestartGuard(() => saved);
   function update(value: string) {
     setReview(value);
     try {

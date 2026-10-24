@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRestartGuard } from "../app-status/safety";
 import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
 import { useBlobURL, useProject } from "../journey/project";
 import { assetURL } from "../journey/shared";
@@ -92,7 +93,11 @@ export function CommandLab({
   const [lines, setLines] = useState<string[]>([]),
     [command, setCommand] = useState(() => {
       try {
-        return localStorage.getItem("video-lab:course-command-draft") ?? "";
+        return (
+          sessionStorage.getItem("video-lab:course-command-draft") ??
+          localStorage.getItem("video-lab:course-command-draft") ??
+          ""
+        );
       } catch {
         return "";
       }
@@ -137,6 +142,21 @@ export function CommandLab({
   const generation = useRef(0),
     locked = useRef(false),
     mounted = useRef(true);
+  useRestartGuard(() => {
+    try {
+      return (
+        ready &&
+        !busy &&
+        !locked.current &&
+        (persistent || Object.keys(files).length === 0) &&
+        (project.persistent || Object.keys(project.records).length === 0) &&
+        !noteText &&
+        sessionStorage.getItem("video-lab:course-command-draft") === command
+      );
+    } catch {
+      return false;
+    }
+  });
   const current = useRef({ step, project });
   current.current = { step, project };
   function print(line: string) {
@@ -158,6 +178,7 @@ export function CommandLab({
   useEffect(() => {
     try {
       localStorage.setItem("video-lab:course-command-draft", command);
+      sessionStorage.setItem("video-lab:course-command-draft", command);
     } catch {
       /* The current draft still works in this session. */
     }
@@ -499,6 +520,7 @@ export function CommandLab({
             live,
           );
           live();
+          setNoteText("");
           print(`${refStrings.noteSaved} ${args[0]}`);
         } else if (tool === "progress") {
           simple(0);

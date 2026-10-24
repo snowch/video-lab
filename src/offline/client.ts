@@ -1,8 +1,20 @@
 // Copyright © 2026 Christopher Snow
 export function workerMessage(
   worker: ServiceWorker,
-  message: string,
-): Promise<{ ready: boolean }> {
+  message:
+    string | { type: string; full?: boolean; build?: string; version?: string },
+  progress?: (value: { done: number; total: number }) => void,
+): Promise<{
+  ready: boolean;
+  count?: number;
+  bytes?: number;
+  total?: number;
+  toolsReady?: boolean;
+  offlineWanted?: boolean;
+  build?: string;
+  version?: string;
+  prepared?: boolean;
+}> {
   return new Promise((resolve, reject) => {
     const channel = new MessageChannel();
     const timeout = setTimeout(
@@ -10,9 +22,18 @@ export function workerMessage(
         channel.port1.close();
         reject(new Error("Offline worker timeout"));
       },
-      message === "STATUS" ? 10000 : 180000,
+      typeof message === "string" &&
+        ["STATUS", "DETAILS", "ENCODER_STATUS", "CANCEL", "ACTIVATE"].includes(
+          message,
+        )
+        ? 10000
+        : 180000,
     );
     channel.port1.onmessage = (event) => {
+      if (event.data?.progress) {
+        progress?.(event.data);
+        return;
+      }
       clearTimeout(timeout);
       channel.port1.close();
       resolve(event.data as { ready: boolean });

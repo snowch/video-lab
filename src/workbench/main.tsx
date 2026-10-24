@@ -1,11 +1,11 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRestartGuard } from "../app-status/safety";
 import { createRoot } from "react-dom/client";
 import { disk, checkFiles, mimeFor } from "../cli/files";
 import type { Files, WorkspaceFile } from "../cli/files";
 import { cancelProcessing, inspectMedia, runTool } from "../processing/engine";
-import { OfflineAccess } from "../offline/OfflineAccess";
-import { ReleaseStatus } from "../release/ReleaseStatus";
+import { AppStatus } from "../app-status/AppStatus";
 import { assetURL } from "../journey/shared";
 import { availableName, buildCommand, defaults, planRun } from "./model";
 import type { Options } from "./model";
@@ -155,6 +155,8 @@ function App() {
     [logStage, setLogStage] = useState(0),
     [logCommand, setLogCommand] = useState(""),
     [remove, setRemove] = useState("");
+  const unsafeStorage = useRef(false),
+    unsafeDraft = useRef(false);
   const generation = useRef(0),
     activeMedia = useRef(false),
     locked = useRef(false),
@@ -167,6 +169,16 @@ function App() {
     d = drafts[stage] ?? initialDraft(),
     built = buildCommand(stage, source?.name ?? "mousepad-demo.mp4", options),
     command = d.mode === "manual" ? d.text : built;
+  useRestartGuard(
+    () =>
+      ready &&
+      !busy &&
+      !saving &&
+      !locked.current &&
+      !savingRef.current &&
+      (!unsafeStorage.current || Object.keys(files).length === 0) &&
+      !unsafeDraft.current,
+  );
   const patchDraft = (patch: Partial<Draft>) =>
     setDrafts((old) => ({ ...old, [stage]: { ...old[stage]!, ...patch } }));
   const changeOption = <K extends keyof Options>(key: K, value: Options[K]) => {
@@ -190,7 +202,11 @@ function App() {
         const restored = Object.fromEntries(saved.map((f) => [f.name, f]));
         setFiles(restored);
         try {
-          const state = JSON.parse(localStorage.getItem(storageKey) ?? "null");
+          const state = JSON.parse(
+            sessionStorage.getItem(storageKey) ??
+              localStorage.getItem(storageKey) ??
+              "null",
+          );
           if (state) {
             if (restored[state.sourceName]) setSourceName(state.sourceName);
             if (
@@ -218,7 +234,10 @@ function App() {
         }
       })
       .catch(() => {
-        if (alive) setError(C.live.storageFailed);
+        if (alive) {
+          unsafeStorage.current = true;
+          setError(C.live.storageFailed);
+        }
       })
       .finally(() => {
         if (alive) setReady(true);
@@ -232,20 +251,21 @@ function App() {
   useEffect(() => {
     if (!ready) return;
     try {
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify({
-          sourceName,
-          options,
-          drafts: Object.fromEntries(
-            Object.entries(drafts).map(([k, v]) => [
-              k,
-              { mode: v.mode, text: v.text, restored: v.restored },
-            ]),
-          ),
-        }),
-      );
+      const savedState = JSON.stringify({
+        sourceName,
+        options,
+        drafts: Object.fromEntries(
+          Object.entries(drafts).map(([k, v]) => [
+            k,
+            { mode: v.mode, text: v.text, restored: v.restored },
+          ]),
+        ),
+      });
+      sessionStorage.setItem(storageKey, savedState);
+      localStorage.setItem(storageKey, savedState);
+      unsafeDraft.current = false;
     } catch {
+      unsafeDraft.current = true;
       setError(C.live.storageFailed);
     }
   }, [ready, sourceName, options, drafts]);
@@ -549,6 +569,7 @@ function App() {
           </button>
         </div>
       </header>
+      <AppStatus />
       <main>
         <nav aria-label={C.stepsLabel}>
           <ol className="steps">
@@ -1065,10 +1086,6 @@ function App() {
         <span>{C.copyright}</span>
         <div>
           <a href={assetURL("")}>{C.live.course}</a>
-        </div>
-        <div className="shared-controls">
-          <OfflineAccess />
-          <ReleaseStatus />
         </div>
       </footer>
     </>
