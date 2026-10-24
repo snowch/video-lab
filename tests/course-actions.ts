@@ -3,11 +3,42 @@ import { expect, type Page } from "@playwright/test";
 import { cli } from "../src/cli/strings";
 import { browserAction, courseUI as ux } from "../src/cli/course.strings";
 import { routeFor } from "../src/journey/routes";
+import { progressiveUI as flow } from "../src/cli/progressive.strings";
 import { parseCommand } from "../src/cli/command";
 export async function clickAction(page: Page, name: string) {
   const visible = page.getByRole("button", { name, exact: true }).first();
   if (await visible.isVisible()) {
     await visible.click();
+    return;
+  }
+  const files = page.getByRole("dialog", {
+    name: flow.files,
+    includeHidden: true,
+  });
+  if (
+    await files
+      .getByRole("button", { name, exact: true, includeHidden: true })
+      .count()
+  ) {
+    await page.getByRole("button", { name: flow.files, exact: true }).click();
+    await files.getByRole("button", { name, exact: true }).first().click();
+    if (await files.isVisible())
+      await files
+        .getByRole("button", { name: flow.close, exact: true })
+        .click();
+    return;
+  }
+  const comparison = page.getByRole("dialog", {
+    name: ux.comparisons,
+    includeHidden: true,
+  });
+  if (
+    await comparison
+      .getByRole("button", { name, exact: true, includeHidden: true })
+      .count()
+  ) {
+    await page.getByRole("button", { name: flow.compare, exact: true }).click();
+    await comparison.getByRole("button", { name, exact: true }).click();
     return;
   }
   const hidden = page
@@ -40,10 +71,53 @@ export async function workspaceAction(page: Page, text: string) {
     await clickAction(page, `${ux.hint} ${args[1] ?? 1}`);
   else if (tool === "solution") await clickAction(page, ux.solution);
   else if (tool === "check") await clickAction(page, `${ux.check} ${args[1]}`);
-  else await clickAction(page, browserAction(text));
+  else {
+    const destination =
+      tool === "capture" ? "Get video" : tool === "fixtures" ? "Build" : null;
+    if (
+      text === "reference build" ||
+      text === "reference edit" ||
+      text === "comparison"
+    ) {
+      if (
+        !(await page
+          .getByRole("button", {
+            name: browserAction(text),
+            exact: true,
+            includeHidden: true,
+          })
+          .count())
+      ) {
+        await page.goto(
+          text === "reference edit"
+            ? "./#/edit/reference"
+            : "./#/inspect/reference",
+        );
+      }
+    } else if (
+      destination &&
+      !(await page
+        .getByRole("button", {
+          name: browserAction(text),
+          exact: true,
+          includeHidden: true,
+        })
+        .count())
+    ) {
+      await page.getByRole("link", { name: destination, exact: true }).click();
+    }
+    await expect(page.locator(".cli-lab")).toHaveAttribute(
+      "data-workspace-ready",
+      "true",
+    );
+    await clickAction(page, browserAction(text));
+  }
   return true;
 }
 export async function runCommand(page: Page, text: string, result = cli.done) {
+  const opened = page.locator(".workspace-dialog[open]");
+  if (await opened.count())
+    await opened.getByRole("button", { name: flow.close, exact: true }).click();
   const route = routeFor(new URL(page.url()).hash);
   await expect(page.locator(".cli-lab")).toHaveAttribute(
     "data-step",
@@ -57,7 +131,25 @@ export async function runCommand(page: Page, text: string, result = cli.done) {
     "data-workspace-ready",
     "true",
   );
+  if (text === "ls") {
+    await page.getByRole("button", { name: flow.files, exact: true }).click();
+    const files = page.getByRole("dialog", { name: flow.files, exact: true });
+    await expect(files).toBeVisible();
+    await files.getByRole("button", { name: flow.close, exact: true }).click();
+    return;
+  }
   if (!(await workspaceAction(page, text))) {
+    if (route.step === "capture" || route.step === "publish") {
+      await page.getByRole("link", { name: "Inspect", exact: true }).click();
+      await expect(page.locator(".cli-lab")).toHaveAttribute(
+        "data-step",
+        "inspect",
+      );
+      await expect(page.locator(".cli-lab")).toHaveAttribute(
+        "data-workspace-ready",
+        "true",
+      );
+    }
     const entry = page.getByRole("textbox", {
       name: cli.input,
       exact: true,

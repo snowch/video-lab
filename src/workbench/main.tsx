@@ -8,7 +8,7 @@ import { CaptureController } from "../capture/controller";
 import type { CaptureState } from "../capture/controller";
 import { OfflineAccess } from "../offline/OfflineAccess";
 import { ReleaseStatus } from "../release/ReleaseStatus";
-import { EncoderOffline, assetURL } from "../journey/shared";
+import { assetURL } from "../journey/shared";
 import { availableName, buildCommand, defaults, planRun } from "./model";
 import type { Options } from "./model";
 import C from "./strings.json";
@@ -1155,7 +1155,6 @@ function App() {
         </div>
         <div className="shared-controls">
           <OfflineAccess />
-          <EncoderOffline />
           <ReleaseStatus />
         </div>
       </footer>

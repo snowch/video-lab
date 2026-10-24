@@ -6,14 +6,15 @@ export const offline = {
     "The update could not be opened. This tab remains open. Retry Reload to use update, or select Check for updates.",
   title: "Offline access and app installation",
   description:
-    "Download the available lessons, recordings and pictures so you can use them without an internet connection in this browser.",
-  idle: "No complete offline copy has been saved yet. Connect to the internet and download it before going offline.",
+    "Save lessons and practice media first. Add the separate processing tools if you want to run FFmpeg and ffprobe offline. Both downloads stay in this browser on this device.",
+  lessonsTitle: "Save lessons and practice media",
+  idle: "Lessons and practice media are not saved for offline use yet. Download them while connected.",
   downloading:
-    "Downloading the complete site. Keep this page open until the download is ready.",
+    "Saving lessons and practice media. Keep this page open until they are ready.",
   ready:
-    "The complete offline copy is ready in this browser on this device. Lessons, recordings and challenges can now work without an internet connection.",
+    "Lessons and practice media are saved for offline reading and playback in this browser. Running commands offline also needs the processing tools below.",
   offlineReady:
-    "Your saved copy is ready for offline use. You can open lessons, play recordings and complete challenges.",
+    "Your saved lessons and practice media are available offline. Running commands also needs the processing tools below.",
   offlineMissing:
     "No complete offline copy is available in this browser. Connect to the internet and download the site before relying on offline access.",
   checking:

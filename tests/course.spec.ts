@@ -159,6 +159,13 @@ test("every reachable production and reference lab is CLI on desktop and phone",
   ]) {
     await page.goto(`./#/${route}`);
     const input = page.getByRole("textbox", { name: cli.input, exact: true });
+    if (route === "capture" || route === "publish") {
+      await expect(input).toHaveCount(0);
+      await expect(
+        page.getByRole("button", { name: "Files", exact: true }),
+      ).toBeVisible();
+      continue;
+    }
     if (!(await input.isVisible())) {
       const hiddenInput = page.getByRole("textbox", {
         name: cli.input,

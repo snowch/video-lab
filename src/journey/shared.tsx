@@ -61,14 +61,18 @@ export function EncoderOffline() {
       setBusy(false);
     }
   }
+  if (
+    !("serviceWorker" in navigator) ||
+    !("caches" in window) ||
+    !isSecureContext
+  )
+    return null;
   return (
-    <details
+    <section
       className="encoder-offline"
-      onToggle={() => {
-        void refresh().catch(() => {});
-      }}
+      aria-labelledby="encoder-offline-title"
     >
-      <summary>{j.common.encoderTitle}</summary>
+      <h3 id="encoder-offline-title">{j.common.encoderTitle}</h3>
       <p>{j.common.encoderNote}</p>
       {bytes !== undefined && (
         <p>
@@ -91,6 +95,6 @@ export function EncoderOffline() {
       >
         {j.common.encoderDownload}
       </button>
-    </details>
+    </section>
   );
 }

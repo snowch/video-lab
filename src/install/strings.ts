@@ -14,7 +14,7 @@ export const install = {
     "The browser could not open or complete the installation request. Try the browser instructions below.",
   installed: "Video Lab is installed or already open in its own app window.",
   offlineReminder:
-    "Installing the app does not download every lesson. Before disconnecting, select Download for offline use and wait until the complete offline copy is ready.",
+    "Installing Video Lab adds an app icon. It does not save the lessons or processing tools for offline use; use the downloads above.",
   chromium:
     "Chrome or Edge on a computer: look for an install icon in the address bar, or an install or save-as-app option in the browser menu. The wording and location vary by version.",
   android:

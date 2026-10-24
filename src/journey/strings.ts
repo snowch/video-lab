@@ -27,18 +27,17 @@ export const j = {
     clearProject: "Clear project media",
     clearConfirm:
       "Remove this project's saved recordings and outputs from this browser? Keep downloaded copies of anything you need.",
-    encoderTitle: "Processing tools for offline use",
+    encoderTitle: "Add offline processing tools",
     encoderNeedLessons:
-      "First open Offline access and app installation and select Download for offline use. Wait until the complete lesson copy is ready, then save the additional processing tools here.",
+      "Save the lessons above before downloading the processing tools.",
     encoderNote:
-      "Reading lessons offline and processing video offline are separate downloads. The processing tools require about 32.4 MB in addition to the lesson download. Save them while connected before relying on offline encoding or inspection. Your media is processed locally and is not uploaded.",
+      "The processing tools add about 32.4 MB. They are optional for reading lessons and playing the supplied media. Save them while connected if you want to process files offline. Processing stays on this device.",
     encoderDownload: "Download processing tools for offline use",
     encoderSaving:
       "Downloading the additional processing tools. Keep this page open until they are ready.",
     encoderReady:
-      "The processing tools are saved for offline use in this browser. The offline lesson download has its own readiness status.",
-    encoderMissing:
-      "The complete processing tools are not saved for offline use. Download them while connected, or use the provided examples for reading and comparison.",
+      "Processing tools are saved. FFmpeg and ffprobe can run offline in this browser.",
+    encoderMissing: "Processing tools are not saved for offline use yet.",
     encoderFailed:
       "The processing tools could not be saved. Check your connection and available browser storage, then retry. Lesson reading and provided examples remain separate from this download.",
     evidence: "Technical evidence",

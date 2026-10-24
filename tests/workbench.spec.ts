@@ -247,10 +247,12 @@ test("working entry and separately saved WASM run offline after reload", async (
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.ready, {
-    timeout: 60000,
-  });
-  await page.locator(".encoder-offline > summary").click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.ready,
+    {
+      timeout: 60000,
+    },
+  );
   await page
     .getByRole("button", { name: j.common.encoderDownload, exact: true })
     .click();

@@ -2,11 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { workerMessage, installed, activateWaiting } from "./client";
 import { offline } from "./strings";
+import { EncoderOffline } from "../journey/shared";
 import { InstallApp } from "../install/InstallApp";
 export function OfflineAccess() {
   const supported =
     "serviceWorker" in navigator && "caches" in window && isSecureContext;
   const [ready, setReady] = useState(false);
+  const [bytes, setBytes] = useState<number>();
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
   const [waiting, setWaiting] = useState(false);
@@ -56,6 +58,16 @@ export function OfflineAccess() {
     observe();
   }
   useEffect(() => {
+    void fetch(`${scope}offline-manifest.json`)
+      .then((response) => response.json())
+      .then((manifest: { bytes?: number }) => {
+        if (
+          typeof manifest.bytes === "number" &&
+          Number.isFinite(manifest.bytes)
+        )
+          setBytes(manifest.bytes);
+      })
+      .catch(() => {});
     if (!supported) return;
     let disposed = false;
     let controlled = !!navigator.serviceWorker.controller;
@@ -191,6 +203,12 @@ export function OfflineAccess() {
       <details>
         <summary>{offline.title}</summary>
         <p>{offline.description}</p>
+        <h3>{offline.lessonsTitle}</h3>
+        {bytes !== undefined && (
+          <p>
+            {(bytes / 1_000_000).toFixed(2)} MB · {bytes.toLocaleString()} B
+          </p>
+        )}
         <p role="status" aria-live="polite" data-offline-ready={ready}>
           {status}
         </p>
@@ -215,6 +233,7 @@ export function OfflineAccess() {
           </div>
         )}
         <p className="muted">{offline.limits}</p>
+        <EncoderOffline />
         <InstallApp />
       </details>
     </section>

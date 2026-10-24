@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CaptureController, type CaptureState } from "../capture/controller";
 import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
 import { useBlobURL, useProject } from "../journey/project";
-import { assetURL, EncoderOffline } from "../journey/shared";
+import { assetURL } from "../journey/shared";
 import { j } from "../journey/strings";
 import { routeFor, type StepName } from "../journey/routes";
 import { guided } from "./guided.strings";
@@ -107,6 +107,13 @@ export function CommandLab({
     picker = useRef<HTMLInputElement>(null),
     terminal = useRef<HTMLPreElement>(null);
   const nativeTools = useRef<HTMLDetailsElement>(null);
+  const filesDialog = useRef<HTMLDialogElement>(null);
+  const helpDialog = useRef<HTMLDialogElement>(null);
+  const comparisonDialog = useRef<HTMLDialogElement>(null);
+  function dialogAction(dialog: HTMLDialogElement | null, value: string) {
+    dialog?.close();
+    action(value);
+  }
   const replacement = useRef<HTMLButtonElement>(null);
   const noteForm = useRef<HTMLDetailsElement>(null),
     noteInput = useRef<HTMLTextAreaElement>(null);
@@ -252,6 +259,9 @@ export function CommandLab({
     capture.current = makeCapture();
     setNotice(cli.ready);
     setTaskIndex(0);
+    filesDialog.current?.close();
+    helpDialog.current?.close();
+    comparisonDialog.current?.close();
     setFeedback([]);
     setLines([]);
     setPreview(undefined);
@@ -1219,18 +1229,6 @@ ${cli.comparisonCredit}`,
           </div>
         )}
       </div>
-      <details className="workspace-usage">
-        <summary>{guided.usage}</summary>
-        <p>{cli.scope}</p>
-        <p>{cli.keyboard}</p>
-        <p>{cli.outputScrolling}</p>
-        <p>{cli.storage}</p>
-        <p>{ux.limits}</p>
-      </details>
-      <details>
-        <summary>{ux.diagnostics}</summary>
-        <p>{diagnostic || ux.noDiagnostics}</p>
-      </details>
     </details>
   );
   const previewPanel = (
@@ -1308,7 +1306,33 @@ ${cli.comparisonCredit}`,
       data-reference={reference ?? ""}
       data-workspace-ready={ready}
     >
-      <h1>{lesson.title}</h1>
+      <div className="lesson-toolbar">
+        <h1>{lesson.title}</h1>
+        <div className="course-actions" role="group" aria-label={flow.tools}>
+          <button
+            type="button"
+            onClick={() => filesDialog.current?.showModal()}
+          >
+            {flow.files}
+          </button>
+          {step !== "capture" && step !== "publish" && (
+            <button
+              type="button"
+              onClick={() => helpDialog.current?.showModal()}
+            >
+              {flow.help}
+            </button>
+          )}
+          {reference && (
+            <button
+              type="button"
+              onClick={() => comparisonDialog.current?.showModal()}
+            >
+              {flow.compare}
+            </button>
+          )}
+        </div>
+      </div>
       <p className="lesson-intro">
         {reference ? flow.referenceIntro[reference] : flow.intro[step]}
       </p>
@@ -1350,6 +1374,9 @@ ${cli.comparisonCredit}`,
                   {example.note &&
                     step !== "capture" &&
                     examples.length > 1 && <p>{example.note}</p>}
+                  {step === "capture" && example.command === "capture" && (
+                    <p>{flow.recordingNote}</p>
+                  )}
                   {/^ff(mpeg|probe)\b/.test(example.command) ? (
                     <>
                       {examples.filter((e) =>
@@ -1396,14 +1423,6 @@ ${cli.comparisonCredit}`,
                 </li>
               ))}
           </ol>
-          {step === "capture" && activeTask === 0 && captureSupported && (
-            <details>
-              <summary>{guided.capture.recordingDetailTitle}</summary>
-              {guided.capture.recordingDetails.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </details>
-          )}
           {tasks.length > 1 && (
             <details>
               <summary>{guided.navigation}</summary>
@@ -1646,146 +1665,166 @@ ${cli.comparisonCredit}`,
               </button>
             </details>
           )}
-          <details className="workspace-management">
-            <summary>{flow.files}</summary>
-            {(step === "capture" || step === "publish") && commandPanel}
-            <details className="workspace-actions">
-              <summary>{ux.setup}</summary>
-              <div className="course-actions">
-                {[
-                  "sample",
-                  "fixtures",
-                  "import",
-                  "ls",
-                  "progress",
-                  ...(reference
-                    ? [
-                        reference === "inspect"
-                          ? "reference inspect"
-                          : "reference cuts",
-                      ]
-                    : []),
-                ].map((value) => (
-                  <button
-                    type="button"
-                    key={value}
-                    disabled={busy || !ready}
-                    onClick={() => action(value)}
-                  >
-                    {browserAction(value)}
-                  </button>
-                ))}
-                {captureSupported && (
-                  <button
-                    type="button"
-                    disabled={busy || !ready || captureState !== "idle"}
-                    onClick={() => action("capture")}
-                  >
-                    {ux.record}
-                  </button>
-                )}
-                {captureSupported && (
-                  <button
-                    type="button"
-                    disabled={busy || !ready || captureState !== "idle"}
-                    onClick={() => action("capture --audio")}
-                  >
-                    {ux.recordAudio}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  disabled={captureState !== "recording"}
-                  onClick={() => action("stop")}
-                >
-                  {ux.stop}
-                </button>
-              </div>
-            </details>
-
-            <details className="workspace-files">
-              <summary>{cli.files}</summary>
-              <ul>
-                {Object.values(files).map((f) => (
-                  <li key={f.name}>
-                    <code>{f.name}</code> · {f.blob.size.toLocaleString()} B ·{" "}
-                    {f.origin}
-                    <div className="course-actions">
-                      {/^(video|audio|image)\//.test(f.blob.type) ? (
-                        <button
-                          type="button"
-                          disabled={busy || !ready}
-                          onClick={() => action(`play ${f.name}`)}
-                        >
-                          {ux.replay} {f.name}
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          disabled={busy || !ready}
-                          onClick={() => action(`cat ${f.name}`)}
-                        >
-                          {ux.read} {f.name}
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => action(`download ${f.name}`)}
-                      >
-                        {ux.download} {f.name}
-                      </button>
-                      <button
-                        type="button"
-                        disabled={busy || !ready}
-                        onClick={() => action(`rm ${f.name}`)}
-                      >
-                        {ux.delete} {f.name}
-                      </button>
-                      {f.blob.type.startsWith("video/") && (
-                        <button
-                          type="button"
-                          disabled={busy || !ready}
-                          onClick={() => selectSource(f.name)}
-                        >
-                          {ux.useSource} {f.name}
-                        </button>
-                      )}
-                      {reference && (
-                        <button
-                          type="button"
-                          disabled={busy || !ready}
-                          onClick={() => action(`check ${reference} ${f.name}`)}
-                        >
-                          {ux.check} {f.name}
-                        </button>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </details>
-
-            {
-              <details>
-                <summary>{ux.comparisons}</summary>
-                {["reference build", "reference edit", "comparison"].map(
-                  (value) => (
-                    <button
-                      type="button"
-                      key={value}
-                      disabled={busy || !ready}
-                      onClick={() => action(value)}
-                    >
-                      {browserAction(value)}
-                    </button>
-                  ),
-                )}
-              </details>
-            }
-          </details>
         </section>
       </div>
-      <EncoderOffline />
+
+      <dialog
+        className="workspace-dialog"
+        ref={filesDialog}
+        aria-labelledby="files-title"
+      >
+        <div className="dialog-heading">
+          <h2 id="files-title">{flow.files}</h2>
+          <button type="button" onClick={() => filesDialog.current?.close()}>
+            {flow.close}
+          </button>
+        </div>
+        <p>{cli.storage}</p>
+        <div className="course-actions">
+          {["import"].map((value) => (
+            <button
+              type="button"
+              key={value}
+              disabled={busy || !ready}
+              onClick={() => dialogAction(filesDialog.current, value)}
+            >
+              {browserAction(value)}
+            </button>
+          ))}
+        </div>
+        <section className="workspace-files" aria-label={cli.files}>
+          {Object.keys(files).length === 0 && <p>{flow.noFiles}</p>}
+          <ul>
+            {Object.values(files).map((f) => (
+              <li key={f.name}>
+                <code>{f.name}</code> · {f.blob.size.toLocaleString()} B ·{" "}
+                {f.origin}
+                <div className="course-actions">
+                  {/^(video|audio|image)\//.test(f.blob.type) ? (
+                    <button
+                      type="button"
+                      disabled={busy || !ready}
+                      onClick={() =>
+                        dialogAction(filesDialog.current, `play ${f.name}`)
+                      }
+                    >
+                      {ux.replay} {f.name}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={busy || !ready}
+                      onClick={() =>
+                        dialogAction(filesDialog.current, `cat ${f.name}`)
+                      }
+                    >
+                      {ux.read} {f.name}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => action(`download ${f.name}`)}
+                  >
+                    {ux.download} {f.name}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={busy || !ready}
+                    onClick={() => action(`rm ${f.name}`)}
+                  >
+                    {ux.delete} {f.name}
+                  </button>
+                  {f.blob.type.startsWith("video/") && (
+                    <button
+                      type="button"
+                      disabled={busy || !ready}
+                      onClick={() => {
+                        filesDialog.current?.close();
+                        selectSource(f.name);
+                      }}
+                    >
+                      {ux.useSource} {f.name}
+                    </button>
+                  )}
+                  {reference && (
+                    <button
+                      type="button"
+                      disabled={busy || !ready}
+                      onClick={() =>
+                        dialogAction(
+                          filesDialog.current,
+                          `check ${reference} ${f.name}`,
+                        )
+                      }
+                    >
+                      {ux.check} {f.name}
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </dialog>
+      {step !== "capture" && step !== "publish" && (
+        <dialog
+          className="workspace-dialog"
+          ref={helpDialog}
+          aria-labelledby="help-title"
+        >
+          <div className="dialog-heading">
+            <h2 id="help-title">{flow.help}</h2>
+            <button type="button" onClick={() => helpDialog.current?.close()}>
+              {flow.close}
+            </button>
+          </div>
+          <section>
+            <h3>{guided.usage}</h3>
+            <p>{cli.scope}</p>
+            <p>{cli.keyboard}</p>
+            <p>{cli.outputScrolling}</p>
+            <p>{cli.storage}</p>
+            <p>{ux.limits}</p>
+          </section>
+          <section>
+            <h3>{ux.diagnostics}</h3>
+            <p>{diagnostic || ux.noDiagnostics}</p>
+          </section>
+        </dialog>
+      )}
+      {reference && (
+        <dialog
+          className="workspace-dialog"
+          ref={comparisonDialog}
+          aria-labelledby="comparison-title"
+        >
+          <div className="dialog-heading">
+            <h2 id="comparison-title">{ux.comparisons}</h2>
+            <button
+              type="button"
+              onClick={() => comparisonDialog.current?.close()}
+            >
+              {flow.close}
+            </button>
+          </div>
+          <p>{flow.comparisonNote}</p>
+          <div className="course-actions">
+            {(reference === "inspect"
+              ? ["reference build", "comparison"]
+              : ["reference edit"]
+            ).map((value) => (
+              <button
+                type="button"
+                key={value}
+                disabled={busy || !ready}
+                onClick={() => dialogAction(comparisonDialog.current, value)}
+              >
+                {browserAction(value)}
+              </button>
+            ))}
+          </div>
+        </dialog>
+      )}
     </article>
   );
 }

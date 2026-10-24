@@ -108,13 +108,18 @@ test("complete download survives offline reload and new tab, with all media and 
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.ready, {
-    timeout: 30000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.ready,
+    {
+      timeout: 30000,
+    },
+  );
   await context.setOffline(true);
   await page.reload();
   await page.locator(".offline-panel > details > summary").click();
-  await expect(panel.getByRole("status")).toHaveText(offline.offlineReady);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.offlineReady,
+  );
   // All files are fetched through the worker with the network disconnected, not the HTTP cache.
   const manifest = JSON.parse(
     await readFile("dist/offline-manifest.json", "utf8"),
@@ -184,22 +189,30 @@ test("incomplete download reports failure and retries; missing storage can be re
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.failed, {
-    timeout: 30000,
-  });
-  await expect(panel.getByRole("status")).toHaveAttribute(
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.failed,
+    {
+      timeout: 30000,
+    },
+  );
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
   site.fail = "";
   site.corrupt = "media/frames/119.jpg";
   await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.failed);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.failed,
+  );
   site.corrupt = "";
   await panel.getByRole("button", { name: offline.retry, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.ready, {
-    timeout: 30000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.ready,
+    {
+      timeout: 30000,
+    },
+  );
   // Inject eviction only after the download action settles, with no network repair.
   await expect(
     panel.getByRole("button", { name: offline.check, exact: true }),
@@ -222,7 +235,7 @@ test("incomplete download reports failure and retries; missing storage can be re
   ).toBe(true);
   await page.reload();
   await panel.locator(":scope > details > summary").click();
-  await expect(panel.getByRole("status")).toHaveAttribute(
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "false",
   );
@@ -232,7 +245,7 @@ test("incomplete download reports failure and retries; missing storage can be re
     .click();
   // Firefox's emulated connectivity signal may lag behind restored requests.
   // The repair contract is a complete saved copy, regardless of that signal.
-  await expect(panel.getByRole("status")).toHaveAttribute(
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "true",
   );
@@ -250,18 +263,24 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await panel
     .getByRole("button", { name: offline.download, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.ready, {
-    timeout: 30000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.ready,
+    {
+      timeout: 30000,
+    },
+  );
   await command(page, 'note update.txt "Keep this note through an update."');
   await page.evaluate(() => caches.open("another-app-cache"));
   site.revision = 1;
   site.fail = "media/frames/119.jpg";
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.updateFailed, {
-    timeout: 30000,
-  });
-  await expect(panel.getByRole("status")).toHaveAttribute(
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateFailed,
+    {
+      timeout: 30000,
+    },
+  );
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
     "data-offline-ready",
     "true",
   );
@@ -272,7 +291,9 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await seekAndPlay(page.locator(".cli-preview video"));
   await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.updateFailed);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateFailed,
+  );
   await panel.locator(":scope > details > summary").click();
   await context.setOffline(false);
   site.fail = "";
@@ -280,9 +301,12 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   site.revision = 2;
   await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.updateReady, {
-    timeout: 30000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateReady,
+    {
+      timeout: 30000,
+    },
+  );
   await command(page, "cat update.txt");
   await expect(terminal(page)).toContainText(
     "Keep this note through an update.",
@@ -316,13 +340,18 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await panel
     .getByRole("button", { name: offline.reload, exact: true })
     .click();
-  await expect(panel.getByRole("status")).toHaveText(offline.activating);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.activating,
+  );
   await expect(
     panel.getByRole("button", { name: offline.reload, exact: true }),
   ).toBeDisabled();
-  await expect(panel.getByRole("status")).toHaveText(offline.activationFailed, {
-    timeout: 15000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.activationFailed,
+    {
+      timeout: 15000,
+    },
+  );
   await expect(
     panel.getByRole("button", { name: offline.reload, exact: true }),
   ).toBeEnabled();
@@ -355,19 +384,26 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   await context.setOffline(false);
   await panel.locator(":scope > details > summary").click();
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.current);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.current,
+  );
   site.revision = 3;
   // Browser-initiated updates must replace a previous "up to date" status too.
   await page.evaluate(async () =>
     (await navigator.serviceWorker.getRegistration())!.update(),
   );
-  await expect(panel.getByRole("status")).toHaveText(offline.updateReady, {
-    timeout: 30000,
-  });
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateReady,
+    {
+      timeout: 30000,
+    },
+  );
   await context.setOffline(true);
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
   // A waiting worker must not let a disconnected check report a fresh success.
-  await expect(panel.getByRole("status")).toHaveText(offline.updateFailed);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateFailed,
+  );
   await expect(
     panel.getByText(offline.updateReady, { exact: true }),
   ).toBeVisible();
@@ -375,7 +411,9 @@ test("updates wait for a complete copy and explicit reload, preserving saved wor
   site.revision = 4;
   site.fail = "media/frames/119.jpg";
   await panel.getByRole("button", { name: offline.check, exact: true }).click();
-  await expect(panel.getByRole("status")).toHaveText(offline.updateFailed);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.updateFailed,
+  );
   await expect(
     panel.getByText(offline.updateReady, { exact: true }),
   ).toBeVisible();
@@ -395,7 +433,9 @@ test("unsupported browsers keep online lessons usable", async ({
   const panel = page.locator(".offline-panel");
   await panel.locator(":scope > details > summary").focus();
   await page.keyboard.press("Enter");
-  await expect(panel.getByRole("status")).toHaveText(offline.unsupported);
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.unsupported,
+  );
   await expect(panel.getByRole("button")).toHaveCount(0);
   await command(page, "reference cuts");
   await command(page, "play reference-cuts.mp4");

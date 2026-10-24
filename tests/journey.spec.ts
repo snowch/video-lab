@@ -93,7 +93,7 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   );
   await page.reload();
   await command(page, "ls");
-  await expect(output(page)).toContainText("joined.mp4");
+  await expect(page.locator(".workspace-files")).toContainText("joined.mp4");
   await command(page, "play joined.mp4");
   await page
     .locator(".cli-preview video")
@@ -152,7 +152,9 @@ test("tool errors, quoting errors, cancellation, history and explicit overwrite 
   release();
   await context.unroute("**/encoder/**");
   await command(page, "ls");
-  await expect(output(page)).not.toContainText("Saved pending.mp4");
+  await expect(page.locator(".workspace-files")).not.toContainText(
+    "pending.mp4",
+  );
   expect(readFileSync(await download(page, "video.mp4"))).toEqual(first);
   await command(page, buildCommand(2, "video.mp4"), cli.failed);
   await command(
@@ -332,7 +334,7 @@ test("imported own media and legacy project migrate without changing reference c
   await page.reload();
   await page.goto("./#/capture");
   await command(page, "ls");
-  await expect(output(page)).toContainText("capture.mp4");
+  await expect(page.locator(".workspace-files")).toContainText("capture.mp4");
   const chooser = page.waitForEvent("filechooser");
   await clickAction(page, "Import file");
   await (
@@ -354,11 +356,17 @@ test("imported own media and legacy project migrate without changing reference c
   ).toBeCloseTo(2, 1);
   await page.reload();
   await command(page, "ls");
-  await expect(output(page)).toContainText("own-recording.mp4");
+  await expect(page.locator(".workspace-files")).toContainText(
+    "own-recording.mp4",
+  );
   await command(page, "rm own-edit.mp4");
   await page.reload();
   await command(page, "ls");
-  expect(await output(page).textContent()).not.toMatch(/^own-edit\.mp4\t/m);
+  await expect(
+    page
+      .locator(".workspace-files code")
+      .filter({ hasText: /^own-edit\.mp4$/ }),
+  ).toHaveCount(0);
   await page.goto("./#/module-0/challenge");
   await command(page, "progress");
   await expect(output(page)).toContainText(refStrings.legacySaved);
@@ -382,12 +390,12 @@ test("saved files survive offline reload; processing requires deliberately saved
   await context.setOffline(true);
   await page.reload();
   await command(page, "ls");
-  await expect(output(page)).toContainText("frame000.jpg");
+  await expect(page.locator(".workspace-files")).toContainText("frame000.jpg");
   await command(page, buildCommand(1, "video.mp4"), cli.failed);
   await expect(output(page)).toContainText("Save the processing tools");
   await context.setOffline(false);
   await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await page.getByText(j.common.encoderTitle, { exact: true }).click();
+  await page.locator(".offline-panel > details > summary").click();
   await page
     .getByRole("button", { name: j.common.encoderDownload, exact: true })
     .click();
@@ -522,14 +530,12 @@ test("source controls retain actual imported names, current tasks, comparisons a
   expect(
     Number(nativeProbe(await download(page, "my-capture.mp4")).format.duration),
   ).toBe(12);
-  await page.locator(".workspace-management > summary").click();
-  await page.locator(".native-tools > summary").click();
+  await page.getByRole("link", { name: /^Inspect$/ }).click();
   await page
     .getByRole("textbox", { name: cli.input, exact: true })
     .fill("ffprobe my-capture.mp4");
   await page.reload();
-  await page.locator(".workspace-management > summary").click();
-  await page.locator(".native-tools > summary").click();
+
   await expect(
     page.getByRole("textbox", { name: cli.input, exact: true }),
   ).toHaveValue("ffprobe my-capture.mp4");
