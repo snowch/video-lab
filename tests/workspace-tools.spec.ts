@@ -33,6 +33,8 @@ test("source ends at continuation while file management and help preserve the le
     .getByRole("button", { name: "Replay mousepad-demo.mp4", exact: true })
     .click();
   await expect(files).not.toBeVisible();
+  await page.getByRole("button", { name: "Next step", exact: true }).click();
+  await page.getByRole("button", { name: "Next step", exact: true }).click();
   await page.getByRole("link", { name: /^Continue to Inspect/ }).click();
   const input = page.getByRole("textbox", { name: "Command", exact: true });
   await input.fill("ffprobe -v error mousepad-demo.mp4");
@@ -70,6 +72,6 @@ test("source ends at continuation while file management and help preserve the le
     page.getByRole("button", { name: offline.download, exact: true }),
   ).toBeVisible();
   await expect(page.locator(".offline-panel")).toContainText(
-    "processing tools",
+    "FFmpeg/ffprobe tools",
   );
 });

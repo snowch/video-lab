@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Substantive chapters and coherent navigation, 24 October 2026:** [the chapter teaching slice](notes/course-depth/01-facts.md) makes one visible five-chapter sequence: Choose your source video → Inspect your video → Trim and join clips → Build video from pictures → Export and verify. Each chapter teaches purpose and mechanisms, offers observable worked examples and ends in independent practice with progressive help and saved self-review. Real comparison clips and explanatory timing models support visual judgement; neither replaces learner execution evidence. Reference labs, planned topics and optional guides are separate. Historic route IDs and progress remain unchanged; lesson bookmarks add browser back/forward. Installation shows its prompt or one relevant fallback.
+
 **One offline download, 24 October 2026:** [the unified download slice](notes/unified-offline/01-facts.md) supersedes separate lesson/tool controls. One action saves lessons, media and pinned processing tools; readiness requires both manifests. Older partial saves are repaired without deleting user work. Installation stays optional and distinct.
 
 **Browser recording removed, 24 October 2026:** [the removal slice](notes/remove-browser-recording/01-facts.md) removes browser capture from both app entry points and the appendix. Source selection offers practice media or imports; the optional guide covers native FFmpeg and device recorders. Existing captured-origin files and all saved work remain valid. This supersedes browser-capture descriptions below.
@@ -32,21 +34,17 @@ The initial completion outcome is a playable edited MP4, the source-linked comma
 
 ## Curriculum and routes
 
-| # | Module | Current outcome | Status / canonical route |
-| --- | --- | --- | --- |
-| 0 | Choose your source video | Use the practice source or import an existing recording; replay/download it. | Implemented · `#/capture` |
-| 1 | How a video file is created | Encode supplied pictures, add synthetic audio, inspect actual MP4s. | Implemented · `#/build` |
-| 2 | Inspect and prepare real media | Probe the selected file; compare actual content with intended capture. | Implemented · `#/inspect` |
-| 3 | Cut and join: tell the story | Trim one or two ranges, reset/join/encode and download a real edit recipe. | Implemented · `#/edit` |
-| 4 | Make the action readable | Crop, zoom, pace and add minimal callouts. | Planned |
-| 5 | Make the sound clear | Improve narration, levels, noise and timing. | Planned |
-| 6 | Compression and picture quality | Compare encoded size, detail and screen-text readability. | Planned |
-| 7 | Captions, overlays and automation | Add and validate captions and overlays. | Planned |
-| 8 | Export, publish and verify | Complete the initial demo: replay/download actual output and recipe, check intended sound, readability, size and playback elsewhere. | Implemented initial checkpoint · `#/publish` |
-| 9 | AI-assisted production | Review assisted transcripts, captions and edit proposals against actual media. | Planned, optional |
-| 10 | Final project | Integrate later production techniques in a further complete demo. | Planned |
+| Chapter | Title | Current outcome / route |
+| --- | --- | --- |
+| 1 | Choose your source video | Define the viewer's question and adopt a suitable original · `#/capture` |
+| 2 | Inspect your video | Interpret measured properties and replay evidence · `#/inspect` |
+| 3 | Trim and join clips | Compare, execute and justify edits · `#/edit` |
+| 4 | Build video from pictures | Explain frame schedules, encoding, sound and muxing · `#/build` |
+| 5 | Export and verify | Prepare and review a reproducible deliverable · `#/publish` |
 
-The initial path is **0 → 1 → 2 → 3 → 8**, not a requirement to wait for advanced modules. Build is a separate structure experiment. It preserves the capture/import/adopted recording as the project source; it does not turn that recording into a three-picture filmstrip. Inspect may examine experiment outputs explicitly, while Edit uses the project source.
+Further framing, sound, compression, caption, AI and extended-project topics remain planned, outside the numbered available sequence. Controlled inspection/cutting labs are supplementary Reference labs; recording is an Optional guide. Existing internal IDs are preserved rather than renumbering historical storage or bookmarks.
+
+The available chapter path is **1 → 2 → 3 → 4 → 5**, not a requirement to wait for advanced modules. Build is a separate structure experiment. It preserves the capture/import/adopted recording as the project source; it does not turn that recording into a three-picture filmstrip. Inspect may examine experiment outputs explicitly, while Edit uses the project source.
 
 ## Actual evidence and interaction choices
 

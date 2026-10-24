@@ -6,7 +6,8 @@ import { readFileSync } from "node:fs";
 import { cli } from "../src/cli/strings";
 import { guided } from "../src/cli/guided.strings";
 import { progressiveUI as flow } from "../src/cli/progressive.strings";
-import { clickAction } from "./course-actions";
+import { chapterTitles, courseUI } from "../src/course/strings";
+import { clickAction, navigateChapter } from "./course-actions";
 
 test("prototype interaction leads from source to a minimal cut and one-value comparison", async ({
   page,
@@ -28,7 +29,9 @@ test("prototype interaction leads from source to a minimal cut and one-value com
   );
   await expect(
     page.getByRole("button", { name: guided.next, exact: true }),
-  ).toHaveCount(0);
+  ).toBeVisible();
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
   await page.screenshot({
     path: info.outputPath("source-ready.png"),
     fullPage: true,
@@ -48,7 +51,9 @@ test("prototype interaction leads from source to a minimal cut and one-value com
     "Find pictures and sound",
   );
   await page.getByRole("button", { name: guided.next, exact: true }).click();
-  await page.getByRole("link", { name: /Continue to Cut and join/ }).click();
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
+  await page.getByRole("button", { name: guided.next, exact: true }).click();
+  await page.getByRole("link", { name: /Continue to Trim and join/ }).click();
   await expect(entry).toHaveValue(
     "ffmpeg -i mousepad-demo.mp4 -t 6 first-cut.mp4",
   );
@@ -193,7 +198,7 @@ test("short steps and adjacent goal/action preserve prototype hierarchy and manu
     path: info.outputPath("command-ready.png"),
     fullPage: true,
   });
-  await page.getByRole("link", { name: /^Publish$/ }).click();
+  await navigateChapter(page, "publish");
   await expect(
     page.getByText(flow.publishEmpty, { exact: true }),
   ).toBeVisible();
@@ -259,7 +264,7 @@ test("fresh links expose required inputs and reference choices before loading co
   await expect(
     page.getByRole("textbox", { name: cli.input, exact: true }),
   ).toHaveValue(/accurate-3.mp4$/);
-  await page.getByRole("link", { name: /^Build$/ }).click();
+  await navigateChapter(page, "build");
   await page.getByRole("button", { name: guided.next, exact: true }).click();
   await expect(page.locator(".selected-source")).toContainText(
     "Experiment inputs",
@@ -289,7 +294,7 @@ test("fresh links expose required inputs and reference choices before loading co
   await expect(
     page.locator(".native-builder").getByLabel("-shortest", { exact: true }),
   ).toHaveCount(0);
-  await page.getByRole("link", { name: /^Get video$/ }).click();
+  await navigateChapter(page, "capture");
   await expect(page.locator(".selected-source code")).toHaveText(
     "mousepad-demo.mp4",
   );
@@ -333,17 +338,19 @@ test("course navigation and cards reflow at doubled text size without document o
     ).toBe(true);
     if (route) {
       const nav = page.locator(".journey-nav");
-      for (const label of Object.values(flow.nav))
-        await expect(
-          nav.getByRole("link", { name: label, exact: true }),
-        ).toBeVisible();
-      const rows = await nav
-        .getByRole("link")
-        .evaluateAll(
-          (links) =>
-            new Set(links.map((link) => link.getBoundingClientRect().top)).size,
-        );
-      expect(rows).toBeGreaterThan(1);
+      const picker = nav.getByRole("combobox", {
+        name: courseUI.chapterNav,
+        exact: true,
+      });
+      await expect(picker).toBeVisible();
+      await expect(picker.locator("option:not([disabled])")).toHaveCount(5);
+      expect(
+        await picker.locator("option:not([disabled])").allTextContents(),
+      ).toEqual(
+        Object.values(chapterTitles).map(
+          (title, index) => `${index + 1} · ${title}`,
+        ),
+      );
     }
   }
 });

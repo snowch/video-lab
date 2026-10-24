@@ -32,6 +32,28 @@ import { NativeBuilder } from "./NativeBuilder";
 import { courseUI as ux, browserAction } from "./course.strings";
 import { recordingGuide } from "../capture/guide.strings";
 import { progressiveUI as flow } from "./progressive.strings";
+import {
+  chapterTitles,
+  chapterIntro,
+  enrichment,
+  courseUI,
+  postRunExplanations,
+  teachingUI,
+} from "../course/strings";
+import { chapterNumber, chapterOrder } from "../course/structure";
+import teachingFixture from "../course/fixtures.json";
+import {
+  TeachingVisual,
+  PracticeGuide,
+  PracticeReview,
+} from "../course/Teaching";
+import type { Task } from "./tasks";
+const taskVisuals: Record<string, Task["visual"]> = {
+  "inspect:streams": "streams",
+  "edit:start": "trim",
+  "edit:compare": "trim",
+  "build:rate": "rate",
+};
 const historyKey = "video-lab:cli-history";
 function savedHistory(): string[] {
   try {
@@ -65,7 +87,6 @@ export function CommandLab({
     filesRef = useRef<Files>({});
   const [ready, setReady] = useState(false),
     [persistent, setPersistent] = useState(true);
-  const [taskIndex, setTaskIndex] = useState(0);
   const [wrapOutput, setWrapOutput] = useState(false);
   const [outputEdges, setOutputEdges] = useState({ left: false, right: false });
   const [lines, setLines] = useState<string[]>([]),
@@ -247,7 +268,6 @@ export function CommandLab({
     cancelProcessing();
     setBusy(false);
     setNotice(cli.ready);
-    setTaskIndex(0);
     filesDialog.current?.close();
     helpDialog.current?.close();
     comparisonDialog.current?.close();
@@ -860,7 +880,7 @@ ${cli.comparisonCredit}`,
   }[step] as StepName | undefined;
   const lesson = reference
     ? referenceLessons[reference]
-    : { ...lessons[step], next: nextStep };
+    : { ...lessons[step], title: chapterTitles[step], next: nextStep };
   const source =
     (files[sourceChoice]?.blob.type.startsWith("video/")
       ? files[sourceChoice]
@@ -896,19 +916,25 @@ ${cli.comparisonCredit}`,
     }
   }, [step, source?.name, ready]);
   const tasks = lessonTasks(step, reference);
-  const section = reference
-    ? routeFor(window.location.hash).section
-    : undefined;
-  const activeTask = reference
-    ? Math.max(
-        0,
-        tasks.findIndex((task) => task.id === section),
-      )
-    : Math.min(taskIndex, tasks.length - 1);
-  const currentTask = tasks[activeTask]!;
-  const taskIsNative = currentTask.examples.some((e) =>
-    /^ff(mpeg|probe)\b/.test(e.command),
+  const section = routeFor(window.location.hash).section;
+  const activeTask = Math.max(
+    0,
+    tasks.findIndex((task) => task.id === section),
   );
+  const currentTask = tasks[activeTask]!;
+  const visual = reference
+    ? undefined
+    : (currentTask.visual ?? taskVisuals[`${step}:${currentTask.id}`]);
+  const primaryComparison = visual === "compare";
+  const paragraphs = !reference
+    ? (enrichment[`${step}:${currentTask.id}`] ?? currentTask.paragraphs)
+    : currentTask.paragraphs;
+  const explanation = !reference
+    ? postRunExplanations[`${step}:${currentTask.id}`]
+    : undefined;
+  const taskIsNative =
+    (!!currentTask.practice && step !== "capture" && step !== "publish") ||
+    currentTask.examples.some((e) => /^ff(mpeg|probe)\b/.test(e.command));
   const examples = currentTask.examples.map((example) => ({
     ...example,
     command: reference
@@ -937,7 +963,7 @@ ${cli.comparisonCredit}`,
       (!command.trim() || command === previousExample.current)
     )
       setCommand(nativeExample);
-    previousExample.current = nativeExample;
+    if (nativeExample) previousExample.current = nativeExample;
   }, [nativeExample]);
   function selectSource(name: string) {
     setSourceChoice(name);
@@ -952,7 +978,7 @@ ${cli.comparisonCredit}`,
     const focusOrigin = document.activeElement;
     if (reference)
       window.location.hash = `#/${step}/reference/${tasks[index]!.id}`;
-    else setTaskIndex(index);
+    else window.location.hash = `#/${step}/lesson/${tasks[index]!.id}`;
     requestAnimationFrame(() => {
       if (
         nativeTools.current &&
@@ -1222,6 +1248,11 @@ ${cli.comparisonCredit}`,
       data-reference={reference ?? ""}
       data-workspace-ready={ready}
     >
+      <p className="chapter-count">
+        {reference
+          ? courseUI.references
+          : `${courseUI.chapter} ${chapterNumber(step)} ${guided.of} ${chapterOrder.length}`}
+      </p>
       <div className="lesson-toolbar">
         <h1>{lesson.title}</h1>
         <div className="course-actions" role="group" aria-label={flow.tools}>
@@ -1250,13 +1281,18 @@ ${cli.comparisonCredit}`,
         </div>
       </div>
       <p className="lesson-intro">
-        {reference ? flow.referenceIntro[reference] : flow.intro[step]}
+        {reference
+          ? flow.referenceIntro[reference]
+          : chapterIntro[step].purpose}
       </p>
+      {!reference && (
+        <p className="chapter-outcome">{chapterIntro[step].outcome}</p>
+      )}
       <div className="lab-workbench focused-workbench">
         <section
           className="task-panel"
           aria-labelledby="current-task"
-          id={reference ? `section-${currentTask.id}` : undefined}
+          id={`section-${currentTask.id}`}
         >
           <p className="task-count">
             {guided.currentTask} · {activeTask + 1} {guided.of} {tasks.length}
@@ -1264,9 +1300,24 @@ ${cli.comparisonCredit}`,
           <h2 id="current-task" tabIndex={-1}>
             {currentTask.title}
           </h2>
-          {currentTask.paragraphs.map((paragraph, index) => (
+          {paragraphs.map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
+          {visual && !primaryComparison && (
+            <TeachingVisual
+              key={`visual:${step}:${currentTask.id}`}
+              kind={visual}
+            />
+          )}
+          {currentTask.practice && (
+            <PracticeGuide
+              key={`guide:${step}:${currentTask.id}`}
+              practice={currentTask.practice}
+              onCommand={(value) =>
+                useCommand(value.replaceAll("mousepad-demo.mp4", sourceName))
+              }
+            />
+          )}
           {step === "capture" && <p>{flow.practiceNote}</p>}
           <ol className="command-lessons">
             {examples
@@ -1368,12 +1419,19 @@ ${cli.comparisonCredit}`,
           aria-labelledby="cli-heading"
           aria-busy={busy}
         >
-          <h2 id="cli-heading" className={taskIsNative ? "sr-only" : undefined}>
-            {step === "capture"
-              ? flow.sourceCard
-              : step === "publish"
-                ? ux.publishFiles
-                : flow.commandCard}
+          <h2
+            id="cli-heading"
+            className={
+              taskIsNative || primaryComparison ? "sr-only" : undefined
+            }
+          >
+            {primaryComparison
+              ? teachingUI.compareTitle
+              : step === "capture"
+                ? flow.sourceCard
+                : step === "publish"
+                  ? ux.publishFiles
+                  : flow.commandCard}
           </h2>
           {step === "capture" && !source && (
             <p className="empty-source">{flow.chooseSource}</p>
@@ -1381,11 +1439,13 @@ ${cli.comparisonCredit}`,
           <p className="selected-source">
             {step === "build" && !reference ? flow.buildInputs : ux.source}:{" "}
             <code>
-              {step === "build" && !reference
-                ? buildInputLabel
-                : (workspaceSource?.name ??
-                  referenceSource?.name ??
-                  ux.noSource)}
+              {primaryComparison
+                ? teachingFixture.source.split("/").at(-1)
+                : step === "build" && !reference
+                  ? buildInputLabel
+                  : (workspaceSource?.name ??
+                    referenceSource?.name ??
+                    ux.noSource)}
             </code>
           </p>
           {referenceSource && !workspaceSource && (
@@ -1427,7 +1487,16 @@ ${cli.comparisonCredit}`,
                 ))}
               </div>
             )}
-          {step !== "capture" && step !== "publish" && commandPanel}
+          {primaryComparison && (
+            <TeachingVisual
+              key={`primary:${step}:${currentTask.id}`}
+              kind="compare"
+            />
+          )}
+          {step !== "capture" &&
+            step !== "publish" &&
+            !primaryComparison &&
+            commandPanel}
           {step === "publish" && (
             <section className="publish-choices" aria-label={flow.savedFiles}>
               <p>
@@ -1485,7 +1554,28 @@ ${cli.comparisonCredit}`,
           >
             {notice}
           </p>
-          {step !== "capture" && step !== "publish" && previewPanel}
+          {step !== "capture" &&
+            step !== "publish" &&
+            !primaryComparison &&
+            previewPanel}
+          {explanation && (
+            <details
+              className="post-run-explanation"
+              key={`explanation:${step}:${currentTask.id}`}
+            >
+              <summary>{teachingUI.postRunLabel}</summary>
+              {explanation.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </details>
+          )}
+          {currentTask.practice && (
+            <PracticeReview
+              key={`review:${step}:${currentTask.id}`}
+              task={currentTask}
+              chapter={step}
+            />
+          )}
           <div className="task-controls" aria-label={flow.continuation}>
             {activeTask > 0 && (
               <button type="button" onClick={() => chooseTask(activeTask - 1)}>
@@ -1498,12 +1588,11 @@ ${cli.comparisonCredit}`,
               </button>
             )}
           </div>
-          {(activeTask === tasks.length - 1 ||
-            (!reference && step === "inspect" && activeTask === 2)) &&
+          {activeTask === tasks.length - 1 &&
             lesson.next &&
             (step !== "capture" || !!source) && (
               <a className="button" href={`#/${lesson.next}`}>
-                {cli.next} {lessons[lesson.next].title}
+                {cli.next} {chapterTitles[lesson.next]}
               </a>
             )}
 

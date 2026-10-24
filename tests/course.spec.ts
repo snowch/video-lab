@@ -43,7 +43,9 @@ test("introduction, theme, reference deep links and navigation all lead to comma
   await expect(page).toHaveURL(/reference\/investigation$/);
   expect(
     await page
-      .locator("select,input[type=range],input[type=number],input[type=radio]")
+      .locator(
+        ".cli-lab select,.cli-lab input[type=range],.cli-lab input[type=number],.cli-lab input[type=radio]",
+      )
       .count(),
   ).toBe(0);
 });
@@ -184,7 +186,7 @@ test("every reachable production and reference lab is CLI on desktop and phone",
     expect(
       await page
         .locator(
-          "select,input[type=range],input[type=number],input[type=radio],input[type=checkbox],.challenge-editor",
+          ".command-workspace select,.command-workspace input[type=range],.command-workspace input[type=number],.command-workspace input[type=radio],.command-workspace input[type=checkbox],.challenge-editor",
         )
         .count(),
     ).toBe(0);

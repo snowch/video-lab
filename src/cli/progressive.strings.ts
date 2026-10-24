@@ -174,7 +174,7 @@ export const productionTasks: Record<StepName, Task[]> = {
       id: "timing",
       title: "When duration is missing",
       paragraphs: [
-        "Some browser recordings do not declare a duration. A missing value is not zero. If your source already has a useful duration, continue to Edit; this timing investigation is optional.",
+        "Some browser recordings do not declare a duration. A missing value is not zero. If your source already has a useful duration, use Next to skip this optional investigation and attempt the chapter practice.",
         "A packet carries a chunk of encoded media. Its presentation timestamp says when that content is due to be shown or heard. -show_packets requests packets, and -show_entries limits the fields to stream_index, pts_time and duration_time. The _time values are seconds. -of json gives the report a structured JSON format; -v error hides routine log messages.",
         "Inspect the last observed times, keeping edits conservatively within the available evidence. The last presentation time is not a known end time when its final hold duration is missing. Replay the result instead of treating missing timing as an exact measurement.",
       ],
@@ -280,7 +280,17 @@ export const productionTasks: Record<StepName, Task[]> = {
         "A presentation timestamp says when a picture is due to be shown. Trimming a range keeps its source timestamps: a range starting at four seconds still starts on that source clock.",
         "setpts=PTS-STARTPTS subtracts the range's first timestamp from every timestamp in it. Each range then begins at zero, as the concat filter requires for joining. Resetting the clock changes timing values; it does not put discarded pictures back.",
       ],
-      examples: [],
+      examples: [
+        {
+          note: "Keep one picture range and reset its clock before trying a join.",
+          command:
+            'ffmpeg -i mousepad-demo.mp4 -vf "trim=start=4:end=7,setpts=PTS-STARTPTS" -an range.mp4',
+        },
+        {
+          note: "Inspect the saved range, then replay it.",
+          command: "ffprobe range.mp4",
+        },
+      ],
     },
     {
       id: "join",
@@ -294,7 +304,7 @@ export const productionTasks: Record<StepName, Task[]> = {
         {
           note: "Run after reading the range and clock steps. Predict a five-second silent result for the practice recording.",
           command:
-            'ffmpeg -i mousepad-demo.mp4 -filter_complex "[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS[v0];[0:v:0]trim=start=4:end=7,setpts=PTS-STARTPTS[v1];[v0][v1]concat=n=2:v=1:a=0[v]" -map "[v]" -an -c:v libx264 -pix_fmt yuv420p joined.mp4',
+            'ffmpeg -i mousepad-demo.mp4 -filter_complex "[0:v:0]trim=start=0:end=2,setpts=PTS-STARTPTS[v0];[0:v:0]trim=start=4:end=7,setpts=PTS-STARTPTS[v1];[v0][v1]concat=n=2:v=1:a=0[v]" -map "[v]" -an joined.mp4',
         },
       ],
     },

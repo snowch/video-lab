@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { test, expect } from "@playwright/test";
+import { navigateChapter } from "./course-actions";
 import { recordingGuide as text } from "../src/capture/guide.strings";
 import { captureCommands } from "../src/capture/native";
 
@@ -32,11 +33,11 @@ test("optional recording guide preserves the source and draft without browser sc
     "aria-label",
     "mousepad-demo.mp4",
   );
-  await page.getByRole("link", { name: "Inspect", exact: true }).click();
+  await navigateChapter(page, "inspect");
   await page
     .getByRole("textbox", { name: "Command", exact: true })
     .fill("ffprobe -v error mousepad-demo.mp4");
-  await page.getByRole("link", { name: "Get video", exact: true }).click();
+  await navigateChapter(page, "capture");
   await page.getByRole("link", { name: text.link, exact: true }).click();
   await expect(page).toHaveURL(/#\/appendix\/recording$/);
   await expect(page).toHaveTitle(`${text.title} · Video Lab`);
@@ -95,7 +96,7 @@ test("optional recording guide preserves the source and draft without browser sc
     "aria-label",
     "mousepad-demo.mp4",
   );
-  await page.getByRole("link", { name: "Inspect", exact: true }).click();
+  await navigateChapter(page, "inspect");
   await expect(
     page.getByRole("textbox", { name: "Command", exact: true }),
   ).toHaveValue("ffprobe -v error mousepad-demo.mp4");

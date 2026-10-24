@@ -1,52 +1,53 @@
 // Copyright © 2026 Christopher Snow
+import { chapterTitles } from "../course/strings";
 export const home = {
   title: "Video Lab",
   subtitle: "From Frames to Finished Demos",
-  eyebrow: "A command-line lab for software demos",
+  eyebrow: "A practical course in software-demo editing",
   intro:
-    "Make a short software demo with real FFmpeg and ffprobe commands. Type commands or compose them with the command builder, then read the tools' output and check the resulting files. Browser controls handle imports, replay and downloads. Use the provided Mousepad recording or import your own source video.",
+    "Learn to make a short software demo that another person can follow. Use real FFmpeg and ffprobe commands to inspect and change media, then judge what the viewer can understand. Work with the provided Mousepad recording or import your own source.",
   audienceTitle: "Who this course is for",
   audience:
-    "For software and data engineers with ordinary terminal, browser and file familiarity. Media concepts and FFmpeg options are explained as you use them. The optional command builder helps with typing on phones and tablets while keeping the real command visible. No video knowledge is assumed.",
+    "For software and data engineers familiar with terminals, browsers and files. No video knowledge is assumed. Media concepts are introduced beside the operation that needs them. On phones and tablets, the optional command builder helps with typing while keeping the actual command visible.",
   outcomeTitle: "A complete first demo",
   outcome:
-    "Follow Get video, Inspect, Edit, Build and Publish in a shared workspace. Build is a separate experiment with supplied pictures; your project source stays unchanged. Inspect and edit the chosen source, then replay and download your output and its execution recipe. Detailed reference labs add checked reports and edits, progressive hints and saved notes. Processing stays on your device.",
-  start: "Get a video",
-  planTitle: "Your route through Video Lab",
+    "Plan a visible change, inspect the recording and compare edits before choosing a deliverable. A separate picture-and-sound experiment explains how media is constructed. Finish with an actual downloaded video, its execution recipe and a review of what works for its intended viewer. Processing stays on your device.",
+  start: "Start chapter 1",
+  planTitle: "Chapters",
   planNote:
-    "All available labs use real FFmpeg and ffprobe commands, with an optional command builder. Follow Get video, Inspect, Edit, Build and the initial Publish checkpoint. Detailed reference checks use separate controlled media and actual execution evidence; earlier answer-based achievements remain available. Further production lessons are planned.",
+    "These five chapters form the available course. Each combines explanation, visual investigation and independent practice. Reference labs deepen the related chapters; optional guides help with recording. Later topics are listed separately as planned.",
 };
 
 export const modules = [
   {
     id: 0,
-    title: "Choose your source video",
+    title: chapterTitles.capture,
     summary:
-      "Use the practice video or import a source recording. Replay it and keep a downloaded copy.",
+      "Choose a recording, identify its starting state, action and result, and write a brief for the person who will watch it.",
     route: "capture",
     available: true,
   },
   {
     id: 1,
-    title: "How a video file is created",
+    title: chapterTitles.build,
     summary:
-      "Use FFmpeg to encode three supplied Mousepad pictures, add synthetic sound and inspect the real MP4.",
+      "Predict a picture schedule, encode and measure it, then combine pictures and sound while explaining what each operation changes.",
     route: "build",
     available: true,
   },
   {
     id: 2,
-    title: "Inspect and prepare real media",
+    title: chapterTitles.inspect,
     summary:
-      "Run ffprobe on your selected source and compare its media summary with the recording you intended.",
+      "Read the actual file evidence and distinguish what duration, streams and picture details establish from what still needs replay.",
     route: "inspect",
     available: true,
   },
   {
     id: 3,
-    title: "Cut and join: tell the story",
+    title: chapterTitles.edit,
     summary:
-      "Write trim and join commands, inspect their outputs and keep the execution recipe with its source-file hashes.",
+      "Compare what different cuts explain, make your own timed edit and justify its context, action and reading time.",
     route: "edit",
     available: true,
   },
@@ -82,9 +83,9 @@ export const modules = [
   },
   {
     id: 8,
-    title: "Export, publish and verify",
+    title: chapterTitles.publish,
     summary:
-      "Finish the initial demo: replay the output, download the MP4 and recipe, and check them before sharing.",
+      "Download the intended output and its recipe, check actual playback and record the viewer evidence and remaining checks before sharing.",
     route: "publish",
     available: true,
   },

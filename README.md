@@ -8,15 +8,17 @@ The production labs are command-line workspaces. Type and run real FFmpeg/ffprob
 
 Make a short software demo: record or adopt an original recording, inspect it, remove waiting, and download an actual edited MP4 with its command and recipe. The command-first path is independently reviewed, tested and deployed; its [plan and review evidence](docs/notes/cli/plan.md) records 69 unit tests, 125 browser tests, Pages deployment and real installed-app upgrade verification. See the [acceptance ledger](docs/notes/issue-3/acceptance.md) and [public release evidence](docs/notes/issue-3/deployment.md).
 
-| Step | Route | What you do |
+| Chapter | Route | What you learn and practise |
 | --- | --- | --- |
-| 0 · Get video | `#/capture` | Use the practice video or import a recording. The optional recording guide explains making a source outside the app. |
-| 1 · Build | `#/build` | Run a separate experiment: encode three provided pictures into video, add synthetic sound, then inspect and download the actual files. This does not convert the project recording. |
-| 2 · Inspect | `#/inspect` | Measure the selected file and compare its pictures and optional sound with your intention. |
-| 3 · Edit | `#/edit` | Keep one or two source ranges, run a real trim/reset/join/encode, then replay the output. |
-| 8 · Publish | `#/publish` | Review and download the edited MP4 and source-linked recipe; check playback, readability, sound expectations and file size before sharing. |
+| 1 · Choose your source video | `#/capture` | Choose a source and plan the starting state, action and evidence its viewer needs. |
+| 2 · Inspect your video | `#/inspect` | Interpret duration, streams, codec and dimensions; distinguish metadata from what needs replay. |
+| 3 · Trim and join clips | `#/edit` | Compare real edits, predict timing, understand encoding and joins, then create and defend an independent cut. |
+| 4 · Build video from pictures | `#/build` | Predict a still-picture schedule, encode it, combine sound and explain what the separate experiment demonstrates. |
+| 5 · Export and verify | `#/publish` | Select an actual deliverable, keep inputs and recipe, and distinguish technical, outside-player and viewer checks. |
 
-Modules 4–7 and 9–10 remain planned. Publish is the initial complete-demo checkpoint; it does not require those later modules. Processing stays in the browser. Viewing a provided result supports reading and comparison but does not produce a project export.
+Each chapter has a stated purpose and outcome, progressive explanations and an independent practice task with five optional hints. Self-review drafts persist separately from measured execution evidence and can be downloaded. Timing and picture-rate figures are explanatory models; comparison videos are identified as supplied, verified edits. Lesson bookmarks use `#/CHAPTER/lesson/ID`, with browser back/forward support. A native CLI command does not establish editorial quality or viewer understanding.
+
+The five numbered chapters are the available course. Later framing, sound, compression, captions, AI and extended-project topics remain clearly marked as planned outside that sequence. Processing stays in the browser. Viewing a provided result does not produce a project export.
 
 The original inspection and cut/join lessons remain detailed, graded references at `#/inspect/reference` and `#/edit/reference`. Both now use the same real command workspace, with fixed teaching sources, saved ffprobe reports and checks of actual output artifacts. Use Hint 1 through Hint 5, Show reference command and Save note. Earlier achievements shows executed artefact checks separately from earlier answer-based achievements. Old `#/module-0` and `#/module-2` bookmarks, including section links, redirect to these references. Existing lesson IDs and saved challenge work are retained.
 
@@ -61,7 +63,7 @@ Readiness requires the complete lesson and processing packages. If a download fa
 
 **Check for updates** downloads a complete new lesson copy before offering **Reload to use update**. Other open Video Lab tabs reload too. Existing saved challenge work, notes and theme remain local. Browser storage may be cleared or evicted, private sessions are temporary, and external source links need internet. Project media is stored locally when available; if storage fails, the UI says session-only. Download important source files, outputs and recipes; there is no account synchronisation or permanent-backup promise.
 
-The same disclosure contains **Add a Video Lab icon**. A real browser installation prompt is offered only when available; otherwise, use the browser-specific instructions. Installation does not itself save lessons or processing tools. Icons are original and reproducible with `node scripts/generate-icons.mjs`. See the [offline](docs/notes/offline-plan.md) and [installation](docs/notes/install-plan.md) records.
+The same disclosure contains **Add a Video Lab icon**. It offers the available native installation prompt or one relevant device/browser instruction, never both. An installed app window shows its status. Installation does not itself save lessons or processing tools. Icons are original and reproducible with `node scripts/generate-icons.mjs`. See the [offline](docs/notes/offline-plan.md) and [installation](docs/notes/install-plan.md) records.
 
 ## Media, rights and evidence
 

@@ -5,6 +5,21 @@ import { browserAction, courseUI as ux } from "../src/cli/course.strings";
 import { routeFor } from "../src/journey/routes";
 import { progressiveUI as flow } from "../src/cli/progressive.strings";
 import { parseCommand } from "../src/cli/command";
+import type { StepName } from "../src/journey/routes";
+import { chapterTitles, courseUI } from "../src/course/strings";
+export async function navigateChapter(page: Page, step: StepName) {
+  const picker = page.getByRole("combobox", {
+    name: courseUI.chapterNav,
+    exact: true,
+  });
+  if (await picker.isVisible()) await picker.selectOption(step);
+  else
+    await page
+      .locator(".journey-nav")
+      .getByRole("link", { name: new RegExp(chapterTitles[step] + "$") })
+      .click();
+  await expect(page.locator(".cli-lab")).toHaveAttribute("data-step", step);
+}
 export async function clickAction(page: Page, name: string) {
   const visible = page.getByRole("button", { name, exact: true }).first();
   if (await visible.isVisible()) {
@@ -72,7 +87,7 @@ export async function workspaceAction(page: Page, text: string) {
   else if (tool === "solution") await clickAction(page, ux.solution);
   else if (tool === "check") await clickAction(page, `${ux.check} ${args[1]}`);
   else {
-    const destination = tool === "fixtures" ? "Build" : null;
+    const destination = tool === "fixtures" ? "build" : null;
     if (
       text === "reference build" ||
       text === "reference edit" ||
@@ -103,7 +118,7 @@ export async function workspaceAction(page: Page, text: string) {
         })
         .count())
     ) {
-      await page.getByRole("link", { name: destination, exact: true }).click();
+      await navigateChapter(page, destination);
     }
     await expect(page.locator(".cli-lab")).toHaveAttribute(
       "data-workspace-ready",
@@ -139,7 +154,7 @@ export async function runCommand(page: Page, text: string, result = cli.done) {
   }
   if (!(await workspaceAction(page, text))) {
     if (route.step === "capture" || route.step === "publish") {
-      await page.getByRole("link", { name: "Inspect", exact: true }).click();
+      await navigateChapter(page, "inspect");
       await expect(page.locator(".cli-lab")).toHaveAttribute(
         "data-step",
         "inspect",

@@ -9,7 +9,11 @@ import { routeFor } from "../src/journey/routes";
 import { cli, lessons } from "../src/cli/strings";
 import { offline } from "../src/offline/strings";
 const status = (page: Page) => page.locator(".command-workspace [role=status]");
-import { runCommand as command, clickAction } from "./course-actions";
+import {
+  runCommand as command,
+  clickAction,
+  navigateChapter,
+} from "./course-actions";
 const output = (page: Page) => page.locator(".command-workspace");
 const probeCommand = (file: string) =>
   `ffprobe -v error -show_streams -show_format -of json ${file}`;
@@ -41,7 +45,7 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   await command(page, "sample");
   await command(page, "ls");
   expect(requests.some((u) => u.includes("/encoder/"))).toBe(false);
-  await page.getByRole("link", { name: /^Build$/ }).click();
+  await navigateChapter(page, "build");
   await command(page, "fixtures");
   await command(page, buildCommand(1, "video.mp4"));
   await expect(page.getByLabel(cli.output, { exact: true })).not.toContainText(
@@ -60,10 +64,10 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   expect(
     muxed.streams.map((s: { codec_type: string }) => s.codec_type),
   ).toEqual(["video", "audio"]);
-  await page.getByRole("link", { name: /^Inspect$/ }).click();
+  await navigateChapter(page, "inspect");
   await command(page, probeCommand("mousepad-demo.mp4"));
   await expect(output(page)).toContainText("12.000000");
-  await page.getByRole("link", { name: /^Edit$/ }).click();
+  await navigateChapter(page, "edit");
   const trim = lessons.edit.examples[0]!.command;
   await command(page, trim);
   const trimmed = nativeProbe(await download(page, "cut.mp4"));
@@ -76,7 +80,7 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   const joined = nativeProbe(await download(page, "joined.mp4"));
   expect(Number(joined.format.duration)).toBeCloseTo(5, 1);
   expect(joined.streams).toHaveLength(1);
-  await page.getByRole("link", { name: /^Publish$/ }).click();
+  await navigateChapter(page, "publish");
   const recipe = JSON.parse(
     readFileSync(await download(page, "joined.mp4.recipe.json"), "utf8"),
   );
@@ -105,7 +109,7 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
     )
     .toBeGreaterThan(0.1);
   expect(await page.getByRole("spinbutton").count()).toBe(0);
-  expect(await page.getByRole("combobox").count()).toBe(0);
+  expect(await page.locator(".cli-lab").getByRole("combobox").count()).toBe(0);
   expect(errors).toEqual([]);
 });
 test("tool errors, quoting errors, cancellation, history and explicit overwrite preserve prior output", async ({
@@ -225,7 +229,7 @@ test("removed browser recording never requests capture and earlier captured file
   );
   const probe = nativeProbe(await download(page, "earlier-recording.mp4"));
   expect(Number(probe.format.duration)).toBe(12);
-  await page.getByRole("link", { name: /^Inspect$/ }).click();
+  await navigateChapter(page, "inspect");
   await command(page, "ffprobe earlier-recording.mp4");
   await expect(page.getByLabel(cli.output, { exact: true })).toContainText(
     "Duration: 00:00:12.00",
@@ -477,14 +481,14 @@ test("source controls retain actual imported names, current tasks, comparisons a
   );
   await expect(
     page.getByRole("button", { name: guided.next, exact: true }),
-  ).toHaveCount(0);
+  ).toBeVisible();
   await expect(page.locator(".task-panel")).not.toContainText(
     "Find your recording's exact name",
   );
   expect(
     Number(nativeProbe(await download(page, "my-capture.mp4")).format.duration),
   ).toBe(12);
-  await page.getByRole("link", { name: /^Inspect$/ }).click();
+  await navigateChapter(page, "inspect");
   await page
     .getByRole("textbox", { name: cli.input, exact: true })
     .fill("ffprobe my-capture.mp4");
@@ -493,7 +497,7 @@ test("source controls retain actual imported names, current tasks, comparisons a
   await expect(
     page.getByRole("textbox", { name: cli.input, exact: true }),
   ).toHaveValue("ffprobe my-capture.mp4");
-  await page.getByRole("link", { name: /^Inspect$/ }).click();
+  await navigateChapter(page, "inspect");
   await expect(page.locator(".cli-lab")).toHaveAttribute(
     "data-step",
     "inspect",

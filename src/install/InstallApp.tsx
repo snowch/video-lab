@@ -1,6 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useRef, useState } from "react";
-import { isAppWindow, type InstallPrompt } from "./model";
+import { isAppWindow, installationMethod, type InstallPrompt } from "./model";
 import { install } from "./strings";
 export function InstallApp() {
   const prompt = useRef<InstallPrompt | null>(null);
@@ -52,7 +52,7 @@ export function InstallApp() {
   return (
     <section className="install-access" aria-labelledby="install-heading">
       <h2 id="install-heading">{install.heading}</h2>
-      <p>{install.description}</p>
+      {!installed && <p>{install.description}</p>}
       {(installed || notice) && (
         <p role="status">{installed ? install.installed : install[notice!]}</p>
       )}
@@ -61,22 +61,14 @@ export function InstallApp() {
           {install.button}
         </button>
       )}
-      <p>{install.offlineReminder}</p>
-      {!installed && (
-        <details>
-          <summary>{install.help}</summary>
-          <ul>
-            {[
-              install.chromium,
-              install.android,
-              install.safariMac,
-              install.appleMobile,
-              install.firefox,
-            ].map((text) => (
-              <li key={text}>{text}</li>
-            ))}
-          </ul>
-        </details>
+      {!installed && <p>{install.offlineReminder}</p>}
+      {!installed && !available && !busy && notice !== "accepted" && (
+        <p
+          className="installation-instructions"
+          data-install-method={installationMethod()}
+        >
+          {install[installationMethod()]}
+        </p>
       )}
     </section>
   );

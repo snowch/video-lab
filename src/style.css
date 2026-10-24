@@ -1887,3 +1887,162 @@ code {
 .recording-guide h3 {
   overflow-wrap: anywhere;
 }
+
+/* Course teaching sits beside the command and its actual output. */
+.chapter-count {
+  color: var(--accent);
+  font-weight: 650;
+  margin-bottom: 0.25rem;
+}
+.chapter-outcome {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+.chapter-picker {
+  display: none;
+}
+.teaching-figure {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  min-width: 0;
+}
+.teaching-figure h3 {
+  margin-top: 0;
+}
+.teaching-figure label {
+  display: block;
+  margin-block: 0.75rem;
+}
+.teaching-figure input {
+  width: 100%;
+}
+.teaching-figure video {
+  width: 100%;
+  border-radius: 8px;
+}
+.teaching-figure output {
+  display: block;
+  font-weight: 650;
+  margin-block: 0.75rem;
+}
+.teaching-figure figcaption {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.story-model {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  list-style-position: inside;
+}
+.story-model li,
+.container-model {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.picture-stream {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--accent-soft);
+}
+.range-model {
+  background: var(--line);
+  height: 2rem;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.range-model span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.picture-schedule {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.picture-schedule img {
+  width: 100%;
+  height: auto;
+}
+.picture-schedule li {
+  border: 1px solid var(--line);
+  padding: 0.25rem;
+  min-width: 0;
+}
+.picture-schedule span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.practice-guide,
+.practice-review {
+  margin-block: 1.25rem;
+  padding: 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+}
+.practice-guide li {
+  margin-block: 0.5rem;
+}
+.practice-guide pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.practice-review textarea {
+  width: 100%;
+}
+.future-topics {
+  list-style: none;
+  padding: 0;
+}
+.future-topics li {
+  margin-block: 1rem;
+}
+@media (max-width: 899px) {
+  .journey-nav .chapter-links {
+    display: none;
+  }
+  .chapter-picker {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+    font-weight: 650;
+  }
+  .journey-nav {
+    display: block;
+  }
+}
+@media (max-width: 420px) {
+  .story-model {
+    grid-template-columns: 1fr;
+  }
+}
+.chapter-links {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.journey-nav {
+  display: block;
+}
+.chapter-links a {
+  display: block;
+}
+.focused-workbench .task-panel,
+.focused-workbench .practice-review,
+.focused-workbench .post-run-explanation {
+  overflow-wrap: anywhere;
+}
+.command-workspace > .teaching-figure {
+  margin-top: 0.5rem;
+}

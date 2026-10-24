@@ -1,0 +1,84 @@
+{
+  "source": "media/mousepad-demo.mp4",
+  "sourceSha256": "d2546b852aa4ac8f338615a79b507a0a5807d9af7ad8bf0cb8fdf1dfdec77b3e",
+  "nativeVersion": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "examples": [
+    {
+      "id": "early",
+      "path": "media/teaching/early.mp4",
+      "start": 0,
+      "end": 4,
+      "duration": 4.0,
+      "frames": 60,
+      "bytes": 47708,
+      "sha256": "88a20ada0cb09b461526260b018bb04e36c9c9962e5b7d6b9449c705dbafa22f",
+      "command": [
+        "ffmpeg",
+        "-i",
+        "public/media/mousepad-demo.mp4",
+        "-ss",
+        "0",
+        "-t",
+        "4",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "public/media/teaching/early.mp4"
+      ]
+    },
+    {
+      "id": "context",
+      "path": "media/teaching/context.mp4",
+      "start": 1,
+      "end": 8,
+      "duration": 7.0,
+      "frames": 105,
+      "bytes": 67038,
+      "sha256": "585a418642a6737e6aa6de1a8f33cd8a38275602dab3ebaa2c129b05fc17e90e",
+      "command": [
+        "ffmpeg",
+        "-i",
+        "public/media/mousepad-demo.mp4",
+        "-ss",
+        "1",
+        "-t",
+        "7",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "public/media/teaching/context.mp4"
+      ]
+    },
+    {
+      "id": "late",
+      "path": "media/teaching/late.mp4",
+      "start": 6,
+      "end": 9,
+      "duration": 3.0,
+      "frames": 45,
+      "bytes": 23408,
+      "sha256": "06ab290725d71134c59761070971afb42fc5160f38bb60174dd4847f27b52951",
+      "command": [
+        "ffmpeg",
+        "-i",
+        "public/media/mousepad-demo.mp4",
+        "-ss",
+        "6",
+        "-t",
+        "3",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "public/media/teaching/late.mp4"
+      ]
+    }
+  ],
+  "sourceDuration": 12,
+  "sourceRate": 15
+}

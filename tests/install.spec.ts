@@ -2,6 +2,7 @@
 import { test, expect } from "@playwright/test";
 import { install } from "../src/install/strings";
 import { offline } from "../src/offline/strings";
+import { installationMethod } from "../src/install/model";
 test("built app metadata, icons and Chromium installability", async ({
   page,
   context,
@@ -74,12 +75,15 @@ test("installation fallback and controlled prompt lifecycle", async ({
   await page.goto("./");
   await page.locator(".offline-panel > details > summary").click();
   const panel = page.locator(".install-access");
-  await panel.getByText(install.help, { exact: true }).click();
-  await expect(
-    panel.getByText(install.safariMac, { exact: true }),
-  ).toBeVisible();
-  await expect(panel.getByText(install.firefox, { exact: true })).toBeVisible();
-  await expect(panel.getByText(install.android, { exact: true })).toBeVisible();
+  const method = await page.evaluate(() => ({
+    ua: navigator.userAgent,
+    touch: navigator.maxTouchPoints,
+  }));
+  await expect(panel.locator(".installation-instructions")).toHaveText(
+    install[installationMethod(method.ua, method.touch)],
+  );
+  await expect(panel.locator(".installation-instructions")).toHaveCount(1);
+  await expect(panel.locator("ul,details")).toHaveCount(0);
   await expect(
     panel.getByText(install.offlineReminder, { exact: true }),
   ).toBeVisible();
@@ -97,6 +101,7 @@ test("installation fallback and controlled prompt lifecycle", async ({
     }, outcome);
   }
   await offer("dismissed");
+  await expect(panel.locator(".installation-instructions")).toHaveCount(0);
   await panel.getByRole("button", { name: install.button }).focus();
   await page.keyboard.press("Enter");
   await expect(panel.getByRole("status")).toHaveText(install.dismissed);
@@ -109,9 +114,11 @@ test("installation fallback and controlled prompt lifecycle", async ({
   await offer("accepted");
   await panel.getByRole("button", { name: install.button }).click();
   await expect(panel.getByRole("status")).toHaveText(install.accepted);
+  await expect(panel.locator(".installation-instructions")).toHaveCount(0);
   await page.evaluate(() => dispatchEvent(new Event("appinstalled")));
   await expect(panel.getByRole("status")).toHaveText(install.installed);
   await expect(panel.getByRole("button")).toHaveCount(0);
+  await expect(panel.locator(".installation-instructions")).toHaveCount(0);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -131,5 +138,33 @@ test("existing app window does not offer installation again", async ({
   );
   await expect(page.locator(".install-access").getByRole("button")).toHaveCount(
     0,
+  );
+});
+
+test("iPad desktop browser identity receives only Apple device instructions", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "userAgent", {
+      value:
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 Version/17.0 Safari/605.1.15",
+      configurable: true,
+    });
+    Object.defineProperty(navigator, "maxTouchPoints", {
+      value: 5,
+      configurable: true,
+    });
+  });
+  await page.goto("./");
+  await page.locator(".offline-panel>details>summary").click();
+  await expect(page.locator(".installation-instructions")).toHaveAttribute(
+    "data-install-method",
+    "appleMobile",
+  );
+  await expect(page.locator(".installation-instructions")).toHaveText(
+    install.appleMobile,
+  );
+  await expect(page.locator(".install-access")).not.toContainText(
+    install.safariMac,
   );
 });

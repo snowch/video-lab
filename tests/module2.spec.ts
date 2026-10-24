@@ -147,6 +147,6 @@ test("provided playback remains clearly supplied; imported media cannot fake exe
   await visiblePlay(page);
   await command(page, "check edit reference-edit.mp4", cli.failed);
   await expect(terminal(page)).toContainText(refStrings.missingEvidence);
-  expect(await page.getByRole("combobox").count()).toBe(0);
+  expect(await page.locator(".cli-lab").getByRole("combobox").count()).toBe(0);
   expect(await page.getByRole("slider").count()).toBe(0);
 });

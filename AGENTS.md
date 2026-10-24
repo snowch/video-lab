@@ -109,3 +109,7 @@ On 24 October 2026 the owner requested removing browser screen recording because
 ## One offline download
 
 On 24 October 2026 the owner requested one download for the whole app, superseding the earlier separate lesson/tool download UI. Use one action, combined manifest byte total and readiness requiring lessons, media and processing tools. Preserve and repair older partial saves, existing worker protocols, update/reload, installation and user files. Keep reading free of automatic processing-tool downloads. Use `docs/notes/unified-offline/` for the mandatory independent workflow. Reviewed main deployment remains authorised.
+
+## Course depth and chapter navigation
+
+On 24 October 2026 the owner requested restoring educational substance in the five main chapters, consistent chapter navigation and contextual installation guidance. Add first-principles explanation, truthful visual demonstrations, changed examples and independent practice with review/help; retain the focused command/replay experience on mobile. Use one numbered chapter sequence everywhere, keeping references and optional guides separate and old routes/progress valid. Installation offers either its available prompt or relevant device instructions, with installed status for an app window. Use `docs/notes/course-depth/` for verified fixtures, separate prose and the mandatory independent workflow. Reviewed main deployment remains authorised.

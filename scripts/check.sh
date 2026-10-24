@@ -10,5 +10,6 @@ npm run media:verify
 node scripts/module2-media.mjs
 node scripts/journey-media.mjs
 node scripts/verify-workbench.mjs
+node scripts/verify-teaching.mjs
 npm run build
 npm run test:browser

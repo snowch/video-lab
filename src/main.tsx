@@ -7,11 +7,13 @@ import { home, modules } from "./content/home.strings";
 import { asset } from "./media/model";
 import "./style.css";
 import { OfflineAccess } from "./offline/OfflineAccess";
+import { j } from "./journey/strings";
 import { ProjectProvider } from "./journey/project";
 import { CommandLab } from "./cli/Workspace";
 import { progressiveUI as flow } from "./cli/progressive.strings";
 import { routeFor } from "./journey/routes";
-import { j } from "./journey/strings";
+import { chapterOrder, chapterNumber } from "./course/structure";
+import { chapterTitles, courseUI } from "./course/strings";
 import { referenceLessons } from "./cli/reference.strings";
 import { RecordingGuide } from "./capture/RecordingGuide";
 import { recordingGuide } from "./capture/guide.strings";
@@ -58,37 +60,51 @@ function Home() {
           <p className="muted">{home.planNote}</p>
         </div>
         <ol className="module-list">
-          {[...modules]
-            .sort((a, b) => {
-              const order = [0, 2, 3, 1, 8, 4, 5, 6, 7, 9, 10];
-              return order.indexOf(a.id) - order.indexOf(b.id);
-            })
-            .map((m) => (
-              <li key={m.id}>
-                <span className="module-number">
-                  {m.available
-                    ? [
-                        "capture",
-                        "inspect",
-                        "edit",
-                        "build",
-                        "publish",
-                      ].indexOf(m.route!) + 1
-                    : "·"}
-                </span>
+          {chapterOrder.map((step) => {
+            const m = modules.find((module) => module.route === step)!;
+            return (
+              <li key={step}>
+                <span className="module-number">{chapterNumber(step)}</span>
                 <div>
-                  <small>{m.available ? ui.available : ui.planned}</small>
-                  <h3>{m.title}</h3>
+                  <small>
+                    {courseUI.chapter} {chapterNumber(step)}
+                  </small>
+                  <h3>{chapterTitles[step]}</h3>
                   <p>{m.summary}</p>
                 </div>
-                {m.available && (
-                  <a className="button" href={`#/${m.route}`}>
-                    {ui.open} →
-                  </a>
-                )}
+                <a className="button" href={`#/${step}`}>
+                  {ui.open} →
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+      <section className="course-references">
+        <h2>{courseUI.references}</h2>
+        <p>{courseUI.referenceNote}</p>
+        {(["inspect", "edit"] as const).map((step) => (
+          <div key={step}>
+            <h3>
+              <a href={`#/${step}/reference`}>{referenceLessons[step].title}</a>
+            </h3>
+            <p>{flow.referenceIntro[step]}</p>
+          </div>
+        ))}
+      </section>
+      <section className="planned-topics">
+        <h2>{courseUI.planned}</h2>
+        <ul className="future-topics">
+          {modules
+            .filter((module) => !module.available)
+            .map((module) => (
+              <li key={module.id}>
+                <small>{ui.planned}</small>
+                <h3>{module.title}</h3>
+                <p>{module.summary}</p>
               </li>
             ))}
-        </ol>
+        </ul>
       </section>
       <section className="appendix-links">
         <h2>{recordingGuide.overviewTitle}</h2>
@@ -123,7 +139,7 @@ function App() {
     : step
       ? resolved.reference && (step === "inspect" || step === "edit")
         ? referenceLessons[step].title
-        : j[step].title
+        : chapterTitles[step]
       : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
@@ -179,32 +195,39 @@ function App() {
       <OfflineAccess />
       {step && (
         <nav className="journey-nav" aria-label={home.planTitle}>
-          {modules
-            .filter((module) => module.available)
-            .sort(
-              (a, b) =>
-                ["capture", "inspect", "edit", "build", "publish"].indexOf(
-                  a.route!,
-                ) -
-                ["capture", "inspect", "edit", "build", "publish"].indexOf(
-                  b.route!,
-                ),
-            )
-            .map((module) => (
+          <label className="chapter-picker">
+            {courseUI.chapterNav}
+            <select
+              aria-label={courseUI.chapterNav}
+              value={resolved.reference ? "" : step}
+              onChange={(event) => {
+                location.hash = `#/${event.target.value}`;
+              }}
+            >
+              {resolved.reference && (
+                <option value="" disabled>
+                  {courseUI.references}
+                </option>
+              )}
+              {chapterOrder.map((item) => (
+                <option key={item} value={item}>
+                  {chapterNumber(item)} · {chapterTitles[item]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="chapter-links">
+            {chapterOrder.map((item) => (
               <a
-                key={module.id}
-                href={`#/${module.route}`}
-                aria-current={module.route === step ? "step" : undefined}
-                aria-label={flow.nav[module.route!]}
+                key={item}
+                href={`#/${item}`}
+                aria-current={item === step ? "page" : undefined}
               >
-                <span aria-hidden="true">
-                  {["capture", "inspect", "edit", "build", "publish"].indexOf(
-                    module.route!,
-                  ) + 1}
-                </span>{" "}
-                {flow.nav[module.route!]}
+                <span aria-hidden="true">{chapterNumber(item)}</span>{" "}
+                {chapterTitles[item]}
               </a>
             ))}
+          </div>
         </nav>
       )}
       <main id="content" ref={main} tabIndex={-1}>
@@ -227,7 +250,7 @@ function App() {
                 href={resolved.reference ? `#/${step}` : `#/${step}/reference`}
               >
                 {resolved.reference
-                  ? j[step].title
+                  ? chapterTitles[step]
                   : step === "inspect"
                     ? j.inspect.referenceTitle
                     : j.edit.referenceTitle}
