@@ -2,12 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { workerMessage, installed, activateWaiting } from "./client";
 import { offline } from "./strings";
-import { EncoderOffline } from "../journey/shared";
+import { encoderManifestUrl } from "../processing/config";
 import { InstallApp } from "../install/InstallApp";
 export function OfflineAccess() {
   const supported =
     "serviceWorker" in navigator && "caches" in window && isSecureContext;
   const [ready, setReady] = useState(false);
+  const [lessonsReady, setLessonsReady] = useState(false);
   const [bytes, setBytes] = useState<number>();
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
@@ -27,10 +28,18 @@ export function OfflineAccess() {
   async function refresh(reg = registration.current) {
     setWaiting(!!reg?.waiting);
     try {
-      const complete = reg?.active
-        ? (await workerMessage(reg.active, "STATUS")).ready
-        : false;
+      const worker = reg?.active;
+      const [lessons, tools] = worker
+        ? await Promise.all([
+            workerMessage(worker, "STATUS"),
+            workerMessage(worker, "ENCODER_STATUS"),
+          ])
+        : [{ ready: false }, { ready: false }];
+      setLessonsReady(lessons.ready);
+      const complete = lessons.ready && tools.ready;
       setReady(complete);
+      if (!complete)
+        setNotice((current) => (current === "current" ? null : current));
       return complete;
     } catch (error) {
       setReady(false);
@@ -58,15 +67,21 @@ export function OfflineAccess() {
     observe();
   }
   useEffect(() => {
-    void fetch(`${scope}offline-manifest.json`)
-      .then((response) => response.json())
-      .then((manifest: { bytes?: number }) => {
+    void Promise.all(
+      [`${scope}offline-manifest.json`, encoderManifestUrl].map(async (url) => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Manifest unavailable");
+        const manifest: { bytes?: number } = await response.json();
         if (
-          typeof manifest.bytes === "number" &&
-          Number.isFinite(manifest.bytes)
+          typeof manifest.bytes !== "number" ||
+          !Number.isSafeInteger(manifest.bytes) ||
+          manifest.bytes < 0
         )
-          setBytes(manifest.bytes);
-      })
+          throw new Error("Invalid download size");
+        return manifest.bytes;
+      }),
+    )
+      .then((sizes) => setBytes(sizes.reduce((total, size) => total + size, 0)))
       .catch(() => {});
     if (!supported) return;
     let disposed = false;
@@ -131,7 +146,9 @@ export function OfflineAccess() {
       const worker = reg.active ?? reg.waiting;
       if (!worker || !(await workerMessage(worker, "DOWNLOAD")).ready)
         throw new Error("Download failed");
-      await refresh(reg);
+      if (!(await workerMessage(worker, "DOWNLOAD_ENCODER")).ready)
+        throw new Error("Processing tools not saved");
+      if (!(await refresh(reg))) throw new Error("Incomplete offline copy");
       setNotice(null);
     } catch {
       await reportFailure();
@@ -189,21 +206,22 @@ export function OfflineAccess() {
       ? notice === "failed" && ready
         ? offline.updateFailed
         : offline[notice]
-      : waiting
+      : waiting && ready
         ? offline.updateReady
         : ready
           ? online
             ? offline.ready
             : offline.offlineReady
-          : online
-            ? offline.idle
-            : offline.offlineMissing;
+          : lessonsReady
+            ? offline.partial
+            : online
+              ? offline.idle
+              : offline.offlineMissing;
   return (
     <section className="offline-panel" aria-label={offline.title}>
       <details>
         <summary>{offline.title}</summary>
         <p>{offline.description}</p>
-        <h3>{offline.lessonsTitle}</h3>
         {bytes !== undefined && (
           <p>
             {(bytes / 1_000_000).toFixed(2)} MB · {bytes.toLocaleString()} B
@@ -212,7 +230,7 @@ export function OfflineAccess() {
         <p role="status" aria-live="polite" data-offline-ready={ready}>
           {status}
         </p>
-        {waiting && notice && <p>{offline.updateReady}</p>}
+        {waiting && (notice || !ready) && <p>{offline.updateReady}</p>}
         {supported && (
           <div className="offline-actions">
             {!ready && (
@@ -220,7 +238,7 @@ export function OfflineAccess() {
                 {notice === "failed" ? offline.retry : offline.download}
               </button>
             )}
-            {ready && (
+            {lessonsReady && (
               <button disabled={busy} onClick={() => void check()}>
                 {offline.check}
               </button>
@@ -233,7 +251,6 @@ export function OfflineAccess() {
           </div>
         )}
         <p className="muted">{offline.limits}</p>
-        <EncoderOffline />
         <InstallApp />
       </details>
     </section>

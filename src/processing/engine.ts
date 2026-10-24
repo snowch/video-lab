@@ -169,7 +169,7 @@ async function withEngine<T>(
         )
       )
         throw new Error(
-          "Save the processing tools while connected before processing offline.",
+          "Connect to the internet and use Download for offline use before processing offline.",
         );
     }
     // Network emulation and some browsers can leave navigator.onLine stale.
@@ -195,7 +195,7 @@ async function withEngine<T>(
           if (job.cancelled)
             throw new DOMException("Media operation cancelled.", "AbortError");
           throw new Error(
-            "Processing tools are unavailable. Save the processing tools while connected before processing offline.",
+            "Processing tools are unavailable. Connect to the internet and use Download for offline use before processing offline.",
           );
         }
       }

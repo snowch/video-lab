@@ -21,7 +21,8 @@ const paths = (await walk("dist"))
       !p.endsWith("/release.json") &&
       !p.startsWith("dist/encoder/") &&
       (!p.startsWith("dist/optional/") ||
-        p === "dist/optional/command-workbench.html"),
+        p === "dist/optional/command-workbench.html" ||
+        p === "dist/optional/big-buck-bunny-5s.mp4"),
   )
   .sort();
 const files = await Promise.all(

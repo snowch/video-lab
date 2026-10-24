@@ -167,7 +167,7 @@ it("leaves missing timing unavailable", () => {
 it("fails promptly offline without saved tools, then permits a connected retry", async () => {
   vi.stubGlobal("navigator", { onLine: false });
   vi.stubGlobal("caches", { match: vi.fn().mockResolvedValue(undefined) });
-  await expect(runJob(job())).rejects.toThrow("Save the processing tools");
+  await expect(runJob(job())).rejects.toThrow("Download for offline use");
   expect(mock.instances).toBe(0);
   vi.stubGlobal("navigator", { onLine: true });
   await expect(runJob(job())).resolves.toHaveProperty("bytes");

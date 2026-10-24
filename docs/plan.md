@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**One offline download, 24 October 2026:** [the unified download slice](notes/unified-offline/01-facts.md) supersedes separate lesson/tool controls. One action saves lessons, media and pinned processing tools; readiness requires both manifests. Older partial saves are repaired without deleting user work. Installation stays optional and distinct.
+
 **Browser recording removed, 24 October 2026:** [the removal slice](notes/remove-browser-recording/01-facts.md) removes browser capture from both app entry points and the appendix. Source selection offers practice media or imports; the optional guide covers native FFmpeg and device recorders. Existing captured-origin files and all saved work remain valid. This supersedes browser-capture descriptions below.
 
 **Source video naming and recording appendix, 24 October 2026:** the first lesson is **Choose your source video**, with its existing `#/capture` bookmark retained. The [optional recording guide](notes/capture-guide/01-facts.md) is linked from source selection and the overview. Browser, installed native FFmpeg and phone/tablet instructions remain separate; capture is optional and no browser recording CLI is invented. The appendix is included in offline lessons.
@@ -59,11 +61,11 @@ The initial path is **0 → 1 → 2 → 3 → 8**, not a requirement to wait for
 
 React/TypeScript/Vite uses the unchanged shared lesson platform through checked-copy sync. Original reference lesson IDs `what-is-video` and `cutting-and-joining` and saved challenge keys remain. Canonical routes use names; old `#/module-0[/section]` maps to `#/inspect/reference[/section]`, and old `#/module-2[/section]` to `#/edit/reference[/section]`. The same numeric string is never repurposed for the new module number. Reference graders remain tied to fixed fixtures, not learner recordings.
 
-The pinned core 0.12.10 actually includes ffprobe. Wrapper 0.12.15 and util 0.12.2 are pinned; the core is loaded only by explicit processing or additional offline-tool saving. Probe output is validated against real JSON/streams/format/errors, including the documented pinned return sentinel; encoder output requires success, bytes and a valid real probe. [The spike](notes/issue-3/wasm-spike.md) is the capability evidence.
+The pinned core 0.12.10 actually includes ffprobe. Wrapper 0.12.15 and util 0.12.2 are pinned; the core is loaded only by explicit processing or the complete offline download. Probe output is validated against real JSON/streams/format/errors, including the documented pinned return sentinel; encoder output requires success, bytes and a valid real probe. [The spike](notes/issue-3/wasm-spike.md) is the capability evidence.
 
 Processing and media stay local. One operation runs at a time; cancel/navigation terminates it and supports retry. Exercise imports are bounded to 20 MiB; learners select times and output settings in their actual commands. The engine has separate 32 MiB total-input and 120-second processing bounds. Project media uses browser storage with explicit session-only fallback and clear-project control. Download important work.
 
-Offline lessons and the approximately 32.4 MB additional processing package have separate manifests/readiness. Encoder and optional comparison media are excluded from the baseline. Installation does not imply either download is complete. GPL/MIT notices and exact source references accompany the shipped optional core.
+Lessons and the pinned processing package retain separate internal manifests for integrity and cache reuse, but the app offers one download and one complete readiness status. The course comparison is included. Installation does not imply that the offline download is complete. GPL/MIT notices and exact source references accompany the shipped optional core.
 
 ## Delivery and remaining work
 

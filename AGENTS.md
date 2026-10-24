@@ -105,3 +105,7 @@ On 24 October 2026 the owner renamed the first lesson to Choose your source vide
 ## Browser recording removal
 
 On 24 October 2026 the owner requested removing browser screen recording because display capture is not Baseline across widely used browsers. This supersedes earlier requirements to retain that feature. Source selection offers practice media and imports only. Remove browser capture/stop entry points and instructions from the production app, optional working entry and appendix; do not retain disabled feature controls or replace them with an invented CLI command. Keep native FFmpeg/device recording instructions, old captured-origin files, drafts, evidence, routes and offline behaviour. The guide starts with a neutral device choice. Use `docs/notes/remove-browser-recording/` for the mandatory independent workflow. Reviewed main deployment remains authorised.
+
+## One offline download
+
+On 24 October 2026 the owner requested one download for the whole app, superseding the earlier separate lesson/tool download UI. Use one action, combined manifest byte total and readiness requiring lessons, media and processing tools. Preserve and repair older partial saves, existing worker protocols, update/reload, installation and user files. Keep reading free of automatic processing-tool downloads. Use `docs/notes/unified-offline/` for the mandatory independent workflow. Reviewed main deployment remains authorised.

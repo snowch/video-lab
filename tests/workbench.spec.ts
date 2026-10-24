@@ -5,7 +5,6 @@ import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import C from "../src/workbench/strings.json" with { type: "json" };
 import { offline } from "../src/offline/strings";
-import { j } from "../src/journey/strings";
 const run = async (page: Page) => {
   await page
     .getByRole("button", { name: C.live.run + " →", exact: true })
@@ -236,7 +235,7 @@ test("import renaming, source replay, cancel/retry and native command boundary",
     ),
   ).toBe(true);
 });
-test("working entry and separately saved WASM run offline after reload", async ({
+test("working entry and WASM run offline after one download and reload", async ({
   page,
   context,
 }) => {
@@ -252,13 +251,6 @@ test("working entry and separately saved WASM run offline after reload", async (
     {
       timeout: 60000,
     },
-  );
-  await page
-    .getByRole("button", { name: j.common.encoderDownload, exact: true })
-    .click();
-  await expect(page.locator(".encoder-offline [role=status]")).toHaveText(
-    j.common.encoderReady,
-    { timeout: 60000 },
   );
   await context.setOffline(true);
   await page.reload();

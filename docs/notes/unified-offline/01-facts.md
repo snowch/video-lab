@@ -1,0 +1,13 @@
+# One offline download
+
+Copyright © 2026 Christopher Snow.
+
+The owner requests one download for lessons, practice media and FFmpeg/ffprobe processing tools. This supersedes the previous separate optional tool-download controls. Show one combined byte total, one download/retry action and one truthful readiness status. App installation stays a distinct optional action.
+
+Verified architecture: the existing service worker supports STATUS/DOWNLOAD for lesson files and ENCODER_STATUS/DOWNLOAD_ENCODER for pinned tools. Both downloads preserve completed cached files and check manifest integrity. Keep these protocols and the existing cache names, update/reload lifecycle and saved user media. The unified UI can orchestrate these existing operations sequentially; old lesson-only saves must be recognised as incomplete, repaired with the same button and never deleted. Readiness requires both manifests complete. A failed tools stage must not claim readiness, must retain saved lessons/files, and Retry must reuse completed assets. Recheck readiness on focus and after operations; partial eviction must be repairable. No automatic tool download merely from reading/opening the panel.
+
+The lesson manifest provides its byte total; encoder-manifest.json provides 32,367,068 bytes. Fetch both small manifests and display only their validated sum, not an invented estimate. Include the small optional course comparison recording in the lesson manifest so it is available after the complete download; keep historical prototype pages excluded. Raw processing behaviour remains unchanged. Ordinary processing can still fetch its engine on demand online.
+
+Update the current first-run/offline/install prose to point to one app-level download, remove the retired separate tool panel/component/strings, and update README/current plan. Do not rewrite historical review records. The engine's missing-tools errors remain truthful for legacy/evicted caches and should point to the unified Download for offline use action.
+
+Regression evidence: fresh one-click download followed by actual offline encode/probe in production and optional entry; all manifest hashes offline; second-stage failure/corruption, retry and cached-byte reuse; legacy lesson-only save repair; engine eviction without a false ready claim; saved work and unrelated caches retained; update failure/reload across tabs; unsupported browser; keyboard and phone/desktop light/dark reflow. Mandatory separate prose, reader, sceptic, ranked fixes, checker, full npm run check and public saved-copy upgrade apply. Reviewed deployment straight to main remains authorised.

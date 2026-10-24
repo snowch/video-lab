@@ -65,11 +65,11 @@ test("source ends at continuation while file management and help preserve the le
     document.documentElement.style.fontSize = "";
   });
   await page.getByText(offline.title, { exact: true }).click();
-  await expect(page.locator(".offline-panel .encoder-offline")).toBeVisible();
-  await expect(page.locator(".offline-panel .encoder-offline")).toContainText(
-    "Save the lessons above",
-  );
+  await expect(page.locator(".offline-panel .encoder-offline")).toHaveCount(0);
   await expect(
-    page.locator(".offline-panel .encoder-offline details"),
-  ).toHaveCount(0);
+    page.getByRole("button", { name: offline.download, exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".offline-panel")).toContainText(
+    "processing tools",
+  );
 });

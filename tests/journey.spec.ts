@@ -8,7 +8,6 @@ import { refStrings } from "../src/cli/reference.strings";
 import { routeFor } from "../src/journey/routes";
 import { cli, lessons } from "../src/cli/strings";
 import { offline } from "../src/offline/strings";
-import { j } from "../src/journey/strings";
 const status = (page: Page) => page.locator(".command-workspace [role=status]");
 import { runCommand as command, clickAction } from "./course-actions";
 const output = (page: Page) => page.locator(".command-workspace");
@@ -338,7 +337,7 @@ test("imported own media and legacy project migrate without changing reference c
   await command(page, "progress");
   await expect(output(page)).toContainText(refStrings.legacySaved);
 });
-test("saved files survive offline reload; processing requires deliberately saved tools and works offline", async ({
+test("one download preserves saved files and supports real offline processing after reload", async ({
   page,
   context,
 }) => {
@@ -358,18 +357,6 @@ test("saved files survive offline reload; processing requires deliberately saved
   await page.reload();
   await command(page, "ls");
   await expect(page.locator(".workspace-files")).toContainText("frame000.jpg");
-  await command(page, buildCommand(1, "video.mp4"), cli.failed);
-  await expect(output(page)).toContainText("Save the processing tools");
-  await context.setOffline(false);
-  await page.evaluate(() => dispatchEvent(new Event("focus")));
-  await page.locator(".offline-panel > details > summary").click();
-  await page
-    .getByRole("button", { name: j.common.encoderDownload, exact: true })
-    .click();
-  await expect(
-    page.getByText(j.common.encoderReady, { exact: true }),
-  ).toBeVisible({ timeout: 60000 });
-  await context.setOffline(true);
   await command(page, buildCommand(1, "video.mp4"));
   expect(
     Number(nativeProbe(await download(page, "video.mp4")).format.duration),

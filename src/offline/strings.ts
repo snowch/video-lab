@@ -6,17 +6,18 @@ export const offline = {
     "The update could not be opened. This tab remains open. Retry Reload to use update, or select Check for updates.",
   title: "Offline access and app installation",
   description:
-    "Save lessons and practice media first. Add the separate processing tools if you want to run FFmpeg and ffprobe offline. Both downloads stay in this browser on this device.",
-  lessonsTitle: "Save lessons and practice media",
-  idle: "Lessons and practice media are not saved for offline use yet. Download them while connected.",
+    "Download lessons, practice media and FFmpeg/ffprobe tools together for offline use.",
+  idle: "Video Lab is not saved for offline use yet.",
   downloading:
-    "Saving lessons and practice media. Keep this page open until they are ready.",
+    "Downloading Video Lab for offline use. Keep this page open until it is ready.",
   ready:
-    "Lessons and practice media are saved for offline reading and playback in this browser. Running commands offline also needs the processing tools below.",
+    "Ready offline: lessons, practice media and FFmpeg/ffprobe tools are saved in this browser.",
   offlineReady:
-    "Your saved lessons and practice media are available offline. Running commands also needs the processing tools below.",
+    "You can read lessons, play practice media and run FFmpeg/ffprobe offline.",
+  partial:
+    "Some files are saved, but the offline download is incomplete. Download again while connected to finish.",
   offlineMissing:
-    "No complete offline copy is available in this browser. Connect to the internet and download the site before relying on offline access.",
+    "The offline download is incomplete. Connect to the internet and download Video Lab to finish.",
   checking:
     "Checking for an updated copy of Video Lab. This needs an internet connection.",
   current: "Your saved copy is up to date.",
@@ -33,5 +34,5 @@ export const offline = {
   check: "Check for updates",
   reload: "Reload to use update",
   limits:
-    "The saved copy belongs to this browser on this device. Browser storage can be cleared or removed, and private browsing copies are temporary. Downloading and updating need an internet connection, as do external source links. Challenge work and notes stay in this browser; they do not sync to an account or another device.",
+    "Saved files stay in this browser on this device. Browser storage can be cleared, so download important work. Downloads, updates and external links need an internet connection.",
 } as const;

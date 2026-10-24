@@ -55,9 +55,9 @@ Production practice media is an original twelve-second silent recording of Mouse
 
 ## Offline access and app installation
 
-While connected, expand **Offline access and app installation**, choose **Download for offline use**, and wait until the complete lesson copy is ready. This saves the lessons, original recordings, recorded references, pictures, styles and fonts. It excludes `encoder/` and `optional/`.
+While connected, expand **Offline access and app installation**, choose **Download for offline use**, and wait for **Ready offline**. One download saves lessons, practice media, recorded references, pictures, styles, fonts and FFmpeg/ffprobe processing tools. Its combined size is calculated from the shipped manifests (about 42 MB). The optional course comparison is included; historical prototype pages are excluded. Existing lesson-only saves use the same button to finish without discarding saved files.
 
-For offline processing, first finish the lesson download, then explicitly save the additional processing tools from the journey's tools panel. The pinned package and notices total **32,367,068 bytes**, about **32.4 MB**, separate from lesson readiness. Without those tools, saved reading and recorded comparisons remain useful, but viewing a reference is not an executed edit. Offline saving uses a service worker over HTTPS or localhost; test the production preview rather than the development server.
+Readiness requires the complete lesson and processing packages. If a download fails or browser storage removes a file, use the same download/retry action to repair it. Offline saving uses a service worker over HTTPS or localhost; test the production preview rather than the development server.
 
 **Check for updates** downloads a complete new lesson copy before offering **Reload to use update**. Other open Video Lab tabs reload too. Existing saved challenge work, notes and theme remain local. Browser storage may be cleared or evicted, private sessions are temporary, and external source links need internet. Project media is stored locally when available; if storage fails, the UI says session-only. Download important source files, outputs and recipes; there is no account synchronisation or permanent-backup promise.
 

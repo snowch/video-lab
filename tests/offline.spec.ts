@@ -8,11 +8,23 @@ import { cli } from "../src/cli/strings";
 import { command, terminal } from "./cli-helpers";
 
 const root = resolve("dist");
-type Site = { url: string; fail: string; corrupt: string; revision: number };
+type Site = {
+  url: string;
+  fail: string;
+  corrupt: string;
+  revision: number;
+  requests: Record<string, number>;
+};
 // A real HTTP origin (not route mocks) exercises service-worker requests in both browsers.
 const test = base.extend<{ site: Site }>({
   site: async ({}, use) => {
-    const site: Site = { url: "", fail: "", corrupt: "", revision: 0 };
+    const site: Site = {
+      url: "",
+      fail: "",
+      corrupt: "",
+      revision: 0,
+      requests: {},
+    };
     const server = createServer(async (req, res) => {
       try {
         const path = new URL(req.url!, "http://localhost").pathname;
@@ -20,6 +32,7 @@ const test = base.extend<{ site: Site }>({
           res.writeHead(404).end();
           return;
         }
+        site.requests[path] = (site.requests[path] ?? 0) + 1;
         if (site.fail && path.endsWith(site.fail)) {
           res.writeHead(503).end();
           return;
@@ -121,9 +134,15 @@ test("complete download survives offline reload and new tab, with all media and 
     offline.offlineReady,
   );
   // All files are fetched through the worker with the network disconnected, not the HTTP cache.
-  const manifest = JSON.parse(
-    await readFile("dist/offline-manifest.json", "utf8"),
-  ) as { files: { path: string; integrity: string }[] };
+  const manifests = await Promise.all(
+    ["dist/offline-manifest.json", "dist/encoder-manifest.json"].map(
+      async (path) =>
+        JSON.parse(await readFile(path, "utf8")) as {
+          files: { path: string; integrity: string }[];
+        },
+    ),
+  );
+  const manifest = { files: manifests.flatMap((m) => m.files) };
   expect(
     await page.evaluate(async (files) => {
       for (const file of files) {
@@ -459,4 +478,120 @@ test("unsupported browsers keep online lessons usable", async ({
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+});
+
+test("legacy lesson-only saves, failed tools and eviction use one resumable download", async ({
+  page,
+  context,
+  site,
+}) => {
+  test.setTimeout(90000);
+  await page.goto(site.url + "#/module-2");
+  // Reproduce the previous release's actual lesson-only save using its retained protocol.
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.register("sw.js");
+    const reg = await navigator.serviceWorker.ready;
+    await new Promise<void>((resolve, reject) => {
+      const channel = new MessageChannel();
+      channel.port1.onmessage = (e) => {
+        channel.port1.close();
+        e.data.ready ? resolve() : reject(new Error("Legacy save failed"));
+      };
+      reg.active!.postMessage("DOWNLOAD", [channel.port2]);
+    });
+  });
+  await page.reload();
+  const panel = page.locator(".offline-panel");
+  await panel.locator(":scope > details > summary").click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.partial,
+  );
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
+  );
+  expect(
+    Object.keys(site.requests).some((path) => path.includes("/encoder/")),
+  ).toBe(false);
+  await expect(
+    panel.getByRole("button", { name: /processing tools/i }),
+  ).toHaveCount(0);
+  const [lessons, tools] = await Promise.all(
+    ["offline-manifest.json", "encoder-manifest.json"].map(async (path) =>
+      JSON.parse(await readFile("dist/" + path, "utf8")),
+    ),
+  );
+  await expect(panel).toContainText(
+    (lessons.bytes + tools.bytes).toLocaleString() + " B",
+  );
+  const baselineRequests = site.requests["/video-lab/media/frames/119.jpg"];
+  const wasm = tools.files.find((f: { path: string }) =>
+    f.path.endsWith(".wasm"),
+  ).path as string;
+  site.fail = wasm;
+  await panel
+    .getByRole("button", { name: offline.download, exact: true })
+    .click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.failed,
+    { timeout: 30000 },
+  );
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
+  );
+  site.fail = "";
+  site.corrupt = wasm;
+  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.failed,
+    { timeout: 30000 },
+  );
+  site.corrupt = "";
+  await panel.getByRole("button", { name: offline.retry, exact: true }).click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.ready,
+    { timeout: 30000 },
+  );
+  expect(site.requests["/video-lab/media/frames/119.jpg"]).toBe(
+    baselineRequests,
+  );
+  await expect(
+    panel.getByRole("button", { name: offline.download, exact: true }),
+  ).toHaveCount(0);
+  await panel.getByRole("button", { name: offline.check, exact: true }).click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.current,
+  );
+  await page.evaluate(async (wasm) => {
+    for (const name of await caches.keys())
+      if (name.startsWith("video-lab-offline:") && name.includes(":encoder:"))
+        await (await caches.open(name)).delete(new URL(wasm, location.href));
+  }, wasm);
+  await page.evaluate(() => dispatchEvent(new Event("focus")));
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.partial,
+  );
+  await context.setOffline(true);
+  await page.reload();
+  await panel.locator(":scope > details > summary").click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveText(
+    offline.partial,
+  );
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "false",
+  );
+  await context.setOffline(false);
+  await panel
+    .getByRole("button", { name: offline.download, exact: true })
+    .click();
+  await expect(panel.locator("[data-offline-ready]")).toHaveAttribute(
+    "data-offline-ready",
+    "true",
+    { timeout: 30000 },
+  );
+  expect(site.requests["/video-lab/media/frames/119.jpg"]).toBe(
+    baselineRequests,
+  );
 });

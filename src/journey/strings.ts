@@ -2,7 +2,7 @@
 export const j = {
   common: {
     firstProcessingDownload:
-      "The first processing run downloads about 32.4 MB of tools. Run it on a suitable connection. Save the tools separately if you need reliable offline processing.",
+      "The first processing run downloads about 32.4 MB of tools unless they are already saved. For offline use, open Offline access and app installation and choose Download for offline use.",
     next: "Continue",
     back: "Previous step",
     source: "Selected source recording",
@@ -27,19 +27,6 @@ export const j = {
     clearProject: "Clear project media",
     clearConfirm:
       "Remove this project's saved recordings and outputs from this browser? Keep downloaded copies of anything you need.",
-    encoderTitle: "Add offline processing tools",
-    encoderNeedLessons:
-      "Save the lessons above before downloading the processing tools.",
-    encoderNote:
-      "The processing tools add about 32.4 MB. They are optional for reading lessons and playing the supplied media. Save them while connected if you want to process files offline. Processing stays on this device.",
-    encoderDownload: "Download processing tools for offline use",
-    encoderSaving:
-      "Downloading the additional processing tools. Keep this page open until they are ready.",
-    encoderReady:
-      "Processing tools are saved. FFmpeg and ffprobe can run offline in this browser.",
-    encoderMissing: "Processing tools are not saved for offline use yet.",
-    encoderFailed:
-      "The processing tools could not be saved. Check your connection and available browser storage, then retry. Lesson reading and provided examples remain separate from this download.",
     evidence: "Technical evidence",
     command: "Actual FFmpeg command",
     rawProbe: "Full measured file information",
@@ -50,7 +37,7 @@ export const j = {
     optionalSampleTitle: "Optional: compare a different recording",
     loadSample: "Load the optional Big Buck Bunny excerpt",
     sampleNote:
-      "This five-second provided excerpt is for comparison, not your captured demo. Loading it downloads about 86.1 KB. It is optional and is not included in the baseline offline lesson download.",
+      "This five-second provided excerpt is for comparison, not your captured demo. Loading it downloads about 86.1 KB. The complete offline download includes it.",
     sampleCredit:
       "Big Buck Bunny © 2008 Blender Foundation, peach.blender.org. Shortened and re-encoded excerpt, licensed CC BY 3.0.",
     noSource:

@@ -60,7 +60,7 @@ export const cli = {
   overwrite:
     "That output filename already exists. Choose another name to keep both versions, or add -y to explicitly replace it.",
   fetchFailed:
-    "The provided source could not be loaded. Connect to the internet and retry, or save the lessons for offline use before disconnecting.",
+    "The provided source could not be loaded. Connect to the internet and retry, or choose Download for offline use before disconnecting.",
   sampleSaved: "Practice video loaded. Replay it, then inspect its duration.",
   fixturesSaved:
     "Loaded frame000.jpg, frame001.jpg, frame002.jpg and tone.wav. These supplied pictures and synthetic sound are a separate experiment; your recording is unchanged.",
@@ -248,7 +248,7 @@ export const lessons: Record<StepName, Lesson> = {
       "Download the source, final output and its recipe. A recipe lists the exact tool arguments and hashes of all workspace input files at execution time, including any unrelated files. Read the -i arguments to identify the inputs the command actually uses. For a native FFmpeg rerun, supply those files under the same names and use a native build with the required features. Only the FFmpeg or ffprobe command belongs in the terminal; file setup, replay and downloads use app controls here.",
       "Open the downloaded file outside this lab and, where possible, on the intended viewing device. Confirm playback, intended sound and a file size suitable for sharing. A successful encode or probe cannot certify that another player supports the file or that a viewer understands the explanation. Download important work; local browser storage is not a permanent backup.",
       "Provided build and edit comparisons are available when processing is unavailable. These files were generated in advance from the separate controlled reference scene. Replay shows their contents; downloading one does not establish that you ran an edit. Keep your own source and resume processing when the tools are available.",
-      "The optional comparison is a five-second Big Buck Bunny excerpt of 86,088 bytes. Loading it is an explicit choice; reading this page does not fetch it, and it is excluded from the baseline offline download. Replay includes the Blender Foundation credit and CC BY 3.0 licence links. Keep its origin distinct from your own captured and edited media.",
+      "The optional comparison is a five-second Big Buck Bunny excerpt of 86,088 bytes. Loading it is an explicit choice; reading this page does not fetch it. The complete offline download includes it. Replay includes the Blender Foundation credit and CC BY 3.0 licence links. Keep its origin distinct from your own captured and edited media.",
     ],
     examples: [
       {
