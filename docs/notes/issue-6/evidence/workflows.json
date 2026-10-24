@@ -1,0 +1,16 @@
+[
+  {
+    "id": 40123869959,
+    "name": "Quality checks",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/snowch/video-lab/actions/runs/40123869959"
+  },
+  {
+    "id": 40123869981,
+    "name": "Deploy GitHub Pages",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/snowch/video-lab/actions/runs/40123869981"
+  }
+]

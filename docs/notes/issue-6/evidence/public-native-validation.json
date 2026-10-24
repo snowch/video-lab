@@ -1,0 +1,78 @@
+{
+  "copyright": "Copyright \u00a9 2026 Christopher Snow",
+  "validator": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+  "release": {
+    "commit": "418664636cfc7a5b64a94dc931622b2545843f10",
+    "build": "8a56c6005bd6ab31c6c1a5ba77a5a501dc2ac7cd584ec6f5f5661d8724307ccb",
+    "version": "gDL_Qff9QFPCXkz_AV+cGin7bk2Hu8DoCvKP5Jg3zfw=",
+    "bytes": 42019263
+  },
+  "outputs": [
+    {
+      "filename": "chromium-live-output.mp4",
+      "bytes": 19784,
+      "sha256": "36cc9ecb11397848d8af70521ea10677e9c1bdb1720736da36b08cd7e63d56d3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1280,
+            "height": 720,
+            "nb_read_frames": "15"
+          }
+        ],
+        "format": {
+          "duration": "1.000000"
+        }
+      },
+      "fullDecodeExit": 0
+    },
+    {
+      "filename": "firefox-live-output.mp4",
+      "bytes": 19784,
+      "sha256": "36cc9ecb11397848d8af70521ea10677e9c1bdb1720736da36b08cd7e63d56d3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1280,
+            "height": 720,
+            "nb_read_frames": "15"
+          }
+        ],
+        "format": {
+          "duration": "1.000000"
+        }
+      },
+      "fullDecodeExit": 0
+    },
+    {
+      "filename": "chromium-upgrade-output.mp4",
+      "bytes": 149035,
+      "sha256": "af1ab11609a8527dc163dad54ff943ef3f1b27e7209875c19760b23c3273e183",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1280,
+            "height": 720,
+            "nb_read_frames": "12"
+          }
+        ],
+        "format": {
+          "duration": "1.001000"
+        }
+      },
+      "fullDecodeExit": 0
+    }
+  ]
+}
