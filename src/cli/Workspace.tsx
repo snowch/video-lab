@@ -31,6 +31,7 @@ import { legacyProgress, loadChecks, progressKey } from "./progress";
 import { availableName, planRun } from "../workbench/model";
 import { NativeBuilder } from "./NativeBuilder";
 import { courseUI as ux, browserAction } from "./course.strings";
+import { recordingGuide } from "../capture/guide.strings";
 import { progressiveUI as flow } from "./progressive.strings";
 const historyKey = "video-lab:cli-history";
 function savedHistory(): string[] {
@@ -1423,6 +1424,11 @@ ${cli.comparisonCredit}`,
                 </li>
               ))}
           </ol>
+          {step === "capture" && (
+            <p>
+              <a href="#/appendix/recording">{recordingGuide.link}</a>
+            </p>
+          )}
           {tasks.length > 1 && (
             <details>
               <summary>{guided.navigation}</summary>

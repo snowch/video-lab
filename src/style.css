@@ -1807,3 +1807,83 @@ code {
   margin: 1.5rem 0;
   overflow-wrap: anywhere;
 }
+
+.recording-guide {
+  max-width: 58rem;
+  margin-inline: auto;
+}
+.recording-guide > p {
+  max-width: 68ch;
+}
+.recording-method {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 30rem;
+  margin-block: 2rem;
+}
+.recording-method label {
+  font-weight: 700;
+}
+.recording-method select {
+  width: 100%;
+  max-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.65rem;
+}
+.recording-instructions {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.recording-instructions > h2 {
+  margin-top: 0;
+}
+.recording-instructions li {
+  margin-block: 0.8rem;
+}
+.recording-instructions ol {
+  padding-left: 1.4rem;
+}
+.recording-instructions dl > div {
+  margin-block: 1.5rem;
+}
+.recording-instructions dt {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.recording-instructions dd {
+  margin: 0.4rem 0 0;
+}
+.recording-command {
+  min-width: 0;
+  margin-block: 1.5rem;
+}
+.recording-command pre {
+  max-width: 100%;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  white-space: pre;
+}
+.recording-command pre:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.recording-command [role="status"]:empty {
+  display: none;
+}
+.recording-guide a,
+.recording-guide button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.recording-guide h1,
+.recording-guide h2,
+.recording-guide h3 {
+  overflow-wrap: anywhere;
+}

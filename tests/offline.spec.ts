@@ -175,6 +175,20 @@ test("complete download survives offline reload and new tab, with all media and 
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  await second.goto(site.url + "#/appendix/recording");
+  await expect(second.getByRole("heading", { level: 1 })).toHaveText(
+    "Record your own screen",
+  );
+  await second
+    .getByLabel("Where will you record?", { exact: true })
+    .selectOption("mobile");
+  await expect(
+    second.getByRole("heading", { name: "iPhone or iPad", exact: true }),
+  ).toBeVisible();
+  await second.reload();
+  await expect(second.getByRole("heading", { level: 1 })).toHaveText(
+    "Record your own screen",
+  );
   await second.close();
 });
 test("incomplete download reports failure and retries; missing storage can be repaired", async ({

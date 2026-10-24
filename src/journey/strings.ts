@@ -79,7 +79,7 @@ export const j = {
     seconds: "seconds",
   },
   capture: {
-    title: "Capture your first software demo",
+    title: "Choose your source video",
     intro:
       "Record one visible action and its result. Use the original build-queue scene, or another small software task you can explain. If screen recording is unavailable, the provided original recording lets you continue through inspection and editing.",
     planTitle: "Plan what the viewer should see",

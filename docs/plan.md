@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Source video naming and recording appendix, 24 October 2026:** the first lesson is **Choose your source video**, with its existing `#/capture` bookmark retained. The [optional recording guide](notes/capture-guide/01-facts.md) is linked from source selection and the overview. Browser, installed native FFmpeg and phone/tablet instructions remain separate; capture is optional and no browser recording CLI is invented. The appendix is included in offline lessons.
+
 **Contextual workspace controls, 24 October 2026:** [the cleanup slice](notes/workspace-cleanup/01-plan.md) removes general management sections from the lesson ending. Files and command Help live in flat toolbar dialogs, provided comparisons are limited to controlled references, and baseline/tool offline downloads share the existing app-level panel with separate readiness. Files, drafts, evidence and route IDs are preserved.
 
 **Issue 5, 23 October 2026:** [Prototype fidelity and progressive concepts](notes/issue-5/plan.md) supersedes the old task-per-file-action presentation. Get video → Inspect → Edit → Build → Publish uses one focused instruction/action/result layout, verified minimal first cuts, and later concepts introduced when needed. Old route IDs, controlled reference evidence and learner storage are retained. UX fidelity and concept prerequisites are explicit independent-review gates.
@@ -28,7 +30,7 @@ The initial completion outcome is a playable edited MP4, the source-linked comma
 
 | # | Module | Current outcome | Status / canonical route |
 | --- | --- | --- | --- |
-| 0 | Capture your first software demo | Record one action, replay/download, or import/adopt a source. | Implemented · `#/capture` |
+| 0 | Choose your source video | Record one action, replay/download, or import/adopt a source. | Implemented · `#/capture` |
 | 1 | How a video file is created | Encode supplied pictures, add synthetic audio, inspect actual MP4s. | Implemented · `#/build` |
 | 2 | Inspect and prepare real media | Probe the selected file; compare actual content with intended capture. | Implemented · `#/inspect` |
 | 3 | Cut and join: tell the story | Trim one or two ranges, reset/join/encode and download a real edit recipe. | Implemented · `#/edit` |

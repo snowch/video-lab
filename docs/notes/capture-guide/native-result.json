@@ -1,0 +1,32 @@
+{
+  "command": [
+    "ffmpeg",
+    "-f",
+    "x11grab",
+    "-framerate",
+    "15",
+    "-video_size",
+    "1280x720",
+    "-i",
+    ":97+0,0",
+    "-t",
+    "5",
+    "-an",
+    "-vf",
+    "scale=trunc(iw/2)*2:trunc(ih/2)*2",
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    "/workspace/scratch/capture-guide/screen-linux.mp4"
+  ],
+  "native_version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "exit": 0,
+  "sha256": "9e09466e80608f2068a90548c6f9fb5384e64607ce59ee989ad2392037960d37",
+  "bytes": 11979,
+  "width": 1280,
+  "height": 720,
+  "pictures": "75",
+  "duration": "5.000000",
+  "streams": 1
+}

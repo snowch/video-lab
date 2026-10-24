@@ -13,6 +13,8 @@ import { progressiveUI as flow } from "./cli/progressive.strings";
 import { routeFor } from "./journey/routes";
 import { j } from "./journey/strings";
 import { referenceLessons } from "./cli/reference.strings";
+import { RecordingGuide } from "./capture/RecordingGuide";
+import { recordingGuide } from "./capture/guide.strings";
 import { ReleaseStatus } from "./release/ReleaseStatus";
 const storage = browserStorage();
 function Home() {
@@ -88,6 +90,11 @@ function Home() {
             ))}
         </ol>
       </section>
+      <section className="appendix-links">
+        <h2>{recordingGuide.overviewTitle}</h2>
+        <p>{recordingGuide.overviewNote}</p>
+        <a href="#/appendix/recording">{recordingGuide.link}</a>
+      </section>
     </div>
   );
 }
@@ -111,11 +118,13 @@ function App() {
   }, [theme]);
   const resolved = routeFor(route);
   const step = resolved.step;
-  const pageTitle = step
-    ? resolved.reference && (step === "inspect" || step === "edit")
-      ? referenceLessons[step].title
-      : j[step].title
-    : home.subtitle;
+  const pageTitle = resolved.appendix
+    ? recordingGuide.title
+    : step
+      ? resolved.reference && (step === "inspect" || step === "edit")
+        ? referenceLessons[step].title
+        : j[step].title
+      : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
@@ -199,7 +208,9 @@ function App() {
         </nav>
       )}
       <main id="content" ref={main} tabIndex={-1}>
-        {step ? (
+        {resolved.appendix ? (
+          <RecordingGuide />
+        ) : step ? (
           <div className="wrap journey-wrap">
             <a href="#/">{ui.back}</a>
             <CommandLab

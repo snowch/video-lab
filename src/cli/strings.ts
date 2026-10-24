@@ -123,7 +123,7 @@ type Lesson = {
 };
 export const lessons: Record<StepName, Lesson> = {
   capture: {
-    title: "Capture your first software demo",
+    title: "Choose your source video",
     intro:
       "Make or adopt a source recording: the original file you will inspect and edit. Browser controls handle recording and files; FFmpeg and ffprobe commands handle media processing.",
     heading: "Prepare and record one application action",

@@ -156,3 +156,16 @@ The edit check decodes submitted and original source pictures to 160×90 RGB, re
 The live workbench at `optional/command-workbench.html` executes the same native FFmpeg/ffprobe argument arrays whether built or typed. The existing pinned WASM core, worker cancellation, quotas and offline tools are reused. Imported filenames containing unsupported characters are explicitly renamed in the browser workspace. Original device files are untouched. Source overwrite is rejected; generated output replacement requires explicit `-y`. JSON recipes record executed commands and hashes of available inputs; `-i` identifies referenced media.
 
 The original sample is actual Mousepad 0.6.3 pixels, not Video Lab or an imitation editor. [Full provenance, source text, native commands, versions and hash](../media-source/mousepad/README.md) accompany the recording. Mousepad: https://gitlab.xfce.org/apps/mousepad ; GPL-2.0-or-later, application not redistributed. The recording and fictional text carry the repository copyright notice; no new blanket licence is declared. Native JSON is in `notes/live-workbench/media/`; `scripts/verify-workbench.mjs` pins the exact source and measured facts. The browser tests independently inspect actual WASM exports using native ffprobe.
+
+## Optional screen-recording appendix
+
+The [recording guide evidence](notes/capture-guide/01-facts.md) separates browser sharing, installed native FFmpeg devices and phone/tablet recording. The guide is part of the baseline offline application; its official external reference links still require a connection. Native Windows/macOS examples received authoritative source review; the Linux/X11 command was actually executed against a virtual desktop displaying the independent Mousepad editor. Native FFmpeg/ffprobe 7.1.5 measured five seconds, 75 pictures, H.264 yuv420p, 1280×720 and no audio. This is neither physical-device verification nor a new provided course sample.
+
+| Source | Claims checked |
+| --- | --- |
+| https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia | Browser chooser, permission, support and shared-audio limitations; distinct from native capture input devices. |
+| https://github.com/FFmpeg/FFmpeg/blob/n7.1.5/doc/indevs.texi | gdigrab desktop input, AVFoundation screen enumeration/none/cursor, X11 display and region syntax. |
+| https://support.apple.com/en-us/102653 | iPhone/iPad Control Centre recording, stopping and saved Photos video; recording restrictions. |
+| https://support.google.com/android/answer/9075928?hl=en | Android Quick Settings recording, deliberate audio/touch settings, stop notification and saved recording. |
+
+The Linux session prerequisite uses the desktop-provided `XDG_SESSION_TYPE`, checked against https://github.com/systemd/systemd/blob/main/man/pam_systemd.xml . An empty or unrecognised value is inconclusive, not proof of X11. This check appears before any X11-specific installation or capture steps.

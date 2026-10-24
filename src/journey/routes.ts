@@ -14,6 +14,7 @@ export function routeFor(hash: string) {
     const step = parts[0] === "module-0" ? "inspect" : "edit";
     return {
       step: step as StepName,
+      appendix: false,
       reference: true,
       section: parts[1],
       canonical: `#/${step}/reference${parts[1] ? `/${parts[1]}` : ""}`,
@@ -24,6 +25,7 @@ export function routeFor(hash: string) {
     : undefined;
   return {
     step,
+    appendix: parts[0] === "appendix" && parts[1] === "recording",
     reference:
       !!step && ["inspect", "edit"].includes(step) && parts[1] === "reference",
     section: parts[2],

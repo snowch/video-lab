@@ -1,0 +1,15 @@
+# Quality validation
+
+Copyright © 2026 Christopher Snow.
+
+Final `npm run check` exited 0 on 24 October 2026: whole-repository formatting, copyright, unchanged synchronised platform, strict TypeScript, 80 unit tests across 16 files, all recorded-media/native-command facts, production build, and 185 browser tests. All 185 passed in 4.7 minutes across desktop light/dark, Pixel 7 phone light/dark and Firefox. No final failed/skipped/interrupted checks. Log: `/workspace/scratch/capture-guide/check-final.log`.
+
+The added end-to-end regression follows the actual source → guide → selected method → return flow, checks all method layouts at 200% font size, validates copied command/template text at the clipboard boundary, and preserves the actual practice source and custom draft. The existing baseline-offline test now opens and reloads the new appendix while disconnected, with no processing tools. The initial two focused desktop/phone tests passed before the Linux clarification; the final full gate includes the clarified session decision before device checks.
+
+The separate prose draft, reader, sceptic, ranked fix and final checker are in 02–06. The checker independently inspected asset `assets/course-DGIcTKYQ.js`, SHA-256 `642415600e1c82a8d4ea8c80f92b0318e5900afd8e7075d7b6aa616ad55ef55e`, including actual clipboard/denial, keyboard, offline reading and retained-work states. This does not claim physical-device, native Windows/macOS execution or a full-course editorial audit.
+
+Native Linux capture was actually executed before prose with the shown input/encoding arguments, producing the independently checked five-second, 75-picture H.264/yuv420p MP4; exact evidence is in 01-facts.md and native-result.json. The standard Linux session query was additionally executed with x11, wayland and empty values, with the expected outputs. Windows/macOS syntax was source-reviewed against FFmpeg's versioned device documentation.
+
+The public verification harness rehearsed successfully against the final local build in Chromium and trusted Firefox: renamed source/document title, optional navigation, all methods, actual clipboard copying, macOS placeholder, early Linux decision, 200% reflow, source return and no encoder-asset requests. The initial harness assumed ungranted headless Chromium clipboard permission; the application correctly showed its manual-copy fallback. The corrected harness explicitly grants Chromium clipboard permission and verifies actual clipboard bytes; Firefox also copied successfully through its actual API. This rehearsal failure required no application change and is not reported as a passed check.
+
+Before deployment, a persistent browser profile on actual old public build 293dc2c was seeded with the source, its byte hash, an exact custom draft and baseline-only offline lessons. The published/new-offline-appendix upgrade and CI results are recorded separately in 08-deployment.md after they complete. Subsequent documentation-only edits are formatted separately; no additional engine, storage or media changes are introduced.

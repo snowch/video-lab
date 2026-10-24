@@ -20,7 +20,7 @@ export const home = {
 export const modules = [
   {
     id: 0,
-    title: "Capture your first software demo",
+    title: "Choose your source video",
     summary:
       "Record an independent application, use the practice video or import a source. Replay it and keep a downloaded copy.",
     route: "capture",
