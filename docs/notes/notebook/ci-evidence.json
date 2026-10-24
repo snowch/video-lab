@@ -1,0 +1,32 @@
+{
+  "copyright": "Copyright © 2026 Christopher Snow",
+  "commit": "e8a548f3e376b9658b79494c70213ef756952929",
+  "jobs": [
+    {
+      "job": 120997997901,
+      "lines": [
+        "2026-10-24T21:53:51.3662550Z ##[group]Run npm run check",
+        "2026-10-24T21:53:51.3663001Z npm run check",
+        "2026-10-24T21:54:04.0505554Z  Test Files  19 passed (19)",
+        "2026-10-24T21:54:04.0506666Z       Tests  80 passed (80)",
+        "2026-10-24T21:54:16.6339263Z 10 notebook chapters, 24 complete concept pages and 51 executed native commands verified; all supplied bytes/media facts match.",
+        "2026-10-24T21:54:20.1305212Z Offline bundle: 202 files, 16647129 bytes.",
+        "2026-10-24T22:09:33.3261113Z   25 skipped",
+        "2026-10-24T22:09:33.3261536Z   265 passed (15.2m)"
+      ]
+    },
+    {
+      "job": 120997997330,
+      "lines": [
+        "2026-10-24T21:53:52.1676146Z ##[group]Run npm run check",
+        "2026-10-24T21:53:52.1676674Z npm run check",
+        "2026-10-24T21:54:05.0584365Z  Test Files  19 passed (19)",
+        "2026-10-24T21:54:05.0586012Z       Tests  80 passed (80)",
+        "2026-10-24T21:54:17.7649802Z 10 notebook chapters, 24 complete concept pages and 51 executed native commands verified; all supplied bytes/media facts match.",
+        "2026-10-24T21:54:21.3500851Z Offline bundle: 202 files, 16647129 bytes.",
+        "2026-10-24T22:09:49.7528682Z   25 skipped",
+        "2026-10-24T22:09:49.7529147Z   265 passed (15.5m)"
+      ]
+    }
+  ]
+}
