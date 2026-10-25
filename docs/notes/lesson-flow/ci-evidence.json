@@ -1,0 +1,29 @@
+{
+  "sourceCommit": "415bc39aaa02f0825cdbbeec273cb7da7d1593e3",
+  "qualityRun": 40202216509,
+  "pagesRun": 40202216563,
+  "checks": [
+    {
+      "job_id": 121195588613,
+      "lines": [
+        "2026-10-25T14:27:16.2933658Z  Test Files  19 passed (19)",
+        "2026-10-25T14:27:16.2934598Z       Tests  80 passed (80)",
+        "2026-10-25T14:27:33.2500274Z Offline bundle: 202 files, 16670002 bytes.",
+        "2026-10-25T14:42:27.2569701Z   29 skipped",
+        "2026-10-25T14:42:27.6372920Z   266 passed (14.9m)"
+      ],
+      "error": false
+    },
+    {
+      "job_id": 121195587866,
+      "lines": [
+        "2026-10-25T14:31:37.5700410Z  Test Files  19 passed (19)",
+        "2026-10-25T14:31:37.5701032Z       Tests  80 passed (80)",
+        "2026-10-25T14:31:49.3066269Z Offline bundle: 202 files, 16670002 bytes.",
+        "2026-10-25T14:43:28.1887243Z   29 skipped",
+        "2026-10-25T14:43:28.1887539Z   266 passed (11.6m)"
+      ],
+      "error": false
+    }
+  ]
+}

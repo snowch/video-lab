@@ -28,3 +28,21 @@ Before publication, an actual saved public Chromium app at build `e49b105a4dee59
 Final `npm run check` completed with exit status 0: formatting, copyright/platform integrity, strict TypeScript, 19 unit files / **80 unit tests**, recorded media/reference validation, production build and **266 browser passes / 29 deliberate project skips in 9.6 minutes**. This run includes the final source-label assertion and deterministic release-test setup. Log: `/workspace/scratch/lesson-flow/check-accepted.log`. It does not overwrite the failed earlier attempts recorded above.
 
 `git diff --check` passed. Separate page drafting, reader, sceptic, ranked-fix and final built checker records are complete. Publication and public saved-app verification follow this reviewed source commit.
+
+## GitHub checks and deployment
+
+Reviewed source commit: `415bc39aaa02f0825cdbbeec273cb7da7d1593e3`.
+
+- [Quality checks](https://github.com/snowch/video-lab/actions/runs/40202216509), job 121195588613: success, 80 unit tests, 266 browser passes / 29 skips, browser duration 14.9 minutes.
+- [Deploy GitHub Pages](https://github.com/snowch/video-lab/actions/runs/40202216563), build job 121195587866: success, 80 unit tests, 266 browser passes / 29 skips, browser duration 11.6 minutes. Deploy job 121199690857 completed successfully.
+- `ci-evidence.json` records count/size lines from the actual completed GitHub job logs, obtained through the connected GitHub tools.
+
+## Actual public saved and fresh app verification
+
+Both actual public Chromium and Firefox runs passed at published build `8e49b837e134f8c64cbe11c9b4f5e754c3361e334ba2e39e588c42ea6cbc333d`, source commit `415bc39aaa02f0825cdbbeec273cb7da7d1593e3`.
+
+Chromium used the complete earlier saved app: Check for updates → Update → Restart to update. Its earlier prediction and review survived under optional Notes. All six pre-existing workspace file hashes remained identical. Firefox used a fresh persistent profile and downloaded the complete app. Both matched the running identity to the actual public release metadata.
+
+Each browser process was then fully closed and relaunched with network disabled before navigation. The new lessons and saved notes opened offline. Both executed a genuine three-second FFmpeg cut, passed the measured property check, and downloaded the output. Native ffprobe independently measured three seconds and FFmpeg fully decoded each downloaded file. Offline source selection and the join page also worked. Both completed runs recorded no page errors.
+
+Committed public JSON evidence includes release identity, real output probes and the Chromium preserved hashes; `evidence/public-phone.png` shows the published phone page. Scratch scripts/logs are in `/workspace/scratch/lesson-flow/`. The final evidence commit changes documentation only and intentionally skips CI so the application continues to identify the reviewed source commit above.
