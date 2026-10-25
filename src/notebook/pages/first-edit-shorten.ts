@@ -5,39 +5,32 @@ export default {
   title: "Keep a shorter section",
   goal: "Make a five-second video from an eight-second source.",
   sourceNote:
-    "This eight-second clip comes from Big Buck Bunny, an animated short film. Play it once so you can recognise which part your cut keeps.",
+    "Play this eight-second clip from Big Buck Bunny, an animated short film, so you can recognise the part you keep.",
   concept: [
-    "A video plays pictures in sequence, with sound timed to match. Its duration is the time from the start to the end.",
-    "A cut chooses which part to keep. Here, you will keep the opening and remove the ending. FFmpeg reads the source and writes the chosen part to a separate file, leaving the source available for another edit.",
+    "A cut selects part of a video. Its duration is how long that part plays.",
+    "FFmpeg is a command-line tool for editing media. It reads a source file (the input) and saves the cut to a new file (the output). Here, the .mp4 ending selects the MP4 file format.",
   ],
   worked: [
     {
       title: "Keep the opening five seconds",
       options: [
         {
-          flag: "ffmpeg",
-          meaning: "Run the tool that reads, changes and writes media files.",
-        },
-        {
           flag: "-i bunny-short.mp4",
-          meaning:
-            "Read bunny-short.mp4 as the input. A space separates the option -i from its filename.",
+          meaning: "Read the source",
         },
         {
           flag: "-t 5",
-          meaning:
-            "Limit the output duration to five seconds. Placed after the input, this option controls the output file.",
+          meaning: "Keep the opening five seconds",
         },
         {
           flag: "first-cut.mp4",
-          meaning:
-            "Write the result to this new file. The last filename is the output; .mp4 selects the MP4 file format.",
+          meaning: "Save the new video",
         },
       ],
       observe:
-        "Replay first-cut.mp4. Compare its opening and ending with the source, and listen for the point where the sound stops.",
+        "Replay first-cut.mp4. Compare its ending with the source and listen for where the sound stops.",
       explanation: [
-        "The result keeps the opening five seconds of picture and sound at their original pace. The last three seconds are left out. Cutting changes how much you keep; it does not make the action play faster.",
+        "The cut keeps the opening five seconds of picture and sound at their original pace, leaving out the last three seconds.",
       ],
     },
   ],

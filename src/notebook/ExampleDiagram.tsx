@@ -1,51 +1,86 @@
 // Copyright © 2026 Christopher Snow
-import { parseCommand } from "../cli/command";
+import { useEffect, useState } from "react";
+import { plannedCut, cutInterval } from "./cut-plan";
+import { useNotebook } from "./Workspace";
+import { hashBlob } from "./model";
 import type { PageDefinition } from "./structure";
 import { n } from "./ui.strings";
 import { practiceAssets } from "./assets";
 
-// Explanatory models of the fixed example, never measurements of a learner's output.
-export function ExampleDiagram({ page }: { page: PageDefinition }) {
-  if (page.chapter === "first-edit") {
-    const args = parseCommand(page.worked[0]!);
-    const start = args.includes("-ss")
-      ? Number(args[args.indexOf("-ss") + 1])
-      : 0;
-    const duration = Number(args[args.indexOf("-t") + 1]);
-    const total = practiceAssets[page.assets[0]!]!.duration!;
-    const segments = [
-      { length: start, kept: false },
-      { length: duration, kept: true },
-      { length: total - start - duration, kept: false },
-    ].filter((s) => s.length > 0);
-    return (
-      <figure className="notebook-diagram">
-        <figcaption>{n.timelineModel}</figcaption>
-        <div
-          className="notebook-timeline"
-          style={{
-            gridTemplateColumns: segments.map((s) => `${s.length}fr`).join(" "),
-          }}
-        >
-          {segments.map((s, i) => (
-            <span key={i} className={s.kept ? "kept" : "removed"}>
-              {s.kept ? n.kept : n.leftOut}
-              <br />
-              {s.length} s
-            </span>
-          ))}
-        </div>
-        <div className="notebook-timeline-ends">
-          <span>0 s</span>
-          <span>{total} s</span>
-        </div>
-        <p>
-          {n.sourceInterval}: {start}–{start + duration} s · {n.outputDuration}:{" "}
-          {duration} s
-        </p>
-      </figure>
-    );
-  }
+// Planned source intervals are separate from measured output and fixed teaching models.
+function CutDiagram({ command }: { command: string }) {
+  const w = useNotebook();
+  const plan = plannedCut(command);
+  const asset = plan ? practiceAssets[plan.input] : undefined;
+  const blob = plan ? w.files[plan.input]?.blob : undefined;
+  const [verified, setVerified] = useState<{ blob: Blob; hash: string }>();
+  useEffect(() => {
+    let live = true;
+    if (blob)
+      void hashBlob(blob)
+        .then((hash) => {
+          if (live) setVerified({ blob, hash });
+        })
+        .catch(() => {
+          if (live) setVerified(undefined);
+        });
+    return () => {
+      live = false;
+    };
+  }, [blob]);
+  if (
+    !plan ||
+    !asset?.duration ||
+    !blob ||
+    verified?.blob !== blob ||
+    verified.hash !== asset.sha256
+  )
+    return null;
+  const interval = cutInterval(plan.start, plan.duration, asset.duration);
+  if (!interval) return null;
+  const { start, end, duration, total } = interval;
+  const segments = [
+    { length: start, kept: false },
+    { length: duration, kept: true },
+    { length: total - end, kept: false },
+  ].filter((segment) => segment.length > 0);
+  const seconds = (value: number) => Number(value.toFixed(3));
+  return (
+    <figure className="notebook-diagram notebook-cut-plan">
+      <figcaption>
+        {n.timelineModel} · {seconds(start)}–{seconds(end)} s{" "}
+        <span>({seconds(duration)} s)</span>
+      </figcaption>
+      <div
+        className="notebook-timeline"
+        aria-hidden="true"
+        style={{
+          gridTemplateColumns: segments.map((s) => `${s.length}fr`).join(" "),
+        }}
+      >
+        {segments.map((s, i) => (
+          <span key={i} className={s.kept ? "kept" : "removed"} />
+        ))}
+      </div>
+      <p className="notebook-plan-key">
+        <span>
+          <i aria-hidden="true" />
+          {n.kept}
+        </span>{" "}
+        · {plan.input} · {total} s
+      </p>
+    </figure>
+  );
+}
+
+export function ExampleDiagram({
+  page,
+  command,
+}: {
+  page: PageDefinition;
+  command: string;
+}) {
+  if (page.chapter === "first-edit") return <CutDiagram command={command} />;
   if (page.id === "cut-join/join") {
     return (
       <figure className="notebook-diagram">

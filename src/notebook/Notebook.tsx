@@ -240,7 +240,16 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           initial={command}
           title={copy.worked[i]!.title}
           teaching={copy.worked[i]!}
-          illustration={i === 0 ? <ExampleDiagram page={page} /> : undefined}
+          preview={
+            i === 0 && page.chapter === "first-edit"
+              ? (current) => <ExampleDiagram page={page} command={current} />
+              : undefined
+          }
+          illustration={
+            i === 0 && page.chapter !== "first-edit" ? (
+              <ExampleDiagram page={page} command={command} />
+            ) : undefined
+          }
         />
       ))}
       <section className="notebook-practice">

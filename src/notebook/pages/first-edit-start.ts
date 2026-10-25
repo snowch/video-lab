@@ -5,21 +5,17 @@ export default {
   title: "Choose where the cut begins",
   goal: "Keep four seconds starting two seconds into the source.",
   concept: [
-    "A start position answers “from where?”. A duration answers “how much?”. Starting at second 2 and keeping four seconds takes you to second 6 of the source.",
-    "These are two different ways to change a cut. Moving its start selects a different moment in the source; changing its duration changes how long the selected moment lasts.",
+    "The start position chooses where a cut begins; the duration sets how much to keep. Starting at second 2 and keeping four seconds reaches second 6 of the source.",
   ],
   worked: [
     {
       title: "Start at second 2",
-      introduction: [
-        "Skip the opening two seconds of bunny-short.mp4, then keep the next four seconds in later.mp4.",
-      ],
       options: [
         { flag: "-i bunny-short.mp4", meaning: "Read the source video." },
         {
           flag: "-ss 2",
           meaning:
-            "Choose second 2 as the start. Placed after the input as shown, this tells FFmpeg to read the picture and sound and discard the material before that point.",
+            "Start at second 2. After the input, -ss makes FFmpeg read picture and sound and discard the material before that point.",
         },
         { flag: "-t 4", meaning: "Keep four seconds from the chosen start." },
         { flag: "later.mp4", meaning: "Write the result to this new file." },
@@ -27,7 +23,7 @@ export default {
       observe:
         "Compare the opening of later.mp4 with the source paused at second 2. Then watch its ending: the four-second output reaches the source’s second 6.",
       explanation: [
-        "The new file plays from its own second 0. That opening corresponds to second 2 of the source. The output player’s clock measures time within the cut, so its four-second duration alone cannot tell you which part of the source was kept.",
+        "The output starts at its own second 0, corresponding to second 2 of the source. Its player clock measures time within the cut; replay both files to check which part you kept.",
       ],
     },
   ],

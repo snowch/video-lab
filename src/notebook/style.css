@@ -90,9 +90,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 0.8rem;
-  padding: 1rem;
+  padding: 0;
   margin: 1.5rem 0;
 }
 .notebook-source > p,
@@ -109,14 +107,13 @@
 }
 .notebook-concept,
 .notebook-options {
-  max-width: 75ch;
+  max-width: 62ch;
 }
 .notebook-options > div {
   display: grid;
-  grid-template-columns: minmax(9rem, 1fr) minmax(0, 3fr);
+  grid-template-columns: minmax(12rem, 2fr) minmax(0, 3fr);
   gap: 0.5rem 1rem;
-  border-top: 1px solid var(--line);
-  padding: 0.65rem 0;
+  padding: 0.4rem 0;
 }
 .notebook-options dt {
   overflow-wrap: anywhere;
@@ -149,11 +146,8 @@
   max-width: 100%;
 }
 .notebook-cell {
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  background: var(--surface);
-  margin: 1.5rem 0;
+  padding: 0;
+  margin: 2.5rem 0;
   min-width: 0;
 }
 .notebook-cell > header {
@@ -506,12 +500,13 @@
   }
 }
 @media (max-width: 600px) {
+  .notebook-toolbar {
+    position: static;
+  }
   .notebook-shell {
     padding: 0 1rem 2rem;
   }
-  .notebook-cell {
-    padding: 1rem;
-  }
+
   .notebook-options > div {
     display: block;
   }
@@ -547,10 +542,8 @@
   margin: 1rem 0;
 }
 .notebook-observation {
-  border-left: 3px solid var(--accent);
-  padding-left: 1rem;
   margin-top: 1.25rem;
-  max-width: 72ch;
+  max-width: 62ch;
 }
 .notebook-review {
   border-top: 1px solid var(--line);
@@ -568,10 +561,8 @@
 
 .notebook-diagram {
   margin: 1.25rem 0;
-  padding: 1rem;
-  background: var(--surface-2, var(--surface));
-  border: 1px solid var(--line);
-  border-radius: 0.7rem;
+  padding: 0;
+  max-width: 62ch;
 }
 .notebook-diagram figcaption {
   font-weight: 600;
@@ -585,21 +576,52 @@
   gap: 3px;
 }
 .notebook-timeline > span {
-  padding: 0.6rem 0.2rem;
-  text-align: center;
-  overflow-wrap: anywhere;
-  border: 1px solid var(--line);
+  height: 0.75rem;
+  min-width: 0;
+  background: var(--line);
 }
 .notebook-timeline .kept {
-  border: 2px solid var(--accent);
-  font-weight: 700;
+  background: var(--accent);
 }
-.notebook-timeline .removed {
-  border-style: dashed;
+.notebook-cut-plan figcaption {
+  margin-bottom: 0.5rem;
 }
-.notebook-timeline-ends {
-  display: flex;
-  justify-content: space-between;
+.notebook-cut-plan figcaption span {
+  font-weight: 400;
+}
+.notebook-plan-key {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+.notebook-plan-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.notebook-plan-key i {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--accent);
+}
+.notebook-cell > p,
+.notebook-page-heading > p,
+.notebook-source > p,
+.notebook-check > p,
+.notebook-native > p,
+.notebook-hints > ol {
+  max-width: 62ch;
+}
+.notebook-guide-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.notebook-log-tools input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  min-height: 0;
+  margin: 0;
 }
 .notebook-join-inputs,
 .notebook-join-output {

@@ -7,7 +7,8 @@ const copy: PageCopy = {
   concept: [
     "A video file packages picture and sound streams in a container. The container describes how those streams fit into one file so a player can find and play them. MP4 is one container format.",
     "Each stream also has a codec: the rules used to represent its picture or sound data. H.264 is a video codec; AAC is an audio codec. A player needs to understand both the container and the codecs inside it. The filename ending alone does not tell you which codecs a file contains.",
-    "Within a decoded picture, the pixel format describes how picture components are represented. A picture can separate brightness-related information from colour differences and store colour with fewer samples. This reduces the colour data while retaining the finer brightness detail that helps define edges.",
+    "Within a decoded picture, the pixel format describes how picture components are represented. YUV separates luma (Y), a brightness-related component, from two colour-difference components (U and V). Each component can occupy its own plane, or array of samples; this is called planar storage.",
+    "In yuv420p, each sample uses 8 bits and the p marks planar storage. Its 4:2:0 sampling gives each colour component half as many samples across and half as many down as Y. This reduces colour data while retaining finer brightness detail that helps define edges. It does not set picture dimensions or frame rate.",
   ],
   worked: [
     {
@@ -33,8 +34,7 @@ const copy: PageCopy = {
         },
         {
           flag: "-pix_fmt yuv420p",
-          meaning:
-            "Choose 8-bit planar YUV 4:2:0. Y is luma, a brightness-related component; U and V are colour-difference components. Each colour component has half as many samples across and half as many down as Y. The p means the three components occupy separate planes, or arrays of samples. This describes colour sampling; it does not set picture dimensions or frame rate.",
+          meaning: "Store the output pictures as yuv420p.",
         },
       ],
       observe:

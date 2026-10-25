@@ -28,6 +28,18 @@ test("notebook outline and every concept page reflow without loading processing 
       location.hash = hash;
     }, pageHref(p));
     await expect(page.locator("h1")).toHaveText(courseCopy.pages[p.id]!.title);
+    if (page.viewportSize()!.width <= 600) {
+      await page.locator("h1").evaluate((el) => el.scrollIntoView());
+      expect(
+        await page.evaluate(
+          () =>
+            document.querySelector(".notebook-toolbar")!.getBoundingClientRect()
+              .bottom <=
+            document.querySelector("h1")!.getBoundingClientRect().top,
+        ),
+        p.id + " enlarged heading is not covered by navigation",
+      ).toBe(true);
+    }
     await expect(page.locator("[data-cell]")).toHaveCount(p.worked.length + 1);
     await expect(
       page.getByRole("button", { name: n.run, exact: true }),
@@ -46,6 +58,12 @@ test("notebook outline and every concept page reflow without loading processing 
       "",
     );
     for (const cell of await page.locator("[data-cell]").all()) {
+      expect(
+        await cell
+          .locator("textarea")
+          .evaluate((el) => el.scrollHeight <= el.clientHeight + 1),
+        p.id + " complete command visible",
+      ).toBe(true);
       const editorBox = await cell.locator("textarea").boundingBox();
       const runBox = await cell
         .getByRole("button", { name: n.run, exact: true })
@@ -438,8 +456,121 @@ test("optional notes preserve earlier predictions and reviews without adding req
     page.getByRole("textbox", { name: n.previousPrediction, exact: true }),
   ).toHaveValue("My earlier prediction");
   await page.goto("./#/learn/first-edit/start");
-  await expect(page.locator(".notebook-diagram")).toContainText("2–6 s");
-  await expect(page.locator(".notebook-diagram")).toContainText(
-    "Output duration: 4 s",
+  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expect(page.locator(".notebook-cut-plan figcaption")).toHaveText(
+    "Planned cut · 2–6 s (4 s)",
   );
+});
+
+test("a planned cut follows the editor while real output stays next to Run", async ({
+  page,
+}, info) => {
+  test.skip(
+    !["desktop-light", "phone-light", "firefox"].includes(info.project.name),
+  );
+  test.setTimeout(180000);
+  await page.goto("./#/learn/first-edit/shorten");
+  const cell = page.locator('[data-cell="first-edit/shorten:worked:0"]');
+  const editor = cell.locator("textarea");
+  const plan = cell.locator(".notebook-cut-plan");
+  await expect(plan).toHaveCount(0);
+  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expect(plan).toContainText("Planned cut · 0–5 s (5 s)");
+  await editor.fill("ffmpeg -i bunny-short.mp4 -ss 6 -t 5 tail.mp4");
+  await expect(plan).toContainText("Planned cut · 6–8 s (2 s)");
+  for (const command of [
+    "ffmpeg -i missing.mp4 -t 3 output.mp4",
+    "ffmpeg -i bunny-short.mp4 -t 3 -c copy output.mp4",
+    'ffmpeg -i "unfinished',
+    "ffmpeg -i bunny-short.mp4 -ss 8 -t 3 output.mp4",
+  ]) {
+    await editor.fill(command);
+    await expect(plan).toHaveCount(0);
+  }
+  await editor.fill("ffmpeg -i bunny-short.mp4 -t 3 readable.mp4");
+  await expect(plan).toContainText("Planned cut · 0–3 s (3 s)");
+  expect(
+    await cell.evaluate((el) =>
+      Boolean(
+        el
+          .querySelector(".notebook-cut-plan")!
+          .compareDocumentPosition(el.querySelector("textarea")!) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      ),
+    ),
+  ).toBe(true);
+  await cell.getByRole("button", { name: n.run, exact: true }).click();
+  await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
+    timeout: 120000,
+  });
+  await expect(cell.locator(".notebook-log pre")).toContainText(
+    "ffmpeg version",
+  );
+  await expect(cell.locator(".notebook-cell-result video")).toBeVisible();
+  expect(
+    await cell.evaluate((el) => {
+      const actions = el.querySelector(".notebook-cell-actions")!;
+      const output = el.querySelector(".notebook-log")!;
+      const guide = el.querySelector(".notebook-command-guide")!;
+      return (
+        Boolean(
+          actions.compareDocumentPosition(output) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+        ) &&
+        Boolean(
+          output.compareDocumentPosition(guide) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+        ) &&
+        !Array.from(el.children)
+          .slice(
+            Array.from(el.children).indexOf(actions) + 1,
+            Array.from(el.children).indexOf(output),
+          )
+          .some((node) =>
+            node.matches(
+              ".notebook-command-guide, .notebook-diagram, .notebook-observation",
+            ),
+          )
+      );
+    }),
+  ).toBe(true);
+  const videoDuration = await cell
+    .locator("video")
+    .evaluate((video: HTMLVideoElement) => video.duration);
+  expect(videoDuration).toBeCloseTo(3, 1);
+  await editor.fill("ffmpeg -i bunny-short.mp4 -t 2 next.mp4");
+  await expect(plan).toContainText("Planned cut · 0–2 s (2 s)");
+  await expect(cell.locator(".notebook-last-command")).toContainText(
+    "-t 3 readable.mp4",
+  );
+  await page.reload();
+  await expect(plan).toContainText("Planned cut · 0–2 s (2 s)");
+  await expect(cell.locator(".notebook-last-command")).toContainText(
+    "-t 3 readable.mp4",
+  );
+
+  // A known filename with replaced bytes must not inherit the fixture's duration.
+  await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const r = indexedDB.open("video-lab-notebook", 1);
+      r.onsuccess = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+    });
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction("files", "readwrite");
+      const store = tx.objectStore("files");
+      const get = store.get("bunny-short.mp4");
+      get.onsuccess = () =>
+        store.put({ ...get.result, blob: new Blob(["different media bytes"]) });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  });
+  await page.reload();
+  await expect(page.locator("[data-notebook-ready]")).toHaveAttribute(
+    "data-notebook-ready",
+    "true",
+  );
+  await expect(plan).toHaveCount(0);
 });

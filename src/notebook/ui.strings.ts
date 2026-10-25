@@ -1,11 +1,8 @@
 // Copyright © 2026 Christopher Snow
 export const n = {
   title: "Video Lab: Editing with FFmpeg",
-  timelineModel: "Original example timeline · the section to keep",
-  sourceInterval: "Source interval",
-  outputDuration: "Output duration",
+  timelineModel: "Planned cut",
   kept: "Keep",
-  leftOut: "Leave out",
   joinModel:
     "Original example connections · follow picture and sound through the join",
   input: "Input",
@@ -32,8 +29,7 @@ export const n = {
   notes: "Notes (optional)",
   notesLabel: "Your notes",
   previousPrediction: "Your earlier prediction",
-  exampleOptions:
-    "These notes and diagrams describe the original example. They do not change when you edit the command.",
+  exampleOptions: "Original example notes",
   predict: "Predict before running",
   reveal: "Compare your prediction",
   change: "Change one thing",

@@ -1,5 +1,11 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { NativeBuilder, quoteArgument } from "../cli/NativeBuilder";
 import { parseCommand } from "../cli/command";
 import { useNotebook, downloadBlob } from "./Workspace";
@@ -19,6 +25,7 @@ export function CommandCell({
   options,
   introduction,
   illustration,
+  preview,
 }: {
   id: string;
   initial: string;
@@ -30,6 +37,7 @@ export function CommandCell({
   options?: WorkedCopy["options"];
   introduction?: string[];
   illustration?: ReactNode;
+  preview?: (command: string) => ReactNode;
 }) {
   const w = useNotebook(),
     record = w.cells[id] ?? { id, command: initial };
@@ -44,6 +52,25 @@ export function CommandCell({
     [left, setLeft] = useState(false);
   const pre = useRef<HTMLPreElement>(null),
     editor = useRef<HTMLTextAreaElement>(null);
+  useLayoutEffect(() => {
+    const el = editor.current;
+    if (!el) return;
+    function fit() {
+      el!.style.height = "auto";
+      el!.style.height = `${el!.scrollHeight + el!.offsetHeight - el!.clientHeight}px`;
+    }
+    fit();
+    let width = el.getBoundingClientRect().width;
+    const observer = new ResizeObserver(() => {
+      const next = el.getBoundingClientRect().width;
+      if (next !== width) {
+        width = next;
+        fit();
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [record.command]);
   const running = w.active?.id === id;
   const last = record.last;
   const text = running ? w.liveLog : (last?.log ?? "");
@@ -156,6 +183,7 @@ export function CommandCell({
         </button>
       </div>
       {builder && <NativeBuilder command={record.command} onChange={edit} />}
+      {preview?.(record.command)}
       <label className="sr-only" htmlFor={`${id}-command`}>
         {n.command}: {title}
       </label>
@@ -192,27 +220,6 @@ export function CommandCell({
         <button onClick={() => void copy()}>{n.copy}</button>
         <button onClick={downloadCommand}>{n.downloadCommand}</button>
       </div>
-      {(teaching || options || illustration) && record.command !== initial && (
-        <p className="muted">{n.exampleOptions}</p>
-      )}
-      {illustration}
-      {(teaching || options) && (
-        <div className="notebook-command-guide">
-          <dl className="notebook-options">
-            {(teaching?.options ?? options ?? []).map((o, i) => (
-              <div key={i}>
-                <dt>
-                  <code>{o.flag}</code>
-                </dt>
-                <dd>{o.meaning}</dd>
-              </div>
-            ))}
-          </dl>
-          {teaching?.prediction && (
-            <p className="notebook-think">{teaching.prediction}</p>
-          )}
-        </div>
-      )}
       <p role="status" aria-live="polite">
         {running
           ? n.running
@@ -328,6 +335,27 @@ export function CommandCell({
         ) : (
           <p>{n.previousOutput}</p>
         ))}
+      {illustration}
+      {(teaching || options) && (
+        <div className="notebook-command-guide">
+          {record.command !== initial && (
+            <p className="notebook-guide-label">{n.exampleOptions}</p>
+          )}
+          <dl className="notebook-options">
+            {(teaching?.options ?? options ?? []).map((o, i) => (
+              <div key={i}>
+                <dt>
+                  <code>{o.flag}</code>
+                </dt>
+                <dd>{o.meaning}</dd>
+              </div>
+            ))}
+          </dl>
+          {teaching?.prediction && (
+            <p className="notebook-think">{teaching.prediction}</p>
+          )}
+        </div>
+      )}
       {(teaching || observe) && (
         <div className="notebook-observation">
           <p>{teaching?.observe ?? observe}</p>
