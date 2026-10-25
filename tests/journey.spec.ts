@@ -49,7 +49,7 @@ test("typed real commands encode, change rate, mux, inspect, edit and download s
   await command(page, "fixtures");
   await command(page, buildCommand(1, "video.mp4"));
   await expect(page.getByLabel(cli.output, { exact: true })).not.toContainText(
-    cli.cleanupNotice,
+    "Aborted()",
   );
   await command(page, probeCommand("video.mp4"));
   await expect(output(page)).toContainText("3.000000");
@@ -127,7 +127,7 @@ test("tool errors, quoting errors, cancellation, history and explicit overwrite 
   await expect(output(page)).toContainText("missing.mp4");
   await command(page, "clear");
   await command(page, "ffmpeg -bogus-option bad.mp4", cli.failed);
-  await expect(output(page)).not.toContainText(cli.cleanupNotice);
+  await expect(output(page)).not.toContainText("Aborted()");
   await expect(output(page)).toContainText("Unrecognized option");
   await command(page, 'ffmpeg -i "unfinished', cli.failed);
   await expect(output(page)).toContainText("quoted");

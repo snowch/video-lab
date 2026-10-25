@@ -745,9 +745,7 @@ ${cli.comparisonCredit}`,
             })),
           );
           live();
-          let sawBareAbort = false;
           const result = await runTool({ ...plan, inputs }, (line) => {
-            if (line === "Aborted()") sawBareAbort = true;
             if (operation === generation.current) raw(line);
           });
           live();
@@ -813,8 +811,6 @@ ${cli.comparisonCredit}`,
             );
             if (plan.tool === "ffmpeg") setPreview(plan.output);
           }
-          if (plan.tool === "ffmpeg" && result.code === 0 && sawBareAbort)
-            setDiagnostic(cli.cleanupNotice);
           setDiagnostic(
             result.code === -1
               ? cli.probeSuccess

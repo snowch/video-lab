@@ -38,8 +38,6 @@ export const cli = {
   exit: "Tool return status:",
   probeSuccess:
     "ffprobe completed and the media check passed. This pinned browser build returns -1 after cleanup; that is not a native success exit status.",
-  cleanupNotice:
-    "This browser's pinned FFmpeg build can print the bare line Aborted() during cleanup even when the operation completes. This command returned status 0; any saved output is listed above. A nonzero status still means failure. Inspect and replay the output to check it.",
   saved: "Saved",
   recipeSaved: "Execution recipe:",
   imported: "Existing file imported as",

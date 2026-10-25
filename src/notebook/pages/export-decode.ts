@@ -38,7 +38,7 @@ export default {
         "Find Stream mapping in the log: both the video and audio should be listed. Then find the final progress line and compare its time with the source duration of eight seconds. Check the reported completion status as well.",
       explanation: [
         "The verified run processes 192 video frames and reaches time=00:00:08.00, with both video and audio selected. These details show what was processed; an input duration near the top of the log alone would only describe the source.",
-        "This browser build can print Aborted() even when its reported exit code is 0. Read the status and preceding processing log together. A familiar final message alone is not evidence that the whole file decoded.",
+        "Read the completion status and processing log together. A final progress line alone does not establish that the whole file decoded without errors.",
       ],
     },
   ],

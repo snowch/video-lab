@@ -996,7 +996,6 @@ function App() {
                   {result?.tool === "ffprobe" && result.code === -1 && (
                     <p>{C.live.probeCleanup}</p>
                   )}
-                  <p>{C.live.encodingCleanup}</p>
                   {result && (
                     <p>
                       {C.live.exitStatus}: {result.code}

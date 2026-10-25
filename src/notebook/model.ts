@@ -16,6 +16,7 @@ export function validPath(name: string) {
 }
 export type NotebookFile = WorkspaceFile;
 export type RunRecord = {
+  runtime?: "exit-adapter-v1";
   command: string;
   code?: number;
   log: string;

@@ -307,8 +307,9 @@ export function CommandCell({
       )}
       {!running &&
         last &&
+        !last.runtime &&
         !last.error &&
-        last.log.includes("Aborted()") &&
+        last.log.split(/\r?\n/).includes("Aborted()") &&
         (last.command.trim().startsWith("ffprobe")
           ? last.code === -1
           : last.code === 0) && (

@@ -46,9 +46,9 @@ export const n = {
   shortcut: "Shift+Enter runs this cell. Enter adds a line.",
   output: "Command output",
   runtimeFfmpeg:
-    "The browser runtime printed Aborted(), but this FFmpeg run returned status 0. Review its log and replay any media output. An Aborted() message in a failed run still needs investigation.",
+    "This saved run includes Aborted() from an older browser runtime. Rerun the command to check its result with the current runtime.",
   runtimeProbe:
-    "The browser runtime printed Aborted() and ffprobe returned status -1. For this pinned build, the app validated a JSON inspection report before accepting the run. Native ffprobe uses status 0 for success; -1 alone does not establish success.",
+    "This saved inspection includes Aborted() from an older browser runtime. Rerun the command to check its result with the current runtime.",
   wrap: "Wrap output",
   sideways: "Scroll sideways for long lines, or turn on Wrap output.",
   ready: "Ready",

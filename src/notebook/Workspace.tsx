@@ -525,6 +525,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
     let log: string[] = [];
     let timer: ReturnType<typeof setTimeout> | undefined;
     const record: RunRecord = {
+      runtime: "exit-adapter-v1",
       command,
       log: "",
       inputs: [],

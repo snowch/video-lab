@@ -130,7 +130,7 @@ async function probeFile(engine: FFmpeg, input: string) {
     ],
     limits.timeoutMs,
   );
-  // Core 0.12.10 leaves its ret field at -1 after normal ffprobe cleanup.
+  // Core 0.12.10 ignores ffprobe's C return value, leaving ret at -1.
   // Accept that documented sentinel only with complete, valid JSON below.
   // Encoding itself always requires a real zero exit status.
   if (code !== 0 && code !== -1)
@@ -175,9 +175,11 @@ async function withEngine<T>(
     // A failed module-worker import can hang in Firefox when offline. Check
     // the deliberately saved binary cache before creating that worker.
     if (navigator.onLine === false) {
-      const coreUrls = ["ffmpeg-core.js", "ffmpeg-core.wasm"].map(
-        (name) => new URL(`${encoderBaseUrl}${name}`, location.href).href,
-      );
+      const coreUrls = [
+        "ffmpeg-adapter.js",
+        "ffmpeg-core.js",
+        "ffmpeg-core.wasm",
+      ].map((name) => new URL(`${encoderBaseUrl}${name}`, location.href).href);
       if (
         !("caches" in globalThis) ||
         !(await Promise.all(coreUrls.map((url) => caches.match(url)))).every(
@@ -191,8 +193,10 @@ async function withEngine<T>(
     // Network emulation and some browsers can leave navigator.onLine stale.
     // Check availability before an offline module-worker import can hang.
     if (typeof window !== "undefined") {
-      const coreURL = new URL(`${encoderBaseUrl}ffmpeg-core.js`, location.href)
-        .href;
+      const coreURL = new URL(
+        `${encoderBaseUrl}ffmpeg-adapter.js`,
+        location.href,
+      ).href;
       const cached =
         "caches" in globalThis
           ? await Promise.race([caches.match(coreURL), deadline])
@@ -229,7 +233,8 @@ async function withEngine<T>(
     });
     await Promise.race([
       engine.load({
-        coreURL: new URL(`${encoderBaseUrl}ffmpeg-core.js`, location.href).href,
+        coreURL: new URL(`${encoderBaseUrl}ffmpeg-adapter.js`, location.href)
+          .href,
         wasmURL: new URL(`${encoderBaseUrl}ffmpeg-core.wasm`, location.href)
           .href,
       }),

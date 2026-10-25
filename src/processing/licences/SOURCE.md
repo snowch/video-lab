@@ -42,3 +42,11 @@ The upstream Dockerfile fetches these sources; its build directory supplies the 
 To build from that release, install Docker with Buildx, fetch the source tree at the exact commit, and run `make prd` from its root. The Makefile selects `FFMPEG_ST=yes` and `-O3 -msimd128`; its Dockerfile starts with emscripten/emsdk:3.1.40 and generates both UMD and ESM files. Video Lab uses the ESM files. Docker/build tooling is not needed to use the course.
 
 The Video Lab build copies the original npm package bytes without modification and publishes SHA-256 hashes and sizes in encoder-manifest.json. npm package integrity is pinned by package-lock.json. Changing course input media creates new media output; it does not modify the encoder binary.
+
+## Video Lab exit adapter
+
+Video Lab also ships a separate application adapter, ffmpeg-adapter.js. The build command `npm run build` runs `scripts/prepare-encoder.mjs`, which transpiles `src/processing/core-exit.ts` and adds an ESM factory importing the original ffmpeg-core.js. It writes the adapter and the unchanged vendor JS/WASM to `dist/encoder/0.12.10/`, and includes their individual hashes and sizes in `dist/encoder-manifest.json`. The script verifies the vendor files against pinned SHA-256 hashes before copying them. This does not rebuild or patch the upstream files; the upstream source and licence references above still describe those files.
+
+The adapter handles the pinned native `exit_program` termination sequence. That native function saves the command's return status, then intentionally calls abort to unwind execution. An `onAbort` hook intercepts only an empty abort reason with a recorded nonnegative integer status, before Emscripten prints its shutdown diagnostic. It throws a WebAssembly.RuntimeError that the original binding catches, preserving the recorded status, including nonzero errors. Other aborts retain the original diagnostic path and are propagated as failures. No CLI log text is filtered.
+
+This relies on the pinned binding and Emscripten callback ordering and must be rechecked when upgrading the core. Ordinary ffprobe completion does not use this abort sequence: its binding ignores the native return value and leaves status -1. The adapter does not repair that separate contract; Video Lab continues to validate inspection JSON and errors independently.
