@@ -4,7 +4,7 @@ import type { CourseCopy } from "./copy-types";
 export const courseCopy: CourseCopy = {
   title: "Video Lab: Editing with FFmpeg",
   intro:
-    "Learn video editing by reading, changing and running real FFmpeg commands. Each short page introduces one idea, keeps its result beside the command and gives you a separate task to try. Start with the supplied short Big Buck Bunny clips; the two-minute excerpt is also available. No media knowledge is assumed. Earlier lessons remain available as an archive with their existing work.",
+    "Learn video editing by reading, changing and running real FFmpeg commands. Each short page introduces one idea, keeps its result beside the command and gives you a separate task to try. Start with the supplied short Big Buck Bunny clips; the two-minute excerpt is also available. No media knowledge is assumed.",
   chapters: {
     "first-edit": {
       title: "Your first edit",

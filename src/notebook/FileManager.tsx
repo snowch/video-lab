@@ -529,6 +529,15 @@ export function FileManager({
             </section>
           )}
           <p className="muted">{n.limits}</p>
+          <button
+            disabled={blocked}
+            onClick={() => {
+              dialog.current?.close();
+              location.hash = "#/earlier";
+            }}
+          >
+            {n.earlierWork}
+          </button>
         </>
       )}
     </dialog>

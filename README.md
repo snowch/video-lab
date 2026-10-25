@@ -23,7 +23,7 @@ This is a browser notebook, not JupyterLite or a Unix shell. Cells run FFmpeg or
 
 Files and cell commands/results use the separate `video-lab-notebook` IndexedDB database. Each window retains its own drafts. Changed commands or input/output hashes mark results stale. Property checks use executed files and state their limits; a passed duration/stream check cannot establish editorial quality, gain, subtitle meaning or native-script execution. Page records can be downloaded as JSON; this is an export, not an import/synchronisation feature.
 
-Earlier production/reference links and the optional standalone workbench remain explicitly archived. `#/earlier` opens that course; original `#/capture`, `#/inspect`, `#/edit`, `#/build`, `#/publish`, reference section links and module aliases remain valid. Earlier files are copied once without deleting originals or changing old databases, drafts and achievements. The optional device/native recording guide remains available at `#/appendix/recording`.
+Earlier production/reference links and the optional standalone workbench remain explicitly archived. **Files → Earlier work** opens that course at `#/earlier`; original `#/capture`, `#/inspect`, `#/edit`, `#/build`, `#/publish`, reference section links and module aliases remain valid. Earlier files are copied once without deleting originals or changing old databases, drafts and achievements. The optional device/native recording guide remains available at `#/appendix/recording`.
 
 [Implementation plan and review evidence](docs/notes/notebook/01-plan.md) records the new scope. The historical notes below describe archived features where labelled.
 

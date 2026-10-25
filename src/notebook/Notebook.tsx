@@ -49,9 +49,6 @@ function ChapterLinks({
           </li>
         ))}
       </ol>
-      <a className="notebook-earlier" href="#/earlier" onClick={onNavigate}>
-        {n.earlier}
-      </a>
       <a
         className="notebook-earlier"
         href="#/appendix/recording"
@@ -115,11 +112,6 @@ function NotebookHome() {
             </li>
           ))}
         </ol>
-      </section>
-      <section className="notebook-archive">
-        <h2>{n.earlier}</h2>
-        <p>{n.earlierNote}</p>
-        <a href="#/earlier">{n.earlier} →</a>
       </section>
     </div>
   );

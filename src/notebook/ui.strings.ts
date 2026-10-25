@@ -85,13 +85,14 @@ export const n = {
   limits:
     "64 files, 32 MiB total, 20 MiB per file. A command can read up to 12 files and has a 120-second processing limit.",
   toolNote:
-    "These cells run real FFmpeg and ffprobe locally with WebAssembly. They are not a Unix shell. File operations use Files; pipes and shell expansion belong in a native terminal.",
+    "Run FFmpeg and ffprobe commands in your browser. Your files stay on this device.",
   help: "Help",
   native: "Run in your own terminal",
   nativeDownload: "Download native script (.sh)",
   nativeNote:
     "This script needs an installed FFmpeg and a POSIX shell. It is not executed in the browser. Place your source MP4 files in its working folder.",
   earlier: "Earlier lessons and reference labs (archive)",
+  earlierWork: "Earlier work",
   earlierNote:
     "Earlier links, files, answers and command drafts remain available in the archive. Earlier files are copied once into this separate notebook workspace; the originals are kept.",
   credits:

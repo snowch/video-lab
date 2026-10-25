@@ -15,6 +15,11 @@ test("notebook outline and every concept page reflow without loading processing 
   await expect(page.locator(".notebook-chapter-cards>li")).toHaveCount(
     chapters.length,
   );
+  await expect(
+    page.locator(
+      `.notebook-home a[href="#/earlier"], .notebook-sidebar a[href="#/earlier"], .notebook-menu a[href="#/earlier"]`,
+    ),
+  ).toHaveCount(0);
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "200%";
   });
@@ -145,6 +150,9 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   await dialog
     .getByRole("textbox", { name: n.editText, exact: true })
     .fill("changed");
+  await expect(
+    dialog.getByRole("button", { name: n.earlierWork, exact: true }),
+  ).toBeDisabled();
   await dialog.getByRole("button", { name: n.close, exact: true }).click();
   await expect(
     dialog.getByRole("button", { name: n.discard, exact: true }),
@@ -185,6 +193,13 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   await expect(
     dialog.getByRole("textbox", { name: n.editText, exact: true }),
   ).toHaveValue("changed");
+  await dialog
+    .getByRole("button", { name: n.earlierWork, exact: true })
+    .click();
+  await expect(page).toHaveURL(/#\/earlier$/);
+  await expect(
+    page.getByRole("heading", { name: n.earlier, exact: true }),
+  ).toBeVisible();
 });
 
 test("earlier files and drafts migrate without changing the archive; notebook storage errors remain explicit", async ({
