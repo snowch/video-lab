@@ -8,6 +8,8 @@ The overview note now reads: “Run FFmpeg and ffprobe commands in your browser.
 
 “Earlier work” labels the Files entry to the preserved earlier course. The existing archive-page heading and context note remain unchanged on that explicit destination. Removed the overview archive card. Shell limitations remain explained where native scripts or unsupported commands make them relevant.
 
-The reader found one remaining archive promotion in `courseCopy.intro`: “Earlier lessons remain available as an archive with their existing work.” Removed only that sentence from `src/notebook/copy.ts`; the remaining introduction is unchanged. Access to earlier work remains through Files and existing bookmarks.
+The reader found one remaining archive promotion in `courseCopy.intro`: “Earlier lessons remain available as an archive with their existing work.” Removed that sentence from `src/notebook/copy.ts`. Access to earlier work remains through Files and existing bookmarks.
+
+The user then noted that the introduction assumed familiarity with Big Buck Bunny. The verified brief identifies it as the Blender Foundation's animated short film, with short practice extracts and a two-minute excerpt provided by this course. Revised only the source sentence to read: “Start with the supplied short practice clips from Big Buck Bunny, an animated short film. A two-minute excerpt is also available.” The existing credits retain source and licence details. The rest of the introduction is unchanged.
 
 Reviewed both changed labels for plain wording and factual scope. Formatted the strings file, the narrowly edited copy file and this record with Prettier. No tests were added for these wording changes; built-page review and the full required checks belong to the main cleanup workflow.

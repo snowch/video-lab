@@ -23,3 +23,7 @@ No further finding arose from these controls. No unfamiliar technical knowledge 
 ## Limits
 
 This pass did not run media processing, simulate an in-flight file operation, seed historical answer/evidence databases, test every preserved bookmark or prove data migration. It did not run the full repository check. Existing files were created only in disposable review browser contexts. The menu-opening script initially attempted to click the underlying Chapters button to close its modal; that harness error was corrected to the dialog's actual Close button and is not a product finding. Broader persistence and busy-state guarantees need the existing tests and final required checks. Screenshots and script in `/tmp` are transient evidence, not committed artifacts.
+
+## Addendum — explain the practice film
+
+A fresh built-page read at 390 × 844 in the light theme checked the revised introduction: “Start with the supplied short practice clips from Big Buck Bunny, an animated short film. A two-minute excerpt is also available.” This now explains what the title names and why it appears: the supplied practice clips come from that film. A new learner does not need prior knowledge of Big Buck Bunny. The following sentence clearly identifies the longer practice option. Screenshot `/tmp/notebook-cleanup-reader/intro-clarified-phone.png` shows readable wrapping with no clipping, and the document has no horizontal overflow. The introductory archive sentence is absent in this build. No finding from this narrow follow-up; no product edits or full checks performed.
