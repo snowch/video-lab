@@ -60,6 +60,11 @@ test("header status stays compact and its panel supports keyboard, dismissal and
       .first()
       .click({ position: { x: 1, y: 1 } });
     await expect(details).toHaveJSProperty("open", false);
+    await summary.click();
+    await page.evaluate(() => {
+      location.hash = "#/learn/first-edit/start";
+    });
+    await expect(details).toHaveJSProperty("open", false);
     await context.setOffline(true);
     await expect(badge).toHaveAttribute("data-release-state", "offline");
     await expect(summary.locator("[data-offline-state]")).toHaveText(

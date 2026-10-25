@@ -79,6 +79,10 @@ export function AppStatus() {
         close();
       }
     };
+    const navigate = () => {
+      if (details.current) details.current.open = false;
+    };
+    window.addEventListener("hashchange", navigate);
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", escape);
     const header = root.current?.closest("header");
@@ -89,6 +93,7 @@ export function AppStatus() {
     window.visualViewport?.addEventListener("resize", placePanel);
     window.visualViewport?.addEventListener("scroll", placePanel);
     return () => {
+      window.removeEventListener("hashchange", navigate);
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", escape);
       observer.disconnect();

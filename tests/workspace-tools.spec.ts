@@ -66,7 +66,7 @@ test("source ends at continuation while file management and help preserve the le
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "";
   });
-  await page.getByText(offline.title, { exact: true }).click();
+  await page.locator(".app-status > details > summary").click();
   await expect(page.locator(".offline-panel .encoder-offline")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: offline.download, exact: true }),

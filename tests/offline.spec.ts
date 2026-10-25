@@ -109,6 +109,7 @@ test("complete download survives offline reload and new tab, with all media and 
   expect(range.status).toBe(206);
   expect(range.bytes).toBe(100);
   expect(range.range).toMatch(/^bytes 100-199\//);
+  await panel.getByRole("button", { name: s.close, exact: true }).click();
   await command(page, "reference cuts");
   await command(page, "play reference-cuts.mp4");
   await seekAndPlay(page.locator(".cli-preview video"));
@@ -331,6 +332,7 @@ test("two real builds detect, prepare, defer and safely restart every window, re
     "data-offline-ready",
     "true",
   );
+  await p.getByRole("button", { name: s.close, exact: true }).click();
   await command(page, "cat retained.txt");
   await expect(terminal(page)).toContainText("Keep this through update.");
   await command(page, "ffprobe mousepad-demo.mp4");
@@ -458,6 +460,7 @@ test("one download resumes legacy lesson-only protocol saves; removal preserves 
       r!.active!.postMessage("DOWNLOAD_ENCODER", [c.port2]);
     });
   });
+  await p.getByRole("button", { name: s.close, exact: true }).click();
   await page
     .getByRole("button", { name: "Use practice video", exact: true })
     .click();
@@ -492,8 +495,10 @@ test("one download resumes legacy lesson-only protocol saves; removal preserves 
       cached: await caches.has("sibling-cache"),
     })),
   ).toEqual({ sibling: "retained", cached: true });
+  await p.getByRole("button", { name: s.close, exact: true }).click();
   await command(page, "cat kept.txt");
   await expect(terminal(page)).toContainText("Do not remove user work.");
+  await panel(page);
   await p.getByRole("button", { name: s.download, exact: true }).click();
 
   await expect(p.locator("[data-offline-ready]")).toHaveAttribute(
