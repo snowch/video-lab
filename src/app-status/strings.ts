@@ -67,4 +67,16 @@ export const appStatusStrings = {
     "The published version could not be checked. Check your connection and retry.",
   open: "Open App status",
   close: "Close App status",
+  offlineSummary: {
+    offlineIdle: "Not saved offline",
+    offlineSaving: "Saving offline copy",
+    offlineReady: "Saved offline",
+    offlineIncomplete: "Offline copy incomplete",
+    offlineUnavailable: "Offline unavailable",
+  },
+  phaseSummary: {
+    prepareUnavailable: "Update unavailable",
+    updatePaused: "Update paused",
+    restartFailed: "Restart paused",
+  },
 } as const;

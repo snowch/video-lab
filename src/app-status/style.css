@@ -1,35 +1,82 @@
 /* Copyright © 2026 Christopher Snow */
-.app-status {
-  width: min(100% - 2rem, 76rem);
-  margin: 1rem auto;
+.app-status.offline-panel {
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
   color: var(--text, var(--ink));
+  font-size: 1rem;
+  justify-self: center;
 }
-.app-status summary {
+.app-status.offline-panel > details {
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: var(--surface);
+}
+.app-status > details > summary {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.7rem 1.5rem;
-  padding: 0.8rem;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  font-weight: 500;
   cursor: pointer;
+  list-style: none;
 }
-.app-status summary::before {
-  content: "▸";
+.app-status summary::-webkit-details-marker {
+  display: none;
 }
-.app-status details[open] > summary::before {
-  content: "▾";
+.app-status-label {
+  white-space: nowrap;
+}
+.app-status-label > span {
+  display: inline-block;
+}
+.app-status details[open] .app-status-label > span {
+  transform: rotate(180deg);
 }
 .app-status .release-status {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem 1rem;
-  font-size: 0.9rem;
+  font-size: inherit;
   margin: 0;
+  min-width: 0;
+}
+.app-status .app-status-badge {
+  padding: 0.12rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.app-status .app-update-badge {
+  border-color: var(--accent);
+  font-weight: 650;
 }
 .app-status-content {
-  padding: 0 1rem 1rem;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 30;
+  width: min(40rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  box-shadow: 0 8px 28px #0002;
   display: grid;
   gap: 1rem;
+}
+.app-status-dismiss {
+  display: flex;
+  justify-content: flex-end;
 }
 .app-status-content > section + section {
   border-top: 1px solid var(--line);
@@ -43,12 +90,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-}
-.app-update-badge {
-  font-weight: 700;
-  border: 1px solid currentColor;
-  border-radius: 1rem;
-  padding: 0.15rem 0.6rem;
 }
 .app-download-progress {
   display: grid;
@@ -77,20 +118,25 @@
 .app-status button {
   overflow-wrap: anywhere;
 }
-.app-status button {
+.app-status .app-status-content p,
+.app-status .app-status-content code {
+  font-size: inherit;
+}
+.app-status .app-status-content button,
+.app-status dialog button {
+  font: inherit;
   min-height: 44px;
   max-width: 100%;
+  padding: 0.55rem 0.8rem;
 }
-@media (max-width: 599px) {
-  .app-status summary {
-    align-items: flex-start;
-    gap: 0.5rem;
+@media (max-width: 700px) {
+  .app-status.offline-panel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
   }
-  .app-status .release-status {
-    width: 100%;
-  }
-  .app-status-content {
-    padding-inline: 0.8rem;
+  .app-status > details > summary {
+    justify-content: flex-start;
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -141,13 +141,14 @@ small,
   background: var(--bg);
 }
 .header-inner {
+  position: relative;
   max-width: 1256px;
   margin: auto;
   padding: 20px 28px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 .brand {
   font-size: 1.15rem;
@@ -168,14 +169,19 @@ small,
   place-items: center;
 }
 .header-links {
+  min-width: 0;
   display: flex;
   gap: 22px;
   align-items: center;
 }
-.header-links > a {
-  font-size: 0.9rem;
-  color: var(--muted);
-  text-decoration: none;
+.header-inner > .brand {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.header-links > button {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .wrap {
   max-width: 1200px;
@@ -818,9 +824,6 @@ code {
   }
   .header-links {
     gap: 10px;
-  }
-  .header-links > a {
-    display: none;
   }
   .wrap {
     padding: 0 20px;
@@ -2049,4 +2052,26 @@ code {
 }
 .command-workspace > .teaching-figure {
   margin-top: 0.5rem;
+}
+
+@media (max-width: 700px) {
+  .header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .header-inner > .brand {
+    flex: 1 0 auto;
+    order: 1;
+    overflow-wrap: normal;
+  }
+  .header-links {
+    flex: 0 0 auto;
+    order: 2;
+    margin-left: auto;
+  }
+  .header-inner > .app-status {
+    flex: 1 0 100%;
+    order: 3;
+  }
 }

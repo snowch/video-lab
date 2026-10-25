@@ -561,6 +561,7 @@ function App() {
             </span>
             {C.brand}
           </a>
+          <AppStatus />
           <button
             className="quiet"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -569,7 +570,6 @@ function App() {
           </button>
         </div>
       </header>
-      <AppStatus />
       <p className="wrap">
         Earlier standalone workbench ·{" "}
         <a href={assetURL("")}>Open the notebook course</a>

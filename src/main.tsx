@@ -192,19 +192,17 @@ function App() {
             </span>
             {ui.brand}
           </a>
-          <nav className="header-links" aria-label={ui.course}>
-            <a href="#/">{ui.course}</a>
-            <a href="https://github.com/snowch/video-lab">{ui.source}</a>
+          <AppStatus />
+          <div className="header-links">
             <button
               aria-label={ui.theme}
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
               {theme === "dark" ? ui.light : ui.dark}
             </button>
-          </nav>
+          </div>
         </div>
       </header>
-      <AppStatus />
       {step && (
         <nav className="journey-nav" aria-label={home.planTitle}>
           <label className="chapter-picker">

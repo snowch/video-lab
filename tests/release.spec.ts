@@ -11,7 +11,7 @@ test("running identity stays embedded; deployed metadata is network-only, valida
   const control = page.locator(".app-status"),
     badge = control.locator(".release-status");
   await expect(badge).toHaveAttribute("data-release-state", "latest");
-  await expect(badge.locator("code")).toContainText(
+  await expect(control.locator("[data-running-identity]")).toContainText(
     published.commit.slice(0, 7),
   );
   await expect(control).toHaveAttribute("data-running-build", published.build);
@@ -22,7 +22,7 @@ test("running identity stays embedded; deployed metadata is network-only, valida
   await expect(control).toHaveAttribute("data-pending-update", "true");
   await control.locator("summary").click();
   await expect(badge).toContainText(s.outdated);
-  await expect(badge.locator("code")).toContainText(
+  await expect(control.locator("[data-running-identity]")).toContainText(
     published.commit.slice(0, 7),
   );
   await context.setOffline(true);

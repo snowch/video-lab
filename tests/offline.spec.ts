@@ -519,7 +519,7 @@ test("unsupported storage keeps the online course and running identity available
     s.offlineUnavailable,
   );
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(p.locator("summary code")).not.toBeEmpty();
+  await expect(p.locator("[data-running-identity]")).not.toBeEmpty();
 });
 
 test("Later survives closing every app window; only explicit restart selects the prepared saved release", async ({

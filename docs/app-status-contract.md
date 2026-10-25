@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-Both supported HTML entries mount the same control under the header. Closed status includes the embedded source commit and deterministic build suffix; the source commit link is in Version. Offline completeness and deployed freshness are separate state dimensions. Shared labels follow Video Lab issue 6 and the related Assembly Lab 35, Metadata Systems 2 and GPU Lab 22 issues.
+Both supported HTML entries mount the same compact control inside the header. Closed status shows separate update and offline badges. Version inside the expanded panel retains the embedded source commit link and deterministic build suffix. Offline completeness and deployed freshness are separate state dimensions. Shared labels follow Video Lab issue 6 and the related Assembly Lab 35, Metadata Systems 2 and GPU Lab 22 issues.
 
 ## Published metadata and identity
 

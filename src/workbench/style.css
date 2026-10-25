@@ -144,11 +144,12 @@ header {
   border-bottom: 1px solid var(--line);
 }
 .topbar {
+  position: relative;
   max-width: 1160px;
   margin: auto;
   padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
 }
@@ -814,4 +815,15 @@ a {
 .command-echo {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem;
+  }
+  .topbar > button {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }

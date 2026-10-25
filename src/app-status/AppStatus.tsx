@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useAppStatus } from "./useAppStatus";
 import { appStatusStrings as s } from "./strings";
 import { runningCommit, runningBuild } from "./identity";
@@ -7,7 +7,9 @@ import { InstallApp } from "../install/InstallApp";
 import "./style.css";
 export function AppStatus() {
   const app = useAppStatus(),
+    root = useRef<HTMLElement>(null),
     details = useRef<HTMLDetailsElement>(null),
+    content = useRef<HTMLDivElement>(null),
     confirm = useRef<HTMLDialogElement>(null),
     remove = useRef<HTMLButtonElement>(null);
   const freshness =
@@ -21,8 +23,84 @@ export function AppStatus() {
     app.pending || (app.deployed && app.deployed.build !== runningBuild);
   const transferring = app.saving || app.phase === "downloading";
   const locked = transferring || app.removing;
+  const versionLabel =
+    app.cancelling && app.phase === "downloading"
+      ? s.cancelling
+      : app.phase
+        ? app.phase === "prepareUnavailable" ||
+          app.phase === "restartFailed" ||
+          app.phase === "updatePaused"
+          ? s.phaseSummary[app.phase]
+          : s[app.phase]
+        : app.pending
+          ? s.ready
+          : available
+            ? s.outdated
+            : s[app.version];
+  function close() {
+    if (details.current) details.current.open = false;
+    details.current?.querySelector("summary")?.focus();
+  }
+  function placePanel() {
+    if (!details.current?.open || !content.current) return;
+    const viewport = window.visualViewport;
+    const height = viewport?.height ?? innerHeight;
+    const offset = viewport?.offsetTop ?? 0;
+    const headerBottom =
+      root.current?.closest("header")?.getBoundingClientRect().bottom ?? 0;
+    // Leave useful panel space even when enlarged header text fills a short screen.
+    const top = Math.max(
+      offset + 8,
+      Math.min(
+        headerBottom + 8,
+        offset + height - Math.min(320, height * 0.65),
+      ),
+    );
+    content.current.style.top = `${top}px`;
+    content.current.style.maxHeight = `${Math.max(0, offset + height - top - 8)}px`;
+  }
+  useEffect(() => {
+    const outside = (event: PointerEvent) => {
+      if (
+        details.current?.open &&
+        event.target instanceof Node &&
+        !root.current?.contains(event.target)
+      ) {
+        details.current.open = false;
+      }
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (
+        event.key === "Escape" &&
+        details.current?.open &&
+        !confirm.current?.open
+      ) {
+        event.preventDefault();
+        close();
+      }
+    };
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("keydown", escape);
+    const header = root.current?.closest("header");
+    const observer = new ResizeObserver(placePanel);
+    if (header) observer.observe(header);
+    window.addEventListener("resize", placePanel);
+    window.addEventListener("scroll", placePanel);
+    window.visualViewport?.addEventListener("resize", placePanel);
+    window.visualViewport?.addEventListener("scroll", placePanel);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("keydown", escape);
+      observer.disconnect();
+      window.removeEventListener("resize", placePanel);
+      window.removeEventListener("scroll", placePanel);
+      window.visualViewport?.removeEventListener("resize", placePanel);
+      window.visualViewport?.removeEventListener("scroll", placePanel);
+    };
+  }, []);
   return (
     <section
+      ref={root}
       className="app-status offline-panel"
       aria-label={s.title}
       data-running-build={runningBuild}
@@ -31,31 +109,38 @@ export function AppStatus() {
       <details
         ref={details}
         onToggle={(e) => {
-          if (e.currentTarget.open) app.open();
+          if (e.currentTarget.open) {
+            placePanel();
+            app.open();
+          }
         }}
       >
         <summary>
-          <strong>{s.title}</strong>
+          <span className="app-status-label">
+            {s.title} <span aria-hidden="true">▾</span>
+          </span>
           <span className="release-status" data-release-state={freshness}>
-            <span>
-              {s.running}{" "}
-              <code title={runningBuild}>
-                {runningCommit
-                  ? `${runningCommit.slice(0, 7)}+${runningBuild.slice(0, 7)}`
-                  : runningBuild.slice(0, 7)}
-              </code>
-              {!runningCommit && <> · {s.development}</>}
-            </span>
             <span
-              className={available ? "app-update-badge" : ""}
+              className={`app-status-badge${available ? " app-update-badge" : ""}`}
               role="status"
               aria-live="polite"
             >
-              {app.pending ? s.ready : available ? s.outdated : s[app.version]}
+              {versionLabel}
             </span>
           </span>
+          <span
+            className="app-status-badge"
+            data-offline-state={app.offline}
+            role="status"
+            aria-live="polite"
+          >
+            {app.removing ? s.removing : s.offlineSummary[app.offline]}
+          </span>
         </summary>
-        <div className="app-status-content">
+        <div className="app-status-content" ref={content}>
+          <div className="app-status-dismiss">
+            <button onClick={close}>{s.close}</button>
+          </div>
           <section aria-labelledby="version-heading">
             <h2 id="version-heading">{s.version}</h2>
             <p>
@@ -65,11 +150,16 @@ export function AppStatus() {
                   href={`https://github.com/snowch/video-lab/commit/${runningCommit}`}
                   title={runningCommit}
                 >
-                  <code>{runningCommit.slice(0, 7)}</code>
+                  <code data-running-identity title={runningBuild}>
+                    {runningCommit.slice(0, 7)}+{runningBuild.slice(0, 7)}
+                  </code>
                 </a>
               ) : (
                 <>
-                  <code>{runningBuild.slice(0, 7)}</code> · {s.development}
+                  <code data-running-identity title={runningBuild}>
+                    {runningBuild.slice(0, 7)}
+                  </code>{" "}
+                  · {s.development}
                 </>
               )}
             </p>
@@ -106,13 +196,7 @@ export function AppStatus() {
                   >
                     {s.restart}
                   </button>
-                  <button
-                    onClick={() => {
-                      if (details.current) details.current.open = false;
-                    }}
-                  >
-                    {s.later}
-                  </button>
+                  <button onClick={close}>{s.later}</button>
                 </>
               )}
             </div>
