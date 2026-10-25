@@ -18,6 +18,19 @@ test("one course index exposes every page and preserves drafts through real navi
   await expect(page.locator(".notebook-menu, .notebook-sidebar")).toHaveCount(
     0,
   );
+  await expect(page.locator(".notebook-toolbar")).toHaveCount(0);
+  await expect(page.locator(".notebook-workspace-status")).toHaveClass(
+    /sr-only/,
+  );
+  const homeFiles = page
+    .locator(".notebook-home-actions")
+    .getByRole("button", { name: /^Files ·/ });
+  await homeFiles.click();
+  const files = page.getByRole("dialog", { name: n.files, exact: true });
+  await expect(files).toBeVisible();
+  await expect(files).toContainText(n.storageNote);
+  await page.keyboard.press("Escape");
+  await expect(homeFiles).toBeFocused();
   const cards = page.locator(".notebook-chapter-cards > li");
   await expect(cards).toHaveCount(chapters.length);
   for (const [index, chapter] of chapters.entries()) {
@@ -42,7 +55,9 @@ test("one course index exposes every page and preserves drafts through real navi
     '[data-cell="first-edit/shorten:worked:0"] textarea',
   );
   await editor.fill(command);
-  await expect(page.locator(".notebook-toolbar")).toContainText(n.saved);
+  await expect(page.locator(".notebook-workspace-status")).toContainText(
+    n.saved,
+  );
   await expect(
     page.getByRole("button", { name: n.chapters, exact: true }),
   ).toHaveCount(0);
@@ -50,6 +65,7 @@ test("one course index exposes every page and preserves drafts through real navi
     .locator(".notebook-toolbar")
     .getByRole("link", { name: n.overview, exact: true })
     .click();
+  await expect(page.locator(".notebook-toolbar")).toHaveCount(0);
   await indexLinks.nth(3).click();
   await expect(page.locator(".notebook-page")).toHaveAttribute(
     "data-page",

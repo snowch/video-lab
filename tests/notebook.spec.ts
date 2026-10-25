@@ -307,14 +307,29 @@ test("earlier files and drafts migrate without changing the archive; notebook st
   });
   await page.goto("./#/learn/first-edit/shorten");
   await page.reload();
-  await expect(page.locator(".notebook-toolbar")).toContainText(n.sessionOnly);
+  await expect(page.locator(".notebook-workspace-status")).toContainText(
+    n.sessionOnly,
+  );
   const editor = page.locator(
     '[data-cell="first-edit/shorten:worked:0"] textarea',
   );
   await editor.fill("ffprobe own-file.mp4");
   await page.reload();
   await expect(editor).toHaveValue("ffprobe own-file.mp4");
-  await expect(page.locator(".notebook-toolbar")).toContainText(n.sessionOnly);
+  await expect(page.locator(".notebook-workspace-status")).toContainText(
+    n.sessionOnly,
+  );
+  await page
+    .locator(".notebook-toolbar")
+    .getByRole("link", { name: n.overview, exact: true })
+    .click();
+  await expect(page.locator(".notebook-toolbar")).toHaveCount(0);
+  await expect(page.locator(".notebook-workspace-status")).not.toHaveClass(
+    /sr-only/,
+  );
+  await expect(page.locator(".notebook-workspace-status")).toContainText(
+    n.sessionOnly,
+  );
 });
 
 test("inspection checks stay visible for unchanged evidence and failed runs never show success notes", async ({
@@ -448,7 +463,9 @@ test("optional notes preserve earlier predictions and reviews without adding req
   const notes = page.getByRole("textbox", { name: n.notesLabel, exact: true });
   await expect(notes).toHaveValue("My saved review");
   await notes.fill("My revised observation");
-  await expect(page.locator(".notebook-toolbar")).toContainText(n.saved);
+  await expect(page.locator(".notebook-workspace-status")).toContainText(
+    n.saved,
+  );
   await page.reload();
   await page.getByText(n.notes, { exact: true }).click();
   await expect(notes).toHaveValue("My revised observation");

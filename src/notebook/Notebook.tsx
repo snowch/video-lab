@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { chapters, pages, pageHref, type PageDefinition } from "./structure";
 import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
@@ -20,7 +20,7 @@ function Credits() {
     </p>
   );
 }
-function NotebookHome() {
+function NotebookHome({ filesControl }: { filesControl: ReactNode }) {
   return (
     <div className="notebook-home">
       <section className="notebook-welcome">
@@ -28,9 +28,12 @@ function NotebookHome() {
           <span className="eyebrow">Video Lab</span>
           <h1>{courseCopy.title}</h1>
           <p>{courseCopy.intro}</p>
-          <a className="button primary" href={pageHref(pages[0]!)}>
-            {n.start} →
-          </a>
+          <div className="notebook-home-actions">
+            <a className="button primary" href={pageHref(pages[0]!)}>
+              {n.start} →
+            </a>
+            {filesControl}
+          </div>
           <p>{n.toolNote}</p>
         </div>
         <figure>
@@ -320,13 +323,22 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
     filesButton = useRef<HTMLButtonElement>(null);
+  const filesControl = (
+    <button ref={filesButton} onClick={() => setFilesOpen(true)}>
+      {n.files} · {Object.keys(w.files).length}
+    </button>
+  );
+  const quiet =
+    !w.active && !w.sessionOnly && (!w.ready || (!w.busy && !w.saving));
   return (
     <div className="notebook-shell" data-notebook-ready={w.ready}>
-      <div className="notebook-toolbar">
-        <a href="#/">{n.overview}</a>
-        <button ref={filesButton} onClick={() => setFilesOpen(true)}>
-          {n.files} · {Object.keys(w.files).length}
-        </button>
+      {page && (
+        <nav className="notebook-toolbar" aria-label={n.overview}>
+          <a href="#/">{n.overview}</a>
+          {filesControl}
+        </nav>
+      )}
+      <div className={`notebook-workspace-status${quiet ? " sr-only" : ""}`}>
         <span role="status" aria-live="polite">
           {!w.ready
             ? n.loading
@@ -335,9 +347,10 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
               : w.saving
                 ? n.saving
                 : w.sessionOnly
-                  ? n.sessionOnly
+                  ? ""
                   : n.saved}
         </span>
+        {w.sessionOnly && <p role="status">{n.sessionOnly}</p>}
         {w.active && (
           <>
             <a href={"#/learn/" + w.active.id.split(":")[0]}>{n.command}</a>
@@ -351,7 +364,11 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
         </p>
       )}
       <div className="notebook-content">
-        {page ? <NotebookPage page={page} /> : <NotebookHome />}
+        {page ? (
+          <NotebookPage page={page} />
+        ) : (
+          <NotebookHome filesControl={filesControl} />
+        )}
       </div>
       <FileManager
         open={filesOpen}

@@ -4,22 +4,23 @@
   margin: 0 auto;
   padding: 0 1.25rem 3rem;
 }
-.notebook-toolbar {
+.notebook-toolbar,
+.notebook-home-actions,
+.notebook-workspace-status:not(.sr-only) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.7rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-  padding: 0.7rem 0;
-  position: sticky;
-  top: 0;
-  z-index: 8;
 }
-.notebook-toolbar > span {
-  margin-left: auto;
-  max-width: 32rem;
-  font-size: 0.9rem;
+.notebook-toolbar {
+  padding: 0.7rem 0;
+}
+.notebook-workspace-status:not(.sr-only) {
+  margin: 0.7rem 0;
+}
+.notebook-workspace-status p {
+  flex-basis: 100%;
+  margin: 0;
 }
 .notebook-page-links {
   margin: 0;
@@ -447,18 +448,11 @@
   .notebook-welcome {
     grid-template-columns: 1fr;
   }
-  .notebook-toolbar > span {
-    flex-basis: 100%;
-    margin: 0;
-  }
   .notebook-chapter-cards {
     grid-template-columns: 1fr;
   }
 }
 @media (max-width: 600px) {
-  .notebook-toolbar {
-    position: static;
-  }
   .notebook-shell {
     padding: 0 1rem 2rem;
   }
