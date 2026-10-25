@@ -1,0 +1,31 @@
+{
+  "release": {
+    "commit": "5b639adabb3d8e56e1e291d63a1894caadb08550",
+    "build": "e49b105a4dee5952e0d92304c89710a848be87fde48f68d88450abfd0bf2e6be",
+    "version": "k11FdZ4N2T60TYrk_DhaQIyJnoS_95bxKCP9YKu2a28=",
+    "bytes": 49013845
+  },
+  "at": "2026-10-25T13:14:40.795Z",
+  "kind": "chromium",
+  "warm": true,
+  "retained": {
+    "bunny-short.mp4": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144",
+    "captions.srt": "7f82453a0a8deabdfbc2ab457d82d6d1dffa3a367924cef994e4b64ccc49e4d6",
+    "cleanup-1792933906479.txt": "593b9d4375c1bcc78f8b2a1fbee54113eaa9e3bbf6fb4eb5dcc11eaf7ec24694",
+    "fonts/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "public-offline.mp4": "70bf452f0e8964ad68e735fe98ca867d17edc1a780a3bb7803097d78841d2490"
+  },
+  "filesAfter": {
+    "bunny-short.mp4": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144",
+    "captions.srt": "7f82453a0a8deabdfbc2ab457d82d6d1dffa3a367924cef994e4b64ccc49e4d6",
+    "cleanup-1792933906479.txt": "593b9d4375c1bcc78f8b2a1fbee54113eaa9e3bbf6fb4eb5dcc11eaf7ec24694",
+    "cleanup-1792934080171.txt": "3bfa91e50a278f96318782cc76ffc4633a7b5c3e26c9f0afd8cd524eca8d660d",
+    "fonts/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "public-offline.mp4": "70bf452f0e8964ad68e735fe98ca867d17edc1a780a3bb7803097d78841d2490"
+  },
+  "note": "cleanup-1792934080171.txt",
+  "errors": [],
+  "verification": "Actual public UI, saved-note navigation and dirty guard, complete offline readiness and full-process offline relaunch; Earlier work available offline.",
+  "copyright": "Copyright \u00a9 2026 Christopher Snow",
+  "verificationDetail": "The existing complete saved app was actually updated in the first public attempt. A resumed check confirmed the original practice media and generated MP4 hashes against the prior public evidence, then checked navigation and explicit saved-note persistence after waiting for the initial text to load."
+}

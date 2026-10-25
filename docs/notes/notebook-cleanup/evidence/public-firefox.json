@@ -1,0 +1,19 @@
+{
+  "release": {
+    "commit": "5b639adabb3d8e56e1e291d63a1894caadb08550",
+    "build": "e49b105a4dee5952e0d92304c89710a848be87fde48f68d88450abfd0bf2e6be",
+    "version": "k11FdZ4N2T60TYrk_DhaQIyJnoS_95bxKCP9YKu2a28=",
+    "bytes": 49013845
+  },
+  "at": "2026-10-25T13:12:46.354Z",
+  "kind": "firefox",
+  "warm": false,
+  "retained": {},
+  "filesAfter": {
+    "cleanup-1792933964518.txt": "3bfa91e50a278f96318782cc76ffc4633a7b5c3e26c9f0afd8cd524eca8d660d"
+  },
+  "note": "cleanup-1792933964518.txt",
+  "errors": [],
+  "verification": "Actual public UI, saved-note navigation and dirty guard, complete offline readiness and full-process offline relaunch; Earlier work available offline.",
+  "copyright": "Copyright \u00a9 2026 Christopher Snow"
+}
