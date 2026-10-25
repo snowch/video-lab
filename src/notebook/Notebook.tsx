@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { chapters, pages, pageHref, type PageDefinition } from "./structure";
 import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
@@ -20,7 +20,11 @@ function Credits() {
     </p>
   );
 }
-function NotebookHome({ filesControl }: { filesControl: ReactNode }) {
+function NotebookHome({
+  startRef,
+}: {
+  startRef: RefObject<HTMLAnchorElement | null>;
+}) {
   return (
     <div className="notebook-home">
       <section className="notebook-welcome">
@@ -28,12 +32,13 @@ function NotebookHome({ filesControl }: { filesControl: ReactNode }) {
           <span className="eyebrow">Video Lab</span>
           <h1>{courseCopy.title}</h1>
           <p>{courseCopy.intro}</p>
-          <div className="notebook-home-actions">
-            <a className="button primary" href={pageHref(pages[0]!)}>
-              {n.start} →
-            </a>
-            {filesControl}
-          </div>
+          <a
+            ref={startRef}
+            className="button primary"
+            href={pageHref(pages[0]!)}
+          >
+            {n.start} →
+          </a>
           <p>{n.toolNote}</p>
         </div>
         <figure>
@@ -322,10 +327,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
 function NotebookShell({ page }: { page?: PageDefinition }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
-    filesButton = useRef<HTMLButtonElement>(null);
+    filesButton = useRef<HTMLButtonElement>(null),
+    startLink = useRef<HTMLAnchorElement>(null);
   const filesControl = (
     <button ref={filesButton} onClick={() => setFilesOpen(true)}>
-      {n.files} · {Object.keys(w.files).length}
+      {n.files}
     </button>
   );
   const quiet =
@@ -340,15 +346,7 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
       )}
       <div className={`notebook-workspace-status${quiet ? " sr-only" : ""}`}>
         <span role="status" aria-live="polite">
-          {!w.ready
-            ? n.loading
-            : w.busy
-              ? n.running
-              : w.saving
-                ? n.saving
-                : w.sessionOnly
-                  ? ""
-                  : n.saved}
+          {!w.ready ? n.loading : w.busy ? n.running : w.saving ? n.saving : ""}
         </span>
         {w.sessionOnly && <p role="status">{n.sessionOnly}</p>}
         {w.active && (
@@ -367,14 +365,14 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
         {page ? (
           <NotebookPage page={page} />
         ) : (
-          <NotebookHome filesControl={filesControl} />
+          <NotebookHome startRef={startLink} />
         )}
       </div>
       <FileManager
         open={filesOpen}
         onClose={() => {
           setFilesOpen(false);
-          filesButton.current?.focus();
+          (filesButton.current ?? startLink.current)?.focus();
         }}
       />
     </div>

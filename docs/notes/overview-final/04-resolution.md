@@ -1,0 +1,15 @@
+# Overview controls: final implementation and resolution
+
+Copyright © 2026 Christopher Snow.
+
+The owner's explicit request supersedes the preceding overview-bar design: remove Files from the overview entirely. The owner subsequently clarified that the count itself adds no value. Lesson navigation therefore uses the plain Files label, with no count, while the overview has no Files button. File totals and sizes remain inside the file manager where they describe its actual contents. The overview retains its existing Start chapter 1 action and chapter/page links, without a replacement utility strip. The unused home action wrapper/style and Files prop are removed.
+
+The routine Saved in this browser on this device message is removed from the rendering path and strings, including its former clipped live status. The Files dialog retains its existing conditional storage explanation. Transient Opening workspace remains visually clipped/live; Working, Saving work, actual notices, independent failed-save warnings and active-command navigation/cancellation retain their established behaviour. Persistence, workspace contents and restart guards are unchanged.
+
+**R1 — Low, fixed.** The reader and sceptic reproduced browser Back while a lesson Files dialog was open: closing it on home lost meaningful focus because its lesson opener had unmounted. The close handler now focuses the existing lesson Files opener when available, otherwise the existing Start chapter 1 link through a React ref. This does not close a dialog or discard dirty work on navigation. The course-index regression exercises Back with the dialog open, Escape, focus on Start and Forward back to the lesson; the independent checker verifies the built result and dirty-dialog behaviour.
+
+Regression assertions now require no accessible Files button on home, an empty settled workspace status, and normal Files access/contextual storage information/focus in a lesson. Prior saved-draft and note checks now wait for the actual completed IndexedDB read transaction and assert the stored command/review, using `expectSavedCell`, before navigation or reload. They no longer depend on the removed status sentence. Existing assertions and project exclusions remain.
+
+The source/TypeScript build and targeted navigation, earlier-storage and notes regressions are checked before the final full gate. Independent checker, exact final checks and public/offline evidence are recorded separately. External artefacts are under `/workspace/scratch/overview-final/`; the unrelated learner-audit directory is excluded.
+
+After the final plain-Files label change, `npx tsc --noEmit` passed. The focused command `npx playwright test tests/course-index.spec.ts tests/notebook.spec.ts tests/notebook-update.spec.ts --grep 'one course index|earlier files|optional notes|file management keeps|coordinated restart'` passed 9 tests with 16 existing project-specific skips (14.4s), including real file management and coordinated-update dirty-dialog coverage. Final independent label/focus/import/download verification is in 05.

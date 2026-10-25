@@ -3,6 +3,7 @@ import { test, expect } from "@playwright/test";
 import { chapters, pages, pageHref } from "../src/notebook/structure";
 import { courseCopy } from "../src/notebook/copy";
 import { n } from "../src/notebook/ui.strings";
+import { expectSavedCell } from "./notebook-storage";
 
 test("one course index exposes every page and preserves drafts through real navigation", async ({
   page,
@@ -22,15 +23,10 @@ test("one course index exposes every page and preserves drafts through real navi
   await expect(page.locator(".notebook-workspace-status")).toHaveClass(
     /sr-only/,
   );
-  const homeFiles = page
-    .locator(".notebook-home-actions")
-    .getByRole("button", { name: /^Files ·/ });
-  await homeFiles.click();
-  const files = page.getByRole("dialog", { name: n.files, exact: true });
-  await expect(files).toBeVisible();
-  await expect(files).toContainText(n.storageNote);
-  await page.keyboard.press("Escape");
-  await expect(homeFiles).toBeFocused();
+  await expect(
+    page.getByRole("button", { name: n.files, exact: true }),
+  ).toHaveCount(0);
+  await expect(page.locator(".notebook-workspace-status")).toBeEmpty();
   const cards = page.locator(".notebook-chapter-cards > li");
   await expect(cards).toHaveCount(chapters.length);
   for (const [index, chapter] of chapters.entries()) {
@@ -50,14 +46,30 @@ test("one course index exposes every page and preserves drafts through real navi
     ".notebook-chapter-cards .notebook-page-links a",
   );
   await indexLinks.first().click();
+  const lessonFiles = page
+    .locator(".notebook-toolbar")
+    .getByRole("button", { name: n.files, exact: true });
+  await lessonFiles.click();
+  const files = page.getByRole("dialog", { name: n.files, exact: true });
+  await expect(files).toBeVisible();
+  await expect(files).toContainText(n.storageNote);
+  await page.keyboard.press("Escape");
+  await expect(lessonFiles).toBeFocused();
+  await lessonFiles.click();
+  await page.goBack();
+  await expect(page.locator(".notebook-home")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("link", { name: `${n.start} →`, exact: true }),
+  ).toBeFocused();
+  await page.goForward();
+  await expect(lessonFiles).toBeVisible();
   const command = "ffmpeg -i bunny-short.mp4 -t 4 index-draft.mp4";
   const editor = page.locator(
     '[data-cell="first-edit/shorten:worked:0"] textarea',
   );
   await editor.fill(command);
-  await expect(page.locator(".notebook-workspace-status")).toContainText(
-    n.saved,
-  );
+  await expectSavedCell(page, "first-edit/shorten:worked:0", { command });
   await expect(
     page.getByRole("button", { name: n.chapters, exact: true }),
   ).toHaveCount(0);
@@ -66,6 +78,9 @@ test("one course index exposes every page and preserves drafts through real navi
     .getByRole("link", { name: n.overview, exact: true })
     .click();
   await expect(page.locator(".notebook-toolbar")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: n.files, exact: true }),
+  ).toHaveCount(0);
   await indexLinks.nth(3).click();
   await expect(page.locator(".notebook-page")).toHaveAttribute(
     "data-page",

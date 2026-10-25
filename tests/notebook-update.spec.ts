@@ -26,7 +26,7 @@ test("notebook drafts and dirty file dialogs participate in coordinated restart 
     "data-notebook-ready",
     "true",
   );
-  await other.getByRole("button", { name: /^Files ·/ }).click();
+  await other.getByRole("button", { name: n.files, exact: true }).click();
   const files = other.locator("dialog.notebook-files");
   await files.getByRole("button", { name: n.newText, exact: true }).click();
   const status = page.locator(".app-status");

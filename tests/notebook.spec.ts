@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { pages, chapters, pageHref } from "../src/notebook/structure";
 import { courseCopy } from "../src/notebook/copy";
 import { n } from "../src/notebook/ui.strings";
+import { expectSavedCell } from "./notebook-storage";
 
 test("notebook outline and every concept page reflow without loading processing tools", async ({
   page,
@@ -169,7 +170,7 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
     "data-notebook-ready",
     "true",
   );
-  await page.getByRole("button", { name: /^Files ·/ }).click();
+  await page.getByRole("button", { name: n.files, exact: true }).click();
   const dialog = page.locator("dialog.notebook-files");
   await dialog
     .locator("input[type=file]")
@@ -235,7 +236,7 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   ).toBe("changed");
   await dialog.getByRole("button", { name: n.close, exact: true }).click();
   await page.reload();
-  await page.getByRole("button", { name: /^Files ·/ }).click();
+  await page.getByRole("button", { name: n.files, exact: true }).click();
   await dialog.getByRole("button", { name: "▸ My notes", exact: true }).click();
   await dialog.getByRole("button", { name: "été.txt", exact: true }).click();
   await expect(
@@ -463,9 +464,9 @@ test("optional notes preserve earlier predictions and reviews without adding req
   const notes = page.getByRole("textbox", { name: n.notesLabel, exact: true });
   await expect(notes).toHaveValue("My saved review");
   await notes.fill("My revised observation");
-  await expect(page.locator(".notebook-workspace-status")).toContainText(
-    n.saved,
-  );
+  await expectSavedCell(page, "first-edit/shorten:notes", {
+    review: "My revised observation",
+  });
   await page.reload();
   await page.getByText(n.notes, { exact: true }).click();
   await expect(notes).toHaveValue("My revised observation");

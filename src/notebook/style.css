@@ -5,7 +5,6 @@
   padding: 0 1.25rem 3rem;
 }
 .notebook-toolbar,
-.notebook-home-actions,
 .notebook-workspace-status:not(.sr-only) {
   display: flex;
   flex-wrap: wrap;
