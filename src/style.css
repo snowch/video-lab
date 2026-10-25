@@ -76,8 +76,8 @@ button,
   justify-content: center;
   gap: 8px;
 }
-button:hover,
-.button:hover {
+button:hover:not(:disabled),
+.button:hover:not(:disabled) {
   border-color: var(--accent);
   background: var(--accent-soft);
 }
@@ -89,6 +89,10 @@ button:disabled {
   background: var(--accent);
   color: var(--bg);
   border-color: var(--accent);
+}
+.primary:hover:not(:disabled) {
+  background: var(--accent);
+  filter: brightness(0.94);
 }
 :root[data-theme="dark"] .primary {
   color: #10251f;
