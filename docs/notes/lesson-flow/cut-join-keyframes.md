@@ -1,0 +1,8 @@
+# Cut and join: keyframes — draft decisions
+
+- Kept both verified commands in their existing order and retained the practice output name and three-second, audio/video expectations.
+- The relevant native and WASM records agree: rough.mp4 has a 3.125-second container/video duration; the worked exact.mp4 has three-second video/audio and 72 video pictures. These are explicitly recorded observations, not a promise about every editable command or browser playback result.
+- Explained picture dependencies and the role of keyframes before the experiment. Kept codec-specific random-access detail out of the introductory concept; described a keyframe as a starting point without claiming every keyframe is universally sufficient for every codec/file.
+- Explained option order adjacent to the corresponding command, with the second example introducing output-side seeking and default encoding. Repeated options retain their meanings; no standalone global flag list or repeated prediction/reveal.
+- Following the independent reader finding that the starter already supplied the answer, practice now asks for a decoded cut from source seconds 1–4. The root agent owns the matching starter/solution and native/WASM evidence update; the worked examples remain unchanged. Practice compares its opening with source second 1, not with the worked exact.mp4 (which starts at second 2). The check limitation identifies duration/stream coverage and the remaining visual/listening check.
+- No meaningful additional source setup is needed, so sourceNote is omitted. No independent built-page review or shared checks were performed by this drafting agent.

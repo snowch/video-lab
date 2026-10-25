@@ -1,0 +1,615 @@
+[
+  {
+    "mode": "desktop-light",
+    "route": "first-edit/shorten",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "first-edit/start",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "inside-video/inspect",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "inside-video/streams",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "frames-time/rate",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "frames-time/timestamps",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/copy",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/keyframes",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/join",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/scale",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/crop",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/pad",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "sound/level",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "sound/fade",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "text/title",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "text/subtitles",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "quality/quality",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "quality/speed",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/format",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/faststart",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/verify",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/decode",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "workflows/reuse",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-light",
+    "route": "workflows/batch",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "first-edit/shorten",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "first-edit/start",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "inside-video/inspect",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "inside-video/streams",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "frames-time/rate",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "frames-time/timestamps",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/copy",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/keyframes",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/join",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/scale",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/crop",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/pad",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "sound/level",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "sound/fade",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "text/title",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "text/subtitles",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "quality/quality",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "quality/speed",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/format",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/faststart",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/verify",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/decode",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "workflows/reuse",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "workflows/batch",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "first-edit/shorten",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "first-edit/start",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "inside-video/inspect",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "inside-video/streams",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "frames-time/rate",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "frames-time/timestamps",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/copy",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/keyframes",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/join",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/scale",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/crop",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/pad",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "sound/level",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "sound/fade",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "text/title",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "text/subtitles",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "quality/quality",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "quality/speed",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/format",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/faststart",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/verify",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/decode",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "workflows/reuse",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-light",
+    "route": "workflows/batch",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "first-edit/shorten",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "first-edit/start",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "inside-video/inspect",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "inside-video/streams",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "frames-time/rate",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "frames-time/timestamps",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/copy",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/keyframes",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/join",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/scale",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/crop",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/pad",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "sound/level",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "sound/fade",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "text/title",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "text/subtitles",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "quality/quality",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "quality/speed",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/format",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5"
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/faststart",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/verify",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/decode",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "workflows/reuse",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "mode": "phone-dark",
+    "route": "workflows/batch",
+    "commandsUnchanged": true,
+    "build": "a5747a9b9ed8aa19b7ea88356d204f3cc09b85da64355d15233473ed2e2a22f5",
+    "headerAndPreviewTogether": true
+  },
+  {
+    "appStatus": "Opening initiates one automatic malformed check; unavailable/Retry shown; explicit aborted Retry remains unavailable; explicit successful Retry restores latest",
+    "automaticRequests": 1,
+    "failedText": "App status\nRunning version ce8d694+a5747a9\nCouldn’t check for updates\nVersion\n\nRunning version ce8d694\n\nCouldn’t check for updates\n\nThe published version could not be checked. Check your connection and retry.\n\nRetry\nOffline access\n\nSave lessons, practice media and FFmpeg/ffprobe tools together in one download. You can then read, play media and process files offline.\n\n49.04 MB · 49,037,070 B\n\nNot saved for offline use\n\nDownload for offline use\nRemove offline copy\n\nThe saved copy belongs to this browser on this device. Browser storage can be cleared, so download important work. Downloads, updates and external links need an internet connection. Native tools are separate from this browser app.\n\nAdd a Video Lab icon\n\nAdd Video Lab to your device so you can open it from an app icon.\n\nAn app icon does not save the course offline. Use Download for offline use above to save lessons, media and tools.\n\nLook for an install icon in the address bar, or an install or save-as-app option in the browser menu. The wording varies by browser version."
+  }
+]

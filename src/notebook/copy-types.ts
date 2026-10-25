@@ -1,16 +1,22 @@
 // Copyright © 2026 Christopher Snow
 import type { Chapter } from "./structure";
+export type WorkedCopy = {
+  title: string;
+  introduction?: string[];
+  options: { flag: string; meaning: string }[];
+  observe: string;
+  explanation?: string[];
+  prediction?: string;
+};
 export type PageCopy = {
   title: string;
   goal: string;
+  sourceNote?: string;
   concept: string[];
-  prediction: string;
-  reveal: string;
-  workedLabels: string[];
-  options: { flag: string; meaning: string }[];
-  change: string;
+  worked: WorkedCopy[];
   practice: string;
-  review: string;
+  practiceObserve: string;
+  practiceOptions?: { flag: string; meaning: string }[];
   hints: [string, string, string, string, string];
   checkLimit: string;
   nativeExplanation?: string[];

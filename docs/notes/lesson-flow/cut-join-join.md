@@ -1,0 +1,9 @@
+# Join lesson flow
+
+- Owned page: `src/notebook/pages/cut-join-join.ts`; one worked cell, existing command and practice target preserved.
+- Verified against the page fact brief and join entries in `docs/notes/notebook/commands.json`, `commands-wasm.json` and the two assets in `media.json`. Native and WASM outputs have 14.000-second video and 14.016-second audio/file duration. Source pictures/audio are 8 and 6 seconds; both sources start at zero and share picture dimensions, frame rate and audio layout.
+- Concept introduces sequential placement, then separate video/audio streams, then a graph as connections. The worked introduction introduces input numbering without syntax; options teach the actual syntax in command order: inputs, graph, incoming stream selectors, concat settings, output labels, maps, filename. Flags are explained there once rather than repeated in the concept.
+- Output labels are deliberately distinguished from input numbers and filenames. The incoming selectors group each segment’s video then audio. The explanation connects that mechanism to the observed cut and introduces source compatibility only after the learner has a working example.
+- No prediction: the example order and cut position are already explained. Independent practice reverses input files and uses replay to assess order, which the duration/stream check cannot establish.
+- Suggested diagram labels alongside the command: `Input 0 · short · 8 s` / `Input 1 · action · 6 s`; each branches to `video` and `audio`, pairs enter `concat · first, then second`, outputs `joined video [v]` / `joined audio [a]`, then `map both → joined.mp4`. Caption should identify this as an explanatory connection model rather than a measured media result.
+- Only owned-file formatting was checked. No shared tests, full checks or built-site review were run by this drafting agent.

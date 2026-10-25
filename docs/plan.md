@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Lesson flow, 25 October 2026:** [the teaching revision](notes/lesson-flow/01-plan.md) replaces mandatory prediction/change/review sections with command-local explanation, specific observation and one independent task per page. Existing notes remain available optionally. Twenty-four separate page agents draft from recorded command/media facts, followed by independent built-site review. This supersedes the earlier notebook template, preserving all lesson IDs, commands, files and evidence.
+
 **Generic notebook course, 24 October 2026:** [the notebook implementation plan](notes/notebook/01-plan.md) supersedes the software-demo theme and five-chapter main path with the approved ten-chapter general video course, short concept pages, genuine media-command cells and persistent shared file management. Earlier lesson bookmarks/storage remain compatible; native shell scripts are explicitly separate from browser processing.
 
 **App status, 24 October 2026:** [Issue 6](notes/issue-6/01-facts.md) unifies version identity, deployed-release checks, explicit preparation and coordinated restart with complete offline access. Prepared updates remain deferred until Restart; saved files, drafts and sibling apps are protected. This supersedes earlier separate footer/offline update controls.

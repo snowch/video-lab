@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NativeBuilder, quoteArgument } from "../cli/NativeBuilder";
 import { parseCommand } from "../cli/command";
 import { useNotebook, downloadBlob } from "./Workspace";
@@ -7,18 +7,29 @@ import { hashBlob } from "./model";
 import { FilePreview } from "./FileManager";
 import type { Expectation } from "./structure";
 import { n } from "./ui.strings";
+import type { WorkedCopy } from "./copy-types";
 export function CommandCell({
   id,
   initial,
   title,
   expected,
   limit,
+  teaching,
+  observe,
+  options,
+  introduction,
+  illustration,
 }: {
   id: string;
   initial: string;
   title: string;
   expected?: Expectation;
   limit?: string;
+  teaching?: WorkedCopy;
+  observe?: string;
+  options?: WorkedCopy["options"];
+  introduction?: string[];
+  illustration?: ReactNode;
 }) {
   const w = useNotebook(),
     record = w.cells[id] ?? { id, command: initial };
@@ -128,11 +139,14 @@ export function CommandCell({
       data-stale={stale}
     >
       <header>
-        <h3 id={`${id}-title`}>{title}</h3>
+        <h2 id={`${id}-title`}>{title}</h2>
         <span className="notebook-cell-tool">
           {record.command.trim().split(/\s/)[0] || "ffmpeg"}
         </span>
       </header>
+      {(teaching?.introduction ?? introduction)?.map((p, i) => (
+        <p key={i}>{p}</p>
+      ))}
       <div className="notebook-cell-mode">
         <button aria-pressed={!builder} onClick={() => setBuilder(false)}>
           {n.editor}
@@ -178,6 +192,27 @@ export function CommandCell({
         <button onClick={() => void copy()}>{n.copy}</button>
         <button onClick={downloadCommand}>{n.downloadCommand}</button>
       </div>
+      {(teaching || options || illustration) && record.command !== initial && (
+        <p className="muted">{n.exampleOptions}</p>
+      )}
+      {illustration}
+      {(teaching || options) && (
+        <div className="notebook-command-guide">
+          <dl className="notebook-options">
+            {(teaching?.options ?? options ?? []).map((o, i) => (
+              <div key={i}>
+                <dt>
+                  <code>{o.flag}</code>
+                </dt>
+                <dd>{o.meaning}</dd>
+              </div>
+            ))}
+          </dl>
+          {teaching?.prediction && (
+            <p className="notebook-think">{teaching.prediction}</p>
+          )}
+        </div>
+      )}
       <p role="status" aria-live="polite">
         {running
           ? n.running
@@ -293,6 +328,14 @@ export function CommandCell({
         ) : (
           <p>{n.previousOutput}</p>
         ))}
+      {(teaching || observe) && (
+        <div className="notebook-observation">
+          <p>{teaching?.observe ?? observe}</p>
+          {teaching?.explanation?.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      )}
       {expected && (
         <section className="notebook-check">
           <h4>{n.technical}</h4>

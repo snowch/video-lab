@@ -38,7 +38,37 @@ test("notebook outline and every concept page reflow without loading processing 
       ),
       p.id,
     ).toBe(true);
-    await page.getByRole("button", { name: n.reveal, exact: true }).click();
+    await expect(
+      page.locator(".notebook-prediction, .notebook-change"),
+    ).toHaveCount(0);
+    await expect(page.locator(".notebook-review")).not.toHaveAttribute(
+      "open",
+      "",
+    );
+    for (const cell of await page.locator("[data-cell]").all()) {
+      const editorBox = await cell.locator("textarea").boundingBox();
+      const runBox = await cell
+        .getByRole("button", { name: n.run, exact: true })
+        .boundingBox();
+      expect(
+        runBox!.y - editorBox!.y - editorBox!.height,
+        p.id + " command/run distance",
+      ).toBeLessThan(180);
+      const guide = cell.locator(".notebook-command-guide");
+      if (await guide.count()) {
+        expect(
+          await cell.evaluate((el) =>
+            Boolean(
+              el
+                .querySelector("textarea")!
+                .compareDocumentPosition(
+                  el.querySelector(".notebook-command-guide")!,
+                ) & Node.DOCUMENT_POSITION_FOLLOWING,
+            ),
+          ),
+        ).toBe(true);
+      }
+    }
     for (let i = 0; i < 5; i++)
       await page.getByRole("button", { name: /^Hints/ }).click();
     await expect(page.locator(".notebook-hints li")).toHaveCount(5);
@@ -279,6 +309,16 @@ test("inspection checks stay visible for unchanged evidence and failed runs neve
   await expect(
     page.getByRole("button", { name: n.replaySource, exact: true }),
   ).toBeVisible();
+  await page
+    .locator(".notebook-source-choices")
+    .getByRole("button", { name: "bunny-action.mp4", exact: true })
+    .click();
+  await expect(page.locator(".notebook-source > code")).toHaveText(
+    "bunny-action.mp4",
+  );
+  await expect(page.locator(".notebook-source-preview > strong")).toHaveText(
+    "bunny-action.mp4",
+  );
   const cell = page.locator('[data-cell="inside-video/inspect:practice"]');
   await cell.getByRole("button", { name: n.run, exact: true }).click();
   await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
@@ -348,4 +388,58 @@ test("subtitles render visible lettering with the supplied font in the actual WA
     after = cueBand(path);
   expect(after.dark - before.dark).toBeGreaterThan(1000);
   expect(after.white - before.white).toBeGreaterThan(500);
+});
+
+test("optional notes preserve earlier predictions and reviews without adding required forms", async ({
+  page,
+}, info) => {
+  test.skip(info.project.name !== "desktop-light");
+  await page.goto("./#/learn/first-edit/shorten");
+  await expect(page.locator("[data-notebook-ready]")).toHaveAttribute(
+    "data-notebook-ready",
+    "true",
+  );
+  await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open("video-lab-notebook", 1);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction("cells", "readwrite");
+      tx.objectStore("cells").put({
+        id: "first-edit/shorten:notes",
+        command: "",
+        prediction: "My earlier prediction",
+        review: "My saved review",
+      });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  });
+  await page.reload();
+  await expect(page.locator(".notebook-review")).not.toHaveAttribute(
+    "open",
+    "",
+  );
+  await page.getByText(n.notes, { exact: true }).click();
+  await expect(
+    page.getByRole("textbox", { name: n.previousPrediction, exact: true }),
+  ).toHaveValue("My earlier prediction");
+  const notes = page.getByRole("textbox", { name: n.notesLabel, exact: true });
+  await expect(notes).toHaveValue("My saved review");
+  await notes.fill("My revised observation");
+  await expect(page.locator(".notebook-toolbar")).toContainText(n.saved);
+  await page.reload();
+  await page.getByText(n.notes, { exact: true }).click();
+  await expect(notes).toHaveValue("My revised observation");
+  await expect(
+    page.getByRole("textbox", { name: n.previousPrediction, exact: true }),
+  ).toHaveValue("My earlier prediction");
+  await page.goto("./#/learn/first-edit/start");
+  await expect(page.locator(".notebook-diagram")).toContainText("2–6 s");
+  await expect(page.locator(".notebook-diagram")).toContainText(
+    "Output duration: 4 s",
+  );
 });

@@ -1,0 +1,2914 @@
+[
+  {
+    "route": "first-edit/shorten",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/shorten:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 first-cut.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/shorten:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 practice-cut.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example timeline · the section to keepKeep5 sLeave out3 s0 s8 sSource interval: 0–5 s · Output duration: 5 s"
+      }
+    ]
+  },
+  {
+    "route": "first-edit/start",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/start:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 later.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/start:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 practice-start.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example timeline · the section to keepLeave out2 sKeep4 sLeave out2 s0 s8 sSource interval: 2–6 s · Output duration: 4 s"
+      }
+    ]
+  },
+  {
+    "route": "inside-video/inspect",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/inspect:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/inspect:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "inside-video/streams",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/streams:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -an silent.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -vn sound.wav",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 practice-silent.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/rate",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/rate:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" paced.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/rate:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" practice-rate.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/timestamps",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/timestamps:worked:0",
+        "command": "ffprobe -show_entries frame=pts_time bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/timestamps:practice",
+        "command": "ffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/copy",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/copy:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy copied.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/copy:practice",
+        "command": "ffmpeg -i bunny-action.mp4 practice-copy.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/keyframes",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/keyframes:worked:0",
+        "command": "ffmpeg -ss 2 -i bunny-short.mp4 -t 3 -c copy rough.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 3 exact.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 practice-exact.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/join",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/join:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" joined.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/join:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" practice-join.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example connections · follow picture and sound through the joinInput 0 · 8 sbunny-short.mp4[0:v] [0:a]Input 1 · 6 sbunny-action.mp4[1:v] [1:a]↓concatFirst clip, then second clip↓Joined video [v]Joined audio [a]-map \"[v]\" -map \"[a]\" ↓ joined.mp4"
+      }
+    ]
+  },
+  {
+    "route": "framing/scale",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/scale:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" scaled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/scale:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" practice-scale.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/crop",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/crop:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" square.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/crop:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" practice-square.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/pad",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/pad:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" padded.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/pad:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" practice-pad.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/level",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/level:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" quieter.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/level:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" practice-level.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/fade",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/fade:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" faded.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/fade:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" practice-fade.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/title",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/title:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" titled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/title:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" practice-title.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/subtitles",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/subtitles:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" subtitled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/subtitles:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" practice-subtitles.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/quality",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/quality:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 18 quality-high.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 quality-small.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 practice-quality.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/speed",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/speed:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast fast.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/speed:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast practice-speed.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/format",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/format:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac compatible.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/format:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac practice-export.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "4:2:0 model · one group of four picture locationsYYYYFour brightness samplesUOne blue-difference sampleVOne red-difference sampleY stores brightness-related information at each location. U and V each store one colour-difference sample for this 2 × 2 group. This model shows sample counts, not measured colours or exact sample positions."
+      }
+    ]
+  },
+  {
+    "route": "export/faststart",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/faststart:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy -movflags +faststart ready.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/faststart:practice",
+        "command": "ffmpeg -i bunny-action.mp4 -c copy practice-ready.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/verify",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/verify:worked:0",
+        "command": "ffprobe -show_streams -show_format -of json bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/verify:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/decode",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/decode:worked:0",
+        "command": "ffmpeg -xerror -i bunny-short.mp4 -f null -",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/decode:practice",
+        "command": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/reuse",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/reuse:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/reuse:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/practice.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/batch",
+    "mode": "desktop-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/batch:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/batch:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "first-edit/shorten",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/shorten:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 first-cut.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/shorten:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 practice-cut.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example timeline · the section to keepKeep5 sLeave out3 s0 s8 sSource interval: 0–5 s · Output duration: 5 s"
+      }
+    ]
+  },
+  {
+    "route": "first-edit/start",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/start:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 later.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/start:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 practice-start.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example timeline · the section to keepLeave out2 sKeep4 sLeave out2 s0 s8 sSource interval: 2–6 s · Output duration: 4 s"
+      }
+    ]
+  },
+  {
+    "route": "inside-video/inspect",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/inspect:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/inspect:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "inside-video/streams",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/streams:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -an silent.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -vn sound.wav",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 practice-silent.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/rate",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/rate:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" paced.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/rate:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" practice-rate.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/timestamps",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/timestamps:worked:0",
+        "command": "ffprobe -show_entries frame=pts_time bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/timestamps:practice",
+        "command": "ffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/copy",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/copy:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy copied.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/copy:practice",
+        "command": "ffmpeg -i bunny-action.mp4 practice-copy.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/keyframes",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/keyframes:worked:0",
+        "command": "ffmpeg -ss 2 -i bunny-short.mp4 -t 3 -c copy rough.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 3 exact.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 practice-exact.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/join",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/join:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" joined.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/join:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" practice-join.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "Original example connections · follow picture and sound through the joinInput 0 · 8 sbunny-short.mp4[0:v] [0:a]Input 1 · 6 sbunny-action.mp4[1:v] [1:a]↓concatFirst clip, then second clip↓Joined video [v]Joined audio [a]-map \"[v]\" -map \"[a]\" ↓ joined.mp4"
+      }
+    ]
+  },
+  {
+    "route": "framing/scale",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/scale:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" scaled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/scale:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" practice-scale.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/crop",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/crop:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" square.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/crop:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" practice-square.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/pad",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/pad:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" padded.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/pad:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" practice-pad.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/level",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/level:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" quieter.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/level:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" practice-level.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/fade",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/fade:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" faded.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/fade:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" practice-fade.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/title",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/title:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" titled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/title:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" practice-title.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/subtitles",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/subtitles:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" subtitled.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/subtitles:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" practice-subtitles.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/quality",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/quality:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 18 quality-high.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 quality-small.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 practice-quality.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/speed",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/speed:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast fast.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/speed:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast practice-speed.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/format",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/format:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac compatible.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/format:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac practice-export.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 998,
+        "left": 313,
+        "right": 1311,
+        "text": "4:2:0 model · one group of four picture locationsYYYYFour brightness samplesUOne blue-difference sampleVOne red-difference sampleY stores brightness-related information at each location. U and V each store one colour-difference sample for this 2 × 2 group. This model shows sample counts, not measured colours or exact sample positions."
+      }
+    ]
+  },
+  {
+    "route": "export/faststart",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/faststart:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy -movflags +faststart ready.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/faststart:practice",
+        "command": "ffmpeg -i bunny-action.mp4 -c copy practice-ready.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/verify",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/verify:worked:0",
+        "command": "ffprobe -show_streams -show_format -of json bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/verify:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/decode",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/decode:worked:0",
+        "command": "ffmpeg -xerror -i bunny-short.mp4 -f null -",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/decode:practice",
+        "command": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/reuse",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/reuse:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/reuse:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/practice.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/batch",
+    "mode": "desktop-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/batch:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/batch:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 39.203125,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "first-edit/shorten",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/shorten:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 first-cut.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/shorten:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 practice-cut.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example timeline · the section to keepKeep5 sLeave out3 s0 s8 sSource interval: 0–5 s · Output duration: 5 s"
+      }
+    ]
+  },
+  {
+    "route": "first-edit/start",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/start:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 later.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/start:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 practice-start.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example timeline · the section to keepLeave out2 sKeep4 sLeave out2 s0 s8 sSource interval: 2–6 s · Output duration: 4 s"
+      }
+    ]
+  },
+  {
+    "route": "inside-video/inspect",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/inspect:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/inspect:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "inside-video/streams",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/streams:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -an silent.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -vn sound.wav",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 practice-silent.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/rate",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/rate:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" paced.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/rate:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" practice-rate.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/timestamps",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/timestamps:worked:0",
+        "command": "ffprobe -show_entries frame=pts_time bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/timestamps:practice",
+        "command": "ffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/copy",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/copy:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy copied.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/copy:practice",
+        "command": "ffmpeg -i bunny-action.mp4 practice-copy.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/keyframes",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/keyframes:worked:0",
+        "command": "ffmpeg -ss 2 -i bunny-short.mp4 -t 3 -c copy rough.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 3 exact.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 practice-exact.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/join",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/join:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" joined.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/join:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" practice-join.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example connections · follow picture and sound through the joinInput 0 · 8 sbunny-short.mp4[0:v] [0:a]Input 1 · 6 sbunny-action.mp4[1:v] [1:a]↓concatFirst clip, then second clip↓Joined video [v]Joined audio [a]-map \"[v]\" -map \"[a]\" ↓ joined.mp4"
+      }
+    ]
+  },
+  {
+    "route": "framing/scale",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/scale:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" scaled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/scale:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" practice-scale.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/crop",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/crop:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" square.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/crop:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" practice-square.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/pad",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/pad:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" padded.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/pad:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" practice-pad.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/level",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/level:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" quieter.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/level:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" practice-level.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/fade",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/fade:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" faded.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/fade:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" practice-fade.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/title",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/title:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" titled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/title:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" practice-title.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/subtitles",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/subtitles:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" subtitled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/subtitles:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" practice-subtitles.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/quality",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/quality:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 18 quality-high.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 quality-small.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 practice-quality.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/speed",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/speed:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast fast.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/speed:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast practice-speed.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/format",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/format:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac compatible.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/format:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac practice-export.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "4:2:0 model · one group of four picture locationsYYYYFour brightness samplesUOne blue-difference sampleVOne red-difference sampleY stores brightness-related information at each location. U and V each store one colour-difference sample for this 2 × 2 group. This model shows sample counts, not measured colours or exact sample positions."
+      }
+    ]
+  },
+  {
+    "route": "export/faststart",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/faststart:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy -movflags +faststart ready.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/faststart:practice",
+        "command": "ffmpeg -i bunny-action.mp4 -c copy practice-ready.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/verify",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/verify:worked:0",
+        "command": "ffprobe -show_streams -show_format -of json bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/verify:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/decode",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/decode:worked:0",
+        "command": "ffmpeg -xerror -i bunny-short.mp4 -f null -",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/decode:practice",
+        "command": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/reuse",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/reuse:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/reuse:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/practice.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/batch",
+    "mode": "phone-light",
+    "theme": "light",
+    "bg": "rgb(245, 247, 243)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/batch:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/batch:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "first-edit/shorten",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/shorten:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 first-cut.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/shorten:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 5 practice-cut.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example timeline · the section to keepKeep5 sLeave out3 s0 s8 sSource interval: 0–5 s · Output duration: 5 s"
+      }
+    ]
+  },
+  {
+    "route": "first-edit/start",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "first-edit/start:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 later.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "first-edit/start:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 4 practice-start.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example timeline · the section to keepLeave out2 sKeep4 sLeave out2 s0 s8 sSource interval: 2–6 s · Output duration: 4 s"
+      }
+    ]
+  },
+  {
+    "route": "inside-video/inspect",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/inspect:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/inspect:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "inside-video/streams",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "inside-video/streams:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -an silent.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -vn sound.wav",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "inside-video/streams:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 practice-silent.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/rate",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/rate:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" paced.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/rate:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vf \"fps=12\" practice-rate.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "frames-time/timestamps",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "frames-time/timestamps:worked:0",
+        "command": "ffprobe -show_entries frame=pts_time bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "frames-time/timestamps:practice",
+        "command": "ffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/copy",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/copy:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy copied.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/copy:practice",
+        "command": "ffmpeg -i bunny-action.mp4 practice-copy.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/keyframes",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/keyframes:worked:0",
+        "command": "ffmpeg -ss 2 -i bunny-short.mp4 -t 3 -c copy rough.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 3 exact.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/keyframes:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 practice-exact.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "cut-join/join",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "cut-join/join:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" joined.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "cut-join/join:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -i bunny-action.mp4 -filter_complex \"[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]\" -map \"[v]\" -map \"[a]\" practice-join.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "Original example connections · follow picture and sound through the joinInput 0 · 8 sbunny-short.mp4[0:v] [0:a]Input 1 · 6 sbunny-action.mp4[1:v] [1:a]↓concatFirst clip, then second clip↓Joined video [v]Joined audio [a]-map \"[v]\" -map \"[a]\" ↓ joined.mp4"
+      }
+    ]
+  },
+  {
+    "route": "framing/scale",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/scale:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" scaled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/scale:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=640:-2\" practice-scale.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/crop",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/crop:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" square.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/crop:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"crop=480:480\" practice-square.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "framing/pad",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "framing/pad:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" padded.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "framing/pad:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2\" practice-pad.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/level",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/level:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" quieter.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/level:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"volume=0.5\" practice-level.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "sound/fade",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "sound/fade:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" faded.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "sound/fade:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -af \"afade=t=out:st=5:d=3\" practice-fade.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/title",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/title:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" titled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/title:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"drawtext=fontfile=fonts/DejaVuSans.ttf:text=Hello:fontsize=32:fontcolor=white\" practice-title.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "text/subtitles",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "text/subtitles:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" subtitled.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "text/subtitles:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -vf \"subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans\" practice-subtitles.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/quality",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/quality:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 18 quality-high.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:worked:1",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 quality-small.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/quality:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 35 practice-quality.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "quality/speed",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "quality/speed:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast fast.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "quality/speed:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -crf 26 -preset ultrafast practice-speed.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/format",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/format:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac compatible.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/format:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac practice-export.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": [
+      {
+        "class": "notebook-diagram",
+        "width": 324,
+        "left": 33,
+        "right": 357,
+        "text": "4:2:0 model · one group of four picture locationsYYYYFour brightness samplesUOne blue-difference sampleVOne red-difference sampleY stores brightness-related information at each location. U and V each store one colour-difference sample for this 2 × 2 group. This model shows sample counts, not measured colours or exact sample positions."
+      }
+    ]
+  },
+  {
+    "route": "export/faststart",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/faststart:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -c copy -movflags +faststart ready.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/faststart:practice",
+        "command": "ffmpeg -i bunny-action.mp4 -c copy practice-ready.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/verify",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/verify:worked:0",
+        "command": "ffprobe -show_streams -show_format -of json bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/verify:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "export/decode",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "export/decode:worked:0",
+        "command": "ffmpeg -xerror -i bunny-short.mp4 -f null -",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "export/decode:practice",
+        "command": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/reuse",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/reuse:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/reuse:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -t 3 -vf \"scale=320:-2\" previews/practice.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  },
+  {
+    "route": "workflows/batch",
+    "mode": "phone-dark",
+    "theme": "dark",
+    "bg": "rgb(16, 27, 30)",
+    "overflow": false,
+    "inputs": [],
+    "notesClosed": true,
+    "cells": [
+      {
+        "id": "workflows/batch:worked:0",
+        "command": "ffprobe bunny-short.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      },
+      {
+        "id": "workflows/batch:practice",
+        "command": "ffprobe bunny-action.mp4",
+        "gap": 52.390625,
+        "runCount": 1,
+        "guideBelow": true,
+        "diagramBelow": true
+      }
+    ],
+    "diagram": []
+  }
+]

@@ -2,7 +2,7 @@
 
 Copyright © 2026 Christopher Snow.
 
-[Open the course](https://snowch.github.io/video-lab/). Ten chapters teach video editing with real, editable FFmpeg/ffprobe commands executed locally in WebAssembly. Twenty-four concept pages progress through explanation, prediction, actual output/replay, one-variable changes, independent practice, five hints and saved self-review. The optional command builder supports touch devices; raw tool output remains visible.
+[Open the course](https://snowch.github.io/video-lab/). Ten chapters teach video editing with real, editable FFmpeg/ffprobe commands executed locally in WebAssembly. Twenty-four concept pages put each command beside its explanation, followed by actual output/replay, a specific observation and one independent practice task with five hints. Optional Notes retain earlier predictions and reviews. Timelines and connection diagrams explain examples without claiming to measure learner outputs. The optional command builder supports touch devices; raw tool output remains visible.
 
 | Chapter | First page |
 | --- | --- |
@@ -25,7 +25,7 @@ Files and cell commands/results use the separate `video-lab-notebook` IndexedDB 
 
 Earlier production/reference links and the optional standalone workbench remain explicitly archived. **Files → Earlier work** opens that course at `#/earlier`; original `#/capture`, `#/inspect`, `#/edit`, `#/build`, `#/publish`, reference section links and module aliases remain valid. Earlier files are copied once without deleting originals or changing old databases, drafts and achievements. The optional device/native recording guide remains available at `#/appendix/recording`.
 
-[Implementation plan and review evidence](docs/notes/notebook/01-plan.md) records the new scope. The historical notes below describe archived features where labelled.
+[Implementation plan and review evidence](docs/notes/notebook/01-plan.md) records the new scope. [Lesson-flow revision](docs/notes/lesson-flow/01-plan.md) records the subsequent per-page teaching and interface review. The historical notes below describe archived features where labelled.
 
 ## Run and check
 

@@ -1,0 +1,8 @@
+# inside-video/inspect copy decisions
+
+- Retained the single bare ffprobe worked command. After independent review, practice inspects bunny-action.mp4 instead of repeating the same file. Root handles the asset, starter/solution and native/WASM evidence updates.
+- Verified MP4, eight-second duration, two streams, H.264 854 × 480 at 24 fps and AAC 48,000 Hz against `docs/notes/notebook/media.json` and the `inside-video/inspect:worked:0` raw log in `commands-wasm.json`. Native `commands.json` records successful inspection but bare ffprobe's summary is not in its captured stdout.
+- Introduced streams, container, codec, frames, pixels and audio samples here rather than assuming these terms from the earlier cuts. Explained the container reader's combined format names and stream numbering beside the resulting output.
+- Kept command syntax only in its adjacent option. Removed the answered stream-count prediction and the separate longer-file change exercise. Practice applies the same inspection syntax to a different clip and compares duration, streams and codecs. The parent fact brief identifies a six-second clip with the same H.264/AAC codecs and 854 × 480 dimensions. Observation guidance identifies relevant output lines without supplying the answers; no required reflection or writing control.
+- The check only records the probe. The explicit remaining manual check is interpretation of duration and stream lines. No claim of automated interpretation or independent review.
+- Validation: Prettier run on this page and note only. Shared checks and built-site reviews remain with the parent implementation.

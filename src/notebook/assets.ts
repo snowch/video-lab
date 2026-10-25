@@ -1,9 +1,10 @@
 // Copyright © 2026 Christopher Snow
 export const practiceAssets: Record<
   string,
-  { path: string; bytes: number; sha256: string }
+  { path: string; bytes: number; sha256: string; duration?: number }
 > = {
   "bunny-short.mp4": {
+    duration: 8,
     bytes: 352138,
     sha256: "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144",
     path: "media/notebook/bunny-short.mp4",
@@ -19,11 +20,13 @@ export const practiceAssets: Record<
     path: "media/notebook/DejaVuSans.ttf",
   },
   "bunny-action.mp4": {
+    duration: 6,
     bytes: 275387,
     sha256: "9cd433e2cc0566638732526ecf27106780de2351fcb7c0abf50d0c49ba160e42",
     path: "media/notebook/bunny-action.mp4",
   },
   "bunny.mp4": {
+    duration: 120,
     bytes: 5437635,
     sha256: "869bb6061a5f2d25ee6d91a6e5213120aded30a1116d09336b093634ce3b364c",
     path: "media/notebook/bunny.mp4",

@@ -1,0 +1,63 @@
+// Copyright © 2026 Christopher Snow
+import type { PageCopy } from "../copy-types";
+
+const copy: PageCopy = {
+  title: "Choose an export format",
+  goal: "Make an MP4 with explicit choices for its video, sound and picture storage.",
+  concept: [
+    "A video file packages picture and sound streams in a container. The container describes how those streams fit into one file so a player can find and play them. MP4 is one container format.",
+    "Each stream also has a codec: the rules used to represent its picture or sound data. H.264 is a video codec; AAC is an audio codec. A player needs to understand both the container and the codecs inside it. The filename ending alone does not tell you which codecs a file contains.",
+    "Within a decoded picture, the pixel format describes how picture components are represented. A picture can separate brightness-related information from colour differences and store colour with fewer samples. This reduces the colour data while retaining the finer brightness detail that helps define edges.",
+  ],
+  worked: [
+    {
+      title: "Export MP4 with H.264 video and AAC sound",
+      introduction: [
+        "Make a new version of the eight-second source. The command chooses a container, an encoder for each stream and a pixel format for the video.",
+      ],
+      options: [
+        {
+          flag: ".mp4",
+          meaning:
+            "The ending of compatible.mp4 selects the MP4 output container. It packages the encoded streams in one file.",
+        },
+        {
+          flag: "-c:v libx264",
+          meaning:
+            "Use the libx264 encoder to write H.264 video. The :v suffix applies this codec choice to video.",
+        },
+        {
+          flag: "-c:a aac",
+          meaning:
+            "Use the AAC encoder for sound. The :a suffix applies this codec choice to audio.",
+        },
+        {
+          flag: "-pix_fmt yuv420p",
+          meaning:
+            "Choose 8-bit planar YUV 4:2:0. Y is luma, a brightness-related component; U and V are colour-difference components. Each colour component has half as many samples across and half as many down as Y. The p means the three components occupy separate planes, or arrays of samples. This describes colour sampling; it does not set picture dimensions or frame rate.",
+        },
+      ],
+      observe:
+        "Find the output section of the log: it should name MP4, h264 video with yuv420p, and aac audio. Replay compatible.mp4 and listen to its sound.",
+      explanation: [
+        "The source already uses these formats, so this example need not look different. The command makes the choices explicit for the new file. Colour subsampling can soften fine coloured edges; this encode is not a comparison that isolates that effect.",
+        "This combination is widely supported. Playback here confirms that this browser can play this file; test the actual destination player before delivering an export.",
+      ],
+    },
+  ],
+  practice:
+    "Create practice-export.mp4 containing the first four seconds of bunny-short.mp4. Keep H.264 video through libx264, yuv420p picture storage and AAC sound in an MP4 container. Duration and export format are separate choices: retain the format options while adding the duration limit.",
+  practiceObserve:
+    "Check the output log for all three format choices, then replay the four-second file with sound. Confirm that it starts at the source's beginning and ends at the intended point.",
+  hints: [
+    "Start from bunny-short.mp4 and keep both picture and sound.",
+    "Keep the explicit video encoder, pixel format and audio encoder from the example.",
+    "Use the .mp4 ending for the requested container.",
+    "Add the familiar output duration limit before the output filename.",
+    "Add -t 4 and save the result as practice-export.mp4.",
+  ],
+  checkLimit:
+    "The check verifies four seconds, video and audio, H.264 and MP4. Confirm yuv420p and AAC in the output log; replay with sound and test your destination player separately.",
+};
+
+export default copy;

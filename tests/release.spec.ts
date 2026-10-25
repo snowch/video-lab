@@ -47,11 +47,12 @@ test("failures, malformed metadata, stale responses and timeouts never claim cur
   const control = page.locator(".app-status"),
     badge = control.locator(".release-status");
   await expect(badge).toHaveAttribute("data-release-state", "latest");
-  await control.locator("summary").click();
   await page.route("**/release.json?*", (r) =>
     r.fulfill({ json: { commit: published.commit } }),
   );
-  await control.getByRole("button", { name: s.check, exact: true }).click();
+  // Opening the panel starts its own check. Install the response before opening
+  // so an automatic failure cannot race a click on a button now labelled Retry.
+  await control.locator("summary").click();
   await expect(badge).toHaveAttribute("data-release-state", "unavailable");
   await page.unroute("**/release.json?*");
   await page.route("**/release.json?*", (r) => r.abort());

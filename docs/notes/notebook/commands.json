@@ -620,8 +620,8 @@
     {
       "page": "inside-video/inspect",
       "index": 1,
-      "command": "ffprobe bunny-short.mp4",
-      "ms": 63,
+      "command": "ffprobe bunny-action.mp4",
+      "ms": 49,
       "stdout": ""
     },
     {
@@ -1362,8 +1362,8 @@
     {
       "page": "cut-join/copy",
       "index": 1,
-      "command": "ffmpeg -i bunny-short.mp4 -c copy practice-copy.mp4",
-      "ms": 396,
+      "command": "ffmpeg -i bunny-action.mp4 -c copy practice-copy.mp4",
+      "ms": 167,
       "output": "practice-copy.mp4",
       "probe": {
         "streams": [
@@ -1401,12 +1401,12 @@
             "time_base": "1/12288",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 98304,
-            "duration": "8.000000",
-            "bit_rate": "280869",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "295164",
             "bits_per_raw_sample": "8",
-            "nb_frames": "192",
-            "nb_read_frames": "192",
+            "nb_frames": "144",
+            "nb_read_frames": "144",
             "extradata_size": 51,
             "disposition": {
               "default": 1,
@@ -1456,11 +1456,11 @@
             "time_base": "1/48000",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 384000,
-            "duration": "8.000000",
-            "bit_rate": "64095",
-            "nb_frames": "376",
-            "nb_read_frames": "375",
+            "duration_ts": 288000,
+            "duration": "6.000000",
+            "bit_rate": "64287",
+            "nb_frames": "283",
+            "nb_read_frames": "282",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -1498,9 +1498,9 @@
           "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
-          "duration": "8.000000",
-          "size": "352138",
-          "bit_rate": "352138",
+          "duration": "6.000000",
+          "size": "275387",
+          "bit_rate": "367182",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -1818,8 +1818,8 @@
     {
       "page": "cut-join/keyframes",
       "index": 2,
-      "command": "ffmpeg -i bunny-short.mp4 -ss 2 -t 3 practice-exact.mp4",
-      "ms": 786,
+      "command": "ffmpeg -i bunny-short.mp4 -ss 1 -t 3 practice-exact.mp4",
+      "ms": 393,
       "output": "practice-exact.mp4",
       "probe": {
         "streams": [
@@ -1859,7 +1859,7 @@
             "start_time": "0.000000",
             "duration_ts": 36864,
             "duration": "3.000000",
-            "bit_rate": "403309",
+            "bit_rate": "401418",
             "bits_per_raw_sample": "8",
             "nb_frames": "72",
             "nb_read_frames": "72",
@@ -1914,7 +1914,7 @@
             "start_time": "0.000000",
             "duration_ts": 144000,
             "duration": "3.000000",
-            "bit_rate": "126656",
+            "bit_rate": "126714",
             "nb_frames": "142",
             "nb_read_frames": "141",
             "extradata_size": 5,
@@ -1955,8 +1955,8 @@
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
           "duration": "3.000000",
-          "size": "202630",
-          "bit_rate": "540346",
+          "size": "201951",
+          "bit_rate": "538536",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -5618,8 +5618,8 @@
     {
       "page": "export/faststart",
       "index": 1,
-      "command": "ffmpeg -i bunny-short.mp4 -c copy -movflags +faststart practice-ready.mp4",
-      "ms": 214,
+      "command": "ffmpeg -i bunny-action.mp4 -c copy -movflags +faststart practice-ready.mp4",
+      "ms": 155,
       "output": "practice-ready.mp4",
       "probe": {
         "streams": [
@@ -5657,12 +5657,12 @@
             "time_base": "1/12288",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 98304,
-            "duration": "8.000000",
-            "bit_rate": "280869",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "295164",
             "bits_per_raw_sample": "8",
-            "nb_frames": "192",
-            "nb_read_frames": "192",
+            "nb_frames": "144",
+            "nb_read_frames": "144",
             "extradata_size": 51,
             "disposition": {
               "default": 1,
@@ -5712,11 +5712,11 @@
             "time_base": "1/48000",
             "start_pts": 0,
             "start_time": "0.000000",
-            "duration_ts": 384000,
-            "duration": "8.000000",
-            "bit_rate": "64095",
-            "nb_frames": "376",
-            "nb_read_frames": "375",
+            "duration_ts": 288000,
+            "duration": "6.000000",
+            "bit_rate": "64287",
+            "nb_frames": "283",
+            "nb_read_frames": "282",
             "extradata_size": 5,
             "disposition": {
               "default": 1,
@@ -5754,9 +5754,9 @@
           "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
           "format_long_name": "QuickTime / MOV",
           "start_time": "0.000000",
-          "duration": "8.000000",
-          "size": "352138",
-          "bit_rate": "352138",
+          "duration": "6.000000",
+          "size": "275387",
+          "bit_rate": "367182",
           "probe_score": 100,
           "tags": {
             "major_brand": "isom",
@@ -5777,9 +5777,9 @@
     {
       "page": "export/verify",
       "index": 1,
-      "command": "ffprobe -show_streams -show_format -of json bunny-short.mp4",
-      "ms": 64,
-      "stdout": "{\n    \"streams\": [\n        {\n            \"index\": 0,\n            \"codec_name\": \"h264\",\n            \"codec_long_name\": \"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\",\n            \"profile\": \"High\",\n            \"codec_type\": \"video\",\n            \"codec_tag_string\": \"avc1\",\n            \"codec_tag\": \"0x31637661\",\n            \"width\": 854,\n            \"height\": 480,\n            \"coded_width\": 854,\n            \"coded_height\": 480,\n            \"closed_captions\": 0,\n            \"film_grain\": 0,\n            \"has_b_frames\": 2,\n            \"sample_aspect_ratio\": \"1:1\",\n            \"display_aspect_ratio\": \"427:240\",\n            \"pix_fmt\": \"yuv420p\",\n            \"level\": 30,\n            \"color_range\": \"tv\",\n            \"color_space\": \"bt709\",\n            \"color_transfer\": \"bt709\",\n            \"color_primaries\": \"bt709\",\n            \"chroma_location\": \"topleft\",\n            \"field_order\": \"progressive\",\n            \"refs\": 1,\n            \"is_avc\": \"true\",\n            \"nal_length_size\": \"4\",\n            \"id\": \"0x1\",\n            \"r_frame_rate\": \"24/1\",\n            \"avg_frame_rate\": \"24/1\",\n            \"time_base\": \"1/12288\",\n            \"start_pts\": 0,\n            \"start_time\": \"0.000000\",\n            \"duration_ts\": 98304,\n            \"duration\": \"8.000000\",\n            \"bit_rate\": \"280869\",\n            \"bits_per_raw_sample\": \"8\",\n            \"nb_frames\": \"192\",\n            \"extradata_size\": 51,\n            \"disposition\": {\n                \"default\": 1,\n                \"dub\": 0,\n                \"original\": 0,\n                \"comment\": 0,\n                \"lyrics\": 0,\n                \"karaoke\": 0,\n                \"forced\": 0,\n                \"hearing_impaired\": 0,\n                \"visual_impaired\": 0,\n                \"clean_effects\": 0,\n                \"attached_pic\": 0,\n                \"timed_thumbnails\": 0,\n                \"non_diegetic\": 0,\n                \"captions\": 0,\n                \"descriptions\": 0,\n                \"metadata\": 0,\n                \"dependent\": 0,\n                \"still_image\": 0,\n                \"multilayer\": 0\n            },\n            \"tags\": {\n                \"language\": \"und\",\n                \"handler_name\": \"VideoHandler\",\n                \"vendor_id\": \"[0][0][0][0]\",\n                \"encoder\": \"Lavc61.19.101 libx264\"\n            }\n        },\n        {\n            \"index\": 1,\n            \"codec_name\": \"aac\",\n            \"codec_long_name\": \"AAC (Advanced Audio Coding)\",\n            \"profile\": \"LC\",\n            \"codec_type\": \"audio\",\n            \"codec_tag_string\": \"mp4a\",\n            \"codec_tag\": \"0x6134706d\",\n            \"sample_fmt\": \"fltp\",\n            \"sample_rate\": \"48000\",\n            \"channels\": 2,\n            \"channel_layout\": \"stereo\",\n            \"bits_per_sample\": 0,\n            \"initial_padding\": 0,\n            \"id\": \"0x2\",\n            \"r_frame_rate\": \"0/0\",\n            \"avg_frame_rate\": \"0/0\",\n            \"time_base\": \"1/48000\",\n            \"start_pts\": 0,\n            \"start_time\": \"0.000000\",\n            \"duration_ts\": 384000,\n            \"duration\": \"8.000000\",\n            \"bit_rate\": \"64095\",\n            \"nb_frames\": \"376\",\n            \"extradata_size\": 5,\n            \"disposition\": {\n                \"default\": 1,\n                \"dub\": 0,\n                \"original\": 0,\n                \"comment\": 0,\n                \"lyrics\": 0,\n                \"karaoke\": 0,\n                \"forced\": 0,\n                \"hearing_impaired\": 0,\n                \"visual_impaired\": 0,\n                \"clean_effects\": 0,\n                \"attached_pic\": 0,\n                \"timed_thumbnails\": 0,\n                \"non_diegetic\": 0,\n                \"captions\": 0,\n                \"descriptions\": 0,\n                \"metadata\": 0,\n                \"dependent\": 0,\n                \"still_image\": 0,\n                \"multilayer\": 0\n            },\n            \"tags\": {\n                \"language\": \"und\",\n                \"handler_name\": \"SoundHandler\",\n                \"vendor_id\": \"[0][0][0][0]\"\n            }\n        }\n    ],\n    \"format\": {\n        \"filename\": \"bunny-short.mp4\",\n        \"nb_streams\": 2,\n        \"nb_programs\": 0,\n        \"nb_stream_groups\": 0,\n        \"format_name\": \"mov,mp4,m4a,3gp,3g2,mj2\",\n        \"format_long_name\": \"QuickTime / MOV\",\n        \"start_time\": \"0.000000\",\n        \"duration\": \"8.000000\",\n        \"size\": \"352138\",\n        \"bit_rate\": \"352138\",\n        \"probe_score\": 100,\n        \"tags\": {\n            \"major_brand\": \"isom\",\n            \"minor_version\": \"512\",\n            \"compatible_brands\": \"isomiso2avc1mp41\",\n            \"encoder\": \"Lavf61.7.103\"\n        }\n    }\n}\n"
+      "command": "ffprobe -show_streams -show_format -of json bunny-action.mp4",
+      "ms": 50,
+      "stdout": "{\n    \"streams\": [\n        {\n            \"index\": 0,\n            \"codec_name\": \"h264\",\n            \"codec_long_name\": \"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10\",\n            \"profile\": \"High\",\n            \"codec_type\": \"video\",\n            \"codec_tag_string\": \"avc1\",\n            \"codec_tag\": \"0x31637661\",\n            \"width\": 854,\n            \"height\": 480,\n            \"coded_width\": 854,\n            \"coded_height\": 480,\n            \"closed_captions\": 0,\n            \"film_grain\": 0,\n            \"has_b_frames\": 2,\n            \"sample_aspect_ratio\": \"1:1\",\n            \"display_aspect_ratio\": \"427:240\",\n            \"pix_fmt\": \"yuv420p\",\n            \"level\": 30,\n            \"color_range\": \"tv\",\n            \"color_space\": \"bt709\",\n            \"color_transfer\": \"bt709\",\n            \"color_primaries\": \"bt709\",\n            \"chroma_location\": \"topleft\",\n            \"field_order\": \"progressive\",\n            \"refs\": 1,\n            \"is_avc\": \"true\",\n            \"nal_length_size\": \"4\",\n            \"id\": \"0x1\",\n            \"r_frame_rate\": \"24/1\",\n            \"avg_frame_rate\": \"24/1\",\n            \"time_base\": \"1/12288\",\n            \"start_pts\": 0,\n            \"start_time\": \"0.000000\",\n            \"duration_ts\": 73728,\n            \"duration\": \"6.000000\",\n            \"bit_rate\": \"295164\",\n            \"bits_per_raw_sample\": \"8\",\n            \"nb_frames\": \"144\",\n            \"extradata_size\": 51,\n            \"disposition\": {\n                \"default\": 1,\n                \"dub\": 0,\n                \"original\": 0,\n                \"comment\": 0,\n                \"lyrics\": 0,\n                \"karaoke\": 0,\n                \"forced\": 0,\n                \"hearing_impaired\": 0,\n                \"visual_impaired\": 0,\n                \"clean_effects\": 0,\n                \"attached_pic\": 0,\n                \"timed_thumbnails\": 0,\n                \"non_diegetic\": 0,\n                \"captions\": 0,\n                \"descriptions\": 0,\n                \"metadata\": 0,\n                \"dependent\": 0,\n                \"still_image\": 0,\n                \"multilayer\": 0\n            },\n            \"tags\": {\n                \"language\": \"und\",\n                \"handler_name\": \"VideoHandler\",\n                \"vendor_id\": \"[0][0][0][0]\",\n                \"encoder\": \"Lavc61.19.101 libx264\"\n            }\n        },\n        {\n            \"index\": 1,\n            \"codec_name\": \"aac\",\n            \"codec_long_name\": \"AAC (Advanced Audio Coding)\",\n            \"profile\": \"LC\",\n            \"codec_type\": \"audio\",\n            \"codec_tag_string\": \"mp4a\",\n            \"codec_tag\": \"0x6134706d\",\n            \"sample_fmt\": \"fltp\",\n            \"sample_rate\": \"48000\",\n            \"channels\": 2,\n            \"channel_layout\": \"stereo\",\n            \"bits_per_sample\": 0,\n            \"initial_padding\": 0,\n            \"id\": \"0x2\",\n            \"r_frame_rate\": \"0/0\",\n            \"avg_frame_rate\": \"0/0\",\n            \"time_base\": \"1/48000\",\n            \"start_pts\": 0,\n            \"start_time\": \"0.000000\",\n            \"duration_ts\": 288000,\n            \"duration\": \"6.000000\",\n            \"bit_rate\": \"64287\",\n            \"nb_frames\": \"283\",\n            \"extradata_size\": 5,\n            \"disposition\": {\n                \"default\": 1,\n                \"dub\": 0,\n                \"original\": 0,\n                \"comment\": 0,\n                \"lyrics\": 0,\n                \"karaoke\": 0,\n                \"forced\": 0,\n                \"hearing_impaired\": 0,\n                \"visual_impaired\": 0,\n                \"clean_effects\": 0,\n                \"attached_pic\": 0,\n                \"timed_thumbnails\": 0,\n                \"non_diegetic\": 0,\n                \"captions\": 0,\n                \"descriptions\": 0,\n                \"metadata\": 0,\n                \"dependent\": 0,\n                \"still_image\": 0,\n                \"multilayer\": 0\n            },\n            \"tags\": {\n                \"language\": \"und\",\n                \"handler_name\": \"SoundHandler\",\n                \"vendor_id\": \"[0][0][0][0]\"\n            }\n        }\n    ],\n    \"format\": {\n        \"filename\": \"bunny-action.mp4\",\n        \"nb_streams\": 2,\n        \"nb_programs\": 0,\n        \"nb_stream_groups\": 0,\n        \"format_name\": \"mov,mp4,m4a,3gp,3g2,mj2\",\n        \"format_long_name\": \"QuickTime / MOV\",\n        \"start_time\": \"0.000000\",\n        \"duration\": \"6.000000\",\n        \"size\": \"275387\",\n        \"bit_rate\": \"367182\",\n        \"probe_score\": 100,\n        \"tags\": {\n            \"major_brand\": \"isom\",\n            \"minor_version\": \"512\",\n            \"compatible_brands\": \"isomiso2avc1mp41\",\n            \"encoder\": \"Lavf61.7.103\"\n        }\n    }\n}\n"
     },
     {
       "page": "export/decode",
@@ -5791,8 +5791,8 @@
     {
       "page": "export/decode",
       "index": 1,
-      "command": "ffmpeg -xerror -i bunny-short.mp4 -f null -",
-      "ms": 169,
+      "command": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+      "ms": 82,
       "stdout": ""
     },
     {

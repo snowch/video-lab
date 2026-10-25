@@ -5,6 +5,7 @@ import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
+import { ExampleDiagram } from "./ExampleDiagram";
 import { FileManager, FilePreview } from "./FileManager";
 import "./style.css";
 const creditUrl =
@@ -119,22 +120,22 @@ function NotebookHome() {
 function NotebookPage({ page }: { page: PageDefinition }) {
   const w = useNotebook(),
     copy = courseCopy.pages[page.id]!,
-    [reveal, setReveal] = useState(false),
     [hint, setHint] = useState(0),
     [solution, setSolution] = useState(false),
-    [replay, setReplay] = useState(false),
+    [replay, setReplay] = useState(page.id === pages[0]!.id),
+    [sourceName, setSourceName] = useState(page.assets[0]!),
     [error, setError] = useState("");
   const noteId = page.id + ":notes",
     notes = w.cells[noteId] ?? { id: noteId, command: "" };
   const index = pages.findIndex((p) => p.id === page.id);
   const chapterPages = pages.filter((p) => p.chapter === page.chapter);
   const required = page.assets.filter((name) => !w.files[name]);
-  const source = w.files[page.assets[0]!];
+  const source = w.files[sourceName];
   useEffect(() => {
-    setReveal(false);
     setHint(0);
     setSolution(false);
-    setReplay(false);
+    setReplay(page.id === pages[0]!.id);
+    setSourceName(page.assets[0]!);
     setError("");
   }, [page.id]);
   function note(patch: { prediction?: string; review?: string }) {
@@ -171,7 +172,8 @@ function NotebookPage({ page }: { page: PageDefinition }) {
       </header>
       <section className="notebook-source">
         <strong>{n.source}</strong>
-        <code>{page.assets[0]}</code>
+        <code>{sourceName}</code>
+        {copy.sourceNote && <p>{copy.sourceNote}</p>}
         {required.length > 0 ? (
           <>
             <p>{n.loadNote}</p>
@@ -185,6 +187,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
                       ? [...page.assets, "bunny.mp4"]
                       : page.assets,
                   )
+                  .then(() => setReplay(true))
                   .catch((e) =>
                     setError(e instanceof Error ? e.message : String(e)),
                   )
@@ -198,8 +201,31 @@ function NotebookPage({ page }: { page: PageDefinition }) {
             {n.replaySource}
           </button>
         )}
-        {replay && source && <FilePreview file={source} />}
-        <Credits />
+        {replay && source && (
+          <div className="notebook-source-preview">
+            {page.assets.filter((name) => name.endsWith(".mp4")).length > 1 && (
+              <div
+                className="notebook-source-choices"
+                role="group"
+                aria-label={n.source}
+              >
+                {page.assets
+                  .filter((name) => name.endsWith(".mp4") && w.files[name])
+                  .map((name) => (
+                    <button
+                      key={name}
+                      aria-pressed={name === sourceName}
+                      onClick={() => setSourceName(name)}
+                    >
+                      {name}
+                    </button>
+                  ))}
+              </div>
+            )}
+            <strong>{sourceName}</strong>
+            <FilePreview key={sourceName} file={source} />
+          </div>
+        )}
         {error && <p role="alert">{error}</p>}
       </section>
       <section className="notebook-concept">
@@ -207,49 +233,17 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           <p key={i}>{p}</p>
         ))}
       </section>
-      {copy.options.length > 0 && (
-        <dl className="notebook-options">
-          {copy.options.map((o, i) => (
-            <div key={i}>
-              <dt>
-                <code>{o.flag}</code>
-              </dt>
-              <dd>{o.meaning}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-      <section className="notebook-prediction">
-        <h2>{n.predict}</h2>
-        <p>{copy.prediction}</p>
-        <label>
-          {n.predictionLabel}
-          <textarea
-            rows={2}
-            value={notes.prediction ?? ""}
-            onChange={(e) => note({ prediction: e.target.value })}
-          />
-        </label>
-        <button aria-expanded={reveal} onClick={() => setReveal((v) => !v)}>
-          {n.reveal}
-        </button>
-        {reveal && <p>{copy.reveal}</p>}
-      </section>
       {page.worked.map((command, i) => (
         <CommandCell
           key={page.id + ":worked:" + i}
           id={page.id + ":worked:" + i}
           initial={command}
-          title={copy.workedLabels[i]!}
+          title={copy.worked[i]!.title}
+          teaching={copy.worked[i]!}
+          illustration={i === 0 ? <ExampleDiagram page={page} /> : undefined}
         />
       ))}
-      <section className="notebook-change">
-        <h2>{n.change}</h2>
-        <p>{copy.change}</p>
-      </section>
       <section className="notebook-practice">
-        <h2>{n.practice}</h2>
-        <p>{copy.practice}</p>
         <CommandCell
           key={page.id + ":practice"}
           id={page.id + ":practice"}
@@ -257,6 +251,9 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           title={n.practice}
           expected={page.expected}
           limit={copy.checkLimit}
+          observe={copy.practiceObserve}
+          introduction={[copy.practice]}
+          options={copy.practiceOptions}
         />
         <div className="notebook-hints">
           <button
@@ -290,10 +287,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
         <section className="notebook-native">
           <h2>{n.native}</h2>
           <p>{n.nativeNote}</p>
+          <pre tabIndex={0}>{page.nativeScript}</pre>
           {copy.nativeExplanation?.map((p, i) => (
             <p key={i}>{p}</p>
           ))}
-          <pre tabIndex={0}>{page.nativeScript}</pre>
+
           <button
             onClick={() =>
               downloadBlob(
@@ -306,11 +304,20 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           </button>
         </section>
       )}
-      <section className="notebook-review">
-        <h2>{n.review}</h2>
-        <p>{copy.review}</p>
+      <details className="notebook-review">
+        <summary>{n.notes}</summary>
+        {notes.prediction !== undefined && (
+          <label>
+            {n.previousPrediction}
+            <textarea
+              rows={2}
+              value={notes.prediction}
+              onChange={(e) => note({ prediction: e.target.value })}
+            />
+          </label>
+        )}
         <label>
-          {n.reviewLabel}
+          {n.notesLabel}
           <textarea
             rows={3}
             value={notes.review ?? ""}
@@ -318,8 +325,8 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           />
         </label>
         <button onClick={exportPage}>{n.exportNotebook}</button>
-        <p className="muted">{n.note}</p>
-      </section>
+      </details>
+      <Credits />
       <nav className="notebook-pager" aria-label="Lesson pages">
         {index > 0 ? (
           <a className="button" href={pageHref(pages[index - 1]!)}>

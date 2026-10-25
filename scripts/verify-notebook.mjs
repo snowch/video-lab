@@ -37,10 +37,12 @@ for (const p of pages) {
   const copy = courseCopy.pages[p.id];
   if (
     !copy ||
-    copy.workedLabels.length !== p.worked.length ||
+    copy.worked.length !== p.worked.length ||
     copy.hints.length !== 5 ||
     !copy.checkLimit ||
-    !copy.practice
+    !copy.practice ||
+    !copy.practiceObserve ||
+    copy.worked.some((step) => !step.title || !step.observe)
   )
     throw Error("Incomplete notebook page " + p.id);
   for (const [id, command] of [
@@ -68,6 +70,12 @@ if (
 )
   throw Error("Course outline/copy mismatch");
 for (const [name, a] of Object.entries(practiceAssets)) {
+  if (
+    a.duration !== undefined &&
+    a.duration !==
+      Number(media.assets.find((f) => f.name === name)?.probe?.format.duration)
+  )
+    throw Error("Diagram source duration differs from recorded media " + name);
   const bytes = await readFile("public/" + a.path);
   if (
     bytes.length !== a.bytes ||

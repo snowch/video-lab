@@ -1,0 +1,818 @@
+[
+  {
+    "mode": "desktop-light",
+    "route": "first-edit/shorten",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "first-edit/start",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "inside-video/inspect",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "inside-video/streams",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "frames-time/rate",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "frames-time/timestamps",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/copy",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/keyframes",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "cut-join/join",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/scale",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/crop",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "framing/pad",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "sound/level",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "sound/fade",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "text/title",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "text/subtitles",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "quality/quality",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "quality/speed",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/format",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/faststart",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/verify",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "export/decode",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "workflows/reuse",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-light",
+    "route": "workflows/batch",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "first-edit/shorten",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "first-edit/start",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "inside-video/inspect",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "inside-video/streams",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "frames-time/rate",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "frames-time/timestamps",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/copy",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/keyframes",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "cut-join/join",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/scale",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/crop",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "framing/pad",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "sound/level",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "sound/fade",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "text/title",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "text/subtitles",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "quality/quality",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "quality/speed",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/format",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/faststart",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/verify",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "export/decode",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "workflows/reuse",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "desktop-dark",
+    "route": "workflows/batch",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 78.46875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "first-edit/shorten",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "first-edit/start",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "inside-video/inspect",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "inside-video/streams",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "frames-time/rate",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "frames-time/timestamps",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/copy",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/keyframes",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "cut-join/join",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/scale",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/crop",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "framing/pad",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "sound/level",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "sound/fade",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "text/title",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "text/subtitles",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "quality/quality",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "quality/speed",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/format",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/faststart",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/verify",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "export/decode",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "workflows/reuse",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-light",
+    "route": "workflows/batch",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "first-edit/shorten",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "first-edit/start",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "inside-video/inspect",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "inside-video/streams",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "frames-time/rate",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "frames-time/timestamps",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/copy",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/keyframes",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "cut-join/join",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/scale",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/crop",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "framing/pad",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "sound/level",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "sound/fade",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "text/title",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "text/subtitles",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "quality/quality",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "quality/speed",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/format",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/faststart",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/verify",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "export/decode",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "workflows/reuse",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "mode": "phone-dark",
+    "route": "workflows/batch",
+    "doubleText": {
+      "overflow": false,
+      "maxGap": 168.21875
+    }
+  },
+  {
+    "route": "inside-video/inspect",
+    "reference": "ffprobe bunny-action.mp4",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": -1,
+    "visiblePractice": "Try it yourself\nffprobe\n\nInspect bunny-action.mp4 to make a compact file description: find its duration, count its streams, and identify the container and each stream's codec separately. Which properties match the worked example, and which differ? Use the output as evidence.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nRead Duration as hours:minutes:seconds, then count the Stream lines. For each stream, identify its type and the codec immediately after Video or Audio. Keep these separate from the container description on the Input line.\n\nTechnical checks\n\nThe check records that inspection ran. Manually match your description to the Duration, Video and Audio lines; the check does not assess your reading of them.\n\nCheck result\nHints · 0/5Show reference command\nffprobe bunny-action.mp4\n\nEdit command"
+  },
+  {
+    "route": "cut-join/copy",
+    "reference": "ffmpeg -i bunny-action.mp4 -c copy practice-copy.mp4",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": 0,
+    "visiblePractice": "Try it yourself\nffmpeg\n\nUse bunny-action.mp4, the six-second action clip, to create practice-copy.mp4 with its video and sound unchanged by encoding. The starter leaves FFmpeg to choose encoders: change it to copy both streams instead. Use the mapping lines to establish which path FFmpeg took.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nCheck that both stream-mapping lines end in (copy), rather than showing a decoder and encoder. Replay practice-copy.mp4 to confirm it contains the full six-second action scene with sound. H.264 video and AAC sound alone would also be possible after encoding again.\n\nTechnical checks\n\nChecks verify duration, video, audio and H.264 video format. Confirm (copy) for both streams in the log and replay to check the complete picture and sound.\n\nCheck result\nHints · 0/5Show reference command\nffmpeg -i bunny-action.mp4 -c copy practice-copy.mp4\n\nEdit command"
+  },
+  {
+    "route": "cut-join/keyframes",
+    "reference": "ffmpeg -i bunny-short.mp4 -ss 1 -t 3 practice-exact.mp4",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": 0,
+    "visiblePractice": "Try it yourself\nffmpeg\n\nDeliver practice-exact.mp4 containing source seconds 1 to 4, with video and audio. Choose the approach that can discard decoded pictures before the start, then check that the opening matches the source around second 1.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nReplay the first moment of practice-exact.mp4 and compare it with the source around second 1. Listen at the start as well: matching the duration does not establish that the intended moment was kept.\n\nTechnical checks\n\nChecks verify about three seconds and the presence of video and audio. Compare the opening with source second 1 yourself; these checks do not establish the source start or whether encoding was used.\n\nCheck result\nHints · 0/5Show reference command\nffmpeg -i bunny-short.mp4 -ss 1 -t 3 practice-exact.mp4\n\nEdit command"
+  },
+  {
+    "route": "export/faststart",
+    "reference": "ffmpeg -i bunny-action.mp4 -c copy -movflags +faststart practice-ready.mp4",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": 0,
+    "visiblePractice": "Try it yourself\nffmpeg\n\nApply the same preparation to bunny-action.mp4 and save it as practice-ready.mp4 for playback during download. Preserve its full six seconds of picture and sound without encoding them again. Adapt the command to the new input and output names, then use the log to distinguish the layout operation from stream copying.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nWhich log lines establish that the index was moved and that both streams were copied? Replay practice-ready.mp4 through to the end with sound and check that it contains the six-second action clip. Local startup time does not measure a network benefit.\n\nTechnical checks\n\nChecks verify six seconds, video, audio, H.264 and MP4. They do not inspect index placement or network startup. Confirm the layout and copy messages in the log, then replay to check picture and sound.\n\nCheck result\nHints · 0/5Show reference command\nffmpeg -i bunny-action.mp4 -c copy -movflags +faststart practice-ready.mp4\n\nEdit command"
+  },
+  {
+    "route": "export/verify",
+    "reference": "ffprobe -show_streams -show_format -of json bunny-action.mp4",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": -1,
+    "visiblePractice": "Try it yourself\nffprobe\n\nInspect bunny-action.mp4 with both stream and whole-file details in JSON. Make a short delivery record: video codec and dimensions, audio codec and sample rate, file duration and size in bytes. Compare its duration and size with bunny-short.mp4 from the worked example.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nUse codec_type to identify the video and audio objects before recording their properties. Take duration and size from format in both reports, keeping seconds and bytes with the values. Which clip is shorter, and which file is smaller? Keep the field's location with each recorded value so another person can find it.\n\nTechnical checks\n\nThe check records an inspection result. Review the field values yourself, then replay the whole clip with sound to check picture quality, audio and their alignment.\n\nCheck result\nHints · 0/5Show reference command\nffprobe -show_streams -show_format -of json bunny-action.mp4\n\nEdit command"
+  },
+  {
+    "route": "export/decode",
+    "reference": "ffmpeg -xerror -i bunny-action.mp4 -f null -",
+    "nativePresent": true,
+    "wasmPresent": true,
+    "wasmCode": 0,
+    "visiblePractice": "Try it yourself\nffmpeg\n\nVerify the six-second bunny-action.mp4 clip without creating a media file. Make the run stop on errors, and use its log to establish whether both picture and sound were processed through to the end.\n\nEdit command\nCommand builder\nFFmpeg or ffprobe command: Try it yourself\n\nShift+Enter runs this cell. Enter adds a line.\n\nRun command\nCopy command\nDownload command (.sh)\n\nReady\n\nFind the selected streams under Stream mapping, then compare the final processing time with this source's duration. Check the completion status as well. Replay bunny-action.mp4 to judge its picture and sound: decoding cannot tell whether the content is what you intended.\n\nTechnical checks\n\nThe check records a completed decoding command. Confirm stream selection and full duration in its log, then watch and listen to judge content quality; this does not test another player's compatibility.\n\nCheck result\nHints · 0/5Show reference command\nffmpeg -xerror -i bunny-action.mp4 -f null -\n\nEdit command"
+  }
+]
