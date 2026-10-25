@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-25T16:16:00.629Z",
+  "release": {
+    "commit": "2bb123add2a21a7a5ded80dc2db51a042275e01a",
+    "build": "96625ec3e81d10bd634e05f62bfa628fd47ce2c0945c9d8f146b428dc7a8f3ce",
+    "version": "4vGBAo6GyYUwet2uB7A9rNqyrBI5DDLuSR1bcLGvdBU=",
+    "bytes": 49037513
+  },
+  "oldBuild": "8e49b837e134f8c64cbe11c9b4f5e754c3361e334ba2e39e588c42ea6cbc333d",
+  "preservedFiles": {
+    "bunny-action.mp4": "9cd433e2cc0566638732526ecf27106780de2351fcb7c0abf50d0c49ba160e42",
+    "bunny-short.mp4": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144",
+    "captions.srt": "7f82453a0a8deabdfbc2ab457d82d6d1dffa3a367924cef994e4b64ccc49e4d6",
+    "cleanup-1792933906479.txt": "593b9d4375c1bcc78f8b2a1fbee54113eaa9e3bbf6fb4eb5dcc11eaf7ec24694",
+    "cleanup-1792934080171.txt": "3bfa91e50a278f96318782cc76ffc4633a7b5c3e26c9f0afd8cd524eca8d660d",
+    "flow-chromium-1792939483266.mp4": "5858d2e9c255db337cfa118d75d33a0f705bb58bf44922a33c85da708a785c52",
+    "fonts/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "public-offline.mp4": "70bf452f0e8964ad68e735fe98ca867d17edc1a780a3bb7803097d78841d2490"
+  },
+  "preservedCellCount": 3,
+  "verified": "Actual saved-app Update and Restart; all files and cell records unchanged; browser process close and offline relaunch displays new three-option layout and nonsticky phone navigation."
+}

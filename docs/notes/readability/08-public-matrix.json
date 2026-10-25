@@ -1,0 +1,154 @@
+{
+  "url": "https://snowch.github.io/video-lab/",
+  "commit": "2bb123add2a21a7a5ded80dc2db51a042275e01a",
+  "build": "96625ec3e81d10bd634e05f62bfa628fd47ce2c0945c9d8f146b428dc7a8f3ce",
+  "cases": 96,
+  "embeddedRunningBuildMatchedEveryCase": true,
+  "pageErrors": [],
+  "results": {
+    "first-edit/shorten": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "first-edit/start": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "inside-video/inspect": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "inside-video/streams": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "frames-time/rate": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "frames-time/timestamps": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "cut-join/copy": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "cut-join/keyframes": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "cut-join/join": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "framing/scale": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "framing/crop": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "framing/pad": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "sound/level": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "sound/fade": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "text/title": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "text/subtitles": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "quality/quality": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "quality/speed": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "export/format": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "export/faststart": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "export/verify": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "export/decode": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "workflows/reuse": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    },
+    "workflows/batch": {
+      "phone-light": true,
+      "phone-dark": true,
+      "desktop-light": true,
+      "desktop-dark": true
+    }
+  }
+}

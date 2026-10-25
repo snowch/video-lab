@@ -47,7 +47,8 @@ checked separately with Prettier; the complete final formatting check also passe
 
 ## Delivery
 
-The complete local gate passed. This change is approved for main by the standing
-owner authorisation and independent checker. Actions deployment and the requested
-published all-page audit are the next verification steps; their results will be
-recorded after this source commit is published.
+Source commit `2bb123a` was pushed to main after this gate. Both GitHub workflows
+passed and the source is deployed. `09-deployment.md` records the cancelled slow
+dependency-download attempt, successful rerun and actual saved-app update/offline
+relaunch. `08-public-audit.md` records the independent published all-page review.
+The follow-up evidence commit changes documentation only.
