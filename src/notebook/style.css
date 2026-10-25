@@ -1,6 +1,6 @@
 /* Copyright © 2026 Christopher Snow */
 .notebook-shell {
-  max-width: 94rem;
+  max-width: 68rem;
   margin: 0 auto;
   padding: 0 1.25rem 3rem;
 }
@@ -21,54 +21,22 @@
   max-width: 32rem;
   font-size: 0.9rem;
 }
-.notebook-layout {
-  display: grid;
-  grid-template-columns: 15rem minmax(0, 1fr);
-  gap: 2rem;
-  align-items: start;
-}
-.notebook-sidebar {
-  position: sticky;
-  top: 6rem;
-  max-height: calc(100dvh - 7rem);
-  overflow: auto;
-  padding: 1.25rem 0;
-}
-.notebook-sidebar ol,
-.notebook-menu ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.notebook-sidebar > nav > ol > li > a,
-.notebook-menu > nav > ol > li > a {
-  display: flex;
-  gap: 0.65rem;
-  align-items: baseline;
-  padding: 0.65rem 0.6rem;
-  border-radius: 0.6rem;
-  text-decoration: none;
-  color: var(--text, var(--ink));
-}
-.notebook-sidebar a[aria-current],
-.notebook-menu a[aria-current] {
-  background: var(--surface-2, var(--surface));
-  font-weight: 700;
-  border-left: 3px solid var(--accent);
-}
 .notebook-page-links {
-  padding-left: 1.5rem !important;
+  margin: 0;
+  padding-left: 1.5rem;
 }
 .notebook-page-links a {
   display: block;
+  min-height: 44px;
   padding: 0.55rem;
 }
-.notebook-earlier {
+.notebook-appendix {
   display: block;
   padding: 0.8rem 0.6rem;
   margin-top: 0.7rem;
 }
 .notebook-content {
+  margin: 0 auto;
   min-width: 0;
   max-width: 65rem;
 }
@@ -353,6 +321,10 @@
   padding: 1.2rem;
   background: var(--surface);
 }
+.notebook-chapter-cards > li > div {
+  min-width: 0;
+  flex: 1;
+}
 .notebook-chapter-cards > li > span {
   color: var(--accent);
   font-size: 1.5rem;
@@ -368,8 +340,7 @@
   font-size: 0.9rem;
   margin: 0.5rem 0;
 }
-.notebook-files,
-.notebook-menu {
+.notebook-files {
   width: min(64rem, calc(100% - 2rem));
   max-height: 92dvh;
   overflow: auto;
@@ -379,19 +350,16 @@
   border-radius: 1rem;
   padding: 1.5rem;
 }
-.notebook-files::backdrop,
-.notebook-menu::backdrop {
+.notebook-files::backdrop {
   background: #0009;
 }
-.notebook-files > header,
-.notebook-menu > header {
+.notebook-files > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
 }
-.notebook-files h2,
-.notebook-menu h2 {
+.notebook-files h2 {
   margin: 0;
 }
 .notebook-files form input,
@@ -457,9 +425,6 @@
 .notebook-file-open h3 {
   overflow-wrap: anywhere;
 }
-.notebook-menu-button {
-  display: none;
-}
 .notebook-shell .sr-only {
   position: absolute;
   width: 1px;
@@ -479,15 +444,6 @@
   overflow-wrap: anywhere;
 }
 @media (max-width: 900px) {
-  .notebook-layout {
-    display: block;
-  }
-  .notebook-sidebar {
-    display: none;
-  }
-  .notebook-menu-button {
-    display: inline-flex;
-  }
   .notebook-welcome {
     grid-template-columns: 1fr;
   }
@@ -513,8 +469,7 @@
   .notebook-options dd {
     margin-top: 0.4rem;
   }
-  .notebook-files,
-  .notebook-menu {
+  .notebook-files {
     padding: 1rem;
   }
   .notebook-cell-actions > button {

@@ -20,6 +20,7 @@ export const n = {
   chapter: "Chapter",
   page: "Page",
   chapters: "Chapters",
+  recordingGuide: "Recording your own source",
   files: "Files",
   close: "Close",
   previous: "Previous page",

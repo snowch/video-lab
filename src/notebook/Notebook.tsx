@@ -10,56 +10,6 @@ import { FileManager, FilePreview } from "./FileManager";
 import "./style.css";
 const creditUrl =
   "https://github.com/snowch/video-lab/blob/main/docs/notes/notebook/media.json";
-function ChapterLinks({
-  page,
-  onNavigate,
-}: {
-  page?: PageDefinition;
-  onNavigate?: () => void;
-}) {
-  return (
-    <nav aria-label={n.chapters}>
-      <ol>
-        {chapters.map((chapter, index) => (
-          <li key={chapter}>
-            <a
-              href={pageHref(pages.find((p) => p.chapter === chapter)!)}
-              onClick={onNavigate}
-              aria-current={page?.chapter === chapter ? "step" : undefined}
-            >
-              <span>{index + 1}</span>
-              {courseCopy.chapters[chapter].title}
-            </a>
-            {page?.chapter === chapter && (
-              <ol className="notebook-page-links">
-                {pages
-                  .filter((p) => p.chapter === chapter)
-                  .map((p) => (
-                    <li key={p.id}>
-                      <a
-                        href={pageHref(p)}
-                        onClick={onNavigate}
-                        aria-current={p.id === page.id ? "page" : undefined}
-                      >
-                        {courseCopy.pages[p.id]!.title}
-                      </a>
-                    </li>
-                  ))}
-              </ol>
-            )}
-          </li>
-        ))}
-      </ol>
-      <a
-        className="notebook-earlier"
-        href="#/appendix/recording"
-        onClick={onNavigate}
-      >
-        Recording your own source
-      </a>
-    </nav>
-  );
-}
 function Credits() {
   return (
     <p className="notebook-credit">
@@ -100,19 +50,26 @@ function NotebookHome() {
             <li key={c}>
               <span>{i + 1}</span>
               <div>
-                <h3>
-                  <a href={pageHref(pages.find((p) => p.chapter === c)!)}>
-                    {courseCopy.chapters[c].title}
-                  </a>
-                </h3>
+                <h3>{courseCopy.chapters[c].title}</h3>
                 <p>{courseCopy.chapters[c].summary}</p>
-                <small>
-                  {pages.filter((p) => p.chapter === c).length} concept pages
-                </small>
+                <ol className="notebook-page-links">
+                  {pages
+                    .filter((p) => p.chapter === c)
+                    .map((p) => (
+                      <li key={p.id}>
+                        <a href={pageHref(p)}>
+                          {courseCopy.pages[p.id]!.title}
+                        </a>
+                      </li>
+                    ))}
+                </ol>
               </div>
             </li>
           ))}
         </ol>
+        <a className="notebook-appendix" href="#/appendix/recording">
+          {n.recordingGuide}
+        </a>
       </section>
     </div>
   );
@@ -362,20 +319,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
 function NotebookShell({ page }: { page?: PageDefinition }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
-    menu = useRef<HTMLDialogElement>(null),
-    filesButton = useRef<HTMLButtonElement>(null),
-    menuButton = useRef<HTMLButtonElement>(null);
+    filesButton = useRef<HTMLButtonElement>(null);
   return (
     <div className="notebook-shell" data-notebook-ready={w.ready}>
       <div className="notebook-toolbar">
         <a href="#/">{n.overview}</a>
-        <button
-          className="notebook-menu-button"
-          ref={menuButton}
-          onClick={() => menu.current?.showModal()}
-        >
-          {n.chapters}
-        </button>
         <button ref={filesButton} onClick={() => setFilesOpen(true)}>
           {n.files} · {Object.keys(w.files).length}
         </button>
@@ -402,26 +350,9 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
           {w.notice}
         </p>
       )}
-      <div className="notebook-layout">
-        <aside className="notebook-sidebar">
-          <ChapterLinks page={page} />
-        </aside>
-        <div className="notebook-content">
-          {page ? <NotebookPage page={page} /> : <NotebookHome />}
-        </div>
+      <div className="notebook-content">
+        {page ? <NotebookPage page={page} /> : <NotebookHome />}
       </div>
-      <dialog
-        className="notebook-menu"
-        ref={menu}
-        aria-label={n.chapters}
-        onClose={() => menuButton.current?.focus()}
-      >
-        <header>
-          <h2>{n.chapters}</h2>
-          <button onClick={() => menu.current?.close()}>{n.close}</button>
-        </header>
-        <ChapterLinks page={page} onNavigate={() => menu.current?.close()} />
-      </dialog>
       <FileManager
         open={filesOpen}
         onClose={() => {
