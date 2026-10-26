@@ -18,3 +18,17 @@ Full gate and release results are recorded below when complete. Scratch logs and
 `npm run check` completed with exit 0 after the navigation fix: 25 unit files / 110 unit tests passed; 336 browser tests passed and 49 were intentionally skipped by their project conditions. Formatting, copyright, shared-platform integrity, strict types, native media and recorded-command verification, all notebook pages, visual facts and the production/offline build passed. Log: `check-final.log`.
 
 No scoped blocker remains after the independent built checker. The final source is authorised for reviewed direct-main publication. Hosted workflow and public-site verification follow publication.
+
+## Published release
+
+Product commit: `b4febfba9d1e3bb2c862efd07c7ec2bcf1f19bcd`, pushed to main under the owner's standing authorisation.
+
+[Pages run 40420446994](https://github.com/snowch/video-lab/actions/runs/40420446994) succeeded. Its full gate passed 110 unit tests and 336 browser tests, with 49 configured skips; browser run 12.4 minutes. Hosted log: `pages.log`.
+
+Public verification command:
+
+`node /workspace/scratch/codec-links/public.mjs b4febfba9d1e3bb2c862efd07c7ec2bcf1f19bcd`
+
+Exit 0. Four fresh Chromium contexts (desktop/phone, light/dark) verified the published commit and running build `94e9701c26ecc45039afc061b509ce125d08251176ba47daeb88928d7b1db58d`. All twelve link journeys reached the expected heading, focused main, had no horizontal overflow, and retained the source command draft after Back. Normal TLS and the configured proxy were used. Screenshots and `public-results.json` are recorded; the parent inspected the public phone screenshot. This is a scoped public navigation check, not a new end-to-end media or offline-upgrade claim.
+
+[Quality run 40420446992](https://github.com/snowch/video-lab/actions/runs/40420446992) also succeeded on the same product commit: 110 unit tests and 336 browser tests passed, 49 configured skips; browser run 17.2 minutes. Log: `quality.log`. An earlier request for this log while the job was in progress returned “logs will be available when it is complete”; the final download succeeded. Both hosted jobs are green and the public-site checks passed.
