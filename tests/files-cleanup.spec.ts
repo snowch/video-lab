@@ -223,6 +223,8 @@ test("Files remains readable at 320 pixels with doubled text and long filenames"
   const dialog = await openFiles(page);
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "200%";
+    // CI desktop Linux uses a wider fallback than this workspace’s system font.
+    document.documentElement.style.fontFamily = "DejaVu Sans, sans-serif";
   });
   const name = "Long filename with several ordinary words and accented été.txt";
   await filePicker(dialog).setInputFiles(textFile(name));

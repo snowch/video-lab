@@ -36,3 +36,27 @@ notes/checks and local/session drafts; migration/theme flags do not count.
 The unrelated learner-audit directory and synchronised shared platform were not
 changed. Implementation, prose, reader, sceptic and checker are separate agents;
 root does integration and release verification.
+
+
+## Hosted font follow-up
+
+The first hosted Quality run for ef7bfa8 completed with 328 passed, 49 skipped
+and three failed document-overflow assertions at 320 pixels / 200% text in
+Chromium desktop light/dark and Firefox. The local full gate had passed 331
+with 49 skipped. The separate Pages run was still installing native FFmpeg;
+it was cancelled before publication while this failure was investigated.
+
+The sceptic independently reproduced the exact 324-pixel document width by
+selecting DejaVu Sans, while the execution workspace's system font is OpenAI
+Sans. The Files dialog itself had no internal overflow. Background course-index
+cards were grid items with automatic minimum width: a 291.938-pixel track inside
+256 available pixels. Setting the card's min-width to zero gives a 256-pixel
+track and a 320-pixel document without hiding overflow or changing font size.
+This small existing layout correction lets header Files work on the overview
+under the wider desktop font too. The regression now deliberately selects that
+font before asserting document and modal geometry; assertions are not weakened.
+
+GitHub log evidence was retrieved. Downloading its screenshot/trace artifact
+returned HTTP 403 from the artifact host; it was not inspected. Local independent
+reproduction and geometry are recorded in the sceptic's ci-overflow.mjs/json.
+Final checker follow-up and complete local/hosted gates cover the correction.
