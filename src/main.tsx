@@ -170,7 +170,7 @@ function App() {
       return;
     }
     document.title = `${pageTitle} · ${home.title}`;
-    if (resolved.section) {
+    if (!notebook && resolved.section) {
       requestAnimationFrame(() =>
         document
           .getElementById(`section-${resolved.section}`)

@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Codec cross-references, 26 October 2026:** [the codec-links slice](notes/codec-links/01-plan-facts.md) connects Chapter 2’s file description to the existing stream-copying, encoding-quality and export-format lessons through optional direct page links.
+
 **Simpler Files, 26 October 2026:** [the Files cleanup](notes/files-cleanup/01-plan.md) moves the notebook file utility into the app header and prioritises preview, import and download. Less-used operations stay available contextually, with search, folder navigation, storage limits and earlier-work access appearing when relevant.
 
 **Visual teaching, 26 October 2026:** [the visual teaching slice](notes/visual-teaching/01-plan.md) adds source-grounded diagrams and comparisons to fourteen notebook pages, introduces terminology before figures, and replaces overlapping prose with selective inline emphasis and literal code styling. Raw command output stays unchanged. [Verified source and image evidence](notes/visual-teaching/02-facts.md) distinguishes recorded native examples from explanatory models and learner outputs.

@@ -45,6 +45,10 @@ for (const p of pages) {
     copy.worked.some((step) => !step.title || !step.observe)
   )
     throw Error("Incomplete notebook page " + p.id);
+  for (const id of copy.furtherReading?.pages ?? []) {
+    if (id === p.id || !pages.some((target) => target.id === id))
+      throw Error("Invalid further-reading destination " + id + " on " + p.id);
+  }
   for (const [id, command] of [
     ...p.worked.map((c, i) => [p.id + ":worked:" + i, c]),
     [p.id + ":practice", p.solution],

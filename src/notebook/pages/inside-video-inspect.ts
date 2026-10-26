@@ -4,6 +4,10 @@ import type { PageCopy } from "../copy-types";
 export default {
   title: "Read the file description",
   goal: "Distinguish the file format from the video and audio stored inside it.",
+  furtherReading: {
+    title: "More on codecs (optional)",
+    pages: ["cut-join/copy", "quality/quality", "export/format"],
+  },
   concept: [
     "A video file can hold pictures and sound in separate **streams**. A video stream carries pictures through time; an audio stream carries sound. Their timing lets a player present them together.",
     "The **container** is the file format that organises the streams. MP4 is a container. A **codec** describes how a stream’s pictures or sound are encoded and decoded for playback. H.264 is a video codec; AAC is an audio codec. The `.mp4` ending alone does not identify the codecs inside.",

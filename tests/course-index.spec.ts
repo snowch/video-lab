@@ -106,3 +106,53 @@ test("one course index exposes every page and preserves drafts through real navi
     expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
 });
+
+test("codec links and notebook navigation open the lesson beginning and retain drafts", async ({
+  page,
+}) => {
+  await page.goto("./#/learn/inside-video/inspect");
+  await expect(page.locator("[data-notebook-ready]")).toHaveAttribute(
+    "data-notebook-ready",
+    "true",
+  );
+  const editor = page.locator(".notebook-cell textarea").first();
+  const draft = "ffprobe bunny-action.mp4";
+  await editor.fill(draft);
+  const links = page.getByRole("navigation", {
+    name: "More on codecs (optional)",
+  });
+  for (const title of [
+    "Copy compressed streams",
+    "Choose an encoding quality setting",
+    "Choose an export format",
+  ]) {
+    await links.getByRole("link", { name: new RegExp(title + "$") }).click();
+    const heading = page.getByRole("heading", { name: title, exact: true });
+    await expect(heading).toBeInViewport({ ratio: 1 });
+    await expect(page.locator("main")).toBeFocused();
+    await expect(page.locator("h1")).toBeInViewport({ ratio: 1 });
+    await page.goBack();
+    await expect(editor).toHaveValue(draft);
+    await expect(links).toHaveCount(1);
+  }
+  await page
+    .locator(".notebook-pager")
+    .getByRole("link", { name: /^Next page:/ })
+    .click();
+  await expect(page.locator("h1")).toBeInViewport({ ratio: 1 });
+  await expect(page.locator("main")).toBeFocused();
+  await page
+    .locator(".notebook-pager")
+    .getByRole("link", { name: /Previous/ })
+    .click();
+  await expect(editor).toHaveValue(draft);
+  await expect(page.locator("h1")).toBeInViewport({ ratio: 1 });
+  await page.locator(".notebook-toolbar a").click();
+  await page
+    .getByRole("link", { name: "Choose an export format", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Choose an export format", exact: true }),
+  ).toBeInViewport();
+  await expect(page.locator("main")).toBeFocused();
+});

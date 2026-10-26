@@ -295,6 +295,24 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           </button>
         </section>
       )}
+      {copy.furtherReading && (
+        <nav aria-labelledby="further-reading-title">
+          <h2 id="further-reading-title">{copy.furtherReading.title}</h2>
+          <ul className="notebook-page-links">
+            {copy.furtherReading.pages.map((id) => {
+              const target = pages.find((p) => p.id === id)!;
+              return (
+                <li key={id}>
+                  <a href={pageHref(target)}>
+                    {n.chapter} {chapters.indexOf(target.chapter) + 1}:{" "}
+                    {courseCopy.pages[id]!.title}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )}
       <details className="notebook-review">
         <summary>{n.notes}</summary>
         {notes.prediction !== undefined && (
