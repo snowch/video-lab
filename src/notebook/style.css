@@ -4,6 +4,9 @@
   margin: 0 auto;
   padding: 0 1.25rem 3rem;
 }
+.notebook-lesson {
+  max-width: calc(62ch + 2.5rem);
+}
 .notebook-toolbar,
 .notebook-workspace-status:not(.sr-only) {
   display: flex;
@@ -54,17 +57,25 @@
   font-size: 1.15rem;
 }
 .notebook-source {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 0.6rem 1rem;
   padding: 0;
   margin: 1.5rem 0;
 }
+.notebook-source > code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.notebook-source > button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
 .notebook-source > p,
 .notebook-source > .notebook-preview,
 .notebook-source-preview {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
   min-width: 0;
   margin: 0.35rem 0;
 }
@@ -120,15 +131,18 @@
 }
 .notebook-cell > header {
   display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  margin-bottom: 0.7rem;
 }
 .notebook-cell > header h2 {
-  margin: 0 0 0.7rem;
+  margin: 0;
   font-size: 1.15rem;
 }
 .notebook-cell-tool {
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: var(--muted);
   font-family: var(--mono, monospace);
   font-size: 0.9rem;
@@ -454,6 +468,9 @@
 @media (max-width: 600px) {
   .notebook-shell {
     padding: 0 1rem 2rem;
+  }
+  .notebook-source {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .notebook-options > div {

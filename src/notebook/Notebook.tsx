@@ -337,7 +337,10 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
   const quiet =
     !w.active && !w.sessionOnly && (!w.ready || (!w.busy && !w.saving));
   return (
-    <div className="notebook-shell" data-notebook-ready={w.ready}>
+    <div
+      className={`notebook-shell${page ? " notebook-lesson" : ""}`}
+      data-notebook-ready={w.ready}
+    >
       {page && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
