@@ -1,0 +1,150 @@
+/* Copyright © 2026 Christopher Snow */
+.notebook-files.notebook-files-simple {
+  width: min(56rem, calc(100% - 1rem));
+  max-width: calc(100% - 1rem);
+  max-height: calc(100dvh - 1rem);
+  padding: clamp(0.8rem, 3vw, 1.5rem);
+}
+.notebook-files-simple > header {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem 1rem;
+}
+.notebook-files-simple > header h2 {
+  flex: 1 1 8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.notebook-files-simple > header > button {
+  flex: 0 1 auto;
+}
+.notebook-files-simple .notebook-file-tools {
+  align-items: flex-start;
+  gap: 0.65rem 1rem;
+  margin: 1.2rem 0;
+}
+.notebook-files-simple .notebook-import-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 650;
+}
+.notebook-files-simple details {
+  min-width: 0;
+  max-width: 100%;
+}
+.notebook-files-simple summary {
+  min-height: 2.75rem;
+  padding: 0.6rem 0.25rem;
+  cursor: pointer;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+.notebook-files-simple summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+.notebook-files-simple .notebook-file-options {
+  flex: 1 1 12rem;
+}
+.notebook-files-simple .notebook-file-options-content {
+  padding: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+.notebook-files-simple .notebook-file-option-buttons,
+.notebook-files-simple .notebook-row-option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.notebook-files-simple .notebook-file-options-content p {
+  margin-bottom: 0;
+}
+.notebook-files-simple .notebook-file-search {
+  display: block;
+  margin: 0.75rem 0;
+}
+.notebook-files-simple .notebook-file-search input {
+  width: 100%;
+}
+.notebook-files-simple .notebook-file-list {
+  margin: 0.75rem 0;
+}
+.notebook-files-simple .notebook-file-list > li {
+  align-items: flex-start;
+  gap: 0.4rem 1rem;
+}
+.notebook-files-simple .notebook-file-list > li > div:first-child {
+  flex: 1 1 14rem;
+}
+.notebook-files-simple .notebook-file-name {
+  display: inline-block;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 0.45rem 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0.2rem;
+  color: var(--accent);
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.notebook-files-simple .notebook-file-list small {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.notebook-files-simple .notebook-file-actions {
+  flex: 0 1 auto;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  max-width: 100%;
+}
+.notebook-files-simple .notebook-file-actions button {
+  min-height: 2.75rem;
+  font-size: 1rem;
+}
+.notebook-files-simple .notebook-row-options[open] {
+  flex-basis: 100%;
+}
+.notebook-files-simple .notebook-row-option-buttons {
+  padding: 0.5rem 0;
+}
+.notebook-files-simple .notebook-file-form,
+.notebook-files-simple .notebook-file-open,
+.notebook-files-simple .notebook-file-form code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.notebook-files-simple .notebook-file-form {
+  padding: 0.75rem;
+}
+.notebook-files-simple button,
+.notebook-files-simple input,
+.notebook-files-simple textarea {
+  max-width: 100%;
+  min-width: 0;
+}
+.notebook-files-simple .notebook-file-limits {
+  color: var(--muted);
+}
+@media (max-width: 420px) {
+  .notebook-files-simple .notebook-file-list > li > div:first-child {
+    flex-basis: 100%;
+  }
+  .notebook-files-simple .notebook-file-actions {
+    width: 100%;
+  }
+  .notebook-files-simple .notebook-file-options {
+    flex-basis: 100%;
+  }
+}

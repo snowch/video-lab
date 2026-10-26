@@ -25,7 +25,7 @@ test("one course index exposes every page and preserves drafts through real navi
   );
   await expect(
     page.getByRole("button", { name: n.files, exact: true }),
-  ).toHaveCount(0);
+  ).toHaveCount(1);
   await expect(page.locator(".notebook-workspace-status")).toBeEmpty();
   const cards = page.locator(".notebook-chapter-cards > li");
   await expect(cards).toHaveCount(chapters.length);
@@ -47,21 +47,19 @@ test("one course index exposes every page and preserves drafts through real navi
   );
   await indexLinks.first().click();
   const lessonFiles = page
-    .locator(".notebook-toolbar")
+    .locator(".site-header")
     .getByRole("button", { name: n.files, exact: true });
   await lessonFiles.click();
-  const files = page.getByRole("dialog", { name: n.files, exact: true });
+  const files = page.getByRole("dialog", { name: n.yourFiles, exact: true });
   await expect(files).toBeVisible();
-  await expect(files).toContainText(n.storageNote);
+  await expect(files).toContainText(n.filesIntro);
   await page.keyboard.press("Escape");
   await expect(lessonFiles).toBeFocused();
   await lessonFiles.click();
   await page.goBack();
   await expect(page.locator(".notebook-home")).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(
-    page.getByRole("link", { name: `${n.start} →`, exact: true }),
-  ).toBeFocused();
+  await expect(lessonFiles).toBeFocused();
   await page.goForward();
   await expect(lessonFiles).toBeVisible();
   const command = "ffmpeg -i bunny-short.mp4 -t 4 index-draft.mp4";
@@ -80,7 +78,7 @@ test("one course index exposes every page and preserves drafts through real navi
   await expect(page.locator(".notebook-toolbar")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: n.files, exact: true }),
-  ).toHaveCount(0);
+  ).toHaveCount(1);
   await indexLinks.nth(3).click();
   await expect(page.locator(".notebook-page")).toHaveAttribute(
     "data-page",

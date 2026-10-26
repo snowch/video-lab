@@ -165,6 +165,12 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   page,
 }, info) => {
   test.skip(info.project.name !== "desktop-light");
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "video-lab:course-command-draft",
+      "ffprobe retained-earlier-source.mp4",
+    );
+  });
   await page.goto("./#/learn/first-edit/shorten");
   await expect(page.locator("[data-notebook-ready]")).toHaveAttribute(
     "data-notebook-ready",
@@ -183,6 +189,7 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   await expect(
     dialog.getByRole("button", { name: "original.txt", exact: true }),
   ).toBeVisible();
+  await dialog.locator(".notebook-file-options > summary").click();
   await dialog.getByRole("button", { name: n.newText, exact: true }).click();
   await dialog
     .getByRole("textbox", { name: n.name, exact: true })
@@ -212,6 +219,9 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
     dialog.getByRole("button", { name: n.save, exact: true }),
   ).toBeDisabled();
   await dialog
+    .getByLabel(`${n.moreActions}: original.txt`, { exact: true })
+    .click();
+  await dialog
     .getByRole("button", { name: `${n.rename} original.txt`, exact: true })
     .click();
   await dialog
@@ -224,6 +234,7 @@ test("file management keeps collisions safe, text changes explicit, and ZIP path
   await expect(
     dialog.getByRole("button", { name: "▸ My notes", exact: true }),
   ).toBeVisible();
+  await dialog.locator(".notebook-file-options > summary").click();
   const downloading = page.waitForEvent("download");
   await dialog
     .getByRole("button", { name: n.downloadAll, exact: true })

@@ -1,5 +1,7 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useRef, useState, type RefObject } from "react";
+import { createPortal } from "react-dom";
+import { hasEarlierWork } from "./earlier-work";
 import { chapters, pages, pageHref, type PageDefinition } from "./structure";
 import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
@@ -342,10 +344,30 @@ function NotebookPage({ page }: { page: PageDefinition }) {
 function NotebookShell({ page }: { page?: PageDefinition }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
+    [earlierWork, setEarlierWork] = useState(false),
+    [headerTarget, setHeaderTarget] = useState<HTMLElement | null>(null),
     filesButton = useRef<HTMLButtonElement>(null),
     startLink = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
+    setHeaderTarget(document.getElementById("notebook-header-tools"));
+  }, []);
+  useEffect(() => {
+    if (!filesOpen) return;
+    let live = true;
+    void hasEarlierWork().then((found) => {
+      if (live) setEarlierWork(found);
+    });
+    return () => {
+      live = false;
+    };
+  }, [filesOpen]);
   const filesControl = (
-    <button ref={filesButton} onClick={() => setFilesOpen(true)}>
+    <button
+      ref={filesButton}
+      aria-haspopup="dialog"
+      aria-expanded={filesOpen}
+      onClick={() => setFilesOpen(true)}
+    >
       {n.files}
     </button>
   );
@@ -356,10 +378,10 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
       className={`notebook-shell${page ? " notebook-lesson" : ""}`}
       data-notebook-ready={w.ready}
     >
+      {headerTarget && createPortal(filesControl, headerTarget)}
       {page && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
-          {filesControl}
         </nav>
       )}
       <div className={`notebook-workspace-status${quiet ? " sr-only" : ""}`}>
@@ -387,6 +409,7 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
         )}
       </div>
       <FileManager
+        hasEarlierWork={earlierWork}
         open={filesOpen}
         onClose={() => {
           setFilesOpen(false);

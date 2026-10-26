@@ -7,6 +7,8 @@ import { home, modules } from "./content/home.strings";
 import { asset } from "./media/model";
 import "./style.css";
 import { AppStatus } from "./app-status/AppStatus";
+import { useRestartGuard } from "./app-status/safety";
+import { hasPendingFileDraft } from "./notebook/FileManager";
 import { j } from "./journey/strings";
 import { ProjectProvider } from "./journey/project";
 import { CommandLab } from "./cli/Workspace";
@@ -118,6 +120,14 @@ function Home() {
   );
 }
 function App() {
+  useRestartGuard(() => !hasPendingFileDraft());
+  useEffect(() => {
+    const keepDraft = (event: BeforeUnloadEvent) => {
+      if (hasPendingFileDraft()) event.preventDefault();
+    };
+    addEventListener("beforeunload", keepDraft);
+    return () => removeEventListener("beforeunload", keepDraft);
+  }, []);
   const [route, setRoute] = useState(location.hash),
     [theme, setTheme] = useState(
       () =>
@@ -194,6 +204,7 @@ function App() {
           </a>
           <AppStatus />
           <div className="header-links">
+            {notebook && <span id="notebook-header-tools" />}
             <button
               aria-label={ui.theme}
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

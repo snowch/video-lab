@@ -22,6 +22,9 @@ export const n = {
   chapters: "Chapters",
   recordingGuide: "Recording your own source",
   files: "Files",
+  yourFiles: "Your files",
+  filesIntro:
+    "Practice videos, imported files and files you create in lessons.",
   close: "Close",
   previous: "Previous page",
   next: "Next page",
@@ -78,6 +81,8 @@ export const n = {
   loading: "Opening workspace",
   import: "Import files",
   importFolder: "Import folder",
+  moreFileOptions: "More file options",
+  moreActions: "More actions",
   newFolder: "New folder",
   newText: "New text file",
   rename: "Rename or move",
@@ -92,13 +97,28 @@ export const n = {
   deleteNote:
     "This cannot be undone. Download important work first. Earlier command results may become stale.",
   empty: "This folder is empty.",
-  root: "Workspace",
+  noFiles:
+    "No files yet. Load a practice video in a lesson, or import your own files.",
+  noSearchMatches: "No files or folders match your search.",
+  root: "Your files",
+  folderLabel: "Folder",
+  originPracticeVideo: "Practice video",
+  originPracticeFile: "Practice file",
+  originOutput: "Command output",
+  originReport: "Inspection report",
+  originText: "Text file",
+  originImported: "Imported file",
+  originRecording: "Recording",
+  originRecipe: "Command record",
   up: "Parent folder",
   editText: "Edit text",
   dirty: "Unsaved changes",
   discard: "Discard changes",
   storageNote:
     "Files are saved in this browser when storage is available. Download important work; browser storage can be cleared.",
+  nearFileLimit:
+    "Your files are close to a limit. Download and delete files you no longer need.",
+  fileLimits: "Up to 64 files, 32 MiB in total and 20 MiB per file.",
   limits:
     "64 files, 32 MiB total, 20 MiB per file. A command can read up to 12 files and has a 120-second processing limit.",
   toolNote:
@@ -117,7 +137,8 @@ export const n = {
   creditLink: "Source, licence and preparation",
   font: "DejaVu font licence",
   noPreview:
-    "This browser cannot preview that file. Download it to use a suitable player or tool.",
+    "No preview is available for this file. Download it to open it in another app.",
+  previewTruncated: "[Preview shortened. Download the complete file.]",
   copied: "Copied",
   copyFailed: "Copy failed. Select and copy the command text.",
   technical: "Technical checks",

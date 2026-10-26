@@ -1,11 +1,11 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNotebook, downloadBlob, mediaMime } from "./Workspace";
 import type { NotebookFile } from "./model";
-import { practiceAssets } from "./assets";
 import { zipFiles } from "./zip";
 import { useRestartGuard } from "../app-status/safety";
 import { n } from "./ui.strings";
+import "./files.css";
 export function FilePreview({ file }: { file: NotebookFile }) {
   const [url, setUrl] = useState(""),
     [text, setText] = useState(""),
@@ -22,10 +22,7 @@ export function FilePreview({ file }: { file: NotebookFile }) {
         .then((t) => {
           if (live)
             setText(
-              t +
-                (file.blob.size > 200000
-                  ? "\n[Preview truncated; download the complete file.]"
-                  : ""),
+              t + (file.blob.size > 200000 ? "\n" + n.previewTruncated : ""),
             );
         });
     else setText("");
@@ -66,45 +63,113 @@ export function FilePreview({ file }: { file: NotebookFile }) {
     </div>
   );
 }
+function fileSize(bytes: number) {
+  const unit = bytes < 1000000 ? "KB" : "MB";
+  const size = bytes / (unit === "KB" ? 1000 : 1000000);
+  return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(bytes > 0 ? Math.max(0.1, size) : 0)} ${unit}`;
+}
+function originLabel(file: NotebookFile) {
+  if (file.origin === "provided")
+    return (file.blob.type || mediaMime(file.name)).startsWith("video/")
+      ? n.originPracticeVideo
+      : n.originPracticeFile;
+  return {
+    captured: n.originRecording,
+    imported: n.originImported,
+    generated: n.originOutput,
+    recipe: n.originRecipe,
+    report: n.originReport,
+    note: n.originText,
+  }[file.origin];
+}
 type Form = {
   kind: "folder" | "text" | "move" | "copy" | "delete";
   from?: string;
 };
+type FileDraft = {
+  cwd: string;
+  selected: string;
+  text: string;
+  dirty: boolean;
+  form?: Form;
+  name: string;
+};
+// Route changes can unmount the notebook. Keep pending edits in this app instance;
+// the App-level restart/unload guards also read this snapshot while it is unmounted.
+let pendingFileDraft: FileDraft | undefined;
+export function hasPendingFileDraft() {
+  return pendingFileDraft !== undefined;
+}
 export function FileManager({
   open,
   onClose,
+  hasEarlierWork = false,
 }: {
   open: boolean;
   onClose: () => void;
+  hasEarlierWork?: boolean;
 }) {
+  const restoredDraft = useRef(pendingFileDraft);
   const w = useNotebook(),
     dialog = useRef<HTMLDialogElement>(null),
     picker = useRef<HTMLInputElement>(null),
     folderPicker = useRef<HTMLInputElement>(null),
-    [cwd, setCwd] = useState(""),
+    importButton = useRef<HTMLButtonElement>(null),
+    [cwd, setCwd] = useState(() => restoredDraft.current?.cwd ?? ""),
     [search, setSearch] = useState(""),
-    [selected, setSelected] = useState(""),
-    [text, setText] = useState(""),
-    [dirty, setDirty] = useState(false),
-    [form, setForm] = useState<Form>(),
-    [name, setName] = useState(""),
+    [selected, setSelected] = useState(
+      () => restoredDraft.current?.selected ?? "",
+    ),
+    [text, setText] = useState(() => restoredDraft.current?.text ?? ""),
+    [dirty, setDirty] = useState(() => restoredDraft.current?.dirty ?? false),
+    [form, setForm] = useState<Form | undefined>(
+      () => restoredDraft.current?.form,
+    ),
+    [name, setName] = useState(() => restoredDraft.current?.name ?? ""),
     [error, setError] = useState(""),
-    [confirmClose, setConfirmClose] = useState(false),
-    [asset, setAsset] = useState("bunny.mp4");
+    [confirmClose, setConfirmClose] = useState(false);
   const returnTo = useRef<HTMLElement | null>(null),
-    formInput = useRef<HTMLInputElement>(null);
+    restoreFormFocus = useRef(false),
+    formInput = useRef<HTMLInputElement>(null),
+    formCancel = useRef<HTMLButtonElement>(null),
+    keepEditing = useRef<HTMLButtonElement>(null);
   useRestartGuard(() => !dirty && !form && !confirmClose);
+  useLayoutEffect(() => {
+    pendingFileDraft =
+      dirty || form ? { cwd, selected, text, dirty, form, name } : undefined;
+  }, [cwd, selected, text, dirty, form, name]);
   useEffect(() => {
     if (open) {
       if (!dialog.current?.open) dialog.current?.showModal();
     } else if (dialog.current?.open) dialog.current.close();
   }, [open]);
   useEffect(() => {
-    if (form) formInput.current?.focus();
-  }, [form]);
+    if (open && form)
+      (form.kind === "delete"
+        ? formCancel.current
+        : formInput.current
+      )?.focus();
+  }, [form, open]);
+  useEffect(() => {
+    if (
+      !restoreFormFocus.current ||
+      form ||
+      w.busy ||
+      dirty ||
+      confirmClose ||
+      !dialog.current?.open
+    )
+      return;
+    restoreFormFocus.current = false;
+    if (returnTo.current?.isConnected) returnTo.current.focus();
+    else importButton.current?.focus();
+  }, [form, w.busy, dirty, confirmClose]);
+  useEffect(() => {
+    if (confirmClose) keepEditing.current?.focus();
+  }, [confirmClose]);
   useEffect(() => {
     folderPicker.current?.setAttribute("webkitdirectory", "");
-  }, []);
+  }, [confirmClose]);
   const current = w.files[selected];
   function requestClose() {
     if (dirty || form) {
@@ -118,7 +183,11 @@ export function FileManager({
       setError(n.dirty);
       return;
     }
-    returnTo.current = document.activeElement as HTMLElement;
+    const active = document.activeElement as HTMLElement | null;
+    const disclosure = active?.closest("details");
+    restoreFormFocus.current = false;
+    returnTo.current = disclosure?.querySelector("summary") ?? active;
+    if (disclosure) disclosure.open = false;
     setForm(next);
     setName(
       next.kind === "move"
@@ -132,8 +201,8 @@ export function FileManager({
     setError("");
   }
   function cancelForm() {
+    restoreFormFocus.current = true;
     setForm(undefined);
-    requestAnimationFrame(() => returnTo.current?.focus());
   }
   async function perform(work: () => Promise<void>) {
     setError("");
@@ -173,7 +242,7 @@ export function FileManager({
   }
   const prefix = cwd ? cwd + "/" : "";
   const directorySet = new Set<string>(w.folders);
-  for (const path of Object.keys(w.files)) {
+  for (const path of [...Object.keys(w.files), ...w.folders]) {
     const parts = path.split("/");
     parts.pop();
     while (parts.length) {
@@ -181,7 +250,7 @@ export function FileManager({
       parts.pop();
     }
   }
-  const entries = [
+  const allEntries = [
     ...Array.from(directorySet)
       .filter(
         (p) => p.startsWith(prefix) && !p.slice(prefix.length).includes("/"),
@@ -192,20 +261,47 @@ export function FileManager({
         (p) => p.startsWith(prefix) && !p.slice(prefix.length).includes("/"),
       )
       .map((path) => ({ path, folder: false })),
-  ]
-    .filter(
-      (f) => !search || f.path.toLowerCase().includes(search.toLowerCase()),
-    )
-    .sort(
-      (a, b) =>
-        Number(b.folder) - Number(a.folder) || a.path.localeCompare(b.path),
-    );
+  ].sort(
+    (a, b) =>
+      Number(b.folder) - Number(a.folder) || a.path.localeCompare(b.path),
+  );
+  const entries = allEntries.filter(
+    (f) => !search || f.path.toLowerCase().includes(search.toLowerCase()),
+  );
+  const fileCount = Object.keys(w.files).length;
+  const totalBytes = Object.values(w.files).reduce(
+    (sum, f) => sum + f.blob.size,
+    0,
+  );
+  const nearLimit =
+    fileCount / 64 >= 0.8 || totalBytes / (32 * 1024 * 1024) >= 0.8;
   const blocked = w.busy || dirty || Boolean(form);
   return (
     <dialog
-      className="notebook-files"
+      className="notebook-files notebook-files-simple"
       ref={dialog}
       aria-labelledby="notebook-files-title"
+      aria-describedby="notebook-files-intro"
+      onKeyDown={(e) => {
+        if (e.key !== "Escape") return;
+        const expanded = [
+          ...(dialog.current?.querySelectorAll<HTMLDetailsElement>(
+            "details[open]",
+          ) ?? []),
+        ];
+        const activeDisclosure = (
+          document.activeElement as HTMLElement | null
+        )?.closest("details");
+        const disclosure = activeDisclosure?.open
+          ? activeDisclosure
+          : expanded.at(-1);
+        if (disclosure) {
+          e.preventDefault();
+          e.stopPropagation();
+          disclosure.open = false;
+          disclosure.querySelector("summary")?.focus();
+        }
+      }}
       onCancel={(e) => {
         if (dirty || form) {
           e.preventDefault();
@@ -213,34 +309,33 @@ export function FileManager({
         }
       }}
       onClose={() => {
+        pendingFileDraft = undefined;
+        restoreFormFocus.current = false;
         setSelected("");
         setForm(undefined);
         setDirty(false);
         setConfirmClose(false);
         setError("");
+        dialog.current
+          ?.querySelectorAll("details[open]")
+          .forEach((details) => details.removeAttribute("open"));
         onClose();
       }}
     >
       <header>
-        <h2 id="notebook-files-title">{n.files}</h2>
+        <h2 id="notebook-files-title">{n.yourFiles}</h2>
         <button onClick={requestClose}>{n.close}</button>
       </header>
-      <p>
-        {Object.keys(w.files).length} / 64 ·{" "}
-        {(
-          Object.values(w.files).reduce((sum, f) => sum + f.blob.size, 0) /
-          1048576
-        ).toFixed(2)}{" "}
-        / 32 MiB
+      <p id="notebook-files-intro" className="muted">
+        {n.filesIntro}
       </p>
-      <p className="muted">{n.storageNote}</p>
       {error && (
         <p role="alert" className="notebook-error">
           {error}
         </p>
       )}
       {confirmClose && (
-        <section aria-label={n.dirty}>
+        <section aria-label={n.dirty} className="notebook-file-form">
           <p>{n.dirty}</p>
           <button
             onClick={() => {
@@ -252,7 +347,20 @@ export function FileManager({
           >
             {n.discard}
           </button>
-          <button autoFocus onClick={() => setConfirmClose(false)}>
+          <button
+            ref={keepEditing}
+            onClick={() => {
+              setConfirmClose(false);
+              requestAnimationFrame(() => {
+                if (form)
+                  (form.kind === "delete"
+                    ? formCancel.current
+                    : formInput.current
+                  )?.focus();
+                else dialog.current?.querySelector("textarea")?.focus();
+              });
+            }}
+          >
             {n.keep}
           </button>
         </section>
@@ -260,40 +368,56 @@ export function FileManager({
       {!confirmClose && (
         <>
           <div className="notebook-file-tools">
-            <button disabled={blocked} onClick={() => picker.current?.click()}>
+            <button
+              className="primary notebook-import-primary"
+              ref={importButton}
+              disabled={blocked}
+              onClick={() => picker.current?.click()}
+            >
               {n.import}
             </button>
-            {typeof HTMLInputElement !== "undefined" &&
-              "webkitdirectory" in HTMLInputElement.prototype && (
-                <button
-                  disabled={blocked}
-                  onClick={() => folderPicker.current?.click()}
-                >
-                  {n.importFolder}
-                </button>
-              )}
-            <button
-              disabled={blocked}
-              onClick={() => begin({ kind: "folder" })}
-            >
-              {n.newFolder}
-            </button>
-            <button disabled={blocked} onClick={() => begin({ kind: "text" })}>
-              {n.newText}
-            </button>
-            <button
-              disabled={w.busy || !Object.keys(w.files).length}
-              onClick={() =>
-                void perform(async () =>
-                  downloadBlob(
-                    "video-lab-files.zip",
-                    await zipFiles(Object.values(w.files)),
-                  ),
-                )
-              }
-            >
-              {n.downloadAll}
-            </button>
+            <details className="notebook-file-options">
+              <summary>{n.moreFileOptions}</summary>
+              <div className="notebook-file-options-content">
+                <div className="notebook-file-option-buttons">
+                  {typeof HTMLInputElement !== "undefined" &&
+                    "webkitdirectory" in HTMLInputElement.prototype && (
+                      <button
+                        disabled={blocked}
+                        onClick={() => folderPicker.current?.click()}
+                      >
+                        {n.importFolder}
+                      </button>
+                    )}
+                  <button
+                    disabled={blocked}
+                    onClick={() => begin({ kind: "folder" })}
+                  >
+                    {n.newFolder}
+                  </button>
+                  <button
+                    disabled={blocked}
+                    onClick={() => begin({ kind: "text" })}
+                  >
+                    {n.newText}
+                  </button>
+                  <button
+                    disabled={w.busy || !fileCount}
+                    onClick={() =>
+                      void perform(async () =>
+                        downloadBlob(
+                          "video-lab-files.zip",
+                          await zipFiles(Object.values(w.files)),
+                        ),
+                      )
+                    }
+                  >
+                    {n.downloadAll}
+                  </button>
+                </div>
+                <p className="muted">{n.storageNote}</p>
+              </div>
+            </details>
           </div>
           <input
             ref={picker}
@@ -309,61 +433,46 @@ export function FileManager({
             hidden
             onChange={(e) => void imported(e.target.files)}
           />
-          <form
-            className="notebook-add-asset"
-            onSubmit={(e) => {
-              e.preventDefault();
-              void perform(() => w.load([asset]));
-            }}
-          >
-            <label>
-              {n.source}
-              <select
-                value={asset}
-                onChange={(e) => setAsset(e.target.value)}
+          {(directorySet.size > 0 || cwd) && (
+            <nav className="notebook-breadcrumb" aria-label={n.root}>
+              <button
                 disabled={blocked}
+                aria-current={!cwd ? "location" : undefined}
+                onClick={() => {
+                  setCwd("");
+                  setSelected("");
+                }}
               >
-                {Object.keys(practiceAssets).map((name) => (
-                  <option key={name}>{name}</option>
+                {n.root}
+              </button>
+              {cwd
+                .split("/")
+                .filter(Boolean)
+                .map((part, i, all) => (
+                  <button
+                    key={i}
+                    disabled={blocked}
+                    aria-current={i === all.length - 1 ? "location" : undefined}
+                    onClick={() => {
+                      setCwd(all.slice(0, i + 1).join("/"));
+                      setSelected("");
+                    }}
+                  >
+                    {part}
+                  </button>
                 ))}
-              </select>
+            </nav>
+          )}
+          {(allEntries.length > 8 || search) && (
+            <label className="notebook-file-search">
+              {n.filter}
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </label>
-            <button disabled={blocked}>{n.load}</button>
-          </form>
-          <nav className="notebook-breadcrumb" aria-label={n.root}>
-            <button
-              disabled={blocked}
-              onClick={() => {
-                setCwd("");
-                setSelected("");
-              }}
-            >
-              {n.root}
-            </button>
-            {cwd
-              .split("/")
-              .filter(Boolean)
-              .map((part, i, all) => (
-                <button
-                  key={i}
-                  disabled={blocked}
-                  onClick={() => {
-                    setCwd(all.slice(0, i + 1).join("/"));
-                    setSelected("");
-                  }}
-                >
-                  {part}
-                </button>
-              ))}
-          </nav>
-          <label>
-            {n.filter}
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </label>
+          )}
           {form && (
             <form
               className="notebook-file-form"
@@ -384,6 +493,12 @@ export function FileManager({
                   if (ok) {
                     if (selected === form.from)
                       setSelected(form.kind === "move" ? name : "");
+                    if (
+                      form.kind === "delete" &&
+                      form.from &&
+                      (cwd === form.from || cwd.startsWith(form.from + "/"))
+                    )
+                      setCwd("");
                     cancelForm();
                   }
                 })();
@@ -425,7 +540,12 @@ export function FileManager({
               <button disabled={w.busy}>
                 {form.kind === "delete" ? n.delete : n.save}
               </button>
-              <button type="button" onClick={cancelForm}>
+              <button
+                type="button"
+                ref={formCancel}
+                disabled={w.busy}
+                onClick={cancelForm}
+              >
                 {n.keep}
               </button>
             </form>
@@ -446,12 +566,11 @@ export function FileManager({
                     {entry.folder ? "▸ " : ""}
                     {entry.path.slice(prefix.length)}
                   </button>
-                  {!entry.folder && (
-                    <small>
-                      {w.files[entry.path]!.blob.size.toLocaleString()} B ·{" "}
-                      {w.files[entry.path]!.origin}
-                    </small>
-                  )}
+                  <small>
+                    {entry.folder
+                      ? n.folderLabel
+                      : `${fileSize(w.files[entry.path]!.blob.size)} · ${originLabel(w.files[entry.path]!)}`}
+                  </small>
                 </div>
                 <div className="notebook-file-actions">
                   {!entry.folder && (
@@ -465,40 +584,55 @@ export function FileManager({
                       {n.download}
                     </button>
                   )}
-                  <button
-                    disabled={blocked}
-                    aria-label={`${n.rename} ${entry.path}`}
-                    onClick={() => begin({ kind: "move", from: entry.path })}
-                  >
-                    {n.rename}
-                  </button>
-                  {!entry.folder && (
-                    <button
-                      disabled={blocked}
-                      aria-label={`${n.copyFile} ${entry.path}`}
-                      onClick={() => begin({ kind: "copy", from: entry.path })}
-                    >
-                      {n.copyFile}
-                    </button>
-                  )}
-                  <button
-                    disabled={blocked}
-                    aria-label={`${n.delete} ${entry.path}`}
-                    onClick={() => begin({ kind: "delete", from: entry.path })}
-                  >
-                    {n.delete}
-                  </button>
+                  <details className="notebook-row-options">
+                    <summary aria-label={`${n.moreActions}: ${entry.path}`}>
+                      {n.moreActions}
+                    </summary>
+                    <div className="notebook-row-option-buttons">
+                      <button
+                        disabled={blocked}
+                        aria-label={`${n.rename} ${entry.path}`}
+                        onClick={() =>
+                          begin({ kind: "move", from: entry.path })
+                        }
+                      >
+                        {n.rename}
+                      </button>
+                      {!entry.folder && (
+                        <button
+                          disabled={blocked}
+                          aria-label={`${n.copyFile} ${entry.path}`}
+                          onClick={() =>
+                            begin({ kind: "copy", from: entry.path })
+                          }
+                        >
+                          {n.copyFile}
+                        </button>
+                      )}
+                      <button
+                        disabled={blocked}
+                        aria-label={`${n.delete} ${entry.path}`}
+                        onClick={() =>
+                          begin({ kind: "delete", from: entry.path })
+                        }
+                      >
+                        {n.delete}
+                      </button>
+                    </div>
+                  </details>
                 </div>
               </li>
             ))}
           </ul>
-          {!entries.length && <p>{n.empty}</p>}
+          {!entries.length && (
+            <p>{search ? n.noSearchMatches : cwd ? n.empty : n.noFiles}</p>
+          )}
           {current && (
             <section className="notebook-file-open">
               <h3>{selected}</h3>
               {!/\.(txt|md|srt|csv|sh|json)$/i.test(current.name) && (
                 <FilePreview file={current} />
-              )}{" "}
+              )}
               {/\.(txt|md|srt|csv|sh|json)$/i.test(current.name) && (
                 <form
                   onSubmit={(e) => {
@@ -528,16 +662,22 @@ export function FileManager({
               )}
             </section>
           )}
-          <p className="muted">{n.limits}</p>
-          <button
-            disabled={blocked}
-            onClick={() => {
-              dialog.current?.close();
-              location.hash = "#/earlier";
-            }}
-          >
-            {n.earlierWork}
-          </button>
+          {nearLimit && (
+            <p className="notebook-file-limits">
+              {n.nearFileLimit} {n.fileLimits}
+            </p>
+          )}
+          {hasEarlierWork && (
+            <button
+              disabled={blocked}
+              onClick={() => {
+                dialog.current?.close();
+                location.hash = "#/earlier";
+              }}
+            >
+              {n.earlierWork}
+            </button>
+          )}
         </>
       )}
     </dialog>

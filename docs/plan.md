@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Simpler Files, 26 October 2026:** [the Files cleanup](notes/files-cleanup/01-plan.md) moves the notebook file utility into the app header and prioritises preview, import and download. Less-used operations stay available contextually, with search, folder navigation, storage limits and earlier-work access appearing when relevant.
+
 **Visual teaching, 26 October 2026:** [the visual teaching slice](notes/visual-teaching/01-plan.md) adds source-grounded diagrams and comparisons to fourteen notebook pages, introduces terminology before figures, and replaces overlapping prose with selective inline emphasis and literal code styling. Raw command output stays unchanged. [Verified source and image evidence](notes/visual-teaching/02-facts.md) distinguishes recorded native examples from explanatory models and learner outputs.
 
 **Notebook readability, 25 October 2026:** [the readability slice](notes/readability/01-plan.md) removes decorative borders and ruled option rows, keeps commands and raw results together, and gives introductory cuts a compact current-command preview. Complete commands reflow without clipping. It preserves saved work and the teaching flow below.
