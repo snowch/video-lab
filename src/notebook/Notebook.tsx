@@ -6,6 +6,8 @@ import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
 import { ExampleDiagram } from "./ExampleDiagram";
+import { InlineText } from "./InlineText";
+import { ConceptVisual } from "./visuals/ConceptVisual";
 import { FileManager, FilePreview } from "./FileManager";
 import "./style.css";
 const creditUrl =
@@ -133,12 +135,18 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           {chapterPages.indexOf(page) + 1} / {chapterPages.length}
         </p>
         <h1>{copy.title}</h1>
-        <p className="notebook-goal">{copy.goal}</p>
+        <p className="notebook-goal">
+          <InlineText>{copy.goal}</InlineText>
+        </p>
       </header>
       <section className="notebook-source">
         <strong>{n.source}</strong>
         <code>{sourceName}</code>
-        {copy.sourceNote && <p>{copy.sourceNote}</p>}
+        {copy.sourceNote && (
+          <p>
+            <InlineText>{copy.sourceNote}</InlineText>
+          </p>
+        )}
         {required.length > 0 ? (
           <>
             <p>{n.loadNote}</p>
@@ -195,9 +203,12 @@ function NotebookPage({ page }: { page: PageDefinition }) {
       </section>
       <section className="notebook-concept">
         {copy.concept.map((p, i) => (
-          <p key={i}>{p}</p>
+          <p key={i}>
+            <InlineText>{p}</InlineText>
+          </p>
         ))}
       </section>
+      <ConceptVisual pageId={page.id} />
       {page.worked.map((command, i) => (
         <CommandCell
           key={page.id + ":worked:" + i}
@@ -239,7 +250,9 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           {hint > 0 && (
             <ol>
               {copy.hints.slice(0, hint).map((h, i) => (
-                <li key={i}>{h}</li>
+                <li key={i}>
+                  <InlineText>{h}</InlineText>
+                </li>
               ))}
             </ol>
           )}
@@ -263,7 +276,9 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           <p>{n.nativeNote}</p>
           <pre tabIndex={0}>{page.nativeScript}</pre>
           {copy.nativeExplanation?.map((p, i) => (
-            <p key={i}>{p}</p>
+            <p key={i}>
+              <InlineText>{p}</InlineText>
+            </p>
           ))}
 
           <button

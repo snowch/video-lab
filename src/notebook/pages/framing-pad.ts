@@ -5,9 +5,8 @@ const page: PageCopy = {
   title: "Fit the whole view inside a square",
   goal: "Keep the full picture by adding space above and below it.",
   concept: [
-    "A square crop loses the sides of a wide picture. Padding offers another way to fit it: place the whole picture inside a larger canvas, the rectangular area occupied by each output frame. The extra area becomes part of the video.",
-    "First make the picture small enough to fit. Then add space around it. These are two separate operations, so their order matters: padding cannot fit a picture into a canvas smaller than that picture. Here the wide source fills the canvas width and leaves spare height.",
-    "Padding keeps the original field of view, but scaling down still reduces fine detail. Choose it when keeping the scene matters more than filling every part of the square with picture content.",
+    "**Padding** places a picture inside a larger **canvas**, the area occupied by each output frame. The added area becomes part of the video.",
+    "Scale the picture to fit, then add space around it. The order matters: padding cannot put a picture into a canvas smaller than itself. This keeps the full field of view, although scaling down still reduces fine detail.",
   ],
   worked: [
     {
@@ -45,7 +44,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-pad.mp4 for a smaller square preview: use a 360 × 360 canvas, keep the full view centred, and retain all eight seconds and the sound.",
+    "Create `practice-pad.mp4` for a smaller square preview: use a 360 × 360 canvas, keep the full view centred, and retain all eight seconds and the sound.",
   practiceObserve:
     "Compare the scene edges with the source and the bands with the worked result. The smaller preview should keep the same view and centred placement. Play it through and listen for sound.",
   hints: [
@@ -53,7 +52,7 @@ const page: PageCopy = {
     "The picture should fill the new canvas width without cropping.",
     "Change the scale width and both canvas dimensions to 360.",
     "Keep -2 and the centring expressions unchanged.",
-    "Use scale=360:-2,pad=360:360:(ow-iw)/2:(oh-ih)/2 and save to practice-pad.mp4.",
+    "Use scale=360:-2,pad=360:360:(ow-iw)/2:(oh-ih)/2 and save to `practice-pad.mp4`.",
   ],
   checkLimit:
     "The check measures frame dimensions, duration and the presence of video and audio. Compare the replay with the source to confirm the full view and centred placement, and listen to the sound.",

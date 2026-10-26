@@ -1,0 +1,372 @@
+{
+  "copyright": "Copyright © 2026 Christopher Snow",
+  "kind": "Provided native examples, not results from the current editable command",
+  "versions": {
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "provenance": {
+    "title": "Big Buck Bunny — course practice excerpts",
+    "attribution": "© 2008 Blender Foundation | peach.blender.org",
+    "licence": "Creative Commons Attribution 3.0 Unported",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "sourceUrl": "https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov.zip",
+    "record": "docs/notes/notebook/media.json",
+    "modification": "Extracted the same picture at 2 seconds; resized, cropped or padded for framing examples. Independently encoded all eight seconds at CRF 18 and 35, then extracted equal 256 × 192 details. PNG stills are lossless representations of each decoded result; source video was already lossy."
+  },
+  "source": {
+    "path": "media/notebook/bunny-short.mp4",
+    "bytes": 352138,
+    "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144",
+    "container": "mp4",
+    "containerEvidence": {
+      "box": "ftyp",
+      "majorBrand": "isom",
+      "compatibleBrands": "isomiso2avc1mp41",
+      "preparationRecord": "docs/notes/notebook/media.json#preparationArguments.short"
+    },
+    "duration": 8,
+    "streams": [
+      {
+        "index": 0,
+        "type": "video",
+        "codec": "h264",
+        "timeBase": "1/12288",
+        "width": 854,
+        "height": 480,
+        "frameRate": "24/1",
+        "sampleAspectRatio": "1:1",
+        "pixelFormat": "yuv420p"
+      },
+      {
+        "index": 1,
+        "type": "audio",
+        "codec": "aac",
+        "timeBase": "1/48000",
+        "sampleRate": 48000,
+        "channels": 2
+      }
+    ]
+  },
+  "probe": {
+    "command": ["ffprobe", "bunny-short.mp4"],
+    "cwd": "public/media/notebook",
+    "lines": [
+      "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':",
+      "  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s",
+      "  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)",
+      "  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)"
+    ]
+  },
+  "timeline": {
+    "command": [
+      "ffprobe",
+      "-v",
+      "error",
+      "-select_streams",
+      "v:0",
+      "-show_frames",
+      "-show_entries",
+      "frame=pts,pts_time",
+      "-of",
+      "json",
+      "public/media/notebook/bunny-short.mp4"
+    ],
+    "timeBase": "1/12288",
+    "ticksPerFrame": 512,
+    "totalFrames": 192,
+    "frames": [
+      {
+        "pts": 0,
+        "seconds": 0
+      },
+      {
+        "pts": 512,
+        "seconds": 0.041667
+      },
+      {
+        "pts": 1024,
+        "seconds": 0.083333
+      },
+      {
+        "pts": 1536,
+        "seconds": 0.125
+      },
+      {
+        "pts": 2048,
+        "seconds": 0.166667
+      },
+      {
+        "pts": 2560,
+        "seconds": 0.208333
+      },
+      {
+        "pts": 3072,
+        "seconds": 0.25
+      },
+      {
+        "pts": 3584,
+        "seconds": 0.291667
+      }
+    ]
+  },
+  "captions": {
+    "path": "media/notebook/captions.srt",
+    "bytes": 113,
+    "sha256": "7f82453a0a8deabdfbc2ab457d82d6d1dffa3a367924cef994e4b64ccc49e4d6",
+    "cues": [
+      {
+        "index": 1,
+        "start": 0,
+        "end": 3,
+        "text": "A moment from Big Buck Bunny"
+      },
+      {
+        "index": 2,
+        "start": 3,
+        "end": 6,
+        "text": "Watch what changes"
+      }
+    ]
+  },
+  "framing": {
+    "sourceTime": 2,
+    "sourceFrame": 48,
+    "images": {
+      "source": {
+        "path": "media/visuals/framing-source.png",
+        "width": 854,
+        "height": 480,
+        "bytes": 269809,
+        "sha256": "aec86ae97bcea5a10e74cd01477514179b61faf137411294b60644c561a44b98",
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-ss",
+          "2",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-frames:v",
+          "1",
+          "-c:v",
+          "png",
+          "-pred",
+          "mixed",
+          "-compression_level",
+          "9",
+          "public/media/visuals/framing-source.png"
+        ]
+      },
+      "scale": {
+        "path": "media/visuals/framing-scale.png",
+        "width": 640,
+        "height": 360,
+        "bytes": 204280,
+        "sha256": "fe3f394f578335141d9ccfdb660d906d9d0177834701efc31bacb345ef376dba",
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-ss",
+          "2",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-frames:v",
+          "1",
+          "-vf",
+          "scale=640:-2",
+          "-c:v",
+          "png",
+          "-pred",
+          "mixed",
+          "-compression_level",
+          "9",
+          "public/media/visuals/framing-scale.png"
+        ]
+      },
+      "crop": {
+        "path": "media/visuals/framing-crop.png",
+        "width": 480,
+        "height": 480,
+        "bytes": 140344,
+        "sha256": "76fabe5130f2db823217e4e4787f233b4303cea747e3cf28bba17a9bba26c50b",
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-ss",
+          "2",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-frames:v",
+          "1",
+          "-vf",
+          "crop=480:480",
+          "-c:v",
+          "png",
+          "-pred",
+          "mixed",
+          "-compression_level",
+          "9",
+          "public/media/visuals/framing-crop.png"
+        ]
+      },
+      "pad": {
+        "path": "media/visuals/framing-pad.png",
+        "width": 480,
+        "height": 480,
+        "bytes": 132100,
+        "sha256": "e8272047e273f9e3729c0ad410e212f2e087b0097173b6467a87b02424bda302",
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-ss",
+          "2",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-frames:v",
+          "1",
+          "-vf",
+          "scale=480:-2,pad=480:480:(ow-iw)/2:(oh-ih)/2",
+          "-c:v",
+          "png",
+          "-pred",
+          "mixed",
+          "-compression_level",
+          "9",
+          "public/media/visuals/framing-pad.png"
+        ]
+      }
+    }
+  },
+  "quality": {
+    "sourceTime": 2,
+    "sourceFrame": 48,
+    "crop": {
+      "width": 256,
+      "height": 192,
+      "x": 350,
+      "y": 96
+    },
+    "encodes": [
+      {
+        "path": "media/visuals/quality-crf18.mp4",
+        "crf": 18,
+        "bytes": 685427,
+        "sha256": "4479354726c4fc8aa32f79e9d3f8414833243d4d03a27606142446905e4147ab",
+        "duration": 8,
+        "frameCount": 192,
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-threads",
+          "1",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "18",
+          "-c:a",
+          "aac",
+          "public/media/visuals/quality-crf18.mp4"
+        ],
+        "image": {
+          "path": "media/visuals/quality-crf18.png",
+          "width": 256,
+          "height": 192,
+          "bytes": 41343,
+          "sha256": "dd072897b18258d2379643ab2b4dc4e77a547a33a581a3f19c9b2ffbf0ae894e",
+          "command": [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-y",
+            "-ss",
+            "2",
+            "-i",
+            "public/media/visuals/quality-crf18.mp4",
+            "-frames:v",
+            "1",
+            "-vf",
+            "crop=256:192:350:96",
+            "-c:v",
+            "png",
+            "-pred",
+            "mixed",
+            "-compression_level",
+            "9",
+            "public/media/visuals/quality-crf18.png"
+          ]
+        }
+      },
+      {
+        "path": "media/visuals/quality-crf35.mp4",
+        "crf": 35,
+        "bytes": 293763,
+        "sha256": "df3f89eff83b29679f375e7b29528805d62a934d8ae4e79375b4a68101471bf2",
+        "duration": 8,
+        "frameCount": 192,
+        "command": [
+          "ffmpeg",
+          "-v",
+          "error",
+          "-y",
+          "-i",
+          "public/media/notebook/bunny-short.mp4",
+          "-threads",
+          "1",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "medium",
+          "-crf",
+          "35",
+          "-c:a",
+          "aac",
+          "public/media/visuals/quality-crf35.mp4"
+        ],
+        "image": {
+          "path": "media/visuals/quality-crf35.png",
+          "width": 256,
+          "height": 192,
+          "bytes": 38951,
+          "sha256": "3cfd262e3b1791631b219ba6d12c644b9c84ca64d31dc31d572a60a58be6efcf",
+          "command": [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-y",
+            "-ss",
+            "2",
+            "-i",
+            "public/media/visuals/quality-crf35.mp4",
+            "-frames:v",
+            "1",
+            "-vf",
+            "crop=256:192:350:96",
+            "-c:v",
+            "png",
+            "-pred",
+            "mixed",
+            "-compression_level",
+            "9",
+            "public/media/visuals/quality-crf35.png"
+          ]
+        }
+      }
+    ],
+    "sizeMeaning": "Whole eight-second MP4, including video, AAC audio and container; not the PNG or one frame. Native reference sizes depend on encoder build and settings.",
+    "limitation": "Both versions begin with the supplied, already compressed source. A larger re-encode cannot recover source detail. The PNG details use identical coordinates at 1:1 source pixel scale."
+  }
+}

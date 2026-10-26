@@ -6,6 +6,7 @@ import { hashBlob } from "./model";
 import type { PageDefinition } from "./structure";
 import { n } from "./ui.strings";
 import { practiceAssets } from "./assets";
+import { ProbeGuide } from "./visuals/InspectDiagrams";
 
 // Planned source intervals are separate from measured output and fixed teaching models.
 function CutDiagram({ command }: { command: string }) {
@@ -81,6 +82,7 @@ export function ExampleDiagram({
   command: string;
 }) {
   if (page.chapter === "first-edit") return <CutDiagram command={command} />;
+  if (page.id === "inside-video/inspect") return <ProbeGuide />;
   if (page.id === "cut-join/join") {
     return (
       <figure className="notebook-diagram">

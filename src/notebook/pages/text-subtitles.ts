@@ -7,9 +7,9 @@ const page: PageCopy = {
   sourceNote:
     "This example needs the video, captions.srt and fonts/DejaVuSans.ttf. Open captions.srt in Files to see the two cues and their times.",
   concept: [
-    "A subtitle cue is a piece of text with a start and end time. Keeping cues in a separate file lets you change the words or their timing without rewriting the video command. The supplied cue text is original instructional material, not a transcription of Big Buck Bunny dialogue.",
-    "captions.srt is a plain-text SubRip file. Each cue contains a sequence number, a timing line and its text. The timing line uses hours:minutes:seconds,milliseconds, with --> between the start and end. A blank line separates cues. Here the first cue runs from 0 to 3 seconds, and the second from 3 to 6 seconds.",
-    "This lesson draws the cues into the video frames. The letters become picture pixels, so viewers cannot turn them off as a separate subtitle track. Changing the text file later does not change a finished video: the new text must be rendered into a new result.",
+    "A **subtitle cue** pairs text with a start and end time. The supplied text is original instructional material, rather than a transcription of Big Buck Bunny dialogue.",
+    "`captions.srt` is a plain-text SubRip file. Each cue has a number, a timing line and text, with a blank line between cues. Times use `hours:minutes:seconds,milliseconds`; `-->` separates start and end. The timeline shows the supplied intervals.",
+    "This lesson **burns in** the text: it becomes picture pixels, so viewers cannot switch it off as a separate subtitle track. Editing the cue file changes future renders; it cannot change a finished video.",
   ],
   worked: [
     {
@@ -26,7 +26,7 @@ const page: PageCopy = {
         {
           flag: "subtitles=captions.srt",
           meaning:
-            "Read the timed cues from captions.srt and draw their text into the pictures.",
+            "Read the timed cues from `captions.srt` and draw their text into the pictures.",
         },
         {
           flag: "fontsdir=fonts",
@@ -47,15 +47,15 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "In Files, change only the second cue’s words in captions.srt to a short description of something you can see in the scene. Keep both timing lines unchanged and save the text file. Render practice-subtitles.mp4 using the supplied font and all eight seconds of video and sound.",
+    "In Files, change only the second cue’s words in `captions.srt` to a short description of something you can see in the scene. Keep both timing lines unchanged and save the text file. Render `practice-subtitles.mp4` using the supplied font and all eight seconds of video and sound.",
   practiceObserve:
     "Check that your new words appear from 3 to 6 seconds, while the first cue stays unchanged. Compare with subtitled.mp4, then listen for sound. Download the edited text file if you want to retain it.",
   hints: [
-    "The words live in captions.srt, so the video command can stay the same after a text edit.",
+    "The words live in `captions.srt`, so the video command can stay the same after a text edit.",
     "Keep the cue numbers, timing lines and blank line between cues intact.",
-    "Use the subtitle video filter with the edited captions.srt file.",
+    "Use the subtitle video filter with the edited `captions.srt` file.",
     "Make the fonts folder available and explicitly select the DejaVu Sans family.",
-    "Keep subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans inside double quotes, and save the video as practice-subtitles.mp4.",
+    "Keep `subtitles=captions.srt:fontsdir=fonts:force_style=Fontname=DejaVu Sans` inside double quotes, and save the video as `practice-subtitles.mp4`.",
   ],
   checkLimit:
     "The check measures duration and the presence of video and audio. Replay to confirm the edited words, cue timing and readability, and listen for sound.",

@@ -5,8 +5,8 @@ const page: PageCopy = {
   title: "Count pictures through time",
   goal: "Reduce the number of pictures shown each second while keeping the same four-second scene.",
   concept: [
-    "A frame is one picture in a video. Frame rate measures how many pictures are presented each second. This source has 24 frames per second: each picture occupies about one twenty-fourth of a second.",
-    "Motion depends on the changes between those pictures. Showing fewer pictures over the same time leaves larger jumps between positions, which can make movement look less smooth. It need not change how long the scene lasts or how fast the sound plays.",
+    "**Frame rate** counts video pictures presented per second. At a constant 24 frames per second, each picture occupies 1/24 of a second. Showing fewer pictures across the same interval leaves larger jumps in movement; it need not shorten the scene.",
+    "Audio has a separate **sample rate**: sound measurements per second, for each channel. The source’s `48000 Hz` means 48,000 samples per second per channel. This counts sound measurements, rather than pictures; a larger number does not mean the sound plays faster.",
   ],
   worked: [
     {
@@ -17,7 +17,7 @@ const page: PageCopy = {
       options: [
         {
           flag: "-i bunny-short.mp4",
-          meaning: "Read the source video and sound from bunny-short.mp4.",
+          meaning: "Read the source video and sound from `bunny-short.mp4`.",
         },
         {
           flag: "-t 4",
@@ -42,7 +42,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-rate.mp4 containing the opening four seconds at 6 frames per second, with sound. Aim for more visibly stepped movement over the same interval.",
+    "Create `practice-rate.mp4` containing the opening four seconds at 6 frames per second, with sound. Aim for more visibly stepped movement over the same interval.",
   practiceObserve:
     "Compare the same movement in practice-rate.mp4, paced.mp4 and the source. The six-frame-per-second version has 24 video frames across four seconds. Check that the motion has larger steps while the scene and sound keep their pace.",
   hints: [
@@ -50,7 +50,7 @@ const page: PageCopy = {
     "Change the video filter rather than the duration.",
     "The number after fps= sets the number of pictures per second.",
     "Use fps=6 and keep the source sound enabled.",
-    'Use ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=6" practice-rate.mp4.',
+    'Use `ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=6" practice-rate.mp4`.',
   ],
   checkLimit:
     "Checks verify duration, frame rate and the presence of video and audio. Replay to judge motion and confirm that the sound keeps its pace.",

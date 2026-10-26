@@ -5,8 +5,8 @@ const page: PageCopy = {
   title: "Keep a smaller field of view",
   goal: "Make a square video by removing picture area around its edges.",
   concept: [
-    "Cropping keeps a rectangle from each picture and discards the area outside it. The remaining objects keep their size in pixels. Scaling, by comparison, resizes the picture onto a new pixel grid.",
-    "A crop can make a subject fill more of the frame without adding detail. It also removes context: something near an edge may disappear. Good framing depends on what stays visible throughout the movement, not just in the opening picture.",
+    "**Cropping** keeps a rectangle from each picture and discards the surrounding area. Objects keep their size in pixels; scaling instead resizes them onto a new grid.",
+    "A crop removes context without adding detail. Follow the whole movement to judge whether the subject stays visible; the opening picture alone is insufficient.",
   ],
   worked: [
     {
@@ -30,7 +30,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Make practice-square.mp4 with a centred 360 × 360 crop of bunny-short.mp4. Keep all eight seconds and the sound. Compared with the worked square, this should remove picture area above and below as well as from the sides.",
+    "Make `practice-square.mp4` with a centred 360 × 360 crop of `bunny-short.mp4`. Keep all eight seconds and the sound. Compared with the worked square, this should remove picture area above and below as well as from the sides.",
   practiceObserve:
     "Compare the two square outputs at the same moment, then replay the smaller crop in full. Identify an object or piece of background that the smaller crop loses, and decide whether the remaining view still makes the action clear.",
   hints: [
@@ -38,7 +38,7 @@ const page: PageCopy = {
     "Change the size values inside the crop filter.",
     "A square needs equal width and height.",
     "Set both size values to 360; leaving out position values keeps the crop centred.",
-    'Use ffmpeg -i bunny-short.mp4 -vf "crop=360:360" practice-square.mp4.',
+    'Use `ffmpeg -i bunny-short.mp4 -vf "crop=360:360" practice-square.mp4`.',
   ],
   checkLimit:
     "Checks verify 360 × 360 dimensions, eight seconds and an audio stream. Replay to judge whether the action stays in frame and the sound plays correctly.",

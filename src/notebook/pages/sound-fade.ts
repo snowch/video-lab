@@ -5,8 +5,8 @@ const page: PageCopy = {
   title: "Fade towards silence",
   goal: "Make the soundtrack fall gradually towards silence at the end of a clip.",
   concept: [
-    "A constant volume setting multiplies every audio sample by the same amount. A fade changes that multiplier over time. During a fade-out, the multiplier falls towards zero, so the sound gradually becomes quieter.",
-    "A fade has a start time and a duration. Their sum gives the time when it reaches silence. Fading changes the sound within the clip; it does not shorten the video or remove its audio stream.",
+    "A **fade** is a gradual change in audio level, controlled by a changing amplitude multiplier.",
+    "The **start time** locates the beginning of the change; the **duration** says how long it takes. Add them to find when a fade-out reaches silence.",
   ],
   worked: [
     {
@@ -36,7 +36,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-fade.mp4 with a fade-out that begins halfway through this eight-second clip and reaches silence at its end. Keep the full video and its audio stream.",
+    "Create `practice-fade.mp4` with a fade-out that begins halfway through this eight-second clip and reaches silence at its end. Keep the full video and its audio stream.",
   practiceObserve:
     "Compare practice-fade.mp4 with faded.mp4 at the same playback volume. Listen from second 4 onwards: the practice fade should begin earlier and fall more gradually, with both clips ending at second 8.",
   hints: [
@@ -44,7 +44,7 @@ const page: PageCopy = {
     "Keep the fade type as out.",
     "Halfway through eight seconds is second 4: use that as the start time.",
     "The fade needs four seconds to run from the halfway point to the ending.",
-    'Use -af "afade=t=out:st=4:d=4" and name the output practice-fade.mp4.',
+    'Use -af "afade=t=out:st=4:d=4" and name the output `practice-fade.mp4`.',
   ],
   checkLimit:
     "The check verifies eight-second duration and audio/video presence. Listen to confirm the fade begins at second 4 and reaches silence at the ending.",

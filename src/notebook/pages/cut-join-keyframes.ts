@@ -5,8 +5,8 @@ const page: PageCopy = {
   title: "Cut across picture dependencies",
   goal: "Compare a fast copied cut with a cut that rebuilds the pictures at the requested start.",
   concept: [
-    "Compressed video need not store every picture in full. Many pictures describe changes relative to other pictures. To display one of them, a decoder may need to reconstruct earlier pictures first.",
-    "A keyframe provides a starting point for decoding. A requested cut can fall between these starting points. Copying the compressed data preserves those dependencies; decoding and encoding can build a new beginning for the kept pictures.",
+    "Compressed pictures can depend on other pictures for decoding. A **keyframe** provides a decoding starting point. The figure models how dependencies can cross a requested cut.",
+    "A cut can fall between decoding starting points. Copying preserves the encoded dependencies; decoding and encoding can build a new beginning from the pictures you keep.",
   ],
   worked: [
     {
@@ -31,7 +31,7 @@ const page: PageCopy = {
         {
           flag: "-c copy",
           meaning:
-            "Copy the compressed video and audio packets without decoding and encoding them. Material before the requested start may be retained to support decoding.",
+            "Copy the compressed video and audio data without decoding and encoding them. Material before the requested start may be retained to support decoding.",
         },
       ],
       observe:
@@ -65,15 +65,15 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Deliver practice-exact.mp4 containing source seconds 1 to 4, with video and audio. Choose the approach that can discard decoded pictures before the start, then check that the opening matches the source around second 1.",
+    "Deliver `practice-exact.mp4` containing source seconds 1 to 4, with video and audio. Choose the approach that can discard decoded pictures before the start, then check that the opening matches the source around second 1.",
   practiceObserve:
     "Replay the first moment of practice-exact.mp4 and compare it with the source around second 1. Listen at the start as well: matching the duration does not establish that the intended moment was kept.",
   hints: [
     "The requested interval lasts three seconds; 4 is the end time, not the duration.",
     "Choose the approach that rebuilds the kept pictures.",
     "Place the start option after the input and leave out stream copying.",
-    "Use -ss 1 and -t 3, then name the output practice-exact.mp4.",
-    "Use ffmpeg -i bunny-short.mp4 -ss 1 -t 3 practice-exact.mp4.",
+    "Use -ss 1 and -t 3, then name the output `practice-exact.mp4`.",
+    "Use `ffmpeg -i bunny-short.mp4 -ss 1 -t 3 practice-exact.mp4`.",
   ],
   checkLimit:
     "Checks verify about three seconds and the presence of video and audio. Compare the opening with source second 1 yourself; these checks do not establish the source start or whether encoding was used.",

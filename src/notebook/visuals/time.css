@@ -1,0 +1,127 @@
+/* Copyright © 2026 Christopher Snow */
+.time-diagram {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.time-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.time-diagram .time-axis {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.time-diagram .time-guide {
+  opacity: 0.45;
+  stroke-dasharray: 4 5;
+}
+.time-diagram .time-point {
+  fill: var(--accent);
+}
+.time-diagram .time-signal {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.time-endpoints {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.time-frame-row + .time-frame-row {
+  margin-top: 0.75rem;
+}
+.time-diagram .time-frame-row p,
+.time-diagram .time-wave-row p {
+  margin-bottom: 0.25rem;
+}
+.time-source-note {
+  color: var(--muted);
+}
+.time-equation,
+.time-fade-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+}
+.time-gain-control {
+  display: grid;
+  gap: 0.25rem;
+  margin-block: 1rem;
+}
+.time-gain-control input {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.time-gain-control input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.time-fade-plot {
+  display: grid;
+  grid-template-columns: 2ch minmax(0, 1fr);
+  gap: 0.5rem;
+}
+.time-gain-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: 1.5% 6%;
+  padding-bottom: calc(1.5em + 2%);
+}
+.time-fade-times {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 1.5em;
+}
+.time-fade-times span:nth-child(2) {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.time-cue-labels {
+  display: grid;
+  align-items: end;
+  margin-top: 1rem;
+}
+.time-cue-labels span {
+  padding-inline: 0.25rem;
+}
+.time-cue-track {
+  position: relative;
+  height: 2.5rem;
+  margin-top: 0.25rem;
+  border-bottom: 1px solid var(--muted);
+}
+.time-cue-block,
+.time-cue-empty {
+  position: absolute;
+  top: 0;
+  bottom: 0.25rem;
+}
+.time-cue-block {
+  background: var(--accent);
+  border-inline: 2px solid var(--surface);
+}
+.time-cue-block:nth-child(2) {
+  opacity: 0.65;
+}
+.time-cue-empty {
+  border: 1px dashed var(--muted);
+}
+.time-cue-list {
+  padding-left: 1.5rem;
+}
+.time-diagram .time-cue-list p {
+  margin-block: 0.4rem;
+}

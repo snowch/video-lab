@@ -14,6 +14,7 @@ import { FilePreview } from "./FileManager";
 import type { Expectation } from "./structure";
 import { n } from "./ui.strings";
 import type { WorkedCopy } from "./copy-types";
+import { InlineText } from "./InlineText";
 export function CommandCell({
   id,
   initial,
@@ -172,7 +173,9 @@ export function CommandCell({
         </span>
       </header>
       {(teaching?.introduction ?? introduction)?.map((p, i) => (
-        <p key={i}>{p}</p>
+        <p key={i}>
+          <InlineText>{p}</InlineText>
+        </p>
       ))}
       <div className="notebook-cell-mode">
         <button aria-pressed={!builder} onClick={() => setBuilder(false)}>
@@ -348,27 +351,37 @@ export function CommandCell({
                 <dt>
                   <code>{o.flag}</code>
                 </dt>
-                <dd>{o.meaning}</dd>
+                <dd>
+                  <InlineText>{o.meaning}</InlineText>
+                </dd>
               </div>
             ))}
           </dl>
           {teaching?.prediction && (
-            <p className="notebook-think">{teaching.prediction}</p>
+            <p className="notebook-think">
+              <InlineText>{teaching.prediction}</InlineText>
+            </p>
           )}
         </div>
       )}
       {(teaching || observe) && (
         <div className="notebook-observation">
-          <p>{teaching?.observe ?? observe}</p>
+          <p>
+            <InlineText>{teaching?.observe ?? observe ?? ""}</InlineText>
+          </p>
           {teaching?.explanation?.map((p, i) => (
-            <p key={i}>{p}</p>
+            <p key={i}>
+              <InlineText>{p}</InlineText>
+            </p>
           ))}
         </div>
       )}
       {expected && (
         <section className="notebook-check">
           <h4>{n.technical}</h4>
-          <p>{limit}</p>
+          <p>
+            <InlineText>{limit ?? ""}</InlineText>
+          </p>
           <button
             disabled={w.busy || !last || Boolean(last.error) || stale}
             onClick={() =>

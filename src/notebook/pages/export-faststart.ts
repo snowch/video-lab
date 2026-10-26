@@ -5,9 +5,7 @@ const page: PageCopy = {
   title: "Prepare an MP4 for download playback",
   goal: "Put MP4 indexing information near the start of a file while preserving its picture and sound.",
   concept: [
-    "An MP4 contains compressed video and sound plus indexing information: metadata that tells a player where the media samples are stored and when to play them. A player needs that index to interpret the media.",
-    "When a file arrives over a network, playback can start before the whole download finishes. If the index is at the end, the player must first obtain that part of the file, either by waiting for the download or requesting it separately. Placing the index near the beginning makes it available early in a download.",
-    "This changes the organisation of the MP4, not the scene or its duration. The supplied clips were already prepared with their indexes near the beginning; these commands apply the same preparation explicitly to new outputs.",
+    "An MP4 holds encoded media plus an **index**: metadata describing where media samples are stored and when to play them. The `moov` section holds this metadata. A player needs it to locate and time the pictures and sound before playback can begin.",
   ],
   worked: [
     {
@@ -35,21 +33,21 @@ const page: PageCopy = {
       observe:
         "Find the log message ‘Starting second pass: moving the moov atom to the beginning of the file’. Also find (copy) on both stream-mapping lines. Replay ready.mp4 to check that the picture and sound remain intact.",
       explanation: [
-        "The moov atom is the MP4 metadata section containing the index. The second-pass message reports the layout operation; the mapping lines show that the compressed video and sound were copied. The result still contains eight seconds of H.264 video and AAC sound.",
+        "The `moov` atom is the MP4 metadata section containing the index. The second-pass message reports the layout operation; the mapping lines show that the compressed video and sound were copied. The result still contains eight seconds of H.264 video and AAC sound.",
         "Local replay cannot demonstrate faster network startup: the entire file is already available here. On a website, startup also depends on the network, the server's ability to return requested parts of a file and the player's buffering. Preparing the layout does not guarantee instant playback.",
       ],
     },
   ],
   practice:
-    "Apply the same preparation to bunny-action.mp4 and save it as practice-ready.mp4 for playback during download. Preserve its full six seconds of picture and sound without encoding them again. Adapt the command to the new input and output names, then use the log to distinguish the layout operation from stream copying.",
+    "Apply the same preparation to `bunny-action.mp4` and save it as `practice-ready.mp4` for playback during download. Preserve its full six seconds of picture and sound without encoding them again. Adapt the command to the new input and output names, then use the log to distinguish the layout operation from stream copying.",
   practiceObserve:
     "Which log lines establish that the index was moved and that both streams were copied? Replay practice-ready.mp4 through to the end with sound and check that it contains the six-second action clip. Local startup time does not measure a network benefit.",
   hints: [
-    "The practice input is bunny-action.mp4, a different clip from the worked example. Keep it complete.",
+    "The practice input is `bunny-action.mp4`, a different clip from the worked example. Keep it complete.",
     "Use stream copying to preserve the existing compressed video and sound.",
     "The output must remain an MP4 file.",
     "Enable the faststart output flag before the output filename.",
-    "Use ffmpeg -i bunny-action.mp4 -c copy -movflags +faststart practice-ready.mp4.",
+    "Use `ffmpeg -i bunny-action.mp4 -c copy -movflags +faststart practice-ready.mp4`.",
   ],
   checkLimit:
     "Checks verify six seconds, video, audio, H.264 and MP4. They do not inspect index placement or network startup. Confirm the layout and copy messages in the log, then replay to check picture and sound.",

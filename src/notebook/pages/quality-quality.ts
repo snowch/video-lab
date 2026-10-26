@@ -5,8 +5,8 @@ const copy: PageCopy = {
   title: "Choose an encoding quality setting",
   goal: "Compare picture detail and file size at two quality settings, then try a setting between them.",
   concept: [
-    "Lossy compression saves space by representing some picture detail less precisely. This can soften textures or leave visible blocks around edges and movement. An encoder is the program that makes these choices while writing compressed video.",
-    "A quality target lets the encoder spend more bits on pictures that need them and fewer on simpler pictures. It does not set an exact file size. Re-encoding a compressed source cannot restore detail already lost, even if the new file is larger.",
+    "**Lossy compression** represents some picture detail less precisely to save space. An **encoder** makes these choices while writing compressed video. Here, `libx264` is the encoder; it writes H.264 video.",
+    "**Constant rate factor (CRF)** is libx264’s quality-oriented control. Lower values generally preserve more detail and use more bits; higher values allow more loss. The encoder can spend more bits on demanding pictures and fewer on simpler ones, so CRF does not set an exact file size. Re-encoding cannot restore detail already lost.",
   ],
   worked: [
     {
@@ -18,12 +18,12 @@ const copy: PageCopy = {
         {
           flag: "-c:v libx264",
           meaning:
-            "Choose libx264, an encoder that writes H.264 video. The :v suffix applies the choice to video only; sound is still included using the output format's default audio encoder.",
+            "Select `libx264` with `-c:v`. The `:v` suffix applies the choice to video only; sound uses the output format’s default audio encoder.",
         },
         {
           flag: "-crf 18",
           meaning:
-            "Use constant rate factor (CRF), a quality-oriented mode. Lower values generally preserve more picture detail and use more bits; higher values allow more loss. Here the target is 18.",
+            "Set the CRF target to 18 with `-crf`. Compare it with the second example’s higher target.",
         },
       ],
       observe:
@@ -52,7 +52,7 @@ const copy: PageCopy = {
     },
   ],
   practice:
-    "Create practice-quality.mp4 from bunny-short.mp4 with libx264 and CRF 26. Keep all eight seconds and the sound. Use this third version to decide whether an intermediate setting gives an acceptable picture for its file size.",
+    "Create `practice-quality.mp4` from `bunny-short.mp4` with libx264 and CRF 26. Keep all eight seconds and the sound. Use this third version to decide whether an intermediate setting gives an acceptable picture for its file size.",
   practiceObserve:
     "Compare the final file sizes and the same scene in all three versions. Check that the practice file plays to the end with sound, then decide which version you would keep and what detail influenced your choice.",
   hints: [
@@ -60,7 +60,7 @@ const copy: PageCopy = {
     "Keep the full clip: no start or duration option is needed.",
     "Keep the video encoder used in the worked examples.",
     "Change the quality target from 35 to 26.",
-    "Use -c:v libx264 -crf 26 before practice-quality.mp4.",
+    "Use -c:v libx264 -crf 26 before `practice-quality.mp4`.",
   ],
   checkLimit:
     "The check verifies duration, video, sound and H.264. Confirm CRF 26 in your command; compare picture detail and listen to the output yourself.",

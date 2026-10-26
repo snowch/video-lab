@@ -1,0 +1,75 @@
+/* Copyright © 2026 Christopher Snow */
+.visual-container {
+  border: 2px solid var(--accent);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.visual-streams {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.visual-streams > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  border-left: 3px solid var(--accent);
+}
+.visual-streams code,
+.visual-container > strong {
+  overflow-wrap: anywhere;
+}
+.visual-stream-outputs > div {
+  border: 0;
+}
+.visual-probe-lines {
+  margin: 1rem 0;
+}
+.visual-probe-lines > div {
+  margin: 1.25rem 0;
+}
+.visual-probe-lines dt {
+  overflow-wrap: anywhere;
+}
+.visual-probe-lines dt code {
+  display: block;
+  white-space: pre-wrap;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  padding: 0.6rem;
+}
+.visual-probe-lines dd {
+  margin: 0.5rem 0 0;
+}
+.visual-dimensions strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.visual-dimensions img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.notebook-concept code,
+.notebook-observation code,
+.notebook-cell > p code,
+.notebook-options dd code,
+.notebook-hints li code,
+.visual-probe-lines dd code {
+  font-size: 0.95em;
+  padding: 0.05em 0.15em;
+  background: var(--surface);
+  border-radius: 0.2rem;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .visual-source-arrow {
+    display: none;
+  }
+  .visual-streams {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -12,5 +12,6 @@ node scripts/journey-media.mjs
 node scripts/verify-workbench.mjs
 node scripts/verify-teaching.mjs
 node scripts/verify-notebook.mjs
+node scripts/visual-media.mjs
 npm run build
 npm run test:browser

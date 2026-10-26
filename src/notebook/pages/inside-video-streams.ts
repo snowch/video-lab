@@ -5,8 +5,8 @@ const page: PageCopy = {
   title: "Choose picture or sound",
   goal: "Make a silent video and a separate sound file.",
   concept: [
-    "A media file can hold picture and sound as separate streams. A video stream carries the sequence of pictures; an audio stream carries the sound. The player presents them together using their timing information.",
-    "Keeping these streams separate lets you choose what belongs in a new file. A silent loop needs pictures without a soundtrack. A soundtrack for separate editing needs sound without pictures. Both can come from the same source without changing that source.",
+    "Picture and sound travel in separate streams. Choosing streams lets you make a silent video or an audio-only file from the same source, without changing that source.",
+    "A video with no audio stream differs from an audio stream containing silence. Listening alone cannot tell these cases apart; inspect the output’s stream list.",
   ],
   worked: [
     {
@@ -59,7 +59,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Prepare a four-second silent clip from the start of bunny-short.mp4. Save it as practice-silent.mp4 with video and no audio stream.",
+    "Prepare a four-second silent clip from the start of `bunny-short.mp4`. Save it as `practice-silent.mp4` with video and no audio stream.",
   practiceObserve:
     "Check that the output lists Video without Audio, then replay the clip to confirm it shows the opening four seconds of the source.",
   hints: [
@@ -67,7 +67,7 @@ const page: PageCopy = {
     "Keep the video stream and disable the audio stream.",
     "Use the audio-disabling option from the first example.",
     "Put the option before the output filename, alongside the duration option.",
-    "Keep -t 4 and add -an before practice-silent.mp4.",
+    "Keep -t 4 and add -an before `practice-silent.mp4`.",
   ],
   checkLimit:
     "The check verifies four seconds, video present and audio absent. Replay to confirm the clip contains the intended opening pictures.",

@@ -5,20 +5,20 @@ const page: PageCopy = {
   title: "Locate each picture in time",
   goal: "Distinguish a picture’s display time from the clock units used to store it.",
   concept: [
-    "A frame rate summarises how many pictures a video displays per second. A presentation timestamp gives the time at which a particular picture should appear. Two videos can have the same average frame rate while spacing their pictures differently.",
-    "Media stores timestamps as counts of small time units called ticks. The time base is the duration of one tick, expressed as a fraction of a second. Multiplying a timestamp’s tick count by its time base gives a time in seconds. A tick is a clock unit, not a picture.",
+    "A **presentation timestamp** says when a particular picture should appear. Frame rate summarises pictures per second; two videos can have the same average rate with different spacing between their pictures.",
+    "Timestamps count **ticks**, each lasting one **time base**. Multiply the tick count by the time base to get seconds. A tick is a clock unit; many ticks can fit inside one picture interval.",
   ],
   worked: [
     {
       title: "Read presentation timestamps",
       introduction: [
-        "Inspect the times attached to individual frames. ffprobe uses ‘frame’ for both video pictures and decoded blocks of audio, so this command lists both kinds together.",
+        "Inspect the times attached to individual frames. `ffprobe` uses ‘frame’ for both video pictures and decoded blocks of audio, so this command lists both kinds together.",
       ],
       options: [
         {
           flag: "-show_entries frame=pts_time",
           meaning:
-            "Request selected information: frame names the section, and pts_time requests its presentation timestamp in seconds. The equals sign separates the section from its field name.",
+            "Request selected information: frame names the section, and `pts_time` requests its presentation timestamp in seconds. The equals sign separates the section from its field name.",
         },
       ],
       observe:
@@ -29,22 +29,22 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Inspect the stream summaries. Use the video values to calculate how many ticks fit into one 1/24-second picture interval.",
+    "Inspect the stream summaries. For this regularly spaced source, calculate the elapsed seconds and timestamp ticks from the first video picture to the third: two consecutive picture intervals. Use the video rate and time base, then check that both calculations describe the same span.",
   practiceOptions: [
     {
       flag: "stream=avg_frame_rate,time_base",
       meaning:
-        "Request two fields for each stream; the comma separates their names. avg_frame_rate is the average picture rate as a ratio, and time_base is seconds per timestamp tick.",
+        "Request two fields for each stream; the comma separates their names. `avg_frame_rate` is the average picture rate as a ratio, and `time_base` is seconds per timestamp tick.",
     },
   ],
   practiceObserve:
-    "The first stream is video: avg_frame_rate=24/1 and time_base=1/12288. Check your calculated tick count by multiplying it by 1/12288 seconds per tick: the result should equal the 1/24-second picture interval. The second stream is audio and has its own time base, 1/48000; its avg_frame_rate=0/0 does not describe a video picture rate. These stream summaries alone do not establish that every video picture interval is equal.",
+    "The first stream is video: `avg_frame_rate=24/1` and `time_base=1/12288`. Find the duration of two picture intervals, then divide by seconds per tick to obtain their tick count. Multiply your tick count by the time base to check the elapsed seconds. The audio stream has its own `time_base=1/48000`; its `avg_frame_rate=0/0` is not a video picture rate. Regular video spacing is verified for this supplied source; stream averages alone would not establish it for another file.",
   hints: [
     "Inspect the existing file; this task needs no new output media file.",
-    "The supplied command requests stream summaries rather than individual frame records.",
-    "For this source, the first stream is video and the second is audio.",
-    "Read 24/1 as 24 pictures per second and 1/12288 as seconds per tick.",
-    "Divide the picture interval by the tick duration: (1/24) ÷ (1/12288) = 512 ticks.",
+    "From the first picture to the third there are two gaps, rather than three. Use the first stream’s video values.",
+    "At 24 pictures per second, one interval lasts 1/24 second. Double that interval before converting it to ticks.",
+    "Divide the elapsed seconds by the duration of one tick: (2/24) ÷ (1/12288).",
+    "Two intervals span 1024 ticks. Multiplying by 1/12288 gives 2/24 = 1/12 second, approximately 0.083333 seconds.",
   ],
   checkLimit:
     "The check confirms that inspection ran. Manually verify your tick calculation and distinguish tick duration from picture interval.",

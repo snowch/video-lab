@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Visual teaching, 26 October 2026:** [the visual teaching slice](notes/visual-teaching/01-plan.md) adds source-grounded diagrams and comparisons to fourteen notebook pages, introduces terminology before figures, and replaces overlapping prose with selective inline emphasis and literal code styling. Raw command output stays unchanged. [Verified source and image evidence](notes/visual-teaching/02-facts.md) distinguishes recorded native examples from explanatory models and learner outputs.
+
 **Notebook readability, 25 October 2026:** [the readability slice](notes/readability/01-plan.md) removes decorative borders and ruled option rows, keeps commands and raw results together, and gives introductory cuts a compact current-command preview. Complete commands reflow without clipping. It preserves saved work and the teaching flow below.
 
 **Lesson flow, 25 October 2026:** [the teaching revision](notes/lesson-flow/01-plan.md) replaces mandatory prediction/change/review sections with command-local explanation, specific observation and one independent task per page. Existing notes remain available optionally. Twenty-four separate page agents draft from recorded command/media facts, followed by independent built-site review. This supersedes the earlier notebook template, preserving all lesson IDs, commands, files and evidence.

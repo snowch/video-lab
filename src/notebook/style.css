@@ -472,6 +472,9 @@
   .notebook-source {
     grid-template-columns: minmax(0, 1fr);
   }
+  .notebook-page .notebook-colour-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
   .notebook-options > div {
     display: block;
