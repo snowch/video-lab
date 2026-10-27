@@ -119,7 +119,7 @@ test("codec links and notebook navigation open the lesson beginning and retain d
   const draft = "ffprobe bunny-action.mp4";
   await editor.fill(draft);
   const links = page.getByRole("navigation", {
-    name: "More on codecs (optional)",
+    name: "More on codecs and compression (optional)",
   });
   for (const title of [
     "Copy compressed streams",

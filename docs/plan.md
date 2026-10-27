@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Bitrate purpose and progression, 27 October 2026:** [the bitrate-purpose revision](notes/bitrate-purpose/01-facts.md) distinguishes supplied MP4 provenance from ffprobe’s shared reader list, introduces bitrate through file size and delivery needs, and connects it to Chapter 8’s existing CRF comparison.
+
 **Probe output units, 27 October 2026:** [the reader-list and bitrate clarification](notes/probe-bitrate/01-plan-facts.md) explains the shared MP4 reader names and adds the recorded Duration/bitrate line to Chapter 2’s output guide, with whole-file averages, units and stream scope.
 
 **Codec cross-references, 26 October 2026:** [the codec-links slice](notes/codec-links/01-plan-facts.md) connects Chapter 2’s file description to the existing stream-copying, encoding-quality and export-format lessons through optional direct page links.

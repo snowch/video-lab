@@ -5,7 +5,7 @@ export default {
   title: "Read the file description",
   goal: "Distinguish the file format from the video and audio stored inside it.",
   furtherReading: {
-    title: "More on codecs (optional)",
+    title: "More on codecs and compression (optional)",
     pages: ["cut-join/copy", "quality/quality", "export/format"],
   },
   concept: [
@@ -27,21 +27,21 @@ export default {
         },
       ],
       observe:
-        "Find `Input #0`, then the two `Stream` lines. Use the supplied example to identify the container and each stream’s type and codec.",
+        "Find `Input #0`, then the two `Stream` lines. Read the format names supported by the reader, then identify each stream’s type and codec.",
       explanation: [
         "The guide explains the supplied source. Your raw output remains the evidence for the file you inspected. Stream numbers identify positions within that file; use `Video` and `Audio` to identify stream types.",
       ],
     },
   ],
   practice:
-    "Inspect `bunny-action.mp4` to make a compact file description: find its duration, count its streams, and identify the container and each stream's codec separately. Which properties match the worked example, and which differ? Use the output as evidence.",
+    "Inspect the supplied MP4 file `bunny-action.mp4` to make a compact description: find its duration, count its streams, and identify each stream's type and codec. Which properties match the worked example, and which differ? Use the output as evidence.",
   practiceObserve:
-    "Read Duration as hours:minutes:seconds, then count the Stream lines. For each stream, identify its type and the codec immediately after Video or Audio. Keep these separate from the container description on the Input line.",
+    "Read Duration as hours:minutes:seconds, then count the Stream lines. For each stream, identify its type and the codec immediately after Video or Audio. The Input line lists the reader’s supported formats; it does not establish the exact container by itself.",
   hints: [
     "Inspection needs `ffprobe` and an input file, with no output file.",
     "Use `bunny-action.mp4` as the input filename.",
     "The Duration line uses hours:minutes:seconds. Count only the lines beginning Stream.",
-    "The Input line describes the container family. Read Video and Audio for each stream's codec.",
+    "The Input line lists formats supported by the reader. Read Video and Audio for each stream's codec.",
     "Run `ffprobe bunny-action.mp4`. Compare its Duration, Video and Audio lines with those from `bunny-short.mp4`; a different duration does not require different codecs.",
   ],
   checkLimit:

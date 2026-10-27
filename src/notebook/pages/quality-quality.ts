@@ -6,7 +6,7 @@ const copy: PageCopy = {
   goal: "Compare picture detail and file size at two quality settings, then try a setting between them.",
   concept: [
     "**Lossy compression** represents some picture detail less precisely to save space. An **encoder** makes these choices while writing compressed video. Here, `libx264` is the encoder; it writes H.264 video.",
-    "**Constant rate factor (CRF)** is libx264’s quality-oriented control. Lower values generally preserve more detail and use more bits; higher values allow more loss. The encoder can spend more bits on demanding pictures and fewer on simpler ones, so CRF does not set an exact file size. Re-encoding cannot restore detail already lost.",
+    "**Constant rate factor (CRF)** is libx264’s quality-oriented control. Lower values generally preserve more detail and use more bits; higher values allow more loss. CRF sets a quality target, not a bitrate target or an exact file size. The encoder can spend more bits on demanding pictures and fewer on simpler ones. Re-encoding cannot restore detail already lost.",
   ],
   worked: [
     {
@@ -47,14 +47,15 @@ const copy: PageCopy = {
       observe:
         "Compare the final Lsize with the first encode, then replay the same moving and detailed areas in both outputs. Look for softened texture or changes around edges.",
       explanation: [
-        "The amount saved and the visible difference depend on the pictures and encoder build. Small previews can conceal lost detail: download the files for a closer comparison if needed. Judge both file size and pictures rather than assuming one proves the other.",
+        "Both outputs have the same duration, so the larger file has the higher average whole-file bitrate: more data per second of playback.",
+        "The amount saved and the visible difference depend on the pictures and encoder build. Small previews can conceal lost detail: download the files for a closer comparison if needed. Decide whether the smaller file saves enough space to justify any loss of detail you see.",
       ],
     },
   ],
   practice:
     "Create `practice-quality.mp4` from `bunny-short.mp4` with libx264 and CRF 26. Keep all eight seconds and the sound. Use this third version to decide whether an intermediate setting gives an acceptable picture for its file size.",
   practiceObserve:
-    "Compare the final file sizes and the same scene in all three versions. Check that the practice file plays to the end with sound, then decide which version you would keep and what detail influenced your choice.",
+    "Compare the final file sizes and the same scene in all three versions. With equal durations, the file sizes also rank their average whole-file bitrates. Check that the practice file plays to the end with sound, then decide which version you would keep and what detail influenced your choice.",
   hints: [
     "Use the original source so the third version has the same starting point.",
     "Keep the full clip: no start or duration option is needed.",

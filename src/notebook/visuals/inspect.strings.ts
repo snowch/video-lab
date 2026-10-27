@@ -11,10 +11,11 @@ export const inspectCopy = {
   guideNote:
     "Selected native ffprobe fields from bunny-short.mp4; ellipses mark omissions. This guide always describes the supplied source. Your command produces its own raw output.",
   inputMeaning:
-    "`Input #0` identifies the first input file. FFprobe uses one reader for MP4 and related formats, including MOV and 3GP, and prints that reader’s format names here. This file is an MP4; its video and audio appear on the separate `Stream` lines below.",
+    "`Input #0` identifies the first input file. FFprobe uses one reader for MP4 and related formats, including MOV and 3GP, and prints that reader’s format names here. The list alone does not identify the exact container. We supplied this practice file in MP4 format. Its video and audio appear on the separate `Stream` lines below.",
   durationMeaning: [
-    "`Duration` is eight seconds. The whole-file **bitrate** includes video, sound and container information. `kb/s` means kilobits per second: `352 kb/s` is about 352,000 bits per second of playback, or 44,000 bytes per second (eight bits make one byte).",
-    "This is an average across the file, so individual seconds can contain different amounts of data. A bitrate on a `Stream` line describes only that stream. Bitrate does not measure playback speed.",
+    "`Duration` is eight seconds. The whole-file **bitrate** describes the data used per second of playback, including pictures, sound and container information. `kb/s` means kilobits per second: here, `352 kb/s` is about 352,000 bits per second, averaged across the file.",
+    "For the same duration, a higher bitrate means a larger file to store or download. Streaming a higher-bitrate file generally needs a faster connection.",
+    "A lower bitrate saves data, but stronger compression can reduce picture or sound quality. Higher bitrate does not automatically mean better quality: the source, codec and encoding settings also matter.",
   ],
   videoMeaning:
     "`#0:0` means input 0, stream 0. `Video` identifies its type and `h264` its codec. `854x480` gives width and height in pixels; `24 fps` gives pictures per second.",
