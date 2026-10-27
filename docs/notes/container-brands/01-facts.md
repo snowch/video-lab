@@ -1,0 +1,21 @@
+# Demuxing, brand metadata and muxing
+
+Copyright © 2026 Christopher Snow.
+
+## Scope and prerequisites
+
+The owner approves defining demuxer in Chapter 2, adding one contextual optional explanation of file brands beside the Input row, and introducing muxer in Chapter 9 when writing the export container. They also request an authoritative brand registry link. Existing commands, raw logs, files and course progression stay unchanged. This is not a new classification lab or Unix shell exercise. Chapter 2 already defines streams, container and codec. Chapter 9 has introduced encoders and stream copying earlier in the course.
+
+## Verified facts and sources (27 October 2026)
+
+- FFmpeg’s official formats manual defines demuxers as readers of streams from a file type and muxers as writers of streams to a file type: https://ffmpeg.org/ffmpeg-formats.html#Demuxers and https://ffmpeg.org/ffmpeg-formats.html#Muxers . They handle the container, not the codec’s picture/sound encoding/decoding work. In the current export command libx264/AAC encode streams and the selected MP4 muxer packages them. A demuxer need not write separate files, and a muxer need not have more than one stream.
+- The shared input reader name identifies supported related formats, not this file’s unique container. Native `ffprobe bunny-short.mp4` (cwd public/media/notebook) prints major_brand isom and compatible_brands isomiso2avc1mp41 under Metadata. Existing `src/notebook/visuals/media.json` containerEvidence records those values; `scripts/visual-media.mjs` independently verifies source tags/ftyp bytes and provenance against actual media. The guide stays explicitly supplied-source evidence even if learners edit the command.
+- MP4 Registration Authority (MP4RA) is the official ISOBMFF-family registry, run on behalf of ISO and operated by Apple: https://mp4ra.org/ . It also registers QuickTime codes but says that portion is incomplete. Do not promise an exhaustive list of all files in existence.
+- Registry link: https://mp4ra.org/registered-types/brands . Brand codes have four characters and identify specifications a file declares compatibility with. The registry identifies isom with the ISO Base Media File Format family, mp41 with MP4 version 1, mp42 with MP4 version 2, avc1 with AVC extensions, 3gp6 with a 3GPP profile, and qt followed by two spaces with QuickTime. Its `$20` notation denotes a space. isom alone does not uniquely mean MP4; many related formats share that base. Registry entries link onward to specifications. Major brand is the primary declaration; compatible_brands lists compatibility declarations, not streams/codecs.
+- Existing `mov.c` source at `/workspace/scratch/probe-bitrate/mov.c` reads ftyp four-character major and compatible brands into these tags. A fresh native remux to `/workspace/scratch/container-brands/example.3gp` using `ffmpeg -v error -y -i public/media/notebook/bunny-short.mp4 -c copy -f 3gp ...` reports major_brand 3gp6, compatible_brands 3gp6isomiso2avc1 and the same mov,mp4,m4a,3gp,3g2,mj2 demuxer name. This refutes “anything other than qt is MP4”. Missing metadata also is not proof of MOV. Do not add that classifier.
+
+## Implementation and checks
+
+Use the existing supplied ffprobe guide: keep four main rows, put a native details/summary disclosure beside the Input explanation, closed initially. Quote the two actual native Metadata lines from the recorded run, pin them to source tags in existing native verification, and explain four-character groups with isom/mp41 as the local example. Link to MP4RA with a descriptive label that marks it external; the explanation works offline, while the optional external reference needs a connection. Keep this brief, not a list of formats or a brands quiz. Add the demuxer definition to main Chapter 2 copy, and the complementary muxing definition in Chapter 9’s existing explanation. Prose drafted separately from this brief before builder edits.
+
+Extend existing guide browser coverage for keyboard/touch open/close, true link destination and responsive layout; do not add a new test merely copying strings. Existing raw-log equality and native media checks continue. Separate reader → sceptic → ranked resolution → built checker, full npm run check, reviewed main publication as authorised. Keep unrelated untracked learner-audit notes untouched.

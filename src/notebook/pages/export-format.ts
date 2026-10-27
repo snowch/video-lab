@@ -40,6 +40,7 @@ const copy: PageCopy = {
       observe:
         "Find the output section of the log: it should name MP4, h264 video with yuv420p, and aac audio. Replay compatible.mp4 and listen to its sound.",
       explanation: [
+        "The libx264 and AAC encoders produce the encoded video and sound streams. A **muxer** writes streams into a container; this packaging step is called **muxing**. Here, the `.mp4` ending selects the MP4 muxer to package those streams in compatible.mp4.",
         "The source already uses these formats, so this example need not look different. The command makes the choices explicit for the new file. Colour subsampling can soften fine coloured edges; this encode is not a comparison that isolates that effect.",
         "This combination is widely supported. Playback here confirms that this browser can play this file; test the actual destination player before delivering an export.",
       ],

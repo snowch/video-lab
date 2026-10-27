@@ -77,6 +77,9 @@ const bare = spawnSync(bareCommand[0], bareCommand.slice(1), {
   cwd: bareCwd,
 });
 assert.equal(bare.status, 0);
+const brandLines = bare.stderr
+  .split("\n")
+  .filter((line) => /^\s+(major_brand|compatible_brands)\s*:/.test(line));
 const probeLines = bare.stderr
   .split("\n")
   .filter((line) => /^Input #0|^  Duration:|^  Stream #0:/.test(line));
@@ -246,7 +249,12 @@ try {
       duration: Number(sourceProbe.format.duration),
       streams: sourceStreams,
     },
-    probe: { command: bareCommand, cwd: bareCwd, lines: probeLines },
+    probe: {
+      command: bareCommand,
+      cwd: bareCwd,
+      lines: probeLines,
+      brandLines,
+    },
     timeline: {
       command: frameCommand,
       timeBase: sourceStreams[0].timeBase,
@@ -327,6 +335,16 @@ try {
   // do not change the source stream facts independently checked above.
   if (facts.versions.ffprobe === expected.versions.ffprobe)
     assert.deepEqual(facts.probe.lines, expected.probe.lines);
+  assert.deepEqual(
+    expected.probe.brandLines.map((line) => line.trim().split(/\s*:\s*/)),
+    [
+      ["major_brand", sourceProbe.format.tags.major_brand],
+      ["compatible_brands", sourceProbe.format.tags.compatible_brands],
+    ],
+    "recorded brand lines match the supplied file metadata",
+  );
+  if (facts.versions.ffprobe === expected.versions.ffprobe)
+    assert.deepEqual(facts.probe.brandLines, expected.probe.brandLines);
   assert.equal(expected.probe.lines.length, 4);
   assert.ok(expected.probe.lines[0].includes("from 'bunny-short.mp4'"));
   const fileBitrate = Number(sourceProbe.format.bit_rate);

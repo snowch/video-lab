@@ -79,3 +79,15 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.visual-brands {
+  padding: 0.25rem 0 0.5rem;
+}
+.visual-brands pre {
+  margin: 0.75rem 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.visual-brands a {
+  overflow-wrap: anywhere;
+}

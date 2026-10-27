@@ -50,6 +50,34 @@ test("visual lessons reflow and their supplied images belong to the offline bund
       "data-page",
       route,
     );
+    if (route === "inside-video/inspect") {
+      const brands = page.locator(".visual-brands");
+      const summary = brands.locator("summary");
+      await expect(brands).not.toHaveAttribute("open", "");
+      await expect(brands.locator("pre")).toBeHidden();
+      await summary.focus();
+      await page.keyboard.press("Enter");
+      await expect(brands).toHaveAttribute("open", "");
+      await expect(brands.locator("pre")).toHaveText(
+        media.probe.brandLines.join("\n"),
+      );
+      await expect(brands.getByRole("link")).toHaveAttribute(
+        "href",
+        "https://mp4ra.org/registered-types/brands",
+      );
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await summary.press("Space");
+      await expect(brands.locator("pre")).toBeHidden();
+      if (test.info().project.use.isMobile) await summary.tap();
+      else await summary.click();
+      await expect(brands.locator("pre")).toBeVisible();
+      await summary.click();
+      await expect(brands.locator("pre")).toBeHidden();
+    }
     const figures = page.locator(".notebook-page > figure");
     await expect(figures.first()).toBeVisible();
     for (const img of await figures.locator("img").all()) {

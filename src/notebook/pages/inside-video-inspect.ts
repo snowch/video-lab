@@ -17,7 +17,7 @@ export default {
     {
       title: "Inspect without editing",
       introduction: [
-        "`ffprobe` reads a media file and reports what it contains without creating an edited copy. Its summary includes the container, duration and a line for each stream.",
+        "`ffprobe` reads a media file and reports what it contains without creating an edited copy. It uses a **demuxer** to read the container and make its individual streams available. Its summary includes the container, duration and a line for each stream.",
       ],
       options: [
         {

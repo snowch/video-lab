@@ -56,6 +56,10 @@
       "  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s",
       "  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)",
       "  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)"
+    ],
+    "brandLines": [
+      "    major_brand     : isom",
+      "    compatible_brands: isomiso2avc1mp41"
     ]
   },
   "timeline": {

@@ -119,6 +119,26 @@ export function ProbeGuide() {
                   <InlineText>{text}</InlineText>
                 </p>
               ))}
+              {i === 0 && (
+                <details className="visual-brands">
+                  <summary>{t.brandsTitle}</summary>
+                  <p>
+                    <InlineText>{t.brandsIntro}</InlineText>
+                  </p>
+                  <pre>{media.probe.brandLines.join("\n")}</pre>
+                  {t.brandsMeaning.map((text, j) => (
+                    <p key={j}>
+                      <InlineText>{text}</InlineText>
+                    </p>
+                  ))}
+                  <p>
+                    <a href="https://mp4ra.org/registered-types/brands">
+                      {t.brandsRegistryLabel}
+                    </a>
+                  </p>
+                  <p>{t.brandsRegistryNote}</p>
+                </details>
+              )}
             </dd>
           </div>
         ))}
