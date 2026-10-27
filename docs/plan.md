@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Demuxer definition, 27 October 2026:** [the first-use clarification](notes/demuxer-definition/01-facts.md) defines the container reader directly and gives an MP4 video/audio example before the first inspection command.
+
 **Container readers and brands, 27 October 2026:** [the container-brands slice](notes/container-brands/01-facts.md) names demuxing in Chapter 2, places recorded brand metadata and the official MP4RA registry in one optional contextual note, and names muxing alongside Chapter 9’s export command.
 
 **Bitrate purpose and progression, 27 October 2026:** [the bitrate-purpose revision](notes/bitrate-purpose/01-facts.md) distinguishes supplied MP4 provenance from ffprobe’s shared reader list, introduces bitrate through file size and delivery needs, and connects it to Chapter 8’s existing CRF comparison.

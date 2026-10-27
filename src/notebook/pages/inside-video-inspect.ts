@@ -17,7 +17,7 @@ export default {
     {
       title: "Inspect without editing",
       introduction: [
-        "`ffprobe` reads a media file and reports what it contains without creating an edited copy. It uses a **demuxer** to read the container and make its individual streams available. Its summary includes the container, duration and a line for each stream.",
+        "`ffprobe` inspects a media file without changing it. It uses a **demuxer**: a container reader that identifies the streams inside the file and reads their data separately. For example, an MP4 demuxer can read the video and audio streams stored together in an MP4 file. FFprobe then reports format information, duration and a description of each stream.",
       ],
       options: [
         {
