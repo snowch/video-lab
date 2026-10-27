@@ -2,6 +2,7 @@
 import type { PageCopy } from "../copy-types";
 
 const page: PageCopy = {
+  codecGuide: true,
   title: "Choose encoder effort",
   goal: "Compare encoding presets while keeping the quality setting and source unchanged.",
   concept: [

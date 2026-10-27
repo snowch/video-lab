@@ -2,6 +2,7 @@
 import type { PageCopy } from "../copy-types";
 
 const copy: PageCopy = {
+  codecGuide: true,
   title: "Choose an export format",
   goal: "Make an MP4 with explicit choices for its video, sound and picture storage.",
   concept: [

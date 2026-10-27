@@ -281,11 +281,13 @@ export const pages: PageDefinition[] = [
   },
 ];
 type NotebookRoute =
-  | { home: true; glossary?: boolean }
-  | { home: false; page: PageDefinition; glossary?: false };
+  | { home: true; glossary?: boolean; codecs?: boolean }
+  | { home: false; page: PageDefinition; glossary?: false; codecs?: false };
 export function notebookRoute(hash: string): NotebookRoute | undefined {
   const parts = hash.replace(/^#\/?/, "").split("/");
   if (!parts[0]) return { home: true as const };
+  if (parts[0] === "appendix" && parts[1] === "codecs")
+    return { home: true, codecs: true };
   if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)

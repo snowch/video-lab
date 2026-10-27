@@ -1,0 +1,38 @@
+/* Copyright © 2026 Christopher Snow */
+.codec-guide {
+  padding: 1.5rem 0;
+  overflow-wrap: anywhere;
+}
+.codec-guide h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+}
+.codec-guide section,
+.codec-guide nav {
+  margin-top: 2.5rem;
+}
+.codec-guide dl > div {
+  margin: 1.5rem 0;
+}
+.codec-guide dd {
+  margin: 0.4rem 0 0;
+}
+.codec-track {
+  margin: 1.5rem 0 2rem;
+}
+.codec-track audio {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  margin: 0.75rem 0;
+}
+.codec-track a,
+.codec-guide li a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  min-height: 44px;
+}
+.codec-guide pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

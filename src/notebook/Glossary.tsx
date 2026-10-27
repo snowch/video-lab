@@ -1,6 +1,7 @@
 // Copyright © 2026 Christopher Snow
 import { useRef, useState } from "react";
 import { glossaryEntries, glossaryUI as g } from "./glossary.strings";
+import { codecGuide } from "./codecs.strings";
 import { courseCopy } from "./copy";
 import { InlineText } from "./InlineText";
 import "./glossary.css";
@@ -21,6 +22,9 @@ export function Glossary() {
     <article className="glossary">
       <h1>{g.title}</h1>
       <p>{g.intro}</p>
+      <p>
+        <a href="#/appendix/codecs">{codecGuide.link}</a>
+      </p>
       <div className="glossary-search">
         <label>
           {g.search}

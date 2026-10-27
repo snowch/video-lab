@@ -7,6 +7,8 @@ import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
+import { CodecGuide } from "./CodecGuide";
+import { codecGuide } from "./codecs.strings";
 import { Glossary } from "./Glossary";
 import { glossaryUI } from "./glossary.strings";
 import { usePracticeFiles } from "./usePracticeFiles";
@@ -90,6 +92,9 @@ function NotebookHome({
         </ol>
         <a className="notebook-appendix" href="#/glossary">
           {glossaryUI.title}
+        </a>
+        <a className="notebook-appendix" href="#/appendix/codecs">
+          {codecGuide.link}
         </a>
         <a className="notebook-appendix" href="#/appendix/recording">
           {n.recordingGuide}
@@ -300,6 +305,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           </button>
         </section>
       )}
+      {copy.codecGuide && (
+        <p>
+          <a href="#/appendix/codecs">{codecGuide.link}</a>
+        </p>
+      )}
       {copy.furtherReading && (
         <nav aria-labelledby="further-reading-title">
           <h2 id="further-reading-title">{copy.furtherReading.title}</h2>
@@ -367,9 +377,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
 function NotebookShell({
   page,
   glossary = false,
+  codecs = false,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
+  codecs?: boolean;
 }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
@@ -406,11 +418,11 @@ function NotebookShell({
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page || glossary ? " notebook-lesson" : ""}`}
+      className={`notebook-shell${page || glossary || codecs ? " notebook-lesson" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
-      {(page || glossary) && (
+      {(page || glossary || codecs) && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
         </nav>
@@ -441,6 +453,8 @@ function NotebookShell({
       <div className="notebook-content">
         {page ? (
           <NotebookPage key={page.id} page={page} />
+        ) : codecs ? (
+          <CodecGuide />
         ) : glossary ? (
           <Glossary />
         ) : (
@@ -461,13 +475,15 @@ function NotebookShell({
 export function NotebookCourse({
   page,
   glossary,
+  codecs,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
+  codecs?: boolean;
 }) {
   return (
     <NotebookWorkspace>
-      <NotebookShell page={page} glossary={glossary} />
+      <NotebookShell page={page} glossary={glossary} codecs={codecs} />
     </NotebookWorkspace>
   );
 }

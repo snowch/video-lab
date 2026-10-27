@@ -13,5 +13,6 @@ node scripts/verify-workbench.mjs
 node scripts/verify-teaching.mjs
 node scripts/verify-notebook.mjs
 node scripts/visual-media.mjs
+node scripts/codec-media.mjs
 npm run build
 npm run test:browser

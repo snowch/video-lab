@@ -181,3 +181,7 @@ The main ten-chapter notebook course uses credited **Big Buck Bunny**, © 2008 B
 [The provenance record](notes/notebook/media.json) pins the official 480p download URL, source archive/member hashes, exact preparation arguments, native version, transformed bytes and measured properties. The adaptation selects original seconds 60–180, resizes/re-encodes to 854 × 480 at 24 fps, downmixes original sound to stereo AAC, and omits the QuickTime timecode track. The shorter clips are re-encoded extracts. The subtitle file is original example text, not a transcription. No endorsement is implied.
 
 The included DejaVu Sans font is used by actual FFmpeg drawtext/libass commands. Its [distributed licence](../public/media/notebook/FONT-LICENCE.txt) retains the Bitstream/DejaVu notices. No notebook kernel or server is shipped. The existing pinned FFmpeg WASM core executes media commands; native shell scripts are explicitly separate, downloadable terminal exercises.
+
+## Codec appendix listening comparison
+
+The optional codec appendix adapts the credited Big Buck Bunny practice extract into a PCM WAV reference and two AAC versions. Source, CC BY 3.0 attribution, exact commands, tool versions and measured hashes/properties are recorded in [the comparison provenance](notes/codecs/media-provenance.md). Files are supplied examples, with the same eight-second content and no volume normalisation. The reference retains the source's previous lossy compression.

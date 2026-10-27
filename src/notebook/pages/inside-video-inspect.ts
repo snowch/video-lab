@@ -1,7 +1,9 @@
 // Copyright © 2026 Christopher Snow
+import { codecGuide } from "../codecs.strings";
 import type { PageCopy } from "../copy-types";
 
 export default {
+  codecGuide: true,
   title: "Read the file description",
   goal: "Distinguish the file format from the video and audio stored inside it.",
   furtherReading: {
@@ -10,7 +12,7 @@ export default {
   },
   concept: [
     "A video file can hold pictures and sound in separate **streams**. A video stream carries pictures through time; an audio stream carries sound. Their timing lets a player present them together.",
-    "The **container** is the file format that organises the streams. MP4 is a container. A **codec** describes how a stream’s pictures or sound are encoded and decoded for playback. H.264 is a video codec; AAC is an audio codec. The `.mp4` ending alone does not identify the codecs inside.",
+    codecGuide.chapterIntro,
     "A **frame** is one video picture, made from a grid of **pixels**. Its dimensions give the grid’s width and height: `854x480` means 854 pixels across and 480 down.",
   ],
   worked: [

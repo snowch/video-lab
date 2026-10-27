@@ -1,0 +1,69 @@
+{
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+  "source": {
+    "path": "public/media/notebook/bunny-short.mp4",
+    "bytes": 352138,
+    "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+  },
+  "commands": [
+    [
+      "ffmpeg",
+      "-i",
+      "public/media/notebook/bunny-short.mp4",
+      "-vn",
+      "-c:a",
+      "pcm_s16le",
+      "public/media/codecs/reference.wav"
+    ],
+    [
+      "ffmpeg",
+      "-i",
+      "public/media/codecs/reference.wav",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "32k",
+      "public/media/codecs/aac-32.m4a"
+    ],
+    [
+      "ffmpeg",
+      "-i",
+      "public/media/codecs/reference.wav",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "128k",
+      "public/media/codecs/aac-128.m4a"
+    ]
+  ],
+  "files": [
+    {
+      "name": "reference.wav",
+      "bytes": 1536078,
+      "sha256": "f36508bb5f90d315ce227951ca5c99421d3c938610dd37e06ea9ed87b5a4af1b",
+      "codec": "pcm_s16le",
+      "sampleRate": 48000,
+      "channels": 2,
+      "duration": 8
+    },
+    {
+      "name": "aac-32.m4a",
+      "bytes": 34623,
+      "sha256": "b419077e08415929a7e819ff33c198e9f4df79cf90d6b49290601ed5eb50859d",
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 2,
+      "duration": 8
+    },
+    {
+      "name": "aac-128.m4a",
+      "bytes": 130534,
+      "sha256": "283f203f33c68d6aacd916de8b3b76e9a706cefe6525761b8e5e37e154bf62e1",
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 2,
+      "duration": 8
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 import type { PageCopy } from "../copy-types";
 
 const copy: PageCopy = {
+  codecGuide: true,
   title: "Choose an encoding quality setting",
   goal: "Compare picture detail and file size at two quality settings, then try a setting between them.",
   concept: [

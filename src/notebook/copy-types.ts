@@ -19,6 +19,7 @@ export type PageCopy = {
   practiceOptions?: { flag: string; meaning: string }[];
   hints: [string, string, string, string, string];
   checkLimit: string;
+  codecGuide?: boolean;
   furtherReading?: { title: string; pages: string[] };
   nativeExplanation?: string[];
 };
