@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Automatic practice media, 27 October 2026:** [the practice preparation slice](notes/automatic-practice/01-facts.md) loads each notebook page's required media on entry, replacing the manual setup instruction with contextual loading and retry states.
+
 **Demuxer definition, 27 October 2026:** [the first-use clarification](notes/demuxer-definition/01-facts.md) defines the container reader directly and gives an MP4 video/audio example before the first inspection command.
 
 **Container readers and brands, 27 October 2026:** [the container-brands slice](notes/container-brands/01-facts.md) names demuxing in Chapter 2, places recorded brand metadata and the official MP4RA registry in one optional contextual note, and names muxing alongside Chapter 9’s export command.

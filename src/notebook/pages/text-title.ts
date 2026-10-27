@@ -5,7 +5,7 @@ const page: PageCopy = {
   title: "Render a title into pictures",
   goal: "Draw a permanent title onto the video using a supplied font.",
   sourceNote:
-    "Load both the video and fonts/DejaVuSans.ttf. The font file supplies the letter shapes used to draw the title.",
+    "The supplied font file fonts/DejaVuSans.ttf provides the letter shapes used to draw the title.",
   concept: [
     "A title can be part of the picture itself. Drawing letters into each frame is often called burning in text: the player shows those pixels along with the rest of the scene, so it cannot switch the title off.",
     "A font describes the shapes of letters. FFmpeg combines those shapes with your chosen word, size and colour to draw the title. In this example it stays in the upper-left throughout the clip, while the scene moves behind it. A fixed colour may be clear against one background and hard to read against another.",

@@ -31,3 +31,10 @@ export async function expectSavedCell(
     )
     .toMatchObject(expected);
 }
+
+export async function expectPracticeReady(page: Page) {
+  await expect(page.locator(".notebook-source")).toHaveAttribute(
+    "data-practice-ready",
+    "true",
+  );
+}

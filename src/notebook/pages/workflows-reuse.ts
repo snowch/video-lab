@@ -5,7 +5,7 @@ const page: PageCopy = {
   title: "Reuse a command deliberately",
   goal: "Adapt a preview command to another source while keeping its sizing rule.",
   sourceNote:
-    "Load both clips. In Files, use New folder to create previews before running the commands on this page.",
+    "In Files, use New folder to create previews before running the commands on this page.",
   concept: [
     "A reusable command separates the processing you want to keep from the values that belong to one job. For a small preview, the sizing rule can stay the same while the source, duration and destination change. Review each part before reusing it: a command that worked on one clip can still select the wrong material for the next job.",
     "The notebook sends one command to FFmpeg. It does not run a shell, so filename wildcards, loops and shell pipelines do not work here. The paths refer to files in the notebook’s workspace, rather than folders on your device.",

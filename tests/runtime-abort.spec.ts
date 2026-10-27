@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { expectPracticeReady } from "./notebook-storage";
 import { test, expect } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { n } from "../src/notebook/ui.strings";
@@ -37,7 +38,7 @@ test("normal FFmpeg exits have clean logs while failed commands keep real errors
   await expect(cell.locator(".notebook-log pre")).toContainText(
     "Old saved output\nAborted()",
   );
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await cell.getByRole("button", { name: n.run, exact: true }).click();
   await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
     timeout: 120000,

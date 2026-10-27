@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { expectPracticeReady } from "./notebook-storage";
 import { test, expect, type Locator } from "@playwright/test";
 
 async function contrast(button: Locator) {
@@ -39,9 +40,7 @@ test("primary actions remain readable while hovered and after running by touch o
     "data-notebook-ready",
     "true",
   );
-  await page
-    .getByRole("button", { name: "Load practice files", exact: true })
-    .click();
+  await expectPracticeReady(page);
   const cell = page.locator('[data-cell="first-edit/shorten:worked:0"]');
   const run = cell.getByRole("button", { name: "Run command", exact: true });
   await cell

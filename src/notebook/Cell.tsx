@@ -27,6 +27,7 @@ export function CommandCell({
   introduction,
   illustration,
   preview,
+  preparing = false,
 }: {
   id: string;
   initial: string;
@@ -39,6 +40,7 @@ export function CommandCell({
   introduction?: string[];
   illustration?: ReactNode;
   preview?: (command: string) => ReactNode;
+  preparing?: boolean;
 }) {
   const w = useNotebook(),
     record = w.cells[id] ?? { id, command: initial };
@@ -206,7 +208,8 @@ export function CommandCell({
             !e.nativeEvent.isComposing
           ) {
             e.preventDefault();
-            if (!w.busy && w.ready) void w.run(id, record.command);
+            if (!preparing && !w.busy && w.ready)
+              void w.run(id, record.command);
           }
         }}
       />
@@ -214,7 +217,7 @@ export function CommandCell({
       <div className="notebook-cell-actions">
         <button
           className="primary"
-          disabled={w.busy || !w.ready || !record.command.trim()}
+          disabled={preparing || w.busy || !w.ready || !record.command.trim()}
           onClick={() => void w.run(id, record.command)}
         >
           {n.run}
@@ -250,7 +253,7 @@ export function CommandCell({
         last.command === record.command &&
         !running && (
           <button
-            disabled={w.busy}
+            disabled={preparing || w.busy || !w.ready}
             onClick={() => {
               const command = record.command.replace(/^(\s*ffmpeg\b)/, "$1 -y");
               edit(command);

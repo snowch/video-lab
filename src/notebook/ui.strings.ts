@@ -38,9 +38,19 @@ export const n = {
   reveal: "Compare your prediction",
   change: "Change one thing",
   review: "Review your result",
-  load: "Load practice files",
-  loadNote: "Load the files for this page. Existing files are kept.",
+  sourceLoading: "Loading practice files…",
+  sourceWaiting:
+    "Practice files will load when the current operation finishes.",
+  sourceRetry: "Retry loading",
+  sourceMissing:
+    "A required practice file is missing. Load it again to continue.",
+  sourceLoadFailed:
+    "Could not load the practice files. Check your internet connection and try again.",
+  sourceTimeout: "Loading the practice files took too long. Try again.",
+  sourceMismatch:
+    "A practice file did not match the expected contents. Try loading it again.",
   source: "Practice source",
+  longPractice: "Download the two-minute practice video",
   replaySource: "Replay source",
   run: "Run command",
   cancel: "Cancel processing",
@@ -98,7 +108,7 @@ export const n = {
     "This cannot be undone. Download important work first. Earlier command results may become stale.",
   empty: "This folder is empty.",
   noFiles:
-    "No files yet. Load a practice video in a lesson, or import your own files.",
+    "No files yet. Practice videos appear when you open a lesson, or you can import your own files.",
   noSearchMatches: "No files or folders match your search.",
   root: "Your files",
   folderLabel: "Folder",

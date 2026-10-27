@@ -1,0 +1,9 @@
+# Automatic practice media
+
+Copyright © 2026 Christopher Snow.
+
+The owner requests removing the unexplained manual file-loading step. Opening a notebook lesson should prepare its required practice files automatically, then offer replay and the existing real commands. The course index must not download practice files into the workspace. Only the page's declared assets are needed; the optional two-minute bunny.mp4 is not needed by the first cut and must not be added automatically.
+
+Existing `practiceAssets` records contain local asset paths, byte counts and SHA-256 hashes. `Workspace.load` checks these bytes before adding missing files, preserves existing names, and uses the same transaction/storage limits as file management. Automatic loading must wait for restored work and active operations, avoid overwriting files/drafts, preserve session-only storage fallback, and avoid retry loops. Route changes must not publish stale errors or leave preparation stuck. A missing source after deliberate deletion needs an explicit retry, not immediate re-creation. No command executes automatically and no WASM tools download simply by reading.
+
+Use brief contextual loading/error/retry copy instead of the setup instruction. Keep replay and filename beside the lesson, retain multi-source selection and auxiliary subtitles/fonts, and disable execution shortcuts and buttons while preparation is pending. After a loading failure, retain normal native-command behaviour so learners can still use their own files. Existing source files should work offline without fetching again; missing assets use the app cache if available, otherwise offer retry. Validate download errors, corrupt bytes, existing-file preservation, navigation during loading and concurrent tabs, plus ordinary command execution. Separate prose drafting and built reader/sceptic/checker reviews precede the required full quality gate and merge.

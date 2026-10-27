@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { expectPracticeReady } from "./notebook-storage";
 import { test, expect } from "@playwright/test";
 import media from "../src/notebook/visuals/media.json" with { type: "json" };
 
@@ -127,9 +128,7 @@ test("probe guide remains a supplied example while actual output stays byte-for-
   test.skip(!["desktop-light", "firefox"].includes(info.project.name));
   test.setTimeout(120000);
   await page.goto("./#/learn/inside-video/inspect");
-  await page
-    .getByRole("button", { name: "Load practice files", exact: true })
-    .click();
+  await expectPracticeReady(page);
   const cell = page.locator('[data-cell="inside-video/inspect:worked:0"]');
   await expect(
     cell.locator(".visual-probe-lines dt").filter({ hasText: "Video:" }),

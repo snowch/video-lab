@@ -7,6 +7,7 @@ import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
+import { usePracticeFiles } from "./usePracticeFiles";
 import { ExampleDiagram } from "./ExampleDiagram";
 import { InlineText } from "./InlineText";
 import { ConceptVisual } from "./visuals/ConceptVisual";
@@ -53,6 +54,12 @@ function NotebookHome({
             alt="Big Buck Bunny standing among trees and flowers"
           />
           <Credits />
+          <a
+            href={import.meta.env.BASE_URL + "media/notebook/bunny.mp4"}
+            download="bunny.mp4"
+          >
+            {n.longPractice}
+          </a>
         </figure>
       </section>
       <section aria-label={n.chapters}>
@@ -92,20 +99,18 @@ function NotebookPage({ page }: { page: PageDefinition }) {
     [hint, setHint] = useState(0),
     [solution, setSolution] = useState(false),
     [replay, setReplay] = useState(page.id === pages[0]!.id),
-    [sourceName, setSourceName] = useState(page.assets[0]!),
-    [error, setError] = useState("");
+    [sourceName, setSourceName] = useState(page.assets[0]!);
+  const preparation = usePracticeFiles(page.assets);
   const noteId = page.id + ":notes",
     notes = w.cells[noteId] ?? { id: noteId, command: "" };
   const index = pages.findIndex((p) => p.id === page.id);
   const chapterPages = pages.filter((p) => p.chapter === page.chapter);
-  const required = page.assets.filter((name) => !w.files[name]);
   const source = w.files[sourceName];
   useEffect(() => {
     setHint(0);
     setSolution(false);
     setReplay(page.id === pages[0]!.id);
     setSourceName(page.assets[0]!);
-    setError("");
   }, [page.id]);
   function note(patch: { prediction?: string; review?: string }) {
     w.edit(noteId, { command: "", ...patch });
@@ -141,7 +146,10 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           <InlineText>{copy.goal}</InlineText>
         </p>
       </header>
-      <section className="notebook-source">
+      <section
+        className="notebook-source"
+        data-practice-ready={preparation.ready}
+      >
         <strong>{n.source}</strong>
         <code>{sourceName}</code>
         {copy.sourceNote && (
@@ -149,28 +157,19 @@ function NotebookPage({ page }: { page: PageDefinition }) {
             <InlineText>{copy.sourceNote}</InlineText>
           </p>
         )}
-        {required.length > 0 ? (
-          <>
-            <p>{n.loadNote}</p>
-            <button
-              className="primary"
-              disabled={!w.ready || w.busy}
-              onClick={() =>
-                void w
-                  .load(
-                    page.id === pages[0]!.id
-                      ? [...page.assets, "bunny.mp4"]
-                      : page.assets,
-                  )
-                  .then(() => setReplay(true))
-                  .catch((e) =>
-                    setError(e instanceof Error ? e.message : String(e)),
-                  )
-              }
-            >
-              {n.load}
-            </button>
-          </>
+        {!preparation.ready ? (
+          preparation.loading ? (
+            <p role="status">
+              {preparation.waiting ? n.sourceWaiting : n.sourceLoading}
+            </p>
+          ) : (
+            <div>
+              <p role="alert">{preparation.error || n.sourceMissing}</p>
+              <button disabled={!w.ready || w.busy} onClick={preparation.retry}>
+                {n.sourceRetry}
+              </button>
+            </div>
+          )
         ) : (
           <button onClick={() => setReplay((v) => !v)} aria-expanded={replay}>
             {n.replaySource}
@@ -201,7 +200,6 @@ function NotebookPage({ page }: { page: PageDefinition }) {
             <FilePreview key={sourceName} file={source} />
           </div>
         )}
-        {error && <p role="alert">{error}</p>}
       </section>
       <section className="notebook-concept">
         {copy.concept.map((p, i) => (
@@ -216,6 +214,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           key={page.id + ":worked:" + i}
           id={page.id + ":worked:" + i}
           initial={command}
+          preparing={!preparation.ready && preparation.loading}
           title={copy.worked[i]!.title}
           teaching={copy.worked[i]!}
           preview={
@@ -235,6 +234,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           key={page.id + ":practice"}
           id={page.id + ":practice"}
           initial={page.starter}
+          preparing={!preparation.ready && preparation.loading}
           title={n.practice}
           expected={page.expected}
           limit={copy.checkLimit}
@@ -390,7 +390,9 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
     </button>
   );
   const quiet =
-    !w.active && !w.sessionOnly && (!w.ready || (!w.busy && !w.saving));
+    !w.active &&
+    !w.sessionOnly &&
+    (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
       className={`notebook-shell${page ? " notebook-lesson" : ""}`}
@@ -404,7 +406,13 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
       )}
       <div className={`notebook-workspace-status${quiet ? " sr-only" : ""}`}>
         <span role="status" aria-live="polite">
-          {!w.ready ? n.loading : w.busy ? n.running : w.saving ? n.saving : ""}
+          {!w.ready
+            ? n.loading
+            : w.busy && !w.preparingPractice
+              ? n.running
+              : w.saving
+                ? n.saving
+                : ""}
         </span>
         {w.sessionOnly && <p role="status">{n.sessionOnly}</p>}
         {w.active && (
@@ -421,7 +429,7 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
       )}
       <div className="notebook-content">
         {page ? (
-          <NotebookPage page={page} />
+          <NotebookPage key={page.id} page={page} />
         ) : (
           <NotebookHome startRef={startLink} />
         )}

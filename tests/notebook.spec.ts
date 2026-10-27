@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { pages, chapters, pageHref } from "../src/notebook/structure";
 import { courseCopy } from "../src/notebook/copy";
 import { n } from "../src/notebook/ui.strings";
-import { expectSavedCell } from "./notebook-storage";
+import { expectSavedCell, expectPracticeReady } from "./notebook-storage";
 
 test("notebook outline and every concept page reflow without loading processing tools", async ({
   page,
@@ -103,7 +103,7 @@ test("cells preserve edited drafts and raw evidence, check actual outputs, and r
   test.skip(!["desktop-light", "firefox"].includes(info.project.name));
   test.setTimeout(180000);
   await page.goto("./#/learn/first-edit/shorten");
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await expect(
     page.getByRole("button", { name: n.replaySource, exact: true }),
   ).toBeVisible();
@@ -350,10 +350,11 @@ test("inspection checks stay visible for unchanged evidence and failed runs neve
   test.skip(!["desktop-light", "firefox"].includes(info.project.name));
   test.setTimeout(120000);
   await page.goto("./#/learn/inside-video/inspect");
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await expect(
     page.getByRole("button", { name: n.replaySource, exact: true }),
   ).toBeVisible();
+  await page.getByRole("button", { name: n.replaySource, exact: true }).click();
   await page
     .locator(".notebook-source-choices")
     .getByRole("button", { name: "bunny-action.mp4", exact: true })
@@ -392,7 +393,7 @@ test("subtitles render visible lettering with the supplied font in the actual WA
   test.skip(!["desktop-light", "firefox"].includes(info.project.name));
   test.setTimeout(120000);
   await page.goto("./#/learn/text/subtitles");
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await expect(
     page.getByRole("button", { name: n.replaySource, exact: true }),
   ).toBeVisible();
@@ -485,7 +486,7 @@ test("optional notes preserve earlier predictions and reviews without adding req
     page.getByRole("textbox", { name: n.previousPrediction, exact: true }),
   ).toHaveValue("My earlier prediction");
   await page.goto("./#/learn/first-edit/start");
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await expect(page.locator(".notebook-cut-plan figcaption")).toHaveText(
     "Planned cut · 2–6 s (4 s)",
   );
@@ -502,8 +503,7 @@ test("a planned cut follows the editor while real output stays next to Run", asy
   const cell = page.locator('[data-cell="first-edit/shorten:worked:0"]');
   const editor = cell.locator("textarea");
   const plan = cell.locator(".notebook-cut-plan");
-  await expect(plan).toHaveCount(0);
-  await page.getByRole("button", { name: n.load, exact: true }).click();
+  await expectPracticeReady(page);
   await expect(plan).toContainText("Planned cut · 0–5 s (5 s)");
   await editor.fill("ffmpeg -i bunny-short.mp4 -ss 6 -t 5 tail.mp4");
   await expect(plan).toContainText("Planned cut · 6–8 s (2 s)");

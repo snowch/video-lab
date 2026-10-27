@@ -73,6 +73,7 @@ type Workspace = {
   cells: Record<string, CellRecord>;
   ready: boolean;
   busy: boolean;
+  preparingPractice: boolean;
   saving: boolean;
   sessionOnly: boolean;
   notice: string;
@@ -81,7 +82,10 @@ type Workspace = {
   edit: (id: string, patch: Partial<CellRecord>) => void;
   run: (id: string, command: string) => Promise<void>;
   cancel: () => void;
-  load: (names: string[]) => Promise<void>;
+  load: (
+    names: string[],
+    options?: { signal?: AbortSignal; quiet?: boolean },
+  ) => Promise<void>;
   add: (files: NotebookFile[]) => Promise<void>;
   move: (from: string, to: string) => Promise<void>;
   copy: (from: string, to: string) => Promise<void>;
@@ -127,6 +131,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false),
     [active, setActive] = useState<{ id: string; command: string }>(),
     [operating, setOperating] = useState(false),
+    [quietOperation, setQuietOperation] = useState(false),
     [saving, setSaving] = useState(false),
     [sessionOnly, setSessionOnly] = useState(false),
     [notice, setNotice] = useState(""),
@@ -334,6 +339,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
     dirs: string[],
     overwrite = true,
     allowSession = false,
+    writeFolders = true,
   ) {
     checkNotebookFiles(next, dirs);
     const previous = filesRef.current;
@@ -351,7 +357,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
       await writeFiles(
         stable,
         removed,
-        [{ key: "folders", value: dirs }],
+        writeFolders ? [{ key: "folders", value: dirs }] : [],
         overwrite,
       );
       for (const f of stable) nonDurable.current.delete(f.name);
@@ -371,18 +377,22 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
     durableState();
     channel.current?.postMessage("files");
   }
-  async function operation(work: () => Promise<void>) {
+  async function operation(work: () => Promise<void>, quiet = false) {
     if (!ready) throw new Error("Wait for the workspace to finish opening.");
     if (locked.current)
       throw new Error("Finish or cancel the active operation first.");
     locked.current = true;
     setOperating(true);
+    setQuietOperation(quiet);
     try {
       await work();
-      setNotice(n.moved);
+      if (!quiet) setNotice(n.moved);
     } finally {
       locked.current = false;
-      if (live.current) setOperating(false);
+      if (live.current) {
+        setOperating(false);
+        setQuietOperation(false);
+      }
     }
   }
   async function freshFiles() {
@@ -414,8 +424,12 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
       await transaction(next, foldersRef.current, false, true);
     });
   }
-  async function load(names: string[]) {
+  async function load(
+    names: string[],
+    options: { signal?: AbortSignal; quiet?: boolean } = {},
+  ) {
     await operation(async () => {
+      options.signal?.throwIfAborted();
       await freshFiles();
       const next = { ...filesRef.current };
       const additions: NotebookFile[] = [];
@@ -423,29 +437,61 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
         if (next[name]) continue;
         const asset = practiceAssets[name];
         if (!asset) throw new Error("That practice file is unavailable.");
-        const r = await fetch(
-          new URL(import.meta.env.BASE_URL + asset.path, location.href),
-        );
-        if (!r.ok)
-          throw new Error(
-            "The practice file could not be loaded. Reconnect or save the complete app for offline use.",
+        const controller = new AbortController();
+        const abort = () => controller.abort();
+        options.signal?.addEventListener("abort", abort, { once: true });
+        let timedOut = false;
+        const timer = setTimeout(() => {
+          timedOut = true;
+          controller.abort();
+        }, 30000);
+        let blob: Blob;
+        try {
+          options.signal?.throwIfAborted();
+          const r = await fetch(
+            new URL(import.meta.env.BASE_URL + asset.path, location.href),
+            { signal: controller.signal },
           );
-        const blob = new Blob([await r.arrayBuffer()], {
-          type: mediaMime(name),
-        });
+          if (!r.ok) throw new Error(n.sourceLoadFailed);
+          blob = new Blob([await r.arrayBuffer()], { type: mediaMime(name) });
+        } catch {
+          options.signal?.throwIfAborted();
+          throw new Error(timedOut ? n.sourceTimeout : n.sourceLoadFailed);
+        } finally {
+          clearTimeout(timer);
+          options.signal?.removeEventListener("abort", abort);
+        }
         if (
           blob.size !== asset.bytes ||
           (await hashBlob(blob)) !== asset.sha256
         )
-          throw new Error(
-            "The practice file did not match its recorded bytes. Reconnect and retry.",
-          );
+          throw new Error(n.sourceMismatch);
         const f = { name, blob, origin: "provided" as const };
         next[name] = f;
         additions.push(f);
       }
-      await transaction(next, foldersRef.current, false, true);
-    });
+      // Re-read after downloading: another tab may have added these names.
+      // Never replace them or write a stale folder list during preparation.
+      for (let attempt = 0; attempt < 3; attempt++) {
+        options.signal?.throwIfAborted();
+        await freshFiles();
+        options.signal?.throwIfAborted();
+        const current = { ...filesRef.current };
+        const missing = additions.filter((file) => !current[file.name]);
+        if (!missing.length) return;
+        for (const file of missing) current[file.name] = file;
+        try {
+          await transaction(current, foldersRef.current, false, true, false);
+          return;
+        } catch (e) {
+          if (
+            !(e instanceof DOMException && e.name === "ConstraintError") ||
+            attempt === 2
+          )
+            throw e;
+        }
+      }
+    }, options.quiet);
   }
   async function move(from: string, to: string) {
     await operation(async () => {
@@ -728,6 +774,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
         cells,
         ready,
         busy: !ready || Boolean(active) || operating,
+        preparingPractice: operating && quietOperation,
         saving,
         sessionOnly,
         notice,

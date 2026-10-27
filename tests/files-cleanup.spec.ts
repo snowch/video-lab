@@ -2,6 +2,7 @@
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { n } from "../src/notebook/ui.strings";
+import { expectPracticeReady } from "./notebook-storage";
 
 async function openFiles(page: Page, route = "./#/") {
   await page.goto(route);
@@ -27,7 +28,7 @@ function textFile(name: string, contents = "Saved text") {
   return { name, mimeType: "text/plain", buffer: Buffer.from(contents) };
 }
 
-test("Files is a single header utility on the overview and lesson, with a quiet fresh dialog", async ({
+test("Files is a single header utility, empty on the overview and showing the lesson's practice video", async ({
   page,
 }) => {
   for (const route of ["./#/", "./#/learn/first-edit/shorten"]) {
@@ -45,7 +46,17 @@ test("Files is a single header utility on the overview and lesson, with a quiet 
       dialog.getByRole("heading", { name: n.yourFiles }),
     ).toBeVisible();
     await expect(fileButton(dialog, n.import)).toBeVisible();
-    await expect(dialog.getByText(n.noFiles, { exact: true })).toBeVisible();
+    if (route === "./#/") {
+      await expect(dialog.getByText(n.noFiles, { exact: true })).toBeVisible();
+    } else {
+      await expectPracticeReady(page);
+      await expect(dialog.getByText(n.noFiles, { exact: true })).toHaveCount(0);
+      await expect(dialog.locator(".notebook-file-list > li")).toHaveCount(1);
+      await expect(fileButton(dialog, "bunny-short.mp4")).toBeVisible();
+      await expect(dialog.locator(".notebook-file-list")).toContainText(
+        n.originPracticeVideo,
+      );
+    }
     await expect(dialog.getByText(n.storageNote, { exact: true })).toBeHidden();
     await expect(
       dialog.getByText(n.nearFileLimit, { exact: false }),
@@ -53,7 +64,7 @@ test("Files is a single header utility on the overview and lesson, with a quiet 
     await expect(dialog.getByRole("searchbox")).toHaveCount(0);
     await expect(dialog.locator(".notebook-breadcrumb")).toHaveCount(0);
     await expect(fileButton(dialog, n.earlierWork)).toHaveCount(0);
-    await expect(fileButton(dialog, n.load)).toHaveCount(0);
+    await expect(fileButton(dialog, "Load practice files")).toHaveCount(0);
     await expect(dialog.locator("select")).toHaveCount(0);
     await fileButton(dialog, n.close).click();
     await expect(
