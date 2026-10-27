@@ -26,3 +26,18 @@ A separate checker investigates the preserved evidence in `08-test-investigation
 The unchanged full `npm run check` rerun exited 0: 25 unit files / 110 unit tests passed; 336 browser tests passed and 49 were configured skips. Formatting, copyright, shared-platform integrity, strict types, all native/media/recorded command facts and production/offline build passed. The previously failing Firefox reference test passed within this full run (7.5 seconds). Log: `check-final.log`. This recovers the gate without a product or test workaround; it does not establish the initial failure's root cause.
 
 Independent drafting, reader, sceptic, final built checker and failure investigation are recorded separately. Publication is authorised by the owner's explicit “Merge when done”.
+
+## Hosted checks and public release
+
+Product commit `454c08ed8defde6087a0996a69c9044ac41313f9` was pushed to main under the owner's merge authorisation.
+
+- [Quality run 40464524824](https://github.com/snowch/video-lab/actions/runs/40464524824): success, 110 unit tests and 336 browser tests passed, 49 configured skips; browser duration 17.4 minutes. Log: `quality.log`.
+- [Pages run 40464524909](https://github.com/snowch/video-lab/actions/runs/40464524909): success including deployment, 110 unit tests and 336 browser tests passed, 49 configured skips; browser duration 17.8 minutes. Log: `pages.log`.
+
+Public verification command:
+
+`node /workspace/scratch/probe-bitrate/public.mjs 454c08ed8defde6087a0996a69c9044ac41313f9`
+
+Exit 0. Four fresh Chromium contexts (desktop/phone, light/dark; phone widths 390 and 320) verified commit and running build `37b67d3132628394020b580c80474f42f68d8d9b1f1ad6accdf3538982da6d39`, the four quoted fields, new reader explanation and bitrate units/scope. No horizontal overflow at normal or 200% text. A real public desktop inspection of `bunny-action.mp4` produced its six-second output while the supplied reference stayed at eight seconds / 352 kb/s; raw output contained no code/bold markup. Normal TLS and configured proxy were used. Artifacts: `public.log`, `public-results.json` and four guide screenshots. The parent opened the public phone screenshot; the independent built checker separately inspected all twelve local layout combinations.
+
+Both hosted full gates and the public verification passed. The initial local intermittent failure remains recorded above and in `08-test-investigation.md`; no speculative workaround was introduced.
