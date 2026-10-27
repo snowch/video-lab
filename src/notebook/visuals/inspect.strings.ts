@@ -11,7 +11,11 @@ export const inspectCopy = {
   guideNote:
     "Selected native ffprobe fields from bunny-short.mp4; ellipses mark omissions. This guide always describes the supplied source. Your command produces its own raw output.",
   inputMeaning:
-    "`Input #0` identifies the first input file. The format names identify a reader for related formats, rather than six streams. This supplied source is an MP4.",
+    "`Input #0` identifies the first input file. FFprobe uses one reader for MP4 and related formats, including MOV and 3GP, and prints that reader’s format names here. This file is an MP4; its video and audio appear on the separate `Stream` lines below.",
+  durationMeaning: [
+    "`Duration` is eight seconds. The whole-file **bitrate** includes video, sound and container information. `kb/s` means kilobits per second: `352 kb/s` is about 352,000 bits per second of playback, or 44,000 bytes per second (eight bits make one byte).",
+    "This is an average across the file, so individual seconds can contain different amounts of data. A bitrate on a `Stream` line describes only that stream. Bitrate does not measure playback speed.",
+  ],
   videoMeaning:
     "`#0:0` means input 0, stream 0. `Video` identifies its type and `h264` its codec. `854x480` gives width and height in pixels; `24 fps` gives pictures per second.",
   audioMeaning:

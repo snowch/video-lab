@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Probe output units, 27 October 2026:** [the reader-list and bitrate clarification](notes/probe-bitrate/01-plan-facts.md) explains the shared MP4 reader names and adds the recorded Duration/bitrate line to Chapter 2’s output guide, with whole-file averages, units and stream scope.
+
 **Codec cross-references, 26 October 2026:** [the codec-links slice](notes/codec-links/01-plan-facts.md) connects Chapter 2’s file description to the existing stream-copying, encoding-quality and export-format lessons through optional direct page links.
 
 **Simpler Files, 26 October 2026:** [the Files cleanup](notes/files-cleanup/01-plan.md) moves the notebook file utility into the app header and prioritises preview, import and download. Less-used operations stay available contextually, with search, folder navigation, storage limits and earlier-work access appearing when relevant.

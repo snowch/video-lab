@@ -103,9 +103,9 @@ test("probe guide remains a supplied example while actual output stays byte-for-
     .getByRole("button", { name: "Load practice files", exact: true })
     .click();
   const cell = page.locator('[data-cell="inside-video/inspect:worked:0"]');
-  await expect(cell.locator(".visual-probe-lines dt").nth(1)).toHaveText(
-    "Stream #0:0 … Video: h264 … 854x480 … 24 fps",
-  );
+  await expect(
+    cell.locator(".visual-probe-lines dt").filter({ hasText: "Video:" }),
+  ).toHaveText("Stream #0:0 … Video: h264 … 854x480 … 24 fps");
   await cell.locator("textarea").fill("ffprobe bunny-action.mp4");
   await cell.getByRole("button", { name: "Run command", exact: true }).click();
   await expect(cell.locator("[role=status]").first()).toHaveText(
@@ -118,6 +118,9 @@ test("probe guide remains a supplied example while actual output stays byte-for-
   await expect(cell.locator(".visual-probe-lines dt").first()).toContainText(
     "bunny-short.mp4",
   );
+  await expect(
+    cell.locator(".visual-probe-lines dt").filter({ hasText: "Duration:" }),
+  ).toHaveText("Duration: 00:00:08.00 … bitrate: 352 kb/s");
   await expect
     .poll(() =>
       page.evaluate(async () => {

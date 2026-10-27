@@ -44,6 +44,12 @@
 .visual-probe-lines dd {
   margin: 0.5rem 0 0;
 }
+.visual-probe-lines dd p {
+  margin: 0;
+}
+.visual-probe-lines dd p + p {
+  margin-top: 0.75rem;
+}
 .visual-dimensions strong {
   display: block;
   margin-bottom: 0.5rem;

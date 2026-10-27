@@ -329,6 +329,25 @@ try {
     assert.deepEqual(facts.probe.lines, expected.probe.lines);
   assert.equal(expected.probe.lines.length, 4);
   assert.ok(expected.probe.lines[0].includes("from 'bunny-short.mp4'"));
+  const fileBitrate = Number(sourceProbe.format.bit_rate);
+  assert.equal(
+    fileBitrate,
+    (identity(source).bytes * 8) / Number(sourceProbe.format.duration),
+    "this source's whole-file average bitrate is file bits divided by duration",
+  );
+  assert.ok(
+    expected.probe.lines[1].includes(
+      `bitrate: ${Math.floor(fileBitrate / 1000)} kb/s`,
+    ),
+    "recorded bitrate uses decimal kilobits per second",
+  );
+  assert.ok(
+    sourceProbe.streams.reduce(
+      (sum, stream) => sum + Number(stream.bit_rate),
+      0,
+    ) < fileBitrate,
+    "this source's whole-file rate also includes container data",
+  );
   assert.ok(expected.probe.lines[2].includes("854x480"));
   assert.ok(expected.probe.lines[3].includes("48000 Hz"));
   assert.deepEqual(facts.framing, expected.framing);

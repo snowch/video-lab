@@ -72,10 +72,18 @@ export function ProbeGuide() {
     if (!match) throw new Error("Recorded probe excerpt is missing a field");
     return match[0];
   };
-  const v = line("Video:"),
+  const duration = line("Duration:"),
+    v = line("Video:"),
     a = line("Audio:");
-  const rows = [
+  const rows: [string, string | string[]][] = [
     [line("Input #0"), t.inputMeaning],
+    [
+      [
+        part(duration, /Duration: [\d:.]+/),
+        part(duration, /bitrate: \d+ kb\/s/),
+      ].join(" … "),
+      t.durationMeaning,
+    ],
     [
       [
         part(v, /Stream #\d+:\d+/),
@@ -106,7 +114,11 @@ export function ProbeGuide() {
               <code>{quote}</code>
             </dt>
             <dd>
-              <InlineText>{meaning!}</InlineText>
+              {(Array.isArray(meaning) ? meaning : [meaning]).map((text, j) => (
+                <p key={j}>
+                  <InlineText>{text}</InlineText>
+                </p>
+              ))}
             </dd>
           </div>
         ))}
