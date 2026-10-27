@@ -23,6 +23,7 @@ import { NotebookCourse } from "./notebook/Notebook";
 import { notebookRoute } from "./notebook/structure";
 import { courseCopy } from "./notebook/copy";
 import { n as notebookUI } from "./notebook/ui.strings";
+import { glossaryUI } from "./notebook/glossary.strings";
 const storage = browserStorage();
 function Home() {
   return (
@@ -147,22 +148,24 @@ function App() {
   }, [theme]);
   const resolved = routeFor(route);
   const step = resolved.step;
-  const notebook =
+  const notebook: ReturnType<typeof notebookRoute> =
     notebookRoute(route) ??
     (!step && !resolved.appendix && !route.includes("/earlier")
       ? { home: true as const }
       : undefined);
-  const pageTitle = notebook
-    ? !notebook.home
-      ? courseCopy.pages[notebook.page.id]!.title
-      : courseCopy.title
-    : resolved.appendix
-      ? recordingGuide.title
-      : step
-        ? resolved.reference && (step === "inspect" || step === "edit")
-          ? referenceLessons[step].title
-          : chapterTitles[step]
-        : home.subtitle;
+  const pageTitle = notebook?.glossary
+    ? glossaryUI.title
+    : notebook
+      ? !notebook.home
+        ? courseCopy.pages[notebook.page.id]!.title
+        : courseCopy.title
+      : resolved.appendix
+        ? recordingGuide.title
+        : step
+          ? resolved.reference && (step === "inspect" || step === "edit")
+            ? referenceLessons[step].title
+            : chapterTitles[step]
+          : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
@@ -253,7 +256,10 @@ function App() {
       )}
       <main id="content" ref={main} tabIndex={-1}>
         {notebook ? (
-          <NotebookCourse page={notebook.home ? undefined : notebook.page} />
+          <NotebookCourse
+            page={notebook.home ? undefined : notebook.page}
+            glossary={notebook.glossary}
+          />
         ) : resolved.appendix ? (
           <RecordingGuide />
         ) : step ? (
@@ -296,7 +302,7 @@ function App() {
       </main>
       <footer className="site-footer">
         <span>{ui.copyright}</span>
-
+        <a href="#/glossary">{glossaryUI.title}</a>
         <a href="https://github.com/snowch/video-lab/blob/main/docs/sources.md">
           {ui.source}
         </a>

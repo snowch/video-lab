@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Course glossary, 27 October 2026:** [the glossary slice](notes/glossary/01-facts.md) adds an alphabetical, searchable reference with examples and lesson links, available from the course index and footer without leaving the local notebook workspace.
+
 **Automatic practice media, 27 October 2026:** [the practice preparation slice](notes/automatic-practice/01-facts.md) loads each notebook page's required media on entry, replacing the manual setup instruction with contextual loading and retry states.
 
 **Demuxer definition, 27 October 2026:** [the first-use clarification](notes/demuxer-definition/01-facts.md) defines the container reader directly and gives an MP4 video/audio example before the first inspection command.

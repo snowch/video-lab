@@ -7,6 +7,8 @@ import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
+import { Glossary } from "./Glossary";
+import { glossaryUI } from "./glossary.strings";
 import { usePracticeFiles } from "./usePracticeFiles";
 import { ExampleDiagram } from "./ExampleDiagram";
 import { InlineText } from "./InlineText";
@@ -86,6 +88,9 @@ function NotebookHome({
             </li>
           ))}
         </ol>
+        <a className="notebook-appendix" href="#/glossary">
+          {glossaryUI.title}
+        </a>
         <a className="notebook-appendix" href="#/appendix/recording">
           {n.recordingGuide}
         </a>
@@ -359,7 +364,13 @@ function NotebookPage({ page }: { page: PageDefinition }) {
     </article>
   );
 }
-function NotebookShell({ page }: { page?: PageDefinition }) {
+function NotebookShell({
+  page,
+  glossary = false,
+}: {
+  page?: PageDefinition;
+  glossary?: boolean;
+}) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
     [earlierWork, setEarlierWork] = useState(false),
@@ -395,11 +406,11 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page ? " notebook-lesson" : ""}`}
+      className={`notebook-shell${page || glossary ? " notebook-lesson" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
-      {page && (
+      {(page || glossary) && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
         </nav>
@@ -430,6 +441,8 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
       <div className="notebook-content">
         {page ? (
           <NotebookPage key={page.id} page={page} />
+        ) : glossary ? (
+          <Glossary />
         ) : (
           <NotebookHome startRef={startLink} />
         )}
@@ -445,10 +458,16 @@ function NotebookShell({ page }: { page?: PageDefinition }) {
     </div>
   );
 }
-export function NotebookCourse({ page }: { page?: PageDefinition }) {
+export function NotebookCourse({
+  page,
+  glossary,
+}: {
+  page?: PageDefinition;
+  glossary?: boolean;
+}) {
   return (
     <NotebookWorkspace>
-      <NotebookShell page={page} />
+      <NotebookShell page={page} glossary={glossary} />
     </NotebookWorkspace>
   );
 }

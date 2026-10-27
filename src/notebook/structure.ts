@@ -280,9 +280,13 @@ export const pages: PageDefinition[] = [
       '#!/bin/sh\nset -eu\nmkdir -p exports\nfor input in ./*.mp4; do\n  [ -f "$input" ] || continue\n  name=${input##*/}\n  ffmpeg -n -i "$input" -t 5 -vf "scale=640:-2" "exports/${name%.*}-preview.mp4"\ndone\n',
   },
 ];
-export function notebookRoute(hash: string) {
+type NotebookRoute =
+  | { home: true; glossary?: boolean }
+  | { home: false; page: PageDefinition; glossary?: false };
+export function notebookRoute(hash: string): NotebookRoute | undefined {
   const parts = hash.replace(/^#\/?/, "").split("/");
   if (!parts[0]) return { home: true as const };
+  if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)
     ? (parts[1] as Chapter)

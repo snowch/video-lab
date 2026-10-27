@@ -1,0 +1,43 @@
+/* Copyright © 2026 Christopher Snow */
+.glossary {
+  padding: 1.5rem 0;
+  overflow-wrap: anywhere;
+}
+.glossary h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+}
+.glossary-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.glossary-search label {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+.glossary-search input {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+.glossary-entry {
+  margin: 2rem 0;
+}
+.glossary-entry h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+  line-height: 1.35;
+}
+.glossary-entry dd {
+  margin: 0;
+}
+.glossary-entry p {
+  margin: 0.65rem 0;
+}
+.glossary-entry a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0.55rem 0;
+}
