@@ -121,6 +121,7 @@ export const n = {
   originRecording: "Recording",
   originRecipe: "Command record",
   up: "Parent folder",
+  editFile: "Edit",
   editText: "Edit text",
   dirty: "Unsaved changes",
   discard: "Discard changes",

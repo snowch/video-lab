@@ -143,6 +143,88 @@ test("imported files preview and download their actual contents; row actions con
   await expect(fileButton(dialog, n.import)).toBeFocused();
 });
 
+test("text rows offer Edit, focus the editor and retain saved changes", async ({
+  page,
+}) => {
+  const dialog = await openFiles(page, "./#/learn/first-edit/shorten");
+  await expectPracticeReady(page);
+  await filePicker(dialog).setInputFiles([
+    textFile("captions.srt", "1\n00:00:00,000 --> 00:00:03,000\nHello\n"),
+    textFile("empty.txt", ""),
+  ]);
+  await expect(fileButton(dialog, `${n.editFile} bunny-short.mp4`)).toHaveCount(
+    0,
+  );
+  const edit = fileButton(dialog, `${n.editFile} captions.srt`);
+  await edit.focus();
+  await page.keyboard.press("Enter");
+  const editor = dialog.getByRole("textbox", { name: n.editText });
+  await expect(editor).toBeFocused();
+  await expect(editor).toHaveValue(/Hello/);
+  await editor.fill("1\n00:00:00,000 --> 00:00:03,000\nChanged caption\n");
+  await expect(fileButton(dialog, `${n.editFile} empty.txt`)).toBeDisabled();
+  await fileButton(dialog, n.save).click();
+  await fileButton(dialog, `${n.editFile} empty.txt`).click();
+  await expect(editor).toBeFocused();
+  await expect(editor).toHaveValue("");
+  await editor.fill("New notes");
+  await fileButton(dialog, n.save).click();
+  await fileButton(dialog, n.close).click();
+  await page.reload();
+  await page.getByRole("button", { name: n.files, exact: true }).click();
+  await fileButton(dialog, `${n.editFile} captions.srt`).click();
+  await expect(editor).toHaveValue(
+    "1\n00:00:00,000 --> 00:00:03,000\nChanged caption\n",
+  );
+  await fileButton(dialog, `${n.editFile} empty.txt`).click();
+  await expect(editor).toHaveValue("New notes");
+});
+
+test("row actions stay aligned and only the current dropdown stays open", async ({
+  page,
+}) => {
+  const dialog = await openFiles(page);
+  await filePicker(dialog).setInputFiles([
+    textFile("first.txt"),
+    textFile("last.txt"),
+  ]);
+  const first = rowMenu(dialog, "first.txt");
+  const last = rowMenu(dialog, "last.txt");
+  const row = dialog.locator(".notebook-file-list > li").first();
+  const height = await row.evaluate((el) => el.getBoundingClientRect().height);
+  await first.click();
+  await expect(fileButton(dialog, `${n.copyFile} first.txt`)).toBeVisible();
+  expect(await row.evaluate((el) => el.getBoundingClientRect().height)).toBe(
+    height,
+  );
+  await last.focus();
+  await page.keyboard.press("Enter");
+  await expect(fileButton(dialog, `${n.copyFile} first.txt`)).toBeHidden();
+  const copy = fileButton(dialog, `${n.copyFile} last.txt`);
+  await expect(copy).toBeVisible();
+  const panel = dialog.locator(
+    ".notebook-row-options[open] .notebook-row-option-buttons",
+  );
+  const panelBounds = await panel.boundingBox();
+  const dialogBounds = await dialog.boundingBox();
+  expect(panelBounds!.x).toBeGreaterThanOrEqual(dialogBounds!.x);
+  expect(panelBounds!.y).toBeGreaterThanOrEqual(dialogBounds!.y);
+  expect(panelBounds!.x + panelBounds!.width).toBeLessThanOrEqual(
+    dialogBounds!.x + dialogBounds!.width,
+  );
+  expect(panelBounds!.y + panelBounds!.height).toBeLessThanOrEqual(
+    dialogBounds!.y + dialogBounds!.height,
+  );
+  await copy.focus();
+  await page.keyboard.press("Escape");
+  await expect(last).toBeFocused();
+  await expect(copy).toBeHidden();
+  await last.click();
+  await dialog.getByRole("heading", { name: n.yourFiles }).click();
+  await expect(copy).toBeHidden();
+  await expect(dialog).toBeVisible();
+});
+
 test("search appears after eight entries, keeps a no-match query editable and follows folder navigation", async ({
   page,
 }) => {
