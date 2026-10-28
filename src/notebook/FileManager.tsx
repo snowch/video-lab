@@ -6,6 +6,7 @@ import { zipFiles } from "./zip";
 import { useRestartGuard } from "../app-status/safety";
 import { n } from "./ui.strings";
 import "./files.css";
+const isTextFile = (name: string) => /\.(txt|md|srt|csv|sh|json)$/i.test(name);
 export function FilePreview({ file }: { file: NotebookFile }) {
   const [url, setUrl] = useState(""),
     [text, setText] = useState(""),
@@ -15,7 +16,7 @@ export function FilePreview({ file }: { file: NotebookFile }) {
     setUrl(u);
     setFailed(false);
     let live = true;
-    if (/\.(txt|md|srt|csv|sh|json)$/i.test(file.name))
+    if (isTextFile(file.name))
       void file.blob
         .slice(0, 200000)
         .text()
@@ -128,6 +129,15 @@ export function FileManager({
     [name, setName] = useState(() => restoredDraft.current?.name ?? ""),
     [error, setError] = useState(""),
     [confirmClose, setConfirmClose] = useState(false);
+  const textEditor = useRef<HTMLTextAreaElement>(null),
+    focusEditor = useRef(false),
+    fileRequest = useRef(0);
+  useLayoutEffect(() => {
+    if (focusEditor.current && textEditor.current) {
+      focusEditor.current = false;
+      textEditor.current.focus();
+    }
+  });
   const returnTo = useRef<HTMLElement | null>(null),
     restoreFormFocus = useRef(false),
     formInput = useRef<HTMLInputElement>(null),
@@ -228,17 +238,23 @@ export function FileManager({
     if (picker.current) picker.current.value = "";
     if (folderPicker.current) folderPicker.current.value = "";
   }
-  async function showFile(name: string) {
+  async function showFile(name: string, edit = false) {
     if (dirty) {
       setError(n.dirty);
       return;
     }
+    const request = ++fileRequest.current;
+    const file = w.files[name];
+    const contents = file && isTextFile(name) ? await file.blob.text() : "";
+    if (request !== fileRequest.current || !dialog.current?.open) return;
+    focusEditor.current = edit;
+    if (edit && selected === name && textEditor.current) {
+      focusEditor.current = false;
+      textEditor.current.focus();
+    }
+    setText(contents);
     setSelected(name);
     setError("");
-    const file = w.files[name];
-    if (file && /\.(txt|md|srt|csv|sh|json)$/i.test(name))
-      setText(await file.blob.text());
-    else setText("");
   }
   const prefix = cwd ? cwd + "/" : "";
   const directorySet = new Set<string>(w.folders);
@@ -282,6 +298,13 @@ export function FileManager({
       ref={dialog}
       aria-labelledby="notebook-files-title"
       aria-describedby="notebook-files-intro"
+      onPointerDown={(e) => {
+        for (const menu of dialog.current?.querySelectorAll<HTMLDetailsElement>(
+          ".notebook-row-options[open]",
+        ) ?? []) {
+          if (!menu.contains(e.target as Node)) menu.open = false;
+        }
+      }}
       onKeyDown={(e) => {
         if (e.key !== "Escape") return;
         const expanded = [
@@ -309,6 +332,7 @@ export function FileManager({
         }
       }}
       onClose={() => {
+        fileRequest.current++;
         pendingFileDraft = undefined;
         restoreFormFocus.current = false;
         setSelected("");
@@ -573,6 +597,15 @@ export function FileManager({
                   </small>
                 </div>
                 <div className="notebook-file-actions">
+                  {!entry.folder && isTextFile(entry.path) && (
+                    <button
+                      disabled={blocked}
+                      aria-label={`${n.editFile} ${entry.path}`}
+                      onClick={() => void showFile(entry.path, true)}
+                    >
+                      {n.editFile}
+                    </button>
+                  )}
                   {!entry.folder && (
                     <button
                       disabled={w.busy}
@@ -584,7 +617,35 @@ export function FileManager({
                       {n.download}
                     </button>
                   )}
-                  <details className="notebook-row-options">
+                  <details
+                    className="notebook-row-options"
+                    onToggle={(e) => {
+                      const menu = e.currentTarget;
+                      if (!menu.open) return;
+                      for (const other of dialog.current?.querySelectorAll<HTMLDetailsElement>(
+                        ".notebook-row-options[open]",
+                      ) ?? []) {
+                        if (other !== menu) other.open = false;
+                      }
+                      const panel = menu.querySelector<HTMLElement>(
+                        ".notebook-row-option-buttons",
+                      );
+                      if (!panel || !dialog.current) return;
+                      const bounds = dialog.current.getBoundingClientRect();
+                      const trigger = menu.getBoundingClientRect();
+                      // Keep the menu inside the dialog, including its last row.
+                      panel.style.maxWidth = `${Math.max(0, trigger.right - bounds.left - 16)}px`;
+                      const below =
+                        Math.min(bounds.bottom, innerHeight) -
+                        trigger.bottom -
+                        16;
+                      const above = trigger.top - Math.max(bounds.top, 0) - 16;
+                      menu.dataset.side =
+                        panel.offsetHeight > below && above > below
+                          ? "up"
+                          : "down";
+                    }}
+                  >
                     <summary aria-label={`${n.moreActions}: ${entry.path}`}>
                       {n.moreActions}
                     </summary>
@@ -630,10 +691,8 @@ export function FileManager({
           {current && (
             <section className="notebook-file-open">
               <h3>{selected}</h3>
-              {!/\.(txt|md|srt|csv|sh|json)$/i.test(current.name) && (
-                <FilePreview file={current} />
-              )}
-              {/\.(txt|md|srt|csv|sh|json)$/i.test(current.name) && (
+              {!isTextFile(current.name) && <FilePreview file={current} />}
+              {isTextFile(current.name) && (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -647,6 +706,7 @@ export function FileManager({
                   <label>
                     {n.editText}
                     <textarea
+                      ref={textEditor}
                       disabled={w.busy}
                       value={text}
                       onChange={(e) => {

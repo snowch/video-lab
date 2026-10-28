@@ -113,12 +113,73 @@
   min-height: 2.75rem;
   font-size: 1rem;
 }
-.notebook-files-simple .notebook-row-options[open] {
-  flex-basis: 100%;
+.notebook-files-simple .notebook-row-options {
+  padding: 0;
+  position: relative;
+  flex: 0 1 auto;
+}
+.notebook-files-simple .notebook-row-options > summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  list-style: none;
+}
+.notebook-files-simple .notebook-row-options > summary::-webkit-details-marker {
+  display: none;
+}
+.notebook-files-simple .notebook-row-options > summary::after {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.1rem) rotate(45deg);
+  flex: none;
+}
+.notebook-files-simple .notebook-row-options[open] > summary {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 .notebook-files-simple .notebook-row-option-buttons {
-  padding: 0.5rem 0;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  display: grid;
+  gap: 0.2rem;
+  width: max-content;
+  max-width: min(18rem, calc(100vw - 4rem));
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  box-shadow: 0 0.3rem 1rem #0002;
 }
+.notebook-files-simple
+  .notebook-row-options[data-side="up"]
+  .notebook-row-option-buttons {
+  top: auto;
+  bottom: calc(100% + 0.35rem);
+}
+.notebook-files-simple .notebook-row-option-buttons button {
+  text-align: left;
+  border-color: transparent;
+  background: transparent;
+  margin: 0;
+}
+.notebook-files-simple .notebook-row-option-buttons button:hover {
+  border-color: var(--accent);
+}
+
 .notebook-files-simple .notebook-file-form,
 .notebook-files-simple .notebook-file-open,
 .notebook-files-simple .notebook-file-form code {
