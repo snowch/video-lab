@@ -39,18 +39,20 @@ export function InspectDiagram({ pageId }: { pageId: string }) {
         <>
           <div className="visual-streams visual-stream-outputs">
             <div>
-              <span className="visual-source-arrow" aria-hidden="true">
-                ↓
-              </span>
-              <code>-an → silent.mp4</code>
-              <strong>{t.videoOnly}</strong>
+              <span>{t.fromSource}</span>
+              <strong>
+                <code>-an</code> — {t.audioNone}
+              </strong>
+              <code>→ silent.mp4</code>
+              <span>{t.videoOnly}</span>
             </div>
             <div>
-              <span className="visual-source-arrow" aria-hidden="true">
-                ↓
-              </span>
-              <code>-vn → sound.wav</code>
-              <strong>{t.audioOnly}</strong>
+              <span>{t.fromSource}</span>
+              <strong>
+                <code>-vn</code> — {t.videoNone}
+              </strong>
+              <code>→ sound.wav</code>
+              <span>{t.audioOnly}</span>
             </div>
           </div>
           <p>{t.splitNote}</p>

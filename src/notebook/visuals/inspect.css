@@ -25,6 +25,10 @@
 .visual-stream-outputs > div {
   border: 0;
 }
+.visual-stream-outputs > div > span:first-child {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
 .visual-probe-lines {
   margin: 1rem 0;
 }
@@ -72,9 +76,6 @@
   overflow-wrap: anywhere;
 }
 @media (max-width: 600px) {
-  .visual-source-arrow {
-    display: none;
-  }
   .visual-streams {
     grid-template-columns: minmax(0, 1fr);
   }

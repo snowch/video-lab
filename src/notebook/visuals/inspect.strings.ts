@@ -38,7 +38,10 @@ export const inspectCopy = {
     "A frame from bunny-short.mp4 showing its full rectangular picture.",
   splitTitle: "Choose a stream for each new file",
   splitNote:
-    "Each command reads the same source and writes a separate file. The source keeps both streams.",
+    "Both commands read the original file. The source stays unchanged.",
+  audioNone: "audio: none",
+  videoNone: "video: none",
+  fromSource: "From bunny-short.mp4",
   videoOnly: "Video only",
   audioOnly: "Audio only",
 };
