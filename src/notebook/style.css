@@ -33,11 +33,6 @@
   min-height: 44px;
   padding: 0.55rem;
 }
-.notebook-appendix {
-  display: block;
-  padding: 0.8rem 0.6rem;
-  margin-top: 0.7rem;
-}
 .notebook-content {
   margin: 0 auto;
   min-width: 0;
@@ -327,7 +322,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
-.notebook-chapter-cards > li {
+.notebook-chapter-cards > li,
+.notebook-reference-card {
   min-width: 0;
   display: flex;
   gap: 1rem;
@@ -335,6 +331,23 @@
   border-radius: 1rem;
   padding: 1.2rem;
   background: var(--surface);
+}
+.notebook-reference-card {
+  display: block;
+  margin-top: 1rem;
+}
+.notebook-reference-card h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.notebook-reference-card p {
+  margin: 0.6rem 0;
+}
+.notebook-svg-workflow {
+  margin: 2rem 0;
+}
+.notebook-svg-workflow li + li {
+  margin-top: 0.75rem;
 }
 .notebook-chapter-cards > li > div {
   min-width: 0;

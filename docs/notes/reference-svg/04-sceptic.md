@@ -1,0 +1,26 @@
+# Sceptic review: reference card and optional SVG workflow
+
+Copyright © 2026 Christopher Snow.
+
+Reviewed 28 October 2026 by a separate sceptic agent against the built preview at `http://127.0.0.1:4187/video-lab/`, `01-facts.md`, the completed fresh-reader report `03-reader.md`, production copy/structure and recorded command evidence. No production edits or commits made.
+
+## Findings retained and rejected
+
+The reader reported no defects. Independent checks support that result: no blocking or minor findings retained, no reader findings rejected, and no ranked fixes required. The table records the tested observations rather than inventing findings.
+
+| Reader observation | Sceptic test and disposition |
+| --- | --- |
+| One unnumbered “Appendices and reference” card with one optionality description | Confirmed on the built overview in desktop/phone and light/dark. It follows the unchanged 11 numbered chapter cards. All four labels are distinct and omit repeated optional suffixes. The card shares the chapter cards’ border, surface, radius and padding rules. Retained as a supported observation. |
+| Existing reference routes remain usable | Independently opened all four links in each browser combination and verified their expected headings: Glossary; Choosing video and audio codecs; Media file formats; Record your own screen. The stored hashes remain `#/glossary`, `#/appendix/codecs`, `#/appendix/formats`, `#/appendix/recording`. The reader additionally tested browser Back and keyboard activation; its evidence distinguishes actual keyboard tests from programmatic focus and documents the supplementary harness timeout. Retained with those limits. |
+| SVG explanation does not imply all SVG content is vector or claim direct SVG processing in FFmpeg | Read every new sentence on the built overlay page and compared `svg.strings.ts` with the fact brief and W3C SVG introduction. “SVG can describe vector shapes” is accurate: SVG permits vector shapes, images and text. The sequence explicitly exports PNG in an external editor, imports that PNG and substitutes its name in the existing command. There is no SVG-input command or SVG decoder claim. Retained. |
+| Full transparent canvas preserves position | Confirmed the built instructions specify 854 × 480 for both page and exported PNG, export the whole page rather than cropped marks, and explain white’s opacity. The existing page explains that overlay coordinates address the canvas’s upper-left corner and the worked command defaults to x=0, y=0. Thus transparent margins preserve the marks’ intended frame coordinates. PNG’s alpha semantics support the transparency explanation. Retained. |
+| Original work and supplied exercise files are preserved | The procedure explicitly saves the original SVG, imports a distinct PNG name and uses a distinct output name. Reader Files evidence contains `annotation.png`, `bunny-short.mp4`, `my-annotation.png` and `my-annotated.mp4` together. Source diff leaves route definitions, commands, file management and practice criteria unchanged. Retained. |
+| Adapted PNG command works, with custom artwork judged by replay | Inspected the reader’s actual FFmpeg log: RGBA `my-annotation.png` input at 854 × 480, successful `my-annotated.mp4` output, eight-second video and source audio mapping. This agrees with the previously recorded native/WASM overlay command. The new final paragraph explicitly reserves the supplied practice check for its supplied annotation and asks the learner to assess custom positioning/transparency by replay. Retained; the log does not itself establish visual placement or audible playback. |
+
+## Independent browser and source coverage
+
+Used a standalone Node script importing Playwright, without the Playwright CLI or global setup. Chromium checked desktop 1440 × 1000 and the Pixel 7 device profile, each with light and dark colour schemes. The built reference card and SVG block were captured in all four combinations; DOM text confirmed all new copy rendered. Overview and overlay had no document horizontal overflow. Direct navigation to the four original reference routes succeeded in every combination. Evidence: `/workspace/scratch/reference-svg/sceptic-built.json` and `sceptic-{desktop,phone}-{light,dark}-{home,overlay}.png`.
+
+Compared `Notebook.tsx`, `svg.strings.ts`, `ui.strings.ts`, `style.css`, `pages/image-overlay.ts` and the unchanged command/route definitions in `structure.ts`. Checked recorded native/WASM overlay evidence in `../formats-images/native-commands.json` and `commands-wasm.json`, plus the reader’s `run-result.txt`, `files-result.txt`, original SVG and review script. Independently fetched the [W3C SVG introduction](https://www.w3.org/TR/SVG2/intro.html), which names vector shapes, images and text, and [PNG specification](https://www.w3.org/TR/png-3/), which defines zero alpha as transparent and maximum alpha as opaque.
+
+This is a targeted sceptic review, not the full regression suite. I did not repeat the reader’s FFmpeg execution, perform an Inkscape export, listen to sound or verify the custom output’s visual placement end to end. Those are not presented as independently exercised here. The optional procedure makes its manual replay assessment explicit and introduces no new runtime control requiring a separate functional implementation.

@@ -20,6 +20,9 @@ export const n = {
   chapter: "Chapter",
   page: "Page",
   chapters: "Chapters",
+  referencesTitle: "Appendices and reference",
+  referencesIntro:
+    "Optional guides to terms, codecs, formats and recording your own source.",
   recordingGuide: "Recording your own source",
   files: "Files",
   yourFiles: "Your files",
