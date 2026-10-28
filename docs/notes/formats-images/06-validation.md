@@ -15,3 +15,7 @@ Copyright © 2026 Christopher Snow.
 - Independent reader, sceptic, ranked fixes and rebuilt checker are recorded in `02-reader.md` through `05-checker.md`. The checker reports no remaining findings. Their reports state exact execution and visual coverage without claiming physical-device, exhaustive accessibility or subjective audiovisual validation.
 
 The final merge gate is the repository's unchanged `npm run check` entry point, including the added image-media verification and the full browser suite. Its final local result and GitHub Actions check links are recorded in the pull request; deployment must subsequently match the merged commit. Focused checks above are not a substitute for that gate.
+
+## Hosted integration correction
+
+The first completed hosted full gate (run `40771791866`) passed 425 browser tests and intentionally skipped 90. Its five failures were the same pre-existing codec-navigation test across the five projects: it selected the first continuation link and assumed that link led to a lesson. The newly added formats link correctly led to the reference page. The test now explicitly verifies both the formats-reference link and the intended inspection-lesson link, including history and readiness. The focused five-project rerun passed; independent causal verification is recorded in `07-ci-navigation.md`. The final hosted full gate and deployment remain the delivery checks recorded in the PR.

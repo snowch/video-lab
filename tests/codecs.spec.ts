@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { test, expect } from "@playwright/test";
+import { formatGuide } from "../src/notebook/formats.strings";
 import { codecGuide as g } from "../src/notebook/codecs.strings";
 import media from "../src/notebook/codecs-media.json" with { type: "json" };
 import { appStatusStrings as status } from "../src/app-status/strings";
@@ -63,11 +64,15 @@ test("codec appendix links, measured listening files and responsive reading work
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await page
-    .getByRole("navigation", { name: g.continueTitle })
-    .getByRole("link")
-    .first()
+  const continuation = page.getByRole("navigation", { name: g.continueTitle });
+  await continuation
+    .getByRole("link", { name: formatGuide.link, exact: true })
     .click();
+  await expect(page.locator("h1")).toHaveText(formatGuide.title);
+  await page.goBack();
+  await expect(page.locator("h1")).toHaveText(g.title);
+  await continuation.locator('a[href="#/learn/inside-video/inspect"]').click();
+  await expect(page).toHaveURL(/#\/learn\/inside-video\/inspect$/);
   await expectPracticeReady(page);
   await expect(
     page.getByRole("link", { name: g.link, exact: true }),
