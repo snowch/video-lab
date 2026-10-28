@@ -80,9 +80,14 @@ test("imported files preview and download their actual contents; row actions con
   await filePicker(dialog).setInputFiles(
     "public/media/notebook/bunny-short.mp4",
   );
+  // setInputFiles delivers the change event, not the asynchronous import.
+  // Wait for the same ready state a learner needs before importing again.
+  await expect(fileButton(dialog, "bunny-short.mp4")).toBeVisible();
+  await expect(fileButton(dialog, n.import)).toBeEnabled();
   await filePicker(dialog).setInputFiles(
     textFile("notes.txt", "Original notes"),
   );
+  await expect(fileButton(dialog, "notes.txt")).toBeVisible();
   await fileButton(dialog, "bunny-short.mp4").click();
   const video = dialog.locator("video");
   await expect(video).toBeVisible();
