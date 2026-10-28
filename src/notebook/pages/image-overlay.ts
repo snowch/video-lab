@@ -41,7 +41,6 @@ export const overlay: PageCopy = {
       explanation: [
         "The PNG supplies one picture. By default, overlay keeps using the last picture from its second input after that input ends. The drawing therefore remains throughout the eight-second main video without an image loop.",
         "The output keeps the background’s 854 × 480 dimensions. FFmpeg automatically selects the source audio in this command and re-encodes it along with the filtered video.",
-        "You can optionally make your own annotation in an external drawing tool. Export a transparent PNG with an 854 × 480 canvas, then import it through Files. Transparency must be part of the exported image; a white background will cover the footage.",
       ],
     },
   ],

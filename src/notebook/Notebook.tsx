@@ -19,6 +19,7 @@ import { InlineText } from "./InlineText";
 import { ConceptVisual } from "./visuals/ConceptVisual";
 import { FileManager, FilePreview } from "./FileManager";
 import { imageCopy } from "./images.strings";
+import { svgWorkflow } from "./svg.strings";
 import imageMedia from "./images-media.json";
 import "./style.css";
 const creditUrl =
@@ -94,19 +95,28 @@ function NotebookHome({
             </li>
           ))}
         </ol>
-        <a className="notebook-appendix" href="#/glossary">
-          {glossaryUI.title}
-        </a>
-        <a className="notebook-appendix" href="#/appendix/codecs">
-          {codecGuide.link}
-        </a>
-        <a className="notebook-appendix" href="#/appendix/formats">
-          {formatGuide.link}
-        </a>
-        <a className="notebook-appendix" href="#/appendix/recording">
-          {n.recordingGuide}
-        </a>
       </section>
+      <nav
+        className="notebook-reference-card"
+        aria-labelledby="reference-title"
+      >
+        <h2 id="reference-title">{n.referencesTitle}</h2>
+        <p>{n.referencesIntro}</p>
+        <ul className="notebook-page-links">
+          <li>
+            <a href="#/glossary">{glossaryUI.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/codecs">{codecGuide.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/formats">{formatGuide.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/recording">{n.recordingGuide}</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }
@@ -307,6 +317,24 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           )}
         </div>
       </section>
+      {page.id === "image-video/overlay" && (
+        <section className="notebook-svg-workflow" aria-labelledby="svg-title">
+          <h2 id="svg-title">{svgWorkflow.title}</h2>
+          <p>
+            <InlineText>{svgWorkflow.intro}</InlineText>
+          </p>
+          <ol>
+            {svgWorkflow.steps.map((step, i) => (
+              <li key={i}>
+                <InlineText>{step}</InlineText>
+              </li>
+            ))}
+          </ol>
+          <p>
+            <InlineText>{svgWorkflow.after}</InlineText>
+          </p>
+        </section>
+      )}
       {page.nativeScript && (
         <section className="notebook-native">
           <h2>{n.native}</h2>

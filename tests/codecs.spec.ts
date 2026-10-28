@@ -14,8 +14,8 @@ test("codec appendix links, measured listening files and responsive reading work
   page.on("request", (request) => requests.push(request.url()));
   await page.goto("./#/");
   await page
-    .locator(".notebook-home")
-    .getByRole("link", { name: g.link, exact: true })
+    .getByRole("navigation", { name: n.referencesTitle })
+    .getByRole("link", { name: g.title, exact: true })
     .click();
   await expect(page.locator("h1")).toHaveText(g.title);
   await expect(page).toHaveTitle(/^Choosing video and audio codecs/);
