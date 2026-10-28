@@ -1,0 +1,168 @@
+{
+  "photograph": {
+    "title": "Fronalpstock, Switzerland",
+    "author": "Hannes Röst",
+    "source": "https://commons.wikimedia.org/wiki/File:Fronalpstock_big.jpg",
+    "sourceRevision": "https://commons.wikimedia.org/w/index.php?title=File:Fronalpstock_big.jpg&oldid=1252720846",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg",
+    "licence": "CC BY-SA 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "originalBytes": 14679474,
+    "originalSha256": "24eb29eccdf0af691b406d1a3d22c0ef5d761cc454d8a917848c33958f6fc857",
+    "changes": "Centre-cropped and resized to 640×360; re-encoded as JPEG. The adapted photograph remains CC BY-SA 3.0."
+  },
+  "originalDrawingLicence": "Copyright © 2026 Christopher Snow. Original course drawings.",
+  "positions": [
+    [80, 260],
+    [176, 160],
+    [272, 90],
+    [368, 90],
+    [464, 160],
+    [560, 260]
+  ],
+  "files": [
+    {
+      "name": "landscape.jpg",
+      "bytes": 108466,
+      "sha256": "eccc871bb6637f92509b8089b003edf81b9b2c3a90e75f7208c341864fb44e42",
+      "width": 640,
+      "height": 360,
+      "codec": "mjpeg",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-01.png",
+      "bytes": 1680,
+      "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-02.png",
+      "bytes": 1687,
+      "sha256": "a8ab4860f745a74f65b4cf73342dc06067a962ca200a1f3d54f737adfce5ec79",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-03.png",
+      "bytes": 1685,
+      "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-04.png",
+      "bytes": 1689,
+      "sha256": "d9ff1f38c614dcb4660289b5db7866b4f79a2aa9630d0017125e0f45948ee48c",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-05.png",
+      "bytes": 1685,
+      "sha256": "dded778af84561db9e527dd926f3e194dbce967babd37089359715c5ec0c9eca",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "frame-06.png",
+      "bytes": 1685,
+      "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "drawing-01.png",
+      "bytes": 1680,
+      "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "drawing-02.png",
+      "bytes": 1685,
+      "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "drawing-03.png",
+      "bytes": 1685,
+      "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28",
+      "width": 640,
+      "height": 360,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 0,
+        "opaque": 230400
+      }
+    },
+    {
+      "name": "annotation.png",
+      "bytes": 2442,
+      "sha256": "f28b284a9226531e4bbfd9e7b09ff6549b14bbd7f7c162062a5cc5c01363ef8a",
+      "width": 854,
+      "height": 480,
+      "codec": "png",
+      "decodedFrames": 1,
+      "alpha": {
+        "transparent": 406107,
+        "opaque": 3813
+      }
+    }
+  ]
+}

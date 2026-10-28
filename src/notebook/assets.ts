@@ -1,8 +1,15 @@
 // Copyright © 2026 Christopher Snow
+import imageMedia from "./images-media.json" with { type: "json" };
 export const practiceAssets: Record<
   string,
   { path: string; bytes: number; sha256: string; duration?: number }
 > = {
+  ...Object.fromEntries(
+    imageMedia.files.map((file) => [
+      file.name,
+      { ...file, path: "media/images/" + file.name },
+    ]),
+  ),
   "bunny-short.mp4": {
     duration: 8,
     bytes: 352138,

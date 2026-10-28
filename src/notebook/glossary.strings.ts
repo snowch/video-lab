@@ -10,6 +10,16 @@ export type GlossaryEntry = {
 
 export const glossaryEntries: readonly GlossaryEntry[] = [
   {
+    id: "alpha",
+    term: "Alpha channel",
+    definition:
+      "Per-pixel opacity information. Zero alpha is fully transparent, maximum alpha is fully opaque, and intermediate values make partially transparent pixels when compositing.",
+    example:
+      "The supplied annotation PNG has transparent pixels around its orange arrow and ring, allowing the video underneath to show through.",
+    lesson: "image-video/overlay",
+    aliases: ["alpha", "opacity", "transparency"],
+  },
+  {
     id: "amplitude",
     term: "Amplitude",
     definition:
@@ -188,6 +198,16 @@ export const glossaryEntries: readonly GlossaryEntry[] = [
     aliases: ["fps", "frames per second", "picture rate", "avg_frame_rate"],
   },
   {
+    id: "image-sequence",
+    term: "Image sequence",
+    definition:
+      "Ordered still-image files treated as successive video frames. The input frame rate supplies their timing; the filenames alone do not specify a playback duration.",
+    example:
+      "Six supplied drawings read at 3 pictures per second occupy two seconds. The numbered pattern frame-%02d.png selects their filename order.",
+    lesson: "image-video/animation",
+    aliases: ["numbered images", "image2"],
+  },
+  {
     id: "keyframe",
     term: "Keyframe",
     definition:
@@ -276,6 +296,16 @@ export const glossaryEntries: readonly GlossaryEntry[] = [
     aliases: ["PTS", "pts_time", "display time"],
   },
   {
+    id: "raster",
+    term: "Raster image",
+    definition:
+      "A picture stored as a grid of pixels. Displaying the grid at a larger size cannot create missing source detail.",
+    example:
+      "The supplied JPEG photograph and PNG drawings each have a 640 × 360 pixel grid.",
+    lesson: "image-video/hold",
+    aliases: ["raster", "bitmap"],
+  },
+  {
     id: "scaling",
     term: "Scaling",
     definition:
@@ -340,6 +370,16 @@ export const glossaryEntries: readonly GlossaryEntry[] = [
       "The supplied video's presentation timestamps begin at 0, 512 and 1024 ticks, each interpreted using its video time base.",
     lesson: "frames-time/timestamps",
     aliases: ["time stamp", "timeline position"],
+  },
+  {
+    id: "vector",
+    term: "Vector graphic",
+    definition:
+      "A graphic described using shapes, lines and curves with their appearance. Rendering produces pixels at the chosen output size; a document can also include raster images.",
+    example:
+      "An SVG logo can describe scalable shapes, but an embedded photograph still has its original pixel grid.",
+    lesson: "image-video/overlay",
+    aliases: ["vector", "SVG"],
   },
 ];
 

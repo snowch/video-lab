@@ -25,11 +25,20 @@ import page21 from "./pages/text-title";
 import page22 from "./pages/workflows-batch";
 import page23 from "./pages/workflows-reuse";
 
+import { hold } from "./pages/image-hold";
+import { sequence } from "./pages/image-sequence";
+import { animation } from "./pages/image-animation";
+import { overlay } from "./pages/image-overlay";
+import { imageCopy } from "./images.strings";
 export const courseCopy: CourseCopy = {
   title: "Video Lab: Editing with FFmpeg",
   intro:
     "Learn video editing by reading, changing and running real FFmpeg commands. Each short page introduces one idea, keeps its result beside the command and gives you a separate task to try. Start with the supplied short practice clips from Big Buck Bunny, an animated short film. A two-minute excerpt is also available. No media knowledge is assumed.",
   chapters: {
+    "image-video": {
+      title: imageCopy.chapterTitle,
+      summary: imageCopy.chapterSummary,
+    },
     "first-edit": {
       title: "Your first edit",
       summary: "Choose a kept duration, then its starting point.",
@@ -74,6 +83,10 @@ export const courseCopy: CourseCopy = {
     },
   },
   pages: {
+    "image-video/hold": hold,
+    "image-video/sequence": sequence,
+    "image-video/animation": animation,
+    "image-video/overlay": overlay,
     "cut-join/copy": page0,
     "cut-join/join": page1,
     "cut-join/keyframes": page2,

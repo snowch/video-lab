@@ -1,6 +1,7 @@
 // Copyright © 2026 Christopher Snow
 import { useRef, useState } from "react";
 import { codecGuide as g } from "./codecs.strings";
+import { formatGuide } from "./formats.strings";
 import media from "./codecs-media.json";
 import { InlineText } from "./InlineText";
 import { courseCopy } from "./copy";
@@ -130,6 +131,9 @@ export function CodecGuide() {
       <nav aria-label={g.continueTitle}>
         <h2>{g.continueTitle}</h2>
         <ul>
+          <li>
+            <a href="#/appendix/formats">{formatGuide.link}</a>
+          </li>
           {["inside-video/inspect", "quality/quality", "export/format"].map(
             (id) => (
               <li key={id}>

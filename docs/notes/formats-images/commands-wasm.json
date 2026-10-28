@@ -1,0 +1,1916 @@
+{
+  "copyright": "Copyright © 2026 Christopher Snow",
+  "browser": "Playwright Chromium 156.0.8078.4",
+  "core": "@ffmpeg/core 0.12.10; reported FFmpeg 5.1.4",
+  "method": "Actual pinned WASM adapter in a browser module worker, supplied media fetched from a local static server. Exact chapter commands ran without additional flags. Every file output was saved, independently probed with native ffprobe -count_frames and fully decoded with native FFmpeg -xerror; dimensions, codec, frame count, rate, duration and audio presence match native records. This capability check does not claim execution through the notebook UI; integrated UI checks are separate.",
+  "records": [
+    {
+      "id": "image-video/hold:worked:0",
+      "command": "ffmpeg -loop 1 -i landscape.jpg -t 5 -pix_fmt yuv420p still.mp4",
+      "record": {
+        "id": "image-video/hold:worked:0",
+        "command": "ffmpeg -loop 1 -i landscape.jpg -t 5 -pix_fmt yuv420p still.mp4",
+        "last": {
+          "command": "ffmpeg -loop 1 -i landscape.jpg -t 5 -pix_fmt yuv420p still.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'landscape.jpg':\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 21693 kb/s\n  Stream #0:0: Video: mjpeg (Baseline), yuvj444p(pc, bt470bg/unknown/unknown), 640x360 [SAR 1:1 DAR 16:9], 25 fps, 25 tbr, 25 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (mjpeg (native) -> h264 (libx264))\n[swscaler @ 0xe21f50] deprecated pixel format used, make sure you did set range correctly\n    Last message repeated 1 times\r    Last message repeated 2 times\r    Last message repeated 3 times\r    Last message repeated 3 times\n[libx264 @ 0xdfebb0] using SAR=1/1\n[libx264 @ 0xdfebb0] using cpu capabilities: none!\n[libx264 @ 0xdfebb0] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdfebb0] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'still.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 640x360 [SAR 1:1 DAR 16:9], q=2-31, 25 fps, 12800 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A    \nframe=   43 fps=0.0 q=28.0 size=       0kB time=-00:00:00.03 bitrate=N/A speed=N/A    \nframe=   61 fps= 56 q=28.0 size=       0kB time=00:00:00.68 bitrate=   0.6kbits/s speed=0.628x    \nframe=   80 fps= 50 q=28.0 size=       0kB time=00:00:01.44 bitrate=   0.3kbits/s speed=0.898x    \nframe=   99 fps= 47 q=28.0 size=       0kB time=00:00:02.20 bitrate=   0.2kbits/s speed=1.04x    \nframe=  117 fps= 45 q=28.0 size=       0kB time=00:00:02.92 bitrate=   0.1kbits/s speed=1.12x    \nframe=  125 fps= 34 q=28.0 Lsize=      69kB time=00:00:04.88 bitrate= 115.2kbits/s speed=1.35x    \nvideo:66kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 3.508022%\n[libx264 @ 0xdfebb0] frame I:1     Avg QP:17.92  size: 63940\n[libx264 @ 0xdfebb0] frame P:31    Avg QP:17.45  size:    54\n[libx264 @ 0xdfebb0] frame B:93    Avg QP:21.67  size:    17\n[libx264 @ 0xdfebb0] consecutive B-frames:  0.8%  0.0%  0.0% 99.2%\n[libx264 @ 0xdfebb0] mb I  I16..4:  5.0% 89.1%  5.9%\n[libx264 @ 0xdfebb0] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  1.0%  0.0%  0.0%  0.0%  0.0%    skip:99.0%\n[libx264 @ 0xdfebb0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.0%  0.0%  0.0%  direct: 0.0%  skip:100.0%  L0: 0.0% L1:100.0% BI: 0.0%\n[libx264 @ 0xdfebb0] 8x8 transform intra:89.1% inter:93.8%\n[libx264 @ 0xdfebb0] coded y,uvDC,uvAC intra: 91.8% 98.7% 96.0% inter: 0.0% 0.2% 0.0%\n[libx264 @ 0xdfebb0] i16 v,h,dc,p:  0% 78%  4% 17%\n[libx264 @ 0xdfebb0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 21% 18%  6%  9%  8% 10%  6% 12%\n[libx264 @ 0xdfebb0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 19% 11%  6%  9%  9%  9%  6% 10%\n[libx264 @ 0xdfebb0] i8c dc,h,v,p: 51% 27%  9% 13%\n[libx264 @ 0xdfebb0] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdfebb0] ref P L0: 97.0%  0.0%  0.7%  2.4%\n[libx264 @ 0xdfebb0] kb/s:107.52",
+          "inputs": [
+            {
+              "name": "landscape.jpg",
+              "sha256": "eccc871bb6637f92509b8089b003edf81b9b2c3a90e75f7208c341864fb44e42"
+            }
+          ],
+          "at": "2026-10-28T21:08:29.656Z",
+          "code": 0,
+          "output": "still.mp4",
+          "outputHash": "897c8f8a6ff9d4886b7e0e07322f733a10b4514850bee395606ec36b7e019bba"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "25/1",
+            "avg_frame_rate": "25/1",
+            "time_base": "1/12800",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 64000,
+            "duration": "5.000000",
+            "bit_rate": "108598",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "125",
+            "nb_read_frames": "125",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/still.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "5.000000",
+          "size": "70254",
+          "bit_rate": "112406",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "16:9",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "25/1",
+              "avg_frame_rate": "25/1",
+              "time_base": "1/12800",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 64000,
+              "duration": "5.000000",
+              "bit_rate": "108598",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "125",
+              "extradata_size": 51,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "still.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "5.000000",
+            "size": "70254",
+            "bit_rate": "112406",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 70254,
+        "elapsedMs": 3650.39999999851
+      }
+    },
+    {
+      "id": "image-video/hold:practice",
+      "command": "ffmpeg -loop 1 -i landscape.jpg -t 3 -pix_fmt yuv420p still-practice.mp4",
+      "record": {
+        "id": "image-video/hold:practice",
+        "command": "ffmpeg -loop 1 -i landscape.jpg -t 3 -pix_fmt yuv420p still-practice.mp4",
+        "last": {
+          "command": "ffmpeg -loop 1 -i landscape.jpg -t 3 -pix_fmt yuv420p still-practice.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'landscape.jpg':\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 21693 kb/s\n  Stream #0:0: Video: mjpeg (Baseline), yuvj444p(pc, bt470bg/unknown/unknown), 640x360 [SAR 1:1 DAR 16:9], 25 fps, 25 tbr, 25 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (mjpeg (native) -> h264 (libx264))\n[swscaler @ 0x13fd160] deprecated pixel format used, make sure you did set range correctly\n    Last message repeated 1 times\r    Last message repeated 2 times\r    Last message repeated 3 times\r    Last message repeated 3 times\n[libx264 @ 0xdfea70] using SAR=1/1\n[libx264 @ 0xdfea70] using cpu capabilities: none!\n[libx264 @ 0xdfea70] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdfea70] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'still-practice.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 640x360 [SAR 1:1 DAR 16:9], q=2-31, 25 fps, 12800 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   44 fps=0.0 q=28.0 size=       0kB time=00:00:00.00 bitrate=4923.1kbits/s speed=0.000149x    \nframe=   63 fps= 60 q=28.0 size=       0kB time=00:00:00.76 bitrate=   0.5kbits/s speed=0.727x    \nframe=   75 fps= 34 q=28.0 Lsize=      67kB time=00:00:02.88 bitrate= 190.1kbits/s speed=1.32x    \nvideo:65kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 2.672569%\n[libx264 @ 0xdfea70] frame I:1     Avg QP:17.92  size: 63940\n[libx264 @ 0xdfea70] frame P:19    Avg QP:17.91  size:    57\n[libx264 @ 0xdfea70] frame B:55    Avg QP:21.67  size:    17\n[libx264 @ 0xdfea70] consecutive B-frames:  1.3%  2.7%  0.0% 96.0%\n[libx264 @ 0xdfea70] mb I  I16..4:  5.0% 89.1%  5.9%\n[libx264 @ 0xdfea70] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  1.1%  0.1%  0.0%  0.0%  0.0%    skip:98.8%\n[libx264 @ 0xdfea70] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.0%  0.0%  0.0%  direct: 0.0%  skip:100.0%  L0: 4.2% L1:95.8% BI: 0.0%\n[libx264 @ 0xdfea70] 8x8 transform intra:89.1% inter:94.1%\n[libx264 @ 0xdfea70] coded y,uvDC,uvAC intra: 91.8% 98.7% 96.0% inter: 0.0% 0.3% 0.0%\n[libx264 @ 0xdfea70] i16 v,h,dc,p:  0% 78%  4% 17%\n[libx264 @ 0xdfea70] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 21% 18%  6%  9%  8% 10%  6% 12%\n[libx264 @ 0xdfea70] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 19% 11%  6%  9%  9%  9%  6% 10%\n[libx264 @ 0xdfea70] i8c dc,h,v,p: 51% 27%  9% 13%\n[libx264 @ 0xdfea70] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdfea70] ref P L0: 95.7%  0.0%  1.0%  3.4%\n[libx264 @ 0xdfea70] ref B L0:  0.0% 100.0%\n[libx264 @ 0xdfea70] kb/s:175.91",
+          "inputs": [
+            {
+              "name": "landscape.jpg",
+              "sha256": "eccc871bb6637f92509b8089b003edf81b9b2c3a90e75f7208c341864fb44e42"
+            }
+          ],
+          "at": "2026-10-28T21:08:32.453Z",
+          "code": 0,
+          "output": "still-practice.mp4",
+          "outputHash": "50ef213c59b090eccfb4fa3ded79ae2de57c0d6d49b9eb39520f979e335beded"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "25/1",
+            "avg_frame_rate": "25/1",
+            "time_base": "1/12800",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 38400,
+            "duration": "3.000000",
+            "bit_rate": "177709",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "75",
+            "nb_read_frames": "75",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/still-practice.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "3.000000",
+          "size": "68421",
+          "bit_rate": "182456",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "16:9",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "25/1",
+              "avg_frame_rate": "25/1",
+              "time_base": "1/12800",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 38400,
+              "duration": "3.000000",
+              "bit_rate": "177709",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "75",
+              "extradata_size": 51,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "still-practice.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "68421",
+            "bit_rate": "182456",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 68421,
+        "elapsedMs": 2197.5
+      }
+    },
+    {
+      "id": "image-video/sequence:worked:0",
+      "command": "ffmpeg -framerate 1/2 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides.mp4",
+      "record": {
+        "id": "image-video/sequence:worked:0",
+        "command": "ffmpeg -framerate 1/2 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides.mp4",
+        "last": {
+          "command": "ffmpeg -framerate 1/2 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'drawing-%02d.png':\n  Duration: 00:00:06.00, start: 0.000000, bitrate: N/A\n  Stream #0:0: Video: png, rgba(pc), 640x360, 0.50 fps, 0.50 tbr, 0.50 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))\n[libx264 @ 0xdf2710] using cpu capabilities: none!\n[libx264 @ 0xdf2710] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf2710] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'slides.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 640x360, q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   60 fps=0.0 q=28.0 size=       0kB time=00:00:00.66 bitrate=   0.6kbits/s speed=1.27x    \nframe=  144 fps=109 q=28.0 size=       0kB time=00:00:04.16 bitrate=   0.1kbits/s speed=3.15x    \nframe=  144 fps= 96 q=28.0 Lsize=       9kB time=00:00:05.87 bitrate=  12.9kbits/s speed=3.92x    \nvideo:7kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 37.398373%\n[libx264 @ 0xdf2710] frame I:2     Avg QP: 8.44  size:   984\n[libx264 @ 0xdf2710] frame P:36    Avg QP:10.11  size:    54\n[libx264 @ 0xdf2710] frame B:106   Avg QP:12.68  size:    22\n[libx264 @ 0xdf2710] consecutive B-frames:  1.4%  0.0%  4.2% 94.4%\n[libx264 @ 0xdf2710] mb I  I16..4: 98.3%  0.1%  1.6%\n[libx264 @ 0xdf2710] mb P  I16..4:  0.0%  0.1%  0.0%  P16..4:  0.0%  0.0%  0.0%  0.0%  0.0%    skip:99.8%\n[libx264 @ 0xdf2710] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.2%  0.0%  0.0%  direct: 0.0%  skip:99.8%  L0:74.0% L1:26.0% BI: 0.0%\n[libx264 @ 0xdf2710] 8x8 transform intra:1.2% inter:0.0%\n[libx264 @ 0xdf2710] coded y,uvDC,uvAC intra: 1.1% 2.7% 2.3% inter: 0.0% 0.0% 0.0%\n[libx264 @ 0xdf2710] i16 v,h,dc,p: 87%  9%  4%  0%\n[libx264 @ 0xdf2710] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 16%  3% 81%  0%  0%  0%  0%  0%  0%\n[libx264 @ 0xdf2710] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 24% 33%  2%  2%  3%  3%  3%  2%\n[libx264 @ 0xdf2710] i8c dc,h,v,p: 90%  9%  1%  0%\n[libx264 @ 0xdf2710] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf2710] ref B L0: 57.0% 43.0%\n[libx264 @ 0xdf2710] ref B L1: 98.3%  1.7%\n[libx264 @ 0xdf2710] kb/s:8.28",
+          "inputs": [
+            {
+              "name": "drawing-01.png",
+              "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada"
+            },
+            {
+              "name": "drawing-02.png",
+              "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665"
+            },
+            {
+              "name": "drawing-03.png",
+              "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28"
+            }
+          ],
+          "at": "2026-10-28T21:08:34.339Z",
+          "code": 0,
+          "output": "slides.mp4",
+          "outputHash": "4bd35f8bb6b4e470e58f437fc6ebf309dd17c2d921eb55c1936589970a664d65"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 73728,
+            "duration": "6.000000",
+            "bit_rate": "9185",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "144",
+            "nb_read_frames": "144",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/slides.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "6.000000",
+          "size": "9464",
+          "bit_rate": "12618",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 73728,
+              "duration": "6.000000",
+              "bit_rate": "9185",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "144",
+              "extradata_size": 46,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "slides.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "6.000000",
+            "size": "9464",
+            "bit_rate": "12618",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 9464,
+        "elapsedMs": 1517.7000000029802
+      }
+    },
+    {
+      "id": "image-video/sequence:practice",
+      "command": "ffmpeg -framerate 1 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides-practice.mp4",
+      "record": {
+        "id": "image-video/sequence:practice",
+        "command": "ffmpeg -framerate 1 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides-practice.mp4",
+        "last": {
+          "command": "ffmpeg -framerate 1 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides-practice.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'drawing-%02d.png':\n  Duration: 00:00:03.00, start: 0.000000, bitrate: N/A\n  Stream #0:0: Video: png, rgba(pc), 640x360, 1 fps, 1 tbr, 1 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))\n[libx264 @ 0xdf2540] using cpu capabilities: none!\n[libx264 @ 0xdf2540] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf2540] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'slides-practice.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 640x360, q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   72 fps=0.0 q=28.0 size=       0kB time=00:00:01.16 bitrate=   0.3kbits/s speed=2.29x    \nframe=   72 fps=0.0 q=28.0 Lsize=       7kB time=00:00:02.87 bitrate=  19.1kbits/s speed= 3.2x    \nvideo:5kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 33.404713%\n[libx264 @ 0xdf2540] frame I:1     Avg QP: 9.90  size:   884\n[libx264 @ 0xdf2540] frame P:18    Avg QP:11.93  size:   122\n[libx264 @ 0xdf2540] frame B:53    Avg QP:12.68  size:    26\n[libx264 @ 0xdf2540] consecutive B-frames:  1.4%  0.0%  4.2% 94.4%\n[libx264 @ 0xdf2540] mb I  I16..4: 98.3%  0.1%  1.6%\n[libx264 @ 0xdf2540] mb P  I16..4:  0.1%  0.1%  0.2%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.5%\n[libx264 @ 0xdf2540] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.6%  0.0%  0.0%  direct: 0.0%  skip:99.4%  L0:72.4% L1:27.6% BI: 0.0%\n[libx264 @ 0xdf2540] 8x8 transform intra:2.4% inter:0.0%\n[libx264 @ 0xdf2540] coded y,uvDC,uvAC intra: 2.1% 4.6% 4.2% inter: 0.0% 0.0% 0.0%\n[libx264 @ 0xdf2540] i16 v,h,dc,p: 87%  9%  4%  0%\n[libx264 @ 0xdf2540] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 21%  5% 74%  0%  0%  0%  0%  0%  0%\n[libx264 @ 0xdf2540] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 33% 22% 30%  1%  2%  3%  3%  3%  2%\n[libx264 @ 0xdf2540] i8c dc,h,v,p: 89%  9%  2%  1%\n[libx264 @ 0xdf2540] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf2540] ref P L0: 65.6% 15.6% 18.8%\n[libx264 @ 0xdf2540] ref B L0: 68.8% 31.2%\n[libx264 @ 0xdf2540] ref B L1: 98.8%  1.2%\n[libx264 @ 0xdf2540] kb/s:11.90",
+          "inputs": [
+            {
+              "name": "drawing-01.png",
+              "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada"
+            },
+            {
+              "name": "drawing-02.png",
+              "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665"
+            },
+            {
+              "name": "drawing-03.png",
+              "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28"
+            }
+          ],
+          "at": "2026-10-28T21:08:35.590Z",
+          "code": 0,
+          "output": "slides-practice.mp4",
+          "outputHash": "89fa6025621bfc8e797186a9d2f2cbde125e29029d8c978635e34abe74d98add"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 36864,
+            "duration": "3.000000",
+            "bit_rate": "13701",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "72",
+            "nb_read_frames": "72",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/slides-practice.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "3.000000",
+          "size": "6853",
+          "bit_rate": "18274",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 36864,
+              "duration": "3.000000",
+              "bit_rate": "13701",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "72",
+              "extradata_size": 46,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "slides-practice.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "6853",
+            "bit_rate": "18274",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 6853,
+        "elapsedMs": 915.1000000014901
+      }
+    },
+    {
+      "id": "image-video/animation:worked:0",
+      "command": "ffmpeg -framerate 3 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation.mp4",
+      "record": {
+        "id": "image-video/animation:worked:0",
+        "command": "ffmpeg -framerate 3 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation.mp4",
+        "last": {
+          "command": "ffmpeg -framerate 3 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'frame-%02d.png':\n  Duration: 00:00:02.00, start: 0.000000, bitrate: N/A\n  Stream #0:0: Video: png, rgba(pc), 640x360, 3 fps, 3 tbr, 3 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))\n[libx264 @ 0xdf3be0] using cpu capabilities: none!\n[libx264 @ 0xdf3be0] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf3be0] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'animation.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 640x360, q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   48 fps=0.0 q=28.0 Lsize=       8kB time=00:00:01.87 bitrate=  33.4kbits/s speed=2.64x    \nvideo:6kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 22.340425%\n[libx264 @ 0xdf3be0] frame I:1     Avg QP:10.10  size:   771\n[libx264 @ 0xdf3be0] frame P:12    Avg QP:18.79  size:   304\n[libx264 @ 0xdf3be0] frame B:35    Avg QP:12.69  size:    37\n[libx264 @ 0xdf3be0] consecutive B-frames:  2.1%  0.0%  6.2% 91.7%\n[libx264 @ 0xdf3be0] mb I  I16..4: 98.4%  0.0%  1.6%\n[libx264 @ 0xdf3be0] mb P  I16..4:  0.5%  0.6%  0.6%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:98.2%\n[libx264 @ 0xdf3be0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  1.8%  0.0%  0.0%  direct: 0.0%  skip:98.2%  L0:78.0% L1:22.0% BI: 0.0%\n[libx264 @ 0xdf3be0] 8x8 transform intra:5.6% inter:0.0%\n[libx264 @ 0xdf3be0] coded y,uvDC,uvAC intra: 3.8% 8.1% 7.5% inter: 0.0% 0.0% 0.0%\n[libx264 @ 0xdf3be0] i16 v,h,dc,p: 87%  8%  4%  0%\n[libx264 @ 0xdf3be0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 16%  2% 81%  0%  0%  0%  0%  0%  0%\n[libx264 @ 0xdf3be0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 38% 18% 28%  2%  3%  3%  3%  3%  2%\n[libx264 @ 0xdf3be0] i8c dc,h,v,p: 87%  9%  3%  1%\n[libx264 @ 0xdf3be0] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf3be0] ref P L0: 37.5%  0.0% 62.5%\n[libx264 @ 0xdf3be0] ref B L0: 71.4% 28.6%\n[libx264 @ 0xdf3be0] kb/s:22.87",
+          "inputs": [
+            {
+              "name": "frame-01.png",
+              "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada"
+            },
+            {
+              "name": "frame-02.png",
+              "sha256": "a8ab4860f745a74f65b4cf73342dc06067a962ca200a1f3d54f737adfce5ec79"
+            },
+            {
+              "name": "frame-03.png",
+              "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665"
+            },
+            {
+              "name": "frame-04.png",
+              "sha256": "d9ff1f38c614dcb4660289b5db7866b4f79a2aa9630d0017125e0f45948ee48c"
+            },
+            {
+              "name": "frame-05.png",
+              "sha256": "dded778af84561db9e527dd926f3e194dbce967babd37089359715c5ec0c9eca"
+            },
+            {
+              "name": "frame-06.png",
+              "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28"
+            }
+          ],
+          "at": "2026-10-28T21:08:36.666Z",
+          "code": 0,
+          "output": "animation.mp4",
+          "outputHash": "89db6432857793deaac3699c51cbcfbdef0c755bc36f53cee574e947d03c0653"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 24576,
+            "duration": "2.000000",
+            "bit_rate": "25572",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "48",
+            "nb_read_frames": "48",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/animation.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "2.000000",
+          "size": "7820",
+          "bit_rate": "31280",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 24576,
+              "duration": "2.000000",
+              "bit_rate": "25572",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "48",
+              "extradata_size": 46,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "animation.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "2.000000",
+            "size": "7820",
+            "bit_rate": "31280",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 7820,
+        "elapsedMs": 727.0999999940395
+      }
+    },
+    {
+      "id": "image-video/animation:practice",
+      "command": "ffmpeg -framerate 6 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation-practice.mp4",
+      "record": {
+        "id": "image-video/animation:practice",
+        "command": "ffmpeg -framerate 6 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation-practice.mp4",
+        "last": {
+          "command": "ffmpeg -framerate 6 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation-practice.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, image2, from 'frame-%02d.png':\n  Duration: 00:00:01.00, start: 0.000000, bitrate: N/A\n  Stream #0:0: Video: png, rgba(pc), 640x360, 6 fps, 6 tbr, 6 tbn\nStream mapping:\n  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))\n[libx264 @ 0xdf3cc0] using cpu capabilities: none!\n[libx264 @ 0xdf3cc0] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf3cc0] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'animation-practice.mp4':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 640x360, q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   24 fps=0.0 q=28.0 Lsize=       6kB time=00:00:00.87 bitrate=  57.4kbits/s speed=1.79x    \nvideo:5kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 22.200584%\n[libx264 @ 0xdf3cc0] frame I:1     Avg QP:10.13  size:   699\n[libx264 @ 0xdf3cc0] frame P:6     Avg QP:20.52  size:   501\n[libx264 @ 0xdf3cc0] frame B:17    Avg QP:15.67  size:    44\n[libx264 @ 0xdf3cc0] consecutive B-frames:  4.2%  0.0% 12.5% 83.3%\n[libx264 @ 0xdf3cc0] mb I  I16..4: 98.4%  0.0%  1.6%\n[libx264 @ 0xdf3cc0] mb P  I16..4:  0.9%  1.2%  1.2%  P16..4:  0.2%  0.0%  0.0%  0.0%  0.0%    skip:96.6%\n[libx264 @ 0xdf3cc0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  2.2%  0.0%  0.0%  direct: 0.0%  skip:97.7%  L0:77.9% L1:22.1% BI: 0.0%\n[libx264 @ 0xdf3cc0] 8x8 transform intra:6.0% inter:0.0%\n[libx264 @ 0xdf3cc0] coded y,uvDC,uvAC intra: 3.6% 8.0% 7.4% inter: 0.0% 0.0% 0.0%\n[libx264 @ 0xdf3cc0] i16 v,h,dc,p: 87%  8%  4%  0%\n[libx264 @ 0xdf3cc0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 18%  2% 80%  0%  0%  0%  0%  0%  0%\n[libx264 @ 0xdf3cc0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 31% 24% 29%  2%  3%  3%  3%  3%  2%\n[libx264 @ 0xdf3cc0] i8c dc,h,v,p: 87%  9%  3%  1%\n[libx264 @ 0xdf3cc0] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf3cc0] ref P L0:  9.1%  0.0% 90.9%\n[libx264 @ 0xdf3cc0] ref B L0: 86.3% 13.7%\n[libx264 @ 0xdf3cc0] ref B L1: 79.2% 20.8%\n[libx264 @ 0xdf3cc0] kb/s:35.68",
+          "inputs": [
+            {
+              "name": "frame-01.png",
+              "sha256": "10149f2814a66c860d5581d4063386090e72635d8767382fa588a6c0a0fd6ada"
+            },
+            {
+              "name": "frame-02.png",
+              "sha256": "a8ab4860f745a74f65b4cf73342dc06067a962ca200a1f3d54f737adfce5ec79"
+            },
+            {
+              "name": "frame-03.png",
+              "sha256": "f9915a51cd022d81c5558ae8cc43b6c34a216cb9c94ae5c7c36da270e1cb7665"
+            },
+            {
+              "name": "frame-04.png",
+              "sha256": "d9ff1f38c614dcb4660289b5db7866b4f79a2aa9630d0017125e0f45948ee48c"
+            },
+            {
+              "name": "frame-05.png",
+              "sha256": "dded778af84561db9e527dd926f3e194dbce967babd37089359715c5ec0c9eca"
+            },
+            {
+              "name": "frame-06.png",
+              "sha256": "d5cdefd444e2117856b2d585f4e69f4aab8a09c42ce806236fdaf0cc42c85f28"
+            }
+          ],
+          "at": "2026-10-28T21:08:37.546Z",
+          "code": 0,
+          "output": "animation-practice.mp4",
+          "outputHash": "bd9dc7b0d16a08f7e80629650f694c7eb249aedad73e0c61bed443e2b2429ab1"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 640,
+            "height": 360,
+            "coded_width": 640,
+            "coded_height": 368,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 12288,
+            "duration": "1.000000",
+            "bit_rate": "41088",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "24",
+            "nb_read_frames": "24",
+            "extradata_size": 46,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/animation-practice.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "1.000000",
+          "size": "6275",
+          "bit_rate": "50200",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 640,
+              "height": 360,
+              "coded_width": 640,
+              "coded_height": 360,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "chroma_location": "left",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 12288,
+              "duration": "1.000000",
+              "bit_rate": "41088",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "24",
+              "extradata_size": 46,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "animation-practice.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "1.000000",
+            "size": "6275",
+            "bit_rate": "50200",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 6275,
+        "elapsedMs": 509.20000000298023
+      }
+    },
+    {
+      "id": "image-video/overlay:worked:0",
+      "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay annotated.mp4",
+      "record": {
+        "id": "image-video/overlay:worked:0",
+        "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay annotated.mp4",
+        "last": {
+          "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay annotated.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nInput #1, png_pipe, from 'annotation.png':\n  Duration: N/A, bitrate: N/A\n  Stream #1:0: Video: png, rgba(pc), 854x480, 25 fps, 25 tbr, 25 tbn\nStream mapping:\n  Stream #0:0 (h264) -> overlay (graph 0)\n  Stream #1:0 (png) -> overlay (graph 0)\n  overlay:default (graph 0) -> Stream #0:0 (libx264)\n  Stream #0:1 -> #0:1 (aac (native) -> aac (native))\n[libx264 @ 0xdf0060] using SAR=1/1\n[libx264 @ 0xdf0060] using cpu capabilities: none!\n[libx264 @ 0xdf0060] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf0060] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'annotated.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\n  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 aac\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   42 fps=0.0 q=28.0 size=       0kB time=00:00:01.70 bitrate=   0.2kbits/s speed=2.21x    \nframe=   53 fps= 42 q=28.0 size=       0kB time=00:00:02.15 bitrate=   0.2kbits/s speed=1.69x    \nframe=   63 fps= 35 q=28.0 size=       0kB time=00:00:02.58 bitrate=   0.1kbits/s speed=1.42x    \nframe=   72 fps= 31 q=28.0 size=       0kB time=00:00:02.94 bitrate=   0.1kbits/s speed=1.25x    \nframe=   81 fps= 28 q=28.0 size=       0kB time=00:00:03.32 bitrate=   0.1kbits/s speed=1.17x    \nframe=   90 fps= 27 q=28.0 size=       0kB time=00:00:03.69 bitrate=   0.1kbits/s speed=1.09x    \nframe=  100 fps= 26 q=28.0 size=       0kB time=00:00:04.11 bitrate=   0.1kbits/s speed=1.06x    \nframe=  110 fps= 25 q=28.0 size=       0kB time=00:00:04.52 bitrate=   0.1kbits/s speed=1.02x    \nframe=  119 fps= 24 q=28.0 size=       0kB time=00:00:04.90 bitrate=   0.1kbits/s speed=0.991x    \nframe=  130 fps= 24 q=28.0 size=       0kB time=00:00:05.35 bitrate=   0.1kbits/s speed=0.977x    \nframe=  143 fps= 24 q=28.0 size=     256kB time=00:00:05.90 bitrate= 355.0kbits/s speed=0.98x    \nframe=  155 fps= 24 q=28.0 size=     256kB time=00:00:06.40 bitrate= 327.7kbits/s speed=0.974x    \nframe=  164 fps= 23 q=28.0 size=     256kB time=00:00:06.78 bitrate= 309.2kbits/s speed=0.956x    \nframe=  173 fps= 23 q=28.0 size=     256kB time=00:00:07.14 bitrate= 293.5kbits/s speed=0.938x    \nframe=  181 fps= 22 q=28.0 size=     256kB time=00:00:07.48 bitrate= 280.1kbits/s speed=0.922x    \nframe=  188 fps= 22 q=28.0 size=     256kB time=00:00:07.78 bitrate= 269.4kbits/s speed=0.903x    \nframe=  192 fps= 16 q=28.0 Lsize=     509kB time=00:00:08.00 bitrate= 521.7kbits/s speed=0.669x    \nvideo:377kB audio:125kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 1.361117%\n[libx264 @ 0xdf0060] frame I:3     Avg QP:16.88  size: 40074\n[libx264 @ 0xdf0060] frame P:68    Avg QP:21.59  size:  2612\n[libx264 @ 0xdf0060] frame B:121   Avg QP:24.15  size:   728\n[libx264 @ 0xdf0060] consecutive B-frames:  2.1% 40.6%  3.1% 54.2%\n[libx264 @ 0xdf0060] mb I  I16..4: 23.7% 55.0% 21.2%\n[libx264 @ 0xdf0060] mb P  I16..4:  3.0%  5.8%  0.2%  P16..4: 24.0%  4.5%  1.7%  0.0%  0.0%    skip:60.8%\n[libx264 @ 0xdf0060] mb B  I16..4:  0.3%  0.6%  0.0%  B16..8: 13.0%  1.2%  0.2%  direct: 0.3%  skip:84.4%  L0:38.0% L1:58.6% BI: 3.5%\n[libx264 @ 0xdf0060] 8x8 transform intra:61.7% inter:88.0%\n[libx264 @ 0xdf0060] coded y,uvDC,uvAC intra: 42.3% 68.4% 18.2% inter: 2.5% 4.4% 0.1%\n[libx264 @ 0xdf0060] i16 v,h,dc,p: 14% 22%  7% 57%\n[libx264 @ 0xdf0060] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 20% 18%  6%  7%  7%  7%  7%  6%\n[libx264 @ 0xdf0060] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 17% 19% 16%  7% 10%  8%  8%  8%  7%\n[libx264 @ 0xdf0060] i8c dc,h,v,p: 46% 19% 25% 10%\n[libx264 @ 0xdf0060] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf0060] ref P L0: 69.3% 11.7% 13.8%  5.3%\n[libx264 @ 0xdf0060] ref B L0: 88.2%  9.9%  1.9%\n[libx264 @ 0xdf0060] ref B L1: 98.6%  1.4%\n[libx264 @ 0xdf0060] kb/s:385.88\n[aac @ 0xdf1370] Qavg: 269.581",
+          "inputs": [
+            {
+              "name": "bunny-short.mp4",
+              "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+            },
+            {
+              "name": "annotation.png",
+              "sha256": "f28b284a9226531e4bbfd9e7b09ff6549b14bbd7f7c162062a5cc5c01363ef8a"
+            }
+          ],
+          "at": "2026-10-28T21:08:51.749Z",
+          "code": 0,
+          "output": "annotated.mp4",
+          "outputHash": "d7ee4982b9fb2464828de0ecf28aa384d6760eab5acd56d75d40257f262ae937"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 854,
+            "height": 480,
+            "coded_width": 864,
+            "coded_height": 480,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "427:240",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "topleft",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 98304,
+            "duration": "8.000000",
+            "bit_rate": "386557",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "192",
+            "nb_read_frames": "192",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 384000,
+            "duration": "8.000000",
+            "bit_rate": "127754",
+            "nb_frames": "376",
+            "nb_read_frames": "375",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler",
+              "vendor_id": "[0][0][0][0]"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/annotated.mp4",
+          "nb_streams": 2,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "521656",
+          "bit_rate": "521656",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 854,
+              "height": 480,
+              "coded_width": 854,
+              "coded_height": 480,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "427:240",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "chroma_location": "topleft",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 98304,
+              "duration": "8.000000",
+              "bit_rate": "386557",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "192",
+              "extradata_size": 51,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            },
+            {
+              "index": 1,
+              "codec_name": "aac",
+              "codec_long_name": "AAC (Advanced Audio Coding)",
+              "profile": "LC",
+              "codec_type": "audio",
+              "codec_tag_string": "mp4a",
+              "codec_tag": "0x6134706d",
+              "sample_fmt": "fltp",
+              "sample_rate": "48000",
+              "channels": 2,
+              "channel_layout": "stereo",
+              "bits_per_sample": 0,
+              "id": "0x2",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 384000,
+              "duration": "8.000000",
+              "bit_rate": "127754",
+              "nb_frames": "376",
+              "extradata_size": 5,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "SoundHandler",
+                "vendor_id": "[0][0][0][0]"
+              }
+            }
+          ],
+          "format": {
+            "filename": "annotated.mp4",
+            "nb_streams": 2,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "8.000000",
+            "size": "521656",
+            "bit_rate": "521656",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 521656,
+        "elapsedMs": 12014.19999999553
+      }
+    },
+    {
+      "id": "image-video/overlay:practice",
+      "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay=40:0 annotated-practice.mp4",
+      "record": {
+        "id": "image-video/overlay:practice",
+        "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay=40:0 annotated-practice.mp4",
+        "last": {
+          "command": "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay=40:0 annotated-practice.mp4",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nInput #1, png_pipe, from 'annotation.png':\n  Duration: N/A, bitrate: N/A\n  Stream #1:0: Video: png, rgba(pc), 854x480, 25 fps, 25 tbr, 25 tbn\nStream mapping:\n  Stream #0:0 (h264) -> overlay (graph 0)\n  Stream #1:0 (png) -> overlay (graph 0)\n  overlay:default (graph 0) -> Stream #0:0 (libx264)\n  Stream #0:1 -> #0:1 (aac (native) -> aac (native))\n[libx264 @ 0xdf0090] using SAR=1/1\n[libx264 @ 0xdf0090] using cpu capabilities: none!\n[libx264 @ 0xdf0090] profile High, level 3.0, 4:2:0, 8-bit\n[libx264 @ 0xdf0090] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2022 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=1 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00\nOutput #0, mp4, to 'annotated-practice.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf59.27.100\n  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], q=2-31, 24 fps, 12288 tbn\n    Metadata:\n      encoder         : Lavc59.37.100 libx264\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A\n  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 aac\nframe=    1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \nframe=   42 fps=0.0 q=28.0 size=       0kB time=00:00:01.70 bitrate=   0.2kbits/s speed=2.33x    \nframe=   53 fps= 42 q=28.0 size=       0kB time=00:00:02.15 bitrate=   0.2kbits/s speed=1.73x    \nframe=   63 fps= 35 q=28.0 size=       0kB time=00:00:02.58 bitrate=   0.1kbits/s speed=1.45x    \nframe=   72 fps= 31 q=28.0 size=       0kB time=00:00:02.94 bitrate=   0.1kbits/s speed=1.27x    \nframe=   81 fps= 28 q=28.0 size=       0kB time=00:00:03.32 bitrate=   0.1kbits/s speed=1.14x    \nframe=   91 fps= 26 q=28.0 size=       0kB time=00:00:03.73 bitrate=   0.1kbits/s speed=1.07x    \nframe=  102 fps= 25 q=28.0 size=       0kB time=00:00:04.20 bitrate=   0.1kbits/s speed=1.05x    \nframe=  111 fps= 24 q=28.0 size=       0kB time=00:00:04.56 bitrate=   0.1kbits/s speed=1.01x    \nframe=  120 fps= 24 q=28.0 size=       0kB time=00:00:04.94 bitrate=   0.1kbits/s speed=0.982x    \nframe=  130 fps= 23 q=28.0 size=       0kB time=00:00:05.35 bitrate=   0.1kbits/s speed=0.962x    \nframe=  141 fps= 23 q=28.0 size=     256kB time=00:00:05.82 bitrate= 360.2kbits/s speed=0.96x    \nframe=  153 fps= 23 q=28.0 size=     256kB time=00:00:06.31 bitrate= 332.2kbits/s speed=0.96x    \nframe=  163 fps= 23 q=28.0 size=     256kB time=00:00:06.74 bitrate= 311.1kbits/s speed=0.939x    \nframe=  172 fps= 22 q=28.0 size=     256kB time=00:00:07.10 bitrate= 295.3kbits/s speed=0.924x    \nframe=  181 fps= 22 q=28.0 size=     256kB time=00:00:07.48 bitrate= 280.1kbits/s speed=0.902x    \nframe=  189 fps= 21 q=28.0 size=     256kB time=00:00:07.82 bitrate= 267.9kbits/s speed=0.886x    \nframe=  192 fps= 16 q=28.0 Lsize=     518kB time=00:00:08.00 bitrate= 530.2kbits/s speed=0.661x    \nvideo:386kB audio:125kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 1.338825%\n[libx264 @ 0xdf0090] frame I:3     Avg QP:16.98  size: 40131\n[libx264 @ 0xdf0090] frame P:69    Avg QP:21.62  size:  2665\n[libx264 @ 0xdf0090] frame B:120   Avg QP:24.38  size:   751\n[libx264 @ 0xdf0090] consecutive B-frames:  2.1% 42.7%  3.1% 52.1%\n[libx264 @ 0xdf0090] mb I  I16..4: 23.8% 54.9% 21.3%\n[libx264 @ 0xdf0090] mb P  I16..4:  3.0%  5.7%  0.2%  P16..4: 23.9%  4.6%  1.9%  0.0%  0.0%    skip:60.9%\n[libx264 @ 0xdf0090] mb B  I16..4:  0.3%  0.6%  0.0%  B16..8: 13.2%  1.2%  0.2%  direct: 0.3%  skip:84.1%  L0:38.6% L1:57.9% BI: 3.5%\n[libx264 @ 0xdf0090] 8x8 transform intra:61.6% inter:88.2%\n[libx264 @ 0xdf0090] coded y,uvDC,uvAC intra: 42.6% 68.7% 18.6% inter: 2.7% 4.5% 0.1%\n[libx264 @ 0xdf0090] i16 v,h,dc,p: 13% 23%  7% 57%\n[libx264 @ 0xdf0090] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 20% 18%  6%  7%  7%  7%  7%  6%\n[libx264 @ 0xdf0090] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 17% 20% 16%  7% 10%  8%  8%  8%  7%\n[libx264 @ 0xdf0090] i8c dc,h,v,p: 46% 19% 25% 10%\n[libx264 @ 0xdf0090] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0xdf0090] ref P L0: 69.2% 11.4% 14.5%  4.8%\n[libx264 @ 0xdf0090] ref B L0: 87.0% 10.4%  2.6%\n[libx264 @ 0xdf0090] ref B L1: 98.5%  1.5%\n[libx264 @ 0xdf0090] kb/s:394.45\n[aac @ 0xdf13a0] Qavg: 269.581",
+          "inputs": [
+            {
+              "name": "bunny-short.mp4",
+              "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+            },
+            {
+              "name": "annotation.png",
+              "sha256": "f28b284a9226531e4bbfd9e7b09ff6549b14bbd7f7c162062a5cc5c01363ef8a"
+            }
+          ],
+          "at": "2026-10-28T21:09:06.209Z",
+          "code": 0,
+          "output": "annotated-practice.mp4",
+          "outputHash": "fbd8b71635ed546307fc3a7aa1544d8311754a4eeb43c2a8e4a2948a97465302"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 854,
+            "height": 480,
+            "coded_width": 864,
+            "coded_height": 480,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "427:240",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "topleft",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "24/1",
+            "avg_frame_rate": "24/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 98304,
+            "duration": "8.000000",
+            "bit_rate": "395126",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "192",
+            "nb_read_frames": "192",
+            "extradata_size": 51,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc59.37.100 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 384000,
+            "duration": "8.000000",
+            "bit_rate": "127754",
+            "nb_frames": "376",
+            "nb_read_frames": "375",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler",
+              "vendor_id": "[0][0][0][0]"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/formats-images/wasm/annotated-practice.mp4",
+          "nb_streams": 2,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "530225",
+          "bit_rate": "530225",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      },
+      "wasmProbe": {
+        "code": -1,
+        "report": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 854,
+              "height": 480,
+              "coded_width": 854,
+              "coded_height": 480,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "427:240",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "chroma_location": "topleft",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "24/1",
+              "avg_frame_rate": "24/1",
+              "time_base": "1/12288",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 98304,
+              "duration": "8.000000",
+              "bit_rate": "395126",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "192",
+              "extradata_size": 51,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc59.37.100 libx264"
+              }
+            },
+            {
+              "index": 1,
+              "codec_name": "aac",
+              "codec_long_name": "AAC (Advanced Audio Coding)",
+              "profile": "LC",
+              "codec_type": "audio",
+              "codec_tag_string": "mp4a",
+              "codec_tag": "0x6134706d",
+              "sample_fmt": "fltp",
+              "sample_rate": "48000",
+              "channels": 2,
+              "channel_layout": "stereo",
+              "bits_per_sample": 0,
+              "id": "0x2",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 384000,
+              "duration": "8.000000",
+              "bit_rate": "127754",
+              "nb_frames": "376",
+              "extradata_size": 5,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "SoundHandler",
+                "vendor_id": "[0][0][0][0]"
+              }
+            }
+          ],
+          "format": {
+            "filename": "annotated-practice.mp4",
+            "nb_streams": 2,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "8.000000",
+            "size": "530225",
+            "bit_rate": "530225",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf59.27.100"
+            }
+          }
+        },
+        "log": ""
+      },
+      "validation": {
+        "fullyDecoded": true,
+        "nativeFactsMatch": true,
+        "bytes": 530225,
+        "elapsedMs": 12180.5
+      }
+    }
+  ]
+}

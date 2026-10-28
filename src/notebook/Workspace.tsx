@@ -26,6 +26,7 @@ import {
   type CellRecord,
   type RunRecord,
 } from "./model";
+import { referencedInputs } from "./inputs";
 import { practiceAssets } from "./assets";
 import type { Expectation } from "./structure";
 import { n } from "./ui.strings";
@@ -55,18 +56,6 @@ export function mediaMime(name: string) {
               : base;
 }
 const sessionKey = (id: string) => "video-lab:notebook:cell:" + id;
-function referenced(args: string[], files: FileMap) {
-  return Object.values(files).filter((f) =>
-    args.some(
-      (a) =>
-        a === f.name ||
-        a.includes("=" + f.name) ||
-        a.includes("='" + f.name + "'") ||
-        a.includes('="' + f.name + '"') ||
-        (a.includes("fontsdir=fonts") && f.name.startsWith("fonts/")),
-    ),
-  );
-}
 type Workspace = {
   files: FileMap;
   folders: string[];
@@ -595,7 +584,12 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
       const output = "output" in plan ? plan.output : undefined;
       if (output && filesRef.current[output] && !plan.args.includes("-y"))
         throw new Error(n.overwrite);
-      const inputs = referenced(plan.args, filesRef.current);
+      const inputs = referencedInputs(
+        plan.args,
+        filesRef.current,
+        output,
+        plan.tool,
+      );
       record.inputs = await Promise.all(
         inputs.map(async (f) => ({
           name: f.name,

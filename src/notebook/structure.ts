@@ -3,6 +3,7 @@ export const chapters = [
   "first-edit",
   "inside-video",
   "frames-time",
+  "image-video",
   "cut-join",
   "framing",
   "sound",
@@ -105,6 +106,62 @@ export const pages: PageDefinition[] = [
     `ffprobe -show_entries stream=avg_frame_rate,time_base ${short}`,
     `ffprobe -show_entries stream=avg_frame_rate,time_base ${short}`,
     { probe: true },
+  ),
+  page(
+    "image-video",
+    "hold",
+    ["ffmpeg -loop 1 -i landscape.jpg -t 5 -pix_fmt yuv420p still.mp4"],
+    "ffmpeg -loop 1 -i landscape.jpg -t 5 -pix_fmt yuv420p still-practice.mp4",
+    "ffmpeg -loop 1 -i landscape.jpg -t 3 -pix_fmt yuv420p still-practice.mp4",
+    { duration: 3, width: 640, height: 360, video: true, audio: false },
+    ["landscape.jpg"],
+  ),
+  page(
+    "image-video",
+    "sequence",
+    [
+      "ffmpeg -framerate 1/2 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides.mp4",
+    ],
+    "ffmpeg -framerate 1/2 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides-practice.mp4",
+    "ffmpeg -framerate 1 -i drawing-%02d.png -vf fps=24 -pix_fmt yuv420p slides-practice.mp4",
+    {
+      duration: 3,
+      rate: 24,
+      width: 640,
+      height: 360,
+      video: true,
+      audio: false,
+    },
+    ["drawing-01.png", "drawing-02.png", "drawing-03.png"],
+  ),
+  page(
+    "image-video",
+    "animation",
+    [
+      "ffmpeg -framerate 3 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation.mp4",
+    ],
+    "ffmpeg -framerate 3 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation-practice.mp4",
+    "ffmpeg -framerate 6 -i frame-%02d.png -vf fps=24 -pix_fmt yuv420p animation-practice.mp4",
+    {
+      duration: 1,
+      rate: 24,
+      width: 640,
+      height: 360,
+      video: true,
+      audio: false,
+    },
+    Array.from({ length: 6 }, (_, i) => `frame-0${i + 1}.png`),
+  ),
+  page(
+    "image-video",
+    "overlay",
+    [
+      "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay annotated.mp4",
+    ],
+    "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay annotated-practice.mp4",
+    "ffmpeg -i bunny-short.mp4 -i annotation.png -filter_complex overlay=40:0 annotated-practice.mp4",
+    { duration: 8, width: 854, height: 480, video: true, audio: true },
+    [short, "annotation.png"],
   ),
   page(
     "cut-join",
@@ -281,13 +338,21 @@ export const pages: PageDefinition[] = [
   },
 ];
 type NotebookRoute =
-  | { home: true; glossary?: boolean; codecs?: boolean }
-  | { home: false; page: PageDefinition; glossary?: false; codecs?: false };
+  | { home: true; glossary?: boolean; codecs?: boolean; formats?: boolean }
+  | {
+      home: false;
+      page: PageDefinition;
+      glossary?: false;
+      codecs?: false;
+      formats?: false;
+    };
 export function notebookRoute(hash: string): NotebookRoute | undefined {
   const parts = hash.replace(/^#\/?/, "").split("/");
   if (!parts[0]) return { home: true as const };
   if (parts[0] === "appendix" && parts[1] === "codecs")
     return { home: true, codecs: true };
+  if (parts[0] === "appendix" && parts[1] === "formats")
+    return { home: true, formats: true };
   if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)
