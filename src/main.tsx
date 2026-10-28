@@ -24,6 +24,7 @@ import { notebookRoute } from "./notebook/structure";
 import { courseCopy } from "./notebook/copy";
 import { n as notebookUI } from "./notebook/ui.strings";
 import { codecGuide } from "./notebook/codecs.strings";
+import { formatGuide } from "./notebook/formats.strings";
 import { glossaryUI } from "./notebook/glossary.strings";
 const storage = browserStorage();
 function Home() {
@@ -154,21 +155,23 @@ function App() {
     (!step && !resolved.appendix && !route.includes("/earlier")
       ? { home: true as const }
       : undefined);
-  const pageTitle = notebook?.codecs
-    ? codecGuide.title
-    : notebook?.glossary
-      ? glossaryUI.title
-      : notebook
-        ? !notebook.home
-          ? courseCopy.pages[notebook.page.id]!.title
-          : courseCopy.title
-        : resolved.appendix
-          ? recordingGuide.title
-          : step
-            ? resolved.reference && (step === "inspect" || step === "edit")
-              ? referenceLessons[step].title
-              : chapterTitles[step]
-            : home.subtitle;
+  const pageTitle = notebook?.formats
+    ? formatGuide.title
+    : notebook?.codecs
+      ? codecGuide.title
+      : notebook?.glossary
+        ? glossaryUI.title
+        : notebook
+          ? !notebook.home
+            ? courseCopy.pages[notebook.page.id]!.title
+            : courseCopy.title
+          : resolved.appendix
+            ? recordingGuide.title
+            : step
+              ? resolved.reference && (step === "inspect" || step === "edit")
+                ? referenceLessons[step].title
+                : chapterTitles[step]
+              : home.subtitle;
   useEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
@@ -263,6 +266,7 @@ function App() {
             page={notebook.home ? undefined : notebook.page}
             glossary={notebook.glossary}
             codecs={notebook.codecs}
+            formats={notebook.formats}
           />
         ) : resolved.appendix ? (
           <RecordingGuide />

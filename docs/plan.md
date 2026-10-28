@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Media formats and images as video, 28 October 2026:** [the approved extension](notes/formats-images/01-plan.md) adds an optional formats appendix and a fourth chapter after Frames and time: hold a photograph, time three stills, animate six numbered drawings and place a transparent drawing over footage. The notebook now has eleven chapters; existing chapter/page IDs and saved work remain stable. Original PNG drawings and a credited CC BY-SA 3.0 photograph have reproducible provenance. Native and pinned WASM command records, separate prose drafting and built-page learner/sceptic/checker review support this slice. The owner authorised merging once reviewed; review and quality-gate completion remain required.
+
 **Resizable command output, 28 October 2026:** [Issue 7](notes/output-resizing/01-facts.md) adds a shared pointer and keyboard height control to notebook, reference and optional workbench output. Raw logs, wrapping and file state remain unchanged. The owner requested this implementation without merging.
 
 **Codec choices appendix, 27 October 2026:** [the optional codec guide](notes/codecs/01-facts.md) compares practical video/audio codec choices and provides a measured AAC listening comparison without adding a numbered chapter.

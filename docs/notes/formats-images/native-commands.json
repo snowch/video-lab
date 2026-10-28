@@ -1,0 +1,311 @@
+{
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+  "inputVideo": {
+    "path": "public/media/notebook/bunny-short.mp4",
+    "bytes": 352138,
+    "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+  },
+  "verification": {
+    "probe": [
+      "ffprobe",
+      "-v",
+      "error",
+      "-count_frames",
+      "-show_streams",
+      "-show_format",
+      "-of",
+      "json",
+      "OUTPUT"
+    ],
+    "fullDecode": [
+      "ffmpeg",
+      "-v",
+      "error",
+      "-xerror",
+      "-i",
+      "OUTPUT",
+      "-f",
+      "null",
+      "-"
+    ],
+    "pixelDecode": [
+      "ffmpeg",
+      "-v",
+      "error",
+      "-xerror",
+      "-i",
+      "OUTPUT",
+      "-an",
+      "-pix_fmt",
+      "rgba",
+      "-f",
+      "rawvideo",
+      "-"
+    ]
+  },
+  "records": [
+    {
+      "id": "still",
+      "command": [
+        "ffmpeg",
+        "-loop",
+        "1",
+        "-i",
+        "landscape.jpg",
+        "-t",
+        "5",
+        "-pix_fmt",
+        "yuv420p",
+        "still.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuvj420p",
+        "frameRate": "25/1",
+        "decodedFrames": 125,
+        "videoDuration": 5,
+        "containerDuration": 5,
+        "audio": []
+      },
+      "heldPicture": {
+        "everyDecodedFrameChecked": true,
+        "maximumAllowedMeanAbsoluteRgbDifference": 2
+      }
+    },
+    {
+      "id": "still-practice",
+      "command": [
+        "ffmpeg",
+        "-loop",
+        "1",
+        "-i",
+        "landscape.jpg",
+        "-t",
+        "3",
+        "-pix_fmt",
+        "yuv420p",
+        "still-practice.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuvj420p",
+        "frameRate": "25/1",
+        "decodedFrames": 75,
+        "videoDuration": 3,
+        "containerDuration": 3,
+        "audio": []
+      },
+      "heldPicture": {
+        "everyDecodedFrameChecked": true,
+        "maximumAllowedMeanAbsoluteRgbDifference": 2
+      }
+    },
+    {
+      "id": "slides",
+      "command": [
+        "ffmpeg",
+        "-framerate",
+        "1/2",
+        "-i",
+        "drawing-%02d.png",
+        "-vf",
+        "fps=24",
+        "-pix_fmt",
+        "yuv420p",
+        "slides.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 144,
+        "videoDuration": 6,
+        "containerDuration": 6,
+        "audio": []
+      },
+      "pictureOrder": {
+        "sourceIndices": [1, 3, 6],
+        "decodedFramesPerPicture": 48,
+        "everyDecodedFrameChecked": true
+      }
+    },
+    {
+      "id": "slides-practice",
+      "command": [
+        "ffmpeg",
+        "-framerate",
+        "1",
+        "-i",
+        "drawing-%02d.png",
+        "-vf",
+        "fps=24",
+        "-pix_fmt",
+        "yuv420p",
+        "slides-practice.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 72,
+        "videoDuration": 3,
+        "containerDuration": 3,
+        "audio": []
+      },
+      "pictureOrder": {
+        "sourceIndices": [1, 3, 6],
+        "decodedFramesPerPicture": 24,
+        "everyDecodedFrameChecked": true
+      }
+    },
+    {
+      "id": "animation",
+      "command": [
+        "ffmpeg",
+        "-framerate",
+        "3",
+        "-i",
+        "frame-%02d.png",
+        "-vf",
+        "fps=24",
+        "-pix_fmt",
+        "yuv420p",
+        "animation.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 48,
+        "videoDuration": 2,
+        "containerDuration": 2,
+        "audio": []
+      },
+      "pictureOrder": {
+        "sourceIndices": [1, 2, 3, 4, 5, 6],
+        "decodedFramesPerPicture": 8,
+        "everyDecodedFrameChecked": true
+      }
+    },
+    {
+      "id": "animation-practice",
+      "command": [
+        "ffmpeg",
+        "-framerate",
+        "6",
+        "-i",
+        "frame-%02d.png",
+        "-vf",
+        "fps=24",
+        "-pix_fmt",
+        "yuv420p",
+        "animation-practice.mp4"
+      ],
+      "result": {
+        "width": 640,
+        "height": 360,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 24,
+        "videoDuration": 1,
+        "containerDuration": 1,
+        "audio": []
+      },
+      "pictureOrder": {
+        "sourceIndices": [1, 2, 3, 4, 5, 6],
+        "decodedFramesPerPicture": 4,
+        "everyDecodedFrameChecked": true
+      }
+    },
+    {
+      "id": "overlay",
+      "command": [
+        "ffmpeg",
+        "-i",
+        "bunny-short.mp4",
+        "-i",
+        "annotation.png",
+        "-filter_complex",
+        "overlay",
+        "annotated.mp4"
+      ],
+      "result": {
+        "width": 854,
+        "height": 480,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 192,
+        "videoDuration": 8,
+        "containerDuration": 8,
+        "audio": [
+          {
+            "codec": "aac",
+            "sampleRate": 48000,
+            "channels": 2,
+            "duration": 8
+          }
+        ]
+      },
+      "overlay": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "everyDecodedFrameChecked": true,
+        "opaqueRingRegion": [326, 234, 2, 2],
+        "transparentBackgroundRegion": [32, 32, 16, 16],
+        "transparentSourcePixels": 406107
+      }
+    },
+    {
+      "id": "overlay-practice",
+      "command": [
+        "ffmpeg",
+        "-i",
+        "bunny-short.mp4",
+        "-i",
+        "annotation.png",
+        "-filter_complex",
+        "overlay=40:0",
+        "annotated-practice.mp4"
+      ],
+      "result": {
+        "width": 854,
+        "height": 480,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "frameRate": "24/1",
+        "decodedFrames": 192,
+        "videoDuration": 8,
+        "containerDuration": 8,
+        "audio": [
+          {
+            "codec": "aac",
+            "sampleRate": 48000,
+            "channels": 2,
+            "duration": 8
+          }
+        ]
+      },
+      "overlay": {
+        "offsetX": 40,
+        "offsetY": 0,
+        "everyDecodedFrameChecked": true,
+        "opaqueRingRegion": [366, 234, 2, 2],
+        "transparentBackgroundRegion": [32, 32, 16, 16],
+        "transparentSourcePixels": 406107
+      }
+    }
+  ]
+}

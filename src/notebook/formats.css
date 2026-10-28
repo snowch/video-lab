@@ -1,0 +1,55 @@
+/* Copyright © 2026 Christopher Snow */
+.notebook-shell.notebook-formats {
+  max-width: 68rem;
+}
+.format-guide {
+  padding: 1.5rem 0;
+  overflow-wrap: anywhere;
+}
+.format-guide h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+}
+.format-guide header,
+.format-guide section > p,
+.format-concepts {
+  max-width: 62ch;
+}
+.format-guide section,
+.format-guide nav {
+  margin-top: 2.5rem;
+}
+.format-concepts > div {
+  margin: 1.25rem 0;
+}
+.format-concepts dd {
+  margin: 0.4rem 0 0;
+}
+.format-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: 1rem;
+}
+.format-card {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+.format-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+.format-card > p:last-child {
+  margin-bottom: 0;
+}
+.format-extensions {
+  margin: 0.4rem 0 1rem;
+  color: var(--muted);
+}
+.format-guide li a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  min-height: 44px;
+}

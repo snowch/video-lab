@@ -9,6 +9,8 @@ import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
 import { CodecGuide } from "./CodecGuide";
 import { codecGuide } from "./codecs.strings";
+import { FormatGuide } from "./FormatGuide";
+import { formatGuide } from "./formats.strings";
 import { Glossary } from "./Glossary";
 import { glossaryUI } from "./glossary.strings";
 import { usePracticeFiles } from "./usePracticeFiles";
@@ -16,6 +18,8 @@ import { ExampleDiagram } from "./ExampleDiagram";
 import { InlineText } from "./InlineText";
 import { ConceptVisual } from "./visuals/ConceptVisual";
 import { FileManager, FilePreview } from "./FileManager";
+import { imageCopy } from "./images.strings";
+import imageMedia from "./images-media.json";
 import "./style.css";
 const creditUrl =
   "https://github.com/snowch/video-lab/blob/main/docs/notes/notebook/media.json";
@@ -95,6 +99,9 @@ function NotebookHome({
         </a>
         <a className="notebook-appendix" href="#/appendix/codecs">
           {codecGuide.link}
+        </a>
+        <a className="notebook-appendix" href="#/appendix/formats">
+          {formatGuide.link}
         </a>
         <a className="notebook-appendix" href="#/appendix/recording">
           {n.recordingGuide}
@@ -182,19 +189,24 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           )
         ) : (
           <button onClick={() => setReplay((v) => !v)} aria-expanded={replay}>
-            {n.replaySource}
+            {/\.(png|jpg)$/i.test(sourceName)
+              ? imageCopy.viewSource
+              : n.replaySource}
           </button>
         )}
         {replay && source && (
           <div className="notebook-source-preview">
-            {page.assets.filter((name) => name.endsWith(".mp4")).length > 1 && (
+            {page.assets.filter((name) => /\.(mp4|png|jpg)$/i.test(name))
+              .length > 1 && (
               <div
                 className="notebook-source-choices"
                 role="group"
                 aria-label={n.source}
               >
                 {page.assets
-                  .filter((name) => name.endsWith(".mp4") && w.files[name])
+                  .filter(
+                    (name) => /\.(mp4|png|jpg)$/i.test(name) && w.files[name],
+                  )
                   .map((name) => (
                     <button
                       key={name}
@@ -211,6 +223,19 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           </div>
         )}
       </section>
+      {page.id === "image-video/hold" && (
+        <p className="notebook-credit">
+          {imageCopy.photoCredit}{" "}
+          <a href={imageMedia.photograph.source}>
+            {imageCopy.photoSourceLabel}
+          </a>{" "}
+          ·{" "}
+          <a href={imageMedia.photograph.licenceUrl}>
+            {imageCopy.photoLicenceLabel}
+          </a>
+          . {imageCopy.shareAlikeWarning}
+        </p>
+      )}
       <section className="notebook-concept">
         {copy.concept.map((p, i) => (
           <p key={i}>
@@ -305,6 +330,13 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           </button>
         </section>
       )}
+      {(page.chapter === "image-video" ||
+        page.id === "inside-video/inspect" ||
+        page.id === "export/format") && (
+        <p>
+          <a href="#/appendix/formats">{imageCopy.formatsAppendixLabel}</a>
+        </p>
+      )}
       {copy.codecGuide && (
         <p>
           <a href="#/appendix/codecs">{codecGuide.link}</a>
@@ -350,7 +382,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
         </label>
         <button onClick={exportPage}>{n.exportNotebook}</button>
       </details>
-      <Credits />
+      {page.assets.some((name) => name.startsWith("bunny")) && <Credits />}
       <nav className="notebook-pager" aria-label="Lesson pages">
         {index > 0 ? (
           <a className="button" href={pageHref(pages[index - 1]!)}>
@@ -378,10 +410,12 @@ function NotebookShell({
   page,
   glossary = false,
   codecs = false,
+  formats = false,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
+  formats?: boolean;
 }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
@@ -418,11 +452,11 @@ function NotebookShell({
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page || glossary || codecs ? " notebook-lesson" : ""}`}
+      className={`notebook-shell${page || glossary || codecs || formats ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
-      {(page || glossary || codecs) && (
+      {(page || glossary || codecs || formats) && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
         </nav>
@@ -455,6 +489,8 @@ function NotebookShell({
           <NotebookPage key={page.id} page={page} />
         ) : codecs ? (
           <CodecGuide />
+        ) : formats ? (
+          <FormatGuide />
         ) : glossary ? (
           <Glossary />
         ) : (
@@ -476,14 +512,21 @@ export function NotebookCourse({
   page,
   glossary,
   codecs,
+  formats,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
+  formats?: boolean;
 }) {
   return (
     <NotebookWorkspace>
-      <NotebookShell page={page} glossary={glossary} codecs={codecs} />
+      <NotebookShell
+        page={page}
+        glossary={glossary}
+        codecs={codecs}
+        formats={formats}
+      />
     </NotebookWorkspace>
   );
 }

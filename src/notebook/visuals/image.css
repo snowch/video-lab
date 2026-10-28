@@ -1,0 +1,48 @@
+/* Copyright © 2026 Christopher Snow */
+.image-visual {
+  min-width: 0;
+  max-width: 62ch;
+  margin: 1.5rem 0 2rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.image-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.image-visual-drawings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.image-visual-drawings li {
+  min-width: 0;
+}
+
+.image-visual-drawings code {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.image-visual-transparency {
+  margin-bottom: 1rem;
+  background-color: #f1f1f1;
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+  background-size: 16px 16px;
+}
