@@ -1,4 +1,5 @@
 // Copyright © 2026 Christopher Snow
+import { OutputResize } from "../components/OutputResize";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRestartGuard } from "../app-status/safety";
 import { cancelProcessing, inspectEdit, runTool } from "../processing/engine";
@@ -1164,6 +1165,7 @@ ${cli.comparisonCredit}`,
           >
             {lines.join("\n")}
           </pre>
+          <OutputResize target={terminal} controls="cli-output" />
         </div>
         {(outputEdges.left || outputEdges.right) && (
           <div className="terminal-scroll-controls">

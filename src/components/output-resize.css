@@ -1,0 +1,30 @@
+/* Copyright © 2026 Christopher Snow */
+.output-resize {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.4rem 0.75rem;
+  border-top: 1px solid var(--line);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+  color: var(--text, var(--ink));
+  background: var(--surface);
+  font-size: 0.9rem;
+}
+.output-resize:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+.output-resize-help {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

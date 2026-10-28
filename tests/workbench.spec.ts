@@ -312,8 +312,8 @@ test("readable ffprobe validates corrupt input and quiet success without leaking
   await expect(page.locator(".command-echo")).toHaveText(
     "$ ffprobe -v error mousepad-demo.mp4",
   );
-  await expect(page.getByLabel(C.live.logs)).toHaveCount(0);
-  await expect(page.getByLabel(C.command.outputLabel)).toHaveCount(0);
+  await expect(page.getByLabel(C.live.logs)).toBeHidden();
+  await expect(page.getByLabel(C.command.outputLabel)).toBeHidden();
   await page
     .getByRole("textbox", { name: C.command.heading, exact: true })
     .fill("ffprobe -version");

@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Resizable command output, 28 October 2026:** [Issue 7](notes/output-resizing/01-facts.md) adds a shared pointer and keyboard height control to notebook, reference and optional workbench output. Raw logs, wrapping and file state remain unchanged. The owner requested this implementation without merging.
+
 **Codec choices appendix, 27 October 2026:** [the optional codec guide](notes/codecs/01-facts.md) compares practical video/audio codec choices and provides a measured AAC listening comparison without adding a numbered chapter.
 
 **Course glossary, 27 October 2026:** [the glossary slice](notes/glossary/01-facts.md) adds an alphabetical, searchable reference with examples and lesson links, available from the course index and footer without leaving the local notebook workspace.

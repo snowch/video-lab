@@ -1,11 +1,13 @@
 // Copyright © 2026 Christopher Snow
 import {
   useEffect,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
 } from "react";
+import { OutputResize } from "../components/OutputResize";
 import { NativeBuilder, quoteArgument } from "../cli/NativeBuilder";
 import { parseCommand } from "../cli/command";
 import { useNotebook, downloadBlob } from "./Workspace";
@@ -42,6 +44,7 @@ export function CommandCell({
   preview?: (command: string) => ReactNode;
   preparing?: boolean;
 }) {
+  const outputId = useId();
   const w = useNotebook(),
     record = w.cells[id] ?? { id, command: initial };
   const [builder, setBuilder] = useState(false),
@@ -279,6 +282,7 @@ export function CommandCell({
             </label>
           </div>
           <pre
+            id={outputId}
             className={wrap ? "wrap" : ""}
             ref={pre}
             onScroll={edges}
@@ -287,6 +291,7 @@ export function CommandCell({
           >
             {text || "—"}
           </pre>
+          <OutputResize target={pre} controls={outputId} />
           {last?.truncated && <p>{n.truncated}</p>}
           {(left || right) && (
             <div className="notebook-scroll-tools">

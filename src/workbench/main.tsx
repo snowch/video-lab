@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { OutputResize } from "../components/OutputResize";
 import { useRestartGuard } from "../app-status/safety";
 import { createRoot } from "react-dom/client";
 import { disk, checkFiles, mimeFor } from "../cli/files";
@@ -78,6 +79,7 @@ function Output({
   label?: string;
   followTail?: boolean;
 }) {
+  const outputId = useId();
   const ref = useRef<HTMLPreElement>(null),
     following = useRef(true),
     [wrap, setWrap] = useState(false),
@@ -98,9 +100,10 @@ function Output({
     return () => ro.disconnect();
   }, [text, wrap]);
   return (
-    <>
+    <div hidden={!text}>
       <div className="output-frame" data-overflow={more}>
         <pre
+          id={outputId}
           ref={ref}
           className={wrap ? "wrapped" : ""}
           tabIndex={0}
@@ -116,6 +119,7 @@ function Output({
           {text}
         </pre>
       </div>
+      <OutputResize target={ref} controls={outputId} />
       <div className="output-controls">
         <button onClick={() => setWrap(!wrap)} aria-pressed={wrap}>
           {C.command.wrap}
@@ -130,7 +134,7 @@ function Output({
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 }
 function App() {
@@ -886,14 +890,12 @@ function App() {
                   <pre className="command-echo">
                     $ {result?.command ?? logCommand}
                   </pre>
-                  {(result?.logs || (logStage === stage && logs)) && (
-                    <Output
-                      text={result?.logs ?? logs}
-                      label={C.live.logs}
-                      followTail
-                    />
-                  )}
-                  {result?.text && <Output text={result.text} />}
+                  <Output
+                    text={result?.logs ?? (logStage === stage ? logs : "")}
+                    label={C.live.logs}
+                    followTail
+                  />
+                  <Output text={result?.text ?? ""} />
                 </div>
               )}
               <div className={result ? "result" : ""}>
