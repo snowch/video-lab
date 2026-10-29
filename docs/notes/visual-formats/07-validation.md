@@ -14,4 +14,6 @@ Local commands:
 
 Intermediate draft/selector failures and their fixes are recorded in 05-fixes.md; they are not final validation results. The final copy-only removal of a repeated rename warning was independently rechecked on the rebuilt container page; the sampling/control behaviour did not change.
 
+Final reading-width follow-up: add direct article paragraphs to the existing 62ch text-width rule so opening prose aligns with the diagrams on desktop. Rebuilt and reran `npx playwright test tests/format-visuals.spec.ts`: all five projects passed, 14.7 seconds. The independent checker rechecks this one-rule change separately. Initial CI was deliberately superseded for this CSS adjustment, not reported as a pass or product failure.
+
 Full `npm run check`, including media facts and the whole browser suite, must pass on the final PR revision before merging. The PR records permanent CI links, exact full-suite results and merge status. No full local suite pass is claimed; the targeted local checks above are distinguished from the full CI gate.
