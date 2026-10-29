@@ -149,6 +149,34 @@ for (const p of pages) {
   for (const command of [...p.worked, p.solution])
     if (!evidence.records.some((r) => r.page === p.id && r.command === command))
       throw Error("Missing executed command evidence " + p.id);
+  if (p.id === "frames-time/samples") {
+    for (const [id, command, sampleRate] of [
+      [p.id + ":worked:0", p.worked[0], 24000],
+      [p.id + ":practice", p.solution, p.expected.sampleRate],
+    ]) {
+      const native = evidence.records.find(
+        (r) => r.page === p.id && r.command === command,
+      );
+      const browser = browserEvidence.records.find(
+        (r) => r.id === id && r.command === command,
+      );
+      for (const [kind, record] of [
+        ["native", native],
+        ["WASM", browser],
+      ]) {
+        const streams = record?.probe?.streams;
+        if (
+          !streams ||
+          streams.length !== 1 ||
+          streams[0].codec_type !== "audio" ||
+          Number(streams[0].sample_rate) !== sampleRate ||
+          streams[0].channels !== 2 ||
+          Number(record.probe.format.duration) !== 4
+        )
+          throw Error("Incorrect actual " + kind + " sample-rate output " + id);
+      }
+    }
+  }
 }
 if (
   chapters.length !== 11 ||
@@ -197,6 +225,7 @@ for (const f of media.assets) {
       probe.streams[0].width !== 854 ||
       probe.streams[0].height !== 480 ||
       probe.streams[1].channels !== 2 ||
+      Number(probe.streams[1].sample_rate) !== 48000 ||
       probe.format.duration !== f.probe.format.duration
     )
       throw Error("Recorded notebook media facts changed " + f.name);

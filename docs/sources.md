@@ -2,6 +2,12 @@
 
 Copyright © 2026 Christopher Snow.
 
+## Resolution choices and audio resampling
+
+[Verified resolution facts](notes/resolution-audio/03-resolution-facts.md) cite FFmpeg scaling and YouTube's published dimension/player guidance. Practical dimensions are starting points to test in the receiving app, not universal requirements. The original resolution figure calculates areas from stored dimensions; it does not simulate HD captured detail. The supplied source remains 854×480.
+
+[Verified audio facts](notes/resolution-audio/02-audio-facts.md) record native four-second, stereo WAV outputs at 24000 and 16000 Hz per channel using output `-ar`, plus a constant-frequency tone check. Actual pinned WASM execution and downloaded native probes independently confirm the new lab's rate, duration, channels and absent video. Existing media provenance and licensing are unchanged.
+
 ## Audio sample-rate model
 
 The [W3C Web Audio AudioBuffer definition](https://www.w3.org/TR/webaudio-1.0/#AudioBuffer) and [sample-rate definition](https://www.w3.org/TR/webaudio-1.0/#dom-baseaudiocontext-samplerate) establish per-channel values, samples per second and duration as sample count divided by rate. The Chapter 3 figure computes an original 1,000-cycle-per-second sine over two milliseconds; it is an explanatory model, not measured source audio.

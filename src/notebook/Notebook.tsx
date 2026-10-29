@@ -15,6 +15,8 @@ import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
 import { CodecGuide } from "./CodecGuide";
 import { codecGuide } from "./codecs.strings";
+import { ResolutionGuide } from "./ResolutionGuide";
+import { resolutionGuide } from "./resolution.strings";
 import { FormatGuide } from "./FormatGuide";
 import { pixelFormats } from "./pixel-formats.strings";
 import { formatVisuals } from "./format-visuals.strings";
@@ -127,6 +129,9 @@ function NotebookHome({
           </li>
           <li>
             <a href="#/appendix/formats/pixel-formats">{pixelFormats.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/resolution">{resolutionGuide.title}</a>
           </li>
           <li>
             <a href="#/appendix/recording">{n.recordingGuide}</a>
@@ -395,6 +400,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           <a href="#/appendix/formats">{imageCopy.formatsAppendixLabel}</a>
         </p>
       )}
+      {(page.chapter === "framing" || page.id === "export/format") && (
+        <p>
+          <a href="#/appendix/resolution">{resolutionGuide.link}</a>
+        </p>
+      )}
       {copy.codecGuide && (
         <p>
           <a href="#/appendix/codecs">{codecGuide.link}</a>
@@ -468,12 +478,14 @@ function NotebookShell({
   page,
   glossary = false,
   codecs = false,
+  resolution = false,
   formats = false,
   formatSection,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
+  resolution?: boolean;
   formats?: boolean;
   formatSection?: FormatSection;
 }) {
@@ -512,11 +524,11 @@ function NotebookShell({
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page || glossary || codecs || formats ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
+      className={`notebook-shell${page || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
-      {(page || glossary || codecs || formats) && (
+      {(page || glossary || codecs || formats || resolution) && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
         </nav>
@@ -547,6 +559,8 @@ function NotebookShell({
       <div className="notebook-content">
         {page ? (
           <NotebookPage key={page.id} page={page} />
+        ) : resolution ? (
+          <ResolutionGuide />
         ) : codecs ? (
           <CodecGuide />
         ) : formats ? (
@@ -572,12 +586,14 @@ export function NotebookCourse({
   page,
   glossary,
   codecs,
+  resolution,
   formats,
   formatSection,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
+  resolution?: boolean;
   formats?: boolean;
   formatSection?: FormatSection;
 }) {
@@ -586,6 +602,7 @@ export function NotebookCourse({
       <NotebookShell
         page={page}
         glossary={glossary}
+        resolution={resolution}
         codecs={codecs}
         formats={formats}
         formatSection={formatSection}

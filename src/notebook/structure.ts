@@ -18,6 +18,7 @@ export type Expectation = {
   width?: number;
   height?: number;
   rate?: number;
+  sampleRate?: number;
   audio?: boolean;
   video?: boolean;
   codec?: string;
@@ -98,6 +99,17 @@ export const pages: PageDefinition[] = [
     `ffmpeg -i ${short} -t 4 -vf "fps=12" practice-rate.mp4`,
     `ffmpeg -i ${short} -t 4 -vf "fps=6" practice-rate.mp4`,
     { duration: 4, rate: 6, audio: true, video: true },
+  ),
+  page(
+    "frames-time",
+    "samples",
+    [
+      `ffmpeg -i ${short} -t 4 -vn -ar 24000 resampled.wav`,
+      "ffprobe resampled.wav",
+    ],
+    `ffmpeg -i ${short} -t 4 -vn -ar 24000 practice-samples.wav`,
+    `ffmpeg -i ${short} -t 4 -vn -ar 16000 practice-samples.wav`,
+    { duration: 4, sampleRate: 16000, audio: true, video: false },
   ),
   page(
     "frames-time",
@@ -344,6 +356,7 @@ type NotebookRoute =
       glossary?: boolean;
       codecs?: boolean;
       codecSection?: "check-playback";
+      resolution?: boolean;
       formats?: boolean;
       formatSection?: FormatSection;
     }
@@ -352,6 +365,7 @@ type NotebookRoute =
       page: PageDefinition;
       glossary?: false;
       codecs?: false;
+      resolution?: false;
       formats?: false;
     };
 export function notebookRoute(hash: string): NotebookRoute | undefined {
@@ -373,6 +387,8 @@ export function notebookRoute(hash: string): NotebookRoute | undefined {
         ? { formatSection: parts[2] }
         : {}),
     };
+  if (parts[0] === "appendix" && parts[1] === "resolution")
+    return { home: true, resolution: true };
   if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)

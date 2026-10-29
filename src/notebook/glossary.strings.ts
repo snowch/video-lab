@@ -46,7 +46,7 @@ export const glossaryEntries: readonly GlossaryEntry[] = [
       "The number of audio measurements per second in each channel, expressed in hertz (Hz). This counts sound measurements, whereas video frame rate counts pictures.",
     example:
       "The supplied source's `48000 Hz` means 48,000 audio measurements per second per channel.",
-    lesson: "frames-time/rate",
+    lesson: "frames-time/samples",
     aliases: ["sample rate", "sampling rate", "sample_rate", "Hz", "hertz"],
   },
   {

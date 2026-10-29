@@ -14,9 +14,10 @@ export function ConceptVisual({
 }) {
   if (pageId === "frames-time/rate") {
     if (afterParagraph === 0) return <FrameRateDiagram />;
-    if (afterParagraph === 1) return <SampleRateDiagram />;
     return null;
   }
+  if (pageId === "frames-time/samples")
+    return afterParagraph === 0 ? <SampleRateDiagram /> : null;
   if (afterParagraph !== undefined) return null;
   return (
     <>

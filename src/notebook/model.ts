@@ -15,6 +15,18 @@ export function validPath(name: string) {
   );
 }
 export type NotebookFile = WorkspaceFile;
+export function audioSampleRateMatches(
+  streams: readonly { codec_type: string; sample_rate?: string }[],
+  expected: number,
+) {
+  const audio = streams.filter((stream) => stream.codec_type === "audio");
+  return (
+    Number.isFinite(expected) &&
+    expected > 0 &&
+    audio.length > 0 &&
+    audio.every((stream) => Number(stream.sample_rate) === expected)
+  );
+}
 export type RunRecord = {
   runtime?: "exit-adapter-v1";
   command: string;

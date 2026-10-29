@@ -10,6 +10,7 @@ import page6 from "./pages/export-verify";
 import page7 from "./pages/first-edit-shorten";
 import page8 from "./pages/first-edit-start";
 import page9 from "./pages/frames-time-rate";
+import samples from "./pages/frames-time-samples";
 import page10 from "./pages/frames-time-timestamps";
 import page11 from "./pages/framing-crop";
 import page12 from "./pages/framing-pad";
@@ -49,7 +50,8 @@ export const courseCopy: CourseCopy = {
     },
     "frames-time": {
       title: "Frames and time",
-      summary: "Distinguish picture cadence, timestamps and clock units.",
+      summary:
+        "Distinguish frame rate, audio sample rate, timestamps and clock units.",
     },
     "cut-join": {
       title: "Cuts and joins",
@@ -97,6 +99,7 @@ export const courseCopy: CourseCopy = {
     "first-edit/shorten": page7,
     "first-edit/start": page8,
     "frames-time/rate": page9,
+    "frames-time/samples": samples,
     "frames-time/timestamps": page10,
     "framing/crop": page11,
     "framing/pad": page12,
