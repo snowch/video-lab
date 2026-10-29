@@ -7,7 +7,7 @@ const page: PageCopy = {
   goal: "Compare encoding presets while keeping the quality setting and source unchanged.",
   concept: [
     "An encoder searches for compact ways to describe pictures, including repeated detail within a frame and movement between frames. A more thorough search can reduce the data needed, but takes more computation.",
-    "A preset groups these search and compression choices. It controls encoding effort, rather than playback speed. CRF and preset are separate controls: keeping CRF fixed lets you explore the effect of changing effort, although equal CRF does not guarantee identical visible quality across presets.",
+    "A **preset** groups these search and compression choices. It controls encoding effort, rather than playback speed. CRF and preset are separate controls: keeping CRF fixed lets you explore the effect of changing effort, although equal CRF does not guarantee identical visible quality across presets.",
   ],
   worked: [
     {

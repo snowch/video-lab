@@ -2,6 +2,12 @@
 
 Copyright © 2026 Christopher Snow.
 
+## Audio sample-rate model
+
+The [W3C Web Audio AudioBuffer definition](https://www.w3.org/TR/webaudio-1.0/#AudioBuffer) and [sample-rate definition](https://www.w3.org/TR/webaudio-1.0/#dom-baseaudiocontext-samplerate) establish per-channel values, samples per second and duration as sample count divided by rate. The Chapter 3 figure computes an original 1,000-cycle-per-second sine over two milliseconds; it is an explanatory model, not measured source audio.
+
+[Steven W. Smith's DSP text, Chapter 3, hosted by Analog Devices](https://www.analog.com/media/en/technical-documentation/dsp-book/dsp_book_Ch3.pdf), explains sampling and why joining sample points with straight lines is not a reconstruction model. The figure keeps its analytic curve fixed and does not infer improved sound quality from denser dots. [FFmpeg's asetrate documentation](https://ffmpeg.org/ffmpeg-filters.html#asetrate) distinguishes reinterpreting unchanged samples at another rate (changing speed and pitch) from resampling. See [the checked fact brief](notes/sample-rate/02-facts.md) for equations, source excerpts and limitations.
+
 Record precise source URLs, versions, access dates, generated-fixture provenance and dependency licences here as the implementation is built. Do not substitute undocumented memory for a technical fact.
 
 Initial primary references to verify:

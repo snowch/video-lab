@@ -7,7 +7,7 @@ export default {
   sourceNote:
     "Play this eight-second clip from Big Buck Bunny, an animated short film, so you can recognise the part you keep.",
   concept: [
-    "A cut selects part of a video. Its duration is how long that part plays.",
+    "A **cut** selects part of a video. Its **duration** is how long that part plays.",
     "FFmpeg is a command-line tool for editing media. It reads a source file (the input) and saves the cut to a new file (the output). Here, the .mp4 ending selects the MP4 file format.",
   ],
   worked: [

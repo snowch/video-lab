@@ -1,0 +1,134 @@
+/* Copyright © 2026 Christopher Snow */
+.sample-rate-diagram {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.sample-rate-control {
+  display: grid;
+  gap: 0.375rem;
+  margin-block: 1rem;
+}
+.sample-rate-control select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.5rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 0.375rem;
+}
+.sample-rate-control select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.sample-rate-plot {
+  display: grid;
+  grid-template-columns: 2.5ch minmax(0, 1fr);
+  gap: 0.375rem;
+}
+.sample-rate-values {
+  position: relative;
+}
+.sample-rate-values span {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+}
+.sample-rate-values span:first-child {
+  top: 8.333333%;
+}
+.sample-rate-values span:nth-child(2) {
+  top: 50%;
+}
+.sample-rate-values span:last-child {
+  top: 91.666667%;
+}
+.sample-rate-diagram svg {
+  display: block;
+  width: 100%;
+  height: clamp(160px, 30vw, 240px);
+  overflow: visible;
+}
+.sample-rate-axis,
+.sample-rate-guide,
+.sample-rate-curve,
+.sample-rate-stem,
+.sample-rate-dot {
+  vector-effect: non-scaling-stroke;
+}
+.sample-rate-axis,
+.sample-rate-guide {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.sample-rate-guide {
+  stroke-dasharray: 3 5;
+  opacity: 0.5;
+}
+.sample-rate-curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.sample-rate-stem {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 1;
+}
+.sample-rate-dot {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.sample-rate-times {
+  grid-column: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+.sample-rate-times span:nth-child(2) {
+  text-align: center;
+}
+.sample-rate-times span:last-child {
+  text-align: right;
+}
+.sample-rate-diagram .sample-rate-time-label {
+  text-align: center;
+  margin-top: 0.25rem;
+}
+.sample-rate-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.sample-rate-legend li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.sample-rate-curve-key {
+  flex: 0 0 1.5rem;
+  border-top: 2.5px solid var(--accent);
+  align-self: center;
+}
+.sample-rate-dot-key {
+  flex: 0 0 0.65rem;
+  height: 0.65rem;
+  background: var(--text);
+  border-radius: 50%;
+  align-self: center;
+}
+.sample-rate-diagram output {
+  display: block;
+  font-weight: 600;
+}
+.sample-rate-source-note {
+  color: var(--muted);
+}

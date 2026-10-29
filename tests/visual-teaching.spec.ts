@@ -79,7 +79,9 @@ test("visual lessons reflow and their supplied images belong to the offline bund
       await summary.click();
       await expect(brands.locator("pre")).toBeHidden();
     }
-    const figures = page.locator(".notebook-page > figure");
+    const figures = page.locator(
+      ".notebook-page > figure, .notebook-concept > figure",
+    );
     await expect(figures.first()).toBeVisible();
     for (const img of await figures.locator("img").all()) {
       await img.scrollIntoViewIfNeeded();
