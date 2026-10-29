@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import type { PageCopy } from "../copy-types";
+import { pixelFormats } from "../pixel-formats.strings";
 
 const copy: PageCopy = {
   codecGuide: true,
@@ -35,7 +36,11 @@ const copy: PageCopy = {
         },
         {
           flag: "-pix_fmt yuv420p",
-          meaning: "Store the output pictures as yuv420p.",
+          meaning: "Request `yuv420p` for the output pictures.",
+          reference: {
+            href: "#/appendix/formats/pixel-formats",
+            label: pixelFormats.linkLabel,
+          },
         },
       ],
       observe:

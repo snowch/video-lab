@@ -17,7 +17,7 @@ export const hold: PageCopy = {
         {
           flag: "-loop 1",
           meaning:
-            "Repeat the image input. Put this input option before the -i for the photograph it applies to.",
+            "For this image input, `1` switches looping on and `0` switches it off. The value is not a repeat count. Put `-loop 1` before the photograph’s `-i`; `-t 5` stops the output.",
         },
         {
           flag: "-i landscape.jpg",

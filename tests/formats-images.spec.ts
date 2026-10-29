@@ -462,10 +462,15 @@ test("pixel-format references land at the explanation and preserve edited comman
   page.on("request", (request) => {
     if (request.url().includes("/encoder/")) processing.push(request.url());
   });
-  for (const slug of ["hold", "sequence", "animation"]) {
-    await page.goto(`./#/learn/image-video/${slug}`);
+  for (const route of [
+    "image-video/hold",
+    "image-video/sequence",
+    "image-video/animation",
+    "export/format",
+  ]) {
+    await page.goto(`./#/learn/${route}`);
     await expectPracticeReady(page);
-    const id = `image-video/${slug}:worked:0`;
+    const id = `${route}:worked:0`;
     const cell = page.locator(`[data-cell="${id}"]`);
     const command = (await cell.locator("textarea").inputValue()).replace(
       "ffmpeg ",

@@ -24,7 +24,7 @@ const copy: PageCopy = {
         {
           flag: "-crf 18",
           meaning:
-            "Set the CRF target to 18 with `-crf`. Compare it with the second example’s higher target.",
+            "Set the CRF target to 18 with `-crf`. This is a number on libx264’s quality-factor scale, not 18% quality. Compare it with the second example’s higher target.",
         },
       ],
       observe:
