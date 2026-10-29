@@ -20,6 +20,7 @@ import { referenceLessons } from "./cli/reference.strings";
 import { RecordingGuide } from "./capture/RecordingGuide";
 import { recordingGuide } from "./capture/guide.strings";
 import { NotebookCourse } from "./notebook/Notebook";
+import { resolutionGuide } from "./notebook/resolution.strings";
 import { notebookRoute } from "./notebook/structure";
 import { courseCopy } from "./notebook/copy";
 import { n as notebookUI } from "./notebook/ui.strings";
@@ -157,27 +158,29 @@ function App() {
     (!step && !resolved.appendix && !route.includes("/earlier")
       ? { home: true as const }
       : undefined);
-  const pageTitle = notebook?.formats
-    ? notebook.formatSection === "pixel-formats"
-      ? pixelFormats.title
-      : notebook.formatSection === "video-containers"
-        ? formatVisuals.containerTitle
-        : formatGuide.title
-    : notebook?.codecs
-      ? codecGuide.title
-      : notebook?.glossary
-        ? glossaryUI.title
-        : notebook
-          ? !notebook.home
-            ? courseCopy.pages[notebook.page.id]!.title
-            : courseCopy.title
-          : resolved.appendix
-            ? recordingGuide.title
-            : step
-              ? resolved.reference && (step === "inspect" || step === "edit")
-                ? referenceLessons[step].title
-                : chapterTitles[step]
-              : home.subtitle;
+  const pageTitle = notebook?.resolution
+    ? resolutionGuide.title
+    : notebook?.formats
+      ? notebook.formatSection === "pixel-formats"
+        ? pixelFormats.title
+        : notebook.formatSection === "video-containers"
+          ? formatVisuals.containerTitle
+          : formatGuide.title
+      : notebook?.codecs
+        ? codecGuide.title
+        : notebook?.glossary
+          ? glossaryUI.title
+          : notebook
+            ? !notebook.home
+              ? courseCopy.pages[notebook.page.id]!.title
+              : courseCopy.title
+            : resolved.appendix
+              ? recordingGuide.title
+              : step
+                ? resolved.reference && (step === "inspect" || step === "edit")
+                  ? referenceLessons[step].title
+                  : chapterTitles[step]
+                : home.subtitle;
   useLayoutEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
@@ -276,6 +279,7 @@ function App() {
           <NotebookCourse
             page={notebook.home ? undefined : notebook.page}
             glossary={notebook.glossary}
+            resolution={notebook.resolution}
             codecs={notebook.codecs}
             formats={notebook.formats}
             formatSection={notebook.home ? notebook.formatSection : undefined}

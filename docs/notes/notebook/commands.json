@@ -1,5 +1,5 @@
 {
-  "copyright": "Copyright © 2026 Christopher Snow",
+  "copyright": "Copyright \u00a9 2026 Christopher Snow",
   "native": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
   "records": [
     {
@@ -6112,6 +6112,215 @@
       "command": "ffprobe bunny-action.mp4",
       "ms": 55,
       "stdout": ""
+    },
+    {
+      "page": "frames-time/samples",
+      "index": 0,
+      "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 24000 resampled.wav",
+      "ms": 153,
+      "output": "resampled.wav",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[1][0][0][0]",
+            "codec_tag": "0x0001",
+            "sample_fmt": "s16",
+            "sample_rate": "24000",
+            "channels": 2,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/24000",
+            "duration_ts": 96000,
+            "duration": "4.000000",
+            "bit_rate": "768000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "resampled.wav",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "wav",
+          "format_long_name": "WAV / WAVE (Waveform Audio)",
+          "duration": "4.000000",
+          "size": "384078",
+          "bit_rate": "768156",
+          "probe_score": 99,
+          "tags": {
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "log": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers\n  built with gcc 14 (Debian 14.2.0-19)\n  configuration: --prefix=/usr --extra-version=0+deb13u1 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-libmfx --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-libjack --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-pocketsphinx --enable-librsvg --enable-libjxl --enable-shared\n  libavutil      59. 39.100 / 59. 39.100\n  libavcodec     61. 19.101 / 61. 19.101\n  libavformat    61.  7.103 / 61.  7.103\n  libavdevice    61.  3.100 / 61.  3.100\n  libavfilter    10.  5.100 / 10.  5.100\n  libswscale      8.  3.100 /  8.  3.100\n  libswresample   5.  3.100 /  5.  3.100\n  libpostproc    58.  3.100 / 58.  3.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n      Metadata:\n        handler_name    : VideoHandler\n        vendor_id       : [0][0][0][0]\n        encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n      Metadata:\n        handler_name    : SoundHandler\n        vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))\nPress [q] to stop, [?] for help\nOutput #0, wav, to 'resampled.wav':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    ISFT            : Lavf61.7.103\n  Stream #0:0(und): Audio: pcm_s16le ([1][0][0][0] / 0x0001), 24000 Hz, stereo, s16, 768 kb/s (default)\n      Metadata:\n        handler_name    : SoundHandler\n        vendor_id       : [0][0][0][0]\n        encoder         : Lavc61.19.101 pcm_s16le\n[out#0/wav @ 0x55a62fcb52c0] video:0KiB audio:375KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020313%\nsize=     375KiB time=00:00:04.00 bitrate= 768.2kbits/s speed= 538x    \n",
+      "validation": {
+        "fullyDecoded": true,
+        "outputSha256": "40c0fa3ae665da8027d51e6bc4680d5ea96266d102edb312d273dbbf339e2b07"
+      }
+    },
+    {
+      "page": "frames-time/samples",
+      "index": 1,
+      "command": "ffprobe resampled.wav",
+      "ms": 143,
+      "output": "resampled.wav",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[1][0][0][0]",
+            "codec_tag": "0x0001",
+            "sample_fmt": "s16",
+            "sample_rate": "24000",
+            "channels": 2,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/24000",
+            "duration_ts": 96000,
+            "duration": "4.000000",
+            "bit_rate": "768000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "resampled.wav",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "wav",
+          "format_long_name": "WAV / WAVE (Waveform Audio)",
+          "duration": "4.000000",
+          "size": "384078",
+          "bit_rate": "768156",
+          "probe_score": 99,
+          "tags": {
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "log": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers\n  built with gcc 14 (Debian 14.2.0-19)\n  configuration: --prefix=/usr --extra-version=0+deb13u1 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-libmfx --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-libjack --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-pocketsphinx --enable-librsvg --enable-libjxl --enable-shared\n  libavutil      59. 39.100 / 59. 39.100\n  libavcodec     61. 19.101 / 61. 19.101\n  libavformat    61.  7.103 / 61.  7.103\n  libavdevice    61.  3.100 / 61.  3.100\n  libavfilter    10.  5.100 / 10.  5.100\n  libswscale      8.  3.100 /  8.  3.100\n  libswresample   5.  3.100 /  5.  3.100\n  libpostproc    58.  3.100 / 58.  3.100\nInput #0, wav, from 'resampled.wav':\n  Metadata:\n    encoder         : Lavf61.7.103\n  Duration: 00:00:04.00, bitrate: 768 kb/s\n  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 24000 Hz, 2 channels, s16, 768 kb/s\n"
+    },
+    {
+      "page": "frames-time/samples",
+      "index": 2,
+      "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav",
+      "ms": 152,
+      "output": "practice-samples.wav",
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[1][0][0][0]",
+            "codec_tag": "0x0001",
+            "sample_fmt": "s16",
+            "sample_rate": "16000",
+            "channels": 2,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/16000",
+            "duration_ts": 64000,
+            "duration": "4.000000",
+            "bit_rate": "512000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "practice-samples.wav",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "wav",
+          "format_long_name": "WAV / WAVE (Waveform Audio)",
+          "duration": "4.000000",
+          "size": "256078",
+          "bit_rate": "512156",
+          "probe_score": 99,
+          "tags": {
+            "encoder": "Lavf61.7.103"
+          }
+        }
+      },
+      "log": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers\n  built with gcc 14 (Debian 14.2.0-19)\n  configuration: --prefix=/usr --extra-version=0+deb13u1 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-libmfx --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libcaca --enable-libdvdnav --enable-libdvdread --enable-libjack --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-pocketsphinx --enable-librsvg --enable-libjxl --enable-shared\n  libavutil      59. 39.100 / 59. 39.100\n  libavcodec     61. 19.101 / 61. 19.101\n  libavformat    61.  7.103 / 61.  7.103\n  libavdevice    61.  3.100 / 61.  3.100\n  libavfilter    10.  5.100 / 10.  5.100\n  libswscale      8.  3.100 /  8.  3.100\n  libswresample   5.  3.100 /  5.  3.100\n  libpostproc    58.  3.100 / 58.  3.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n      Metadata:\n        handler_name    : VideoHandler\n        vendor_id       : [0][0][0][0]\n        encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n      Metadata:\n        handler_name    : SoundHandler\n        vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))\nPress [q] to stop, [?] for help\nOutput #0, wav, to 'practice-samples.wav':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    ISFT            : Lavf61.7.103\n  Stream #0:0(und): Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, stereo, s16, 512 kb/s (default)\n      Metadata:\n        handler_name    : SoundHandler\n        vendor_id       : [0][0][0][0]\n        encoder         : Lavc61.19.101 pcm_s16le\n[out#0/wav @ 0x55cccf94e2c0] video:0KiB audio:250KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.030469%\nsize=     250KiB time=00:00:04.00 bitrate= 512.2kbits/s speed= 483x    \n",
+      "validation": {
+        "fullyDecoded": true,
+        "outputSha256": "9564d8e03a555f3fe816377a57595a88cf4f0b768973d963366030bda27786dd"
+      }
     }
   ]
 }

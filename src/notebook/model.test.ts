@@ -1,6 +1,32 @@
 // Copyright © 2026 Christopher Snow
 import { expect, it } from "vitest";
-import { validPath, movedFiles } from "./model";
+import { validPath, movedFiles, audioSampleRateMatches } from "./model";
+it("checks actual audio sample_rate per channel independently of video frame rate", () => {
+  const stereo = { codec_type: "audio", sample_rate: "16000", channels: 2 };
+  expect(audioSampleRateMatches([stereo], 16000)).toBe(true);
+  expect(audioSampleRateMatches([stereo], 32000)).toBe(false);
+  expect(
+    audioSampleRateMatches(
+      [{ codec_type: "video", sample_rate: "16000" }],
+      16000,
+    ),
+  ).toBe(false);
+  expect(audioSampleRateMatches([], 16000)).toBe(false);
+  for (const rate of [undefined, "", "unknown", "NaN", "Infinity", "24000"])
+    expect(
+      audioSampleRateMatches(
+        [{ codec_type: "audio", sample_rate: rate }],
+        16000,
+      ),
+    ).toBe(false);
+  expect(
+    audioSampleRateMatches(
+      [stereo, { ...stereo, sample_rate: "24000" }],
+      16000,
+    ),
+  ).toBe(false);
+  expect(audioSampleRateMatches([stereo], NaN)).toBe(false);
+});
 it("allows relative folders while rejecting traversal, reserved reports and excessive depth", () => {
   expect(validPath("edits/first-cut.mp4")).toBe(true);
   for (const p of [

@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Resolution choices and separate audio sampling, 29 October 2026:** [this slice](notes/resolution-audio/01-plan.md) adds an optional resolution decision guide linked from framing and export, and moves audio sample-rate teaching and its model onto a separate Chapter 3 page with real resampling, raw inspection and sample-rate evidence checks. This supersedes the paired rates on a single page below; the existing picture-rate route and saved work remain.
+
 **Paired picture/audio rates and visible definitions, 29 October 2026:** [the sample-rate slice](notes/sample-rate/01-plan.md) pairs each Chapter 3 rate definition with its own visual. An analytic one-channel signal demonstrates sample timing over a fixed interval. Existing defined terms receive consistent inline styling throughout the current course, while ordinary bold labels and raw tool output remain distinct.
 
 **Actionable export guidance, 29 October 2026:** [the teaching audit](notes/actionable-guidance/01-plan.md) replaces assumed destination research with a working MP4/H.264/AAC starting point and a concrete receiving-app playback test. The full notebook/reference audit also improves optional personal-image preparation and current recording import navigation.

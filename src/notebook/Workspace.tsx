@@ -22,6 +22,7 @@ import {
   checkNotebookFiles,
   hashBlob,
   movedFiles,
+  audioSampleRateMatches,
   type NotebookFile,
   type CellRecord,
   type RunRecord,
@@ -754,6 +755,16 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
           `Average rate ${expected.rate} frames per second`,
         );
       }
+      if (expected.sampleRate !== undefined)
+        test(
+          audioSampleRateMatches(probe.streams, expected.sampleRate),
+          `Audio sample rate: expected ${expected.sampleRate} Hz per channel; found ${
+            probe.streams
+              .filter((stream) => stream.codec_type === "audio")
+              .map((stream) => stream.sample_rate ?? "sample rate unavailable")
+              .join(", ") || "no audio"
+          }`,
+        );
       return checks;
     } finally {
       locked.current = false;

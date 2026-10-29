@@ -1,0 +1,88 @@
+/* Copyright © 2026 Christopher Snow */
+.resolution-guide {
+  padding: 1.5rem 0;
+  overflow-wrap: anywhere;
+}
+.resolution-guide h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+}
+.resolution-guide p,
+.resolution-guide dl {
+  max-width: 62ch;
+}
+.resolution-guide section,
+.resolution-guide nav {
+  margin-top: 2.5rem;
+}
+.resolution-choices > div {
+  margin: 1.5rem 0;
+}
+.resolution-choices dt {
+  font-weight: 700;
+}
+.resolution-choices dd {
+  margin: 0.35rem 0 0;
+}
+.resolution-choices dd p {
+  margin-top: 0.35rem;
+}
+.resolution-figure {
+  margin: 2rem 0;
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+.resolution-figure h2 {
+  margin-top: 0;
+}
+.resolution-figure label {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 25rem;
+}
+.resolution-figure select {
+  min-height: 44px;
+  width: 100%;
+}
+.resolution-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1.25rem 0;
+  overflow: visible;
+}
+.resolution-grid {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5px;
+  stroke-dasharray: 5 4;
+  vector-effect: non-scaling-stroke;
+}
+.resolution-selected {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+  stroke-width: 3px;
+  vector-effect: non-scaling-stroke;
+}
+.resolution-figure output {
+  display: block;
+  font-weight: 700;
+}
+.resolution-figure figcaption {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+.resolution-guide li a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  min-height: 44px;
+}
+.resolution-outline-labels {
+  list-style: none;
+  padding: 0;
+}
+.resolution-outline-labels li {
+  margin-top: 0.5rem;
+}

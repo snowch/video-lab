@@ -6813,6 +6813,191 @@
           }
         }
       }
+    },
+    {
+      "id": "frames-time/samples:worked:0",
+      "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 24000 resampled.wav",
+      "record": {
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 24000 resampled.wav",
+        "id": "frames-time/samples:worked:0",
+        "last": {
+          "runtime": "exit-adapter-v1",
+          "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 24000 resampled.wav",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))\nOutput #0, wav, to 'resampled.wav':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    ISFT            : Lavf59.27.100\n  Stream #0:0(und): Audio: pcm_s16le ([1][0][0][0] / 0x0001), 24000 Hz, stereo, s16, 768 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 pcm_s16le\nsize=       2kB time=00:00:00.02 bitrate= 798.2kbits/s speed=17.2x    \nsize=     375kB time=00:00:04.00 bitrate= 768.2kbits/s speed=94.8x    \nvideo:0kB audio:375kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.020312%",
+          "inputs": [
+            {
+              "name": "bunny-short.mp4",
+              "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+            }
+          ],
+          "at": "2026-10-29T20:58:41.078Z",
+          "code": 0,
+          "output": "resampled.wav",
+          "outputHash": "5914b1c7581a3f8b3669070c207f8015c76ecb67df5b8e07ebfb36826a8d2314"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[1][0][0][0]",
+            "codec_tag": "0x0001",
+            "sample_fmt": "s16",
+            "sample_rate": "24000",
+            "channels": 2,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/24000",
+            "duration_ts": 96000,
+            "duration": "4.000000",
+            "bit_rate": "768000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/resolution-audio/wasm-resampled.wav",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "wav",
+          "format_long_name": "WAV / WAVE (Waveform Audio)",
+          "duration": "4.000000",
+          "size": "384078",
+          "bit_rate": "768156",
+          "probe_score": 99,
+          "tags": {
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      }
+    },
+    {
+      "id": "frames-time/samples:worked:1",
+      "command": "ffprobe resampled.wav",
+      "record": {
+        "command": "ffprobe resampled.wav",
+        "id": "frames-time/samples:worked:1",
+        "last": {
+          "runtime": "exit-adapter-v1",
+          "command": "ffprobe resampled.wav",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, wav, from 'resampled.wav':\n  Metadata:\n    encoder         : Lavf59.27.100\n  Duration: 00:00:04.00, bitrate: 768 kb/s\n  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 24000 Hz, 2 channels, s16, 768 kb/s",
+          "inputs": [
+            {
+              "name": "resampled.wav",
+              "sha256": "5914b1c7581a3f8b3669070c207f8015c76ecb67df5b8e07ebfb36826a8d2314"
+            }
+          ],
+          "at": "2026-10-29T20:58:42.207Z",
+          "code": -1
+        }
+      }
+    },
+    {
+      "id": "frames-time/samples:practice",
+      "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav",
+      "record": {
+        "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav",
+        "id": "frames-time/samples:practice",
+        "last": {
+          "runtime": "exit-adapter-v1",
+          "command": "ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav",
+          "log": "ffmpeg version 5.1.4 Copyright (c) 2000-2023 the FFmpeg developers\n  built with emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.40 (5c27e79dd0a9c4e27ef2326841698cdd4f6b5784)\n  configuration: --target-os=none --arch=x86_32 --enable-cross-compile --disable-asm --disable-stripping --disable-programs --disable-doc --disable-debug --disable-runtime-cpudetect --disable-autodetect --nm=emnm --ar=emar --ranlib=emranlib --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --extra-cflags='-I/opt/include -O3 -msimd128' --extra-cxxflags='-I/opt/include -O3 -msimd128' --disable-pthreads --disable-w32threads --disable-os2threads --enable-gpl --enable-libx264 --enable-libx265 --enable-libvpx --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libopus --enable-zlib --enable-libwebp --enable-libfreetype --enable-libfribidi --enable-libass --enable-libzimg\n  libavutil      57. 28.100 / 57. 28.100\n  libavcodec     59. 37.100 / 59. 37.100\n  libavformat    59. 27.100 / 59. 27.100\n  libavdevice    59.  7.100 / 59.  7.100\n  libavfilter     8. 44.100 /  8. 44.100\n  libswscale      6.  7.100 /  6.  7.100\n  libswresample   4.  7.100 /  4.  7.100\n  libpostproc    56.  6.100 / 56.  6.100\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'bunny-short.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf61.7.103\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 352 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480 [SAR 1:1 DAR 427:240], 280 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc61.19.101 libx264\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 64 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))\nOutput #0, wav, to 'practice-samples.wav':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    ISFT            : Lavf59.27.100\n  Stream #0:0(und): Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, stereo, s16, 512 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc59.37.100 pcm_s16le\nsize=       1kB time=00:00:00.02 bitrate= 542.7kbits/s speed=20.3x    \nsize=     250kB time=00:00:04.00 bitrate= 512.2kbits/s speed= 105x    \nvideo:0kB audio:250kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.030469%",
+          "inputs": [
+            {
+              "name": "bunny-short.mp4",
+              "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+            }
+          ],
+          "at": "2026-10-29T20:58:42.607Z",
+          "code": 0,
+          "output": "practice-samples.wav",
+          "outputHash": "9e25efdadf4fee84bbe411856abd99b3a1f4099ad6f458336bbf348f47408b2d"
+        }
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[1][0][0][0]",
+            "codec_tag": "0x0001",
+            "sample_fmt": "s16",
+            "sample_rate": "16000",
+            "channels": 2,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/16000",
+            "duration_ts": 64000,
+            "duration": "4.000000",
+            "bit_rate": "512000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "/workspace/scratch/resolution-audio/wasm-practice-samples.wav",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "wav",
+          "format_long_name": "WAV / WAVE (Waveform Audio)",
+          "duration": "4.000000",
+          "size": "256078",
+          "bit_rate": "512156",
+          "probe_score": 99,
+          "tags": {
+            "encoder": "Lavf59.27.100"
+          }
+        }
+      }
     }
   ]
 }

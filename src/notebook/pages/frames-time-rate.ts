@@ -4,10 +4,9 @@ import type { PageCopy } from "../copy-types";
 const page: PageCopy = {
   title: "Count pictures through time",
   goal: "Reduce the number of pictures shown each second while keeping the same four-second scene.",
-  conceptHeadings: ["Frame rate", "Audio sample rate"],
+  conceptHeadings: ["Frame rate"],
   concept: [
     "**Frame rate** is the number of video pictures presented per second, measured in frames per second (fps). At a constant 24 fps, each picture occupies 1/24 of a second. Showing fewer pictures across the same interval leaves larger jumps in movement; it need not shorten the scene.",
-    "**Audio sample rate** is the number of signal values stored per second for each audio channel. A **sample** is one value at one instant; a **channel** is one sequence of sound values, such as the left or right side of stereo. The source’s `48000 Hz` means 48,000 samples per second in each channel. Here, hertz (Hz) counts sound measurements per second, rather than video pictures.",
   ],
   worked: [
     {
