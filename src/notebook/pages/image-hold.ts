@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import type { PageCopy } from "../copy-types";
+import { pixelFormats } from "../pixel-formats.strings";
 
 export const hold: PageCopy = {
   title: "Hold a photograph on screen",
@@ -7,7 +8,7 @@ export const hold: PageCopy = {
   concept: [
     "A photograph has a pixel grid but no video duration. To hold it on screen, FFmpeg can read the same image repeatedly and give those pictures successive times. The result is a video even though the scene does not move.",
     "Repeating the input does not decide when the output ends. Use an input loop to keep supplying pictures and an output duration to stop after the chosen number of seconds.",
-    "A **pixel format** describes how a picture’s colour samples are stored. The output option `-pix_fmt yuv420p` requests a widely supported format that stores brightness at every pixel and colour at lower resolution. It does not choose the video codec or add sound.",
+    "A **pixel format** describes how a picture’s colour samples are stored. The output option `-pix_fmt yuv420p` requests a widely supported format that stores brightness-related luma at every pixel and colour at lower resolution. It does not choose the video codec or add sound.",
   ],
   worked: [
     {
@@ -16,7 +17,7 @@ export const hold: PageCopy = {
         {
           flag: "-loop 1",
           meaning:
-            "Repeat the image input. Put this input option before the -i for the photograph it applies to.",
+            "For this image input, `1` switches looping on and `0` switches it off. The value is not a repeat count. Put `-loop 1` before the photograph’s `-i`; `-t 5` stops the output.",
         },
         {
           flag: "-i landscape.jpg",
@@ -29,7 +30,12 @@ export const hold: PageCopy = {
         },
         {
           flag: "-pix_fmt yuv420p",
-          meaning: "Request the output colour-sample format introduced above.",
+          meaning:
+            "Request 8-bit colour components with a brightness-related sample at every pixel and colour differences at lower resolution. This is a practical format for H.264 playback; the picture dimensions stay unchanged.",
+          reference: {
+            href: "#/appendix/formats/pixel-formats",
+            label: pixelFormats.linkLabel,
+          },
         },
         {
           flag: "still.mp4",

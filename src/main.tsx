@@ -179,7 +179,14 @@ function App() {
       return;
     }
     document.title = `${pageTitle} · ${home.title}`;
-    if (!notebook && resolved.section) {
+    if (notebook?.formats && notebook.formatSection) {
+      const sectionId = notebook.formatSection;
+      requestAnimationFrame(() => {
+        const heading = document.getElementById(sectionId);
+        heading?.focus({ preventScroll: true });
+        heading?.scrollIntoView();
+      });
+    } else if (!notebook && resolved.section) {
       requestAnimationFrame(() =>
         document
           .getElementById(`section-${resolved.section}`)

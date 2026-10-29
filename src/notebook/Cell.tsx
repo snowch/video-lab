@@ -361,6 +361,12 @@ export function CommandCell({
                 </dt>
                 <dd>
                   <InlineText>{o.meaning}</InlineText>
+                  {o.reference && (
+                    <>
+                      {" "}
+                      <a href={o.reference.href}>{o.reference.label}</a>
+                    </>
+                  )}
                 </dd>
               </div>
             ))}

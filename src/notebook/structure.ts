@@ -338,7 +338,13 @@ export const pages: PageDefinition[] = [
   },
 ];
 type NotebookRoute =
-  | { home: true; glossary?: boolean; codecs?: boolean; formats?: boolean }
+  | {
+      home: true;
+      glossary?: boolean;
+      codecs?: boolean;
+      formats?: boolean;
+      formatSection?: "pixel-formats";
+    }
   | {
       home: false;
       page: PageDefinition;
@@ -352,7 +358,13 @@ export function notebookRoute(hash: string): NotebookRoute | undefined {
   if (parts[0] === "appendix" && parts[1] === "codecs")
     return { home: true, codecs: true };
   if (parts[0] === "appendix" && parts[1] === "formats")
-    return { home: true, formats: true };
+    return {
+      home: true,
+      formats: true,
+      ...(parts[2] === "pixel-formats"
+        ? { formatSection: "pixel-formats" as const }
+        : {}),
+    };
   if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)

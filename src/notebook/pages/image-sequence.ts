@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import type { PageCopy } from "../copy-types";
+import { pixelFormats } from "../pixel-formats.strings";
 
 export const sequence: PageCopy = {
   title: "Show pictures in order",
@@ -32,7 +33,11 @@ export const sequence: PageCopy = {
         {
           flag: "-pix_fmt yuv420p",
           meaning:
-            "Request the same widely supported output pixel format used for the held photograph.",
+            "Request 8-bit colour components with a brightness-related sample at every pixel and colour differences at lower resolution. This is a practical format for H.264 playback; the picture dimensions stay unchanged.",
+          reference: {
+            href: "#/appendix/formats/pixel-formats",
+            label: pixelFormats.linkLabel,
+          },
         },
         {
           flag: "slides.mp4",

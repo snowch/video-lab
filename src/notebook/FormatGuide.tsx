@@ -1,5 +1,6 @@
 // Copyright © 2026 Christopher Snow
 import { formatGuide as g } from "./formats.strings";
+import { pixelFormats as pixels } from "./pixel-formats.strings";
 import { codecGuide } from "./codecs.strings";
 import { glossaryUI } from "./glossary.strings";
 import { courseCopy } from "./copy";
@@ -80,6 +81,27 @@ export function FormatGuide() {
         <h2>{g.choosingTitle}</h2>
         <Paragraphs items={g.choosing} />
       </section>
+      <section aria-labelledby="pixel-formats">
+        <h2 id="pixel-formats" tabIndex={-1}>
+          {pixels.title}
+        </h2>
+        <Paragraphs items={pixels.intro} />
+        <h3>{pixels.samplingTitle}</h3>
+        <Paragraphs items={pixels.sampling} />
+        <dl className="format-concepts">
+          {pixels.formats.map((entry) => (
+            <div key={entry.name}>
+              <dt>
+                <code>{entry.name}</code>
+              </dt>
+              <dd>
+                <InlineText>{entry.text}</InlineText>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <Paragraphs items={pixels.conclusion} />
+      </section>
       <FormatSection
         id="video-formats"
         title={g.videoTitle}
@@ -120,7 +142,7 @@ export function FormatGuide() {
       <section>
         <h2>{g.sourcesTitle}</h2>
         <ul>
-          {g.sources.map((source) => (
+          {[...g.sources, ...pixels.sources].map((source) => (
             <li key={source.url}>
               <a href={source.url}>{source.label}</a>
             </li>

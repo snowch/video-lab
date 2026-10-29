@@ -33,7 +33,7 @@ const page: PageCopy = {
         {
           flag: "pad=480:480:(ow-iw)/2:(oh-ih)/2",
           meaning:
-            "Set the canvas width and height, then the picture’s horizontal and vertical position, separated by colons. ow and oh are the output canvas dimensions; iw and ih are the incoming picture dimensions. Subtracting gives the spare space; dividing by two centres the picture. Parentheses group the subtraction. The added area is black by default.",
+            "Set the canvas width and height, then the picture’s position, separated by colons. The position is a pixel offset from the canvas’s top-left corner: x (horizontal) first, y (vertical) second. ow and oh are the output canvas dimensions; iw and ih are the incoming picture dimensions. Subtracting gives the spare space; dividing by two centres the picture. Parentheses group the subtraction. The added area is black by default.",
         },
       ],
       observe:

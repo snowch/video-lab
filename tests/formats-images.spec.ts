@@ -4,7 +4,8 @@ import { execFileSync } from "node:child_process";
 import { n } from "../src/notebook/ui.strings";
 import { courseUI } from "../src/cli/course.strings";
 import { appStatusStrings as status } from "../src/app-status/strings";
-import { expectPracticeReady } from "./notebook-storage";
+import { expectPracticeReady, expectSavedCell } from "./notebook-storage";
+import { pixelFormats } from "../src/notebook/pixel-formats.strings";
 
 const lessons = [
   {
@@ -452,4 +453,60 @@ test("saved image chapter and formats reference open with decoded previews offli
     await offline.close();
     await context.setOffline(false);
   }
+});
+
+test("pixel-format references land at the explanation and preserve edited commands on Back", async ({
+  page,
+}) => {
+  const processing: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("/encoder/")) processing.push(request.url());
+  });
+  for (const route of [
+    "image-video/hold",
+    "image-video/sequence",
+    "image-video/animation",
+    "export/format",
+  ]) {
+    await page.goto(`./#/learn/${route}`);
+    await expectPracticeReady(page);
+    const id = `${route}:worked:0`;
+    const cell = page.locator(`[data-cell="${id}"]`);
+    const command = (await cell.locator("textarea").inputValue()).replace(
+      "ffmpeg ",
+      "ffmpeg -hide_banner ",
+    );
+    await cell.locator("textarea").fill(command);
+    await expectSavedCell(page, id, { command });
+    const reference = cell.getByRole("link", {
+      name: pixelFormats.linkLabel,
+      exact: true,
+    });
+    await reference.focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#\/appendix\/formats\/pixel-formats$/);
+    const heading = page.getByRole("heading", {
+      name: pixelFormats.title,
+      exact: true,
+    });
+    await expect(heading).toBeFocused();
+    await expect(heading).toBeInViewport();
+    await page.goBack();
+    await expect(cell.locator("textarea")).toHaveValue(command);
+  }
+  await page.goto("./#/appendix/formats/pixel-formats");
+  await page.reload();
+  const heading = page.getByRole("heading", {
+    name: pixelFormats.title,
+    exact: true,
+  });
+  await expect(heading).toBeFocused();
+  await expect(heading).toBeInViewport();
+  await page.evaluate(() => (document.documentElement.style.fontSize = "200%"));
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  expect(processing).toEqual([]);
 });
