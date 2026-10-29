@@ -36,3 +36,30 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+.codec-guide > p,
+.codec-guide section > p,
+.codec-guide dl,
+.codec-check-steps {
+  max-width: 62ch;
+}
+.codec-start {
+  max-width: 62ch;
+  padding: 1.25rem;
+  border-left: 4px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0.5rem;
+}
+.codec-start h2 {
+  margin-top: 0;
+}
+.codec-check-steps {
+  padding-left: 1.5rem;
+}
+.codec-check-steps li {
+  padding-left: 0.25rem;
+  margin: 1.25rem 0;
+}
+.codec-check-steps p {
+  margin: 0.4rem 0 0;
+}

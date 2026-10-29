@@ -70,7 +70,7 @@ export function RecordingGuide() {
       : undefined;
   return (
     <div className="wrap journey-wrap">
-      <a href="#/capture">← {text.back}</a>
+      <a href="#/">← {text.back}</a>
       <article className="recording-guide">
         <p className="eyebrow">{text.eyebrow}</p>
         <h1>{text.title}</h1>
@@ -196,7 +196,7 @@ export function RecordingGuide() {
           )}
         </section>
         <p>
-          <a className="button" href="#/capture">
+          <a className="button" href="#/">
             {text.back}
           </a>
         </p>

@@ -269,3 +269,9 @@
 .format-pixel-group span:nth-child(3) {
   color: white;
 }
+
+.format-playback-reference a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0.5rem 0;
+}

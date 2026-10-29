@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Actionable export guidance, 29 October 2026:** [the teaching audit](notes/actionable-guidance/01-plan.md) replaces assumed destination research with a working MP4/H.264/AAC starting point and a concrete receiving-app playback test. The full notebook/reference audit also improves optional personal-image preparation and current recording import navigation.
+
 **Visual format references, 29 October 2026:** [the focused reference revision](notes/visual-formats/01-plan-facts.md) separates media file choices, video containers and pixel formats into linked optional pages, with stream-copy diagrams, interactive colour-sampling grids and a transparency demonstration.
 
 **Photograph reuse and pixel-format reference, 29 October 2026:** [the focused clarification](notes/photo-credit-sharing/01-facts.md) makes photograph reuse guidance conditional on sharing and links image-command option notes directly to pixel-format explanations in the existing media formats appendix.

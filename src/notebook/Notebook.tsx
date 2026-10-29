@@ -290,6 +290,16 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           }
         />
       ))}
+      {copy.personalMedia && (
+        <details className="notebook-personal-media">
+          <summary>{copy.personalMedia.title}</summary>
+          {copy.personalMedia.paragraphs.map((paragraph, i) => (
+            <p key={i}>
+              <InlineText>{paragraph}</InlineText>
+            </p>
+          ))}
+        </details>
+      )}
       <section className="notebook-practice">
         <CommandCell
           key={page.id + ":practice"}

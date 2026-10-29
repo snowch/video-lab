@@ -79,10 +79,18 @@ function ConceptDefinitions({ indices }: { indices: number[] }) {
     </dl>
   );
 }
+function PlaybackReference() {
+  return (
+    <p className="format-playback-reference">
+      <a href="#/appendix/codecs/check-playback">{codecGuide.checkLink} →</a>
+    </p>
+  );
+}
 function ContainerGuide() {
   return (
     <>
       <p>{v.containerIntro}</p>
+      <PlaybackReference />
       <ContainerDiagram />
       <p>{v.demuxerMuxer}</p>
       <section>
@@ -105,6 +113,7 @@ function PixelGuide() {
     <>
       <PixelMagnifier />
       <Paragraphs items={pixels.intro} />
+      <PlaybackReference />
       <section>
         <h2>{v.samplingTitle}</h2>
         <p>
@@ -196,6 +205,7 @@ export function FormatGuide({ section }: { section?: ReferenceSection }) {
           <section>
             <h2>{g.choosingTitle}</h2>
             <Paragraphs items={g.choosing} />
+            <PlaybackReference />
           </section>
         </>
       )}

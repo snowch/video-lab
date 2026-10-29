@@ -4,7 +4,7 @@ export const pixelFormats = {
   linkLabel: "Pixel formats explained",
   intro: [
     "A pixel format describes how a picture stores its colour samples: which components, how many samples and how much precision each sample has. A video codec describes how video is encoded; a container organises encoded streams in a file.",
-    "The output option `-pix_fmt yuv420p` requests 8-bit components with reduced colour sampling. Each sample uses eight bits to represent its value. The course uses it for practical H.264 delivery compatibility. Support still depends on the codec and destination.",
+    "The output option `-pix_fmt yuv420p` requests 8-bit components with reduced colour sampling. Each sample uses eight bits to represent its value. Keep it as the course starting choice for H.264 in MP4, then try the short export in the receiving app using the linked procedure.",
   ],
   samplingTitle: "How yuv420p stores a picture",
   sampling: [
@@ -15,19 +15,19 @@ export const pixelFormats = {
   formats: [
     {
       name: "yuv422p",
-      text: "8-bit planar components, with one U sample and one V sample per 2 × 1 Y samples: more vertical colour detail than yuv420p.",
+      text: "8-bit planar components, with one U sample and one V sample per 2 × 1 Y samples: more vertical colour detail than yuv420p. Investigate it when an editing workflow requests 4:2:2 colour sampling.",
     },
     {
       name: "yuv444p",
-      text: "8-bit planar components, with one U sample and one V sample per Y sample. It can retain finer colour detail from the source, but the destination must support it.",
+      text: "8-bit planar components, with one U sample and one V sample per Y sample. Investigate it to retain finer source colour detail, for example in coloured text and edges. Compare those areas and test the exported file in the receiving app.",
     },
     {
       name: "rgb24 / rgba",
-      text: "Stores 8-bit red, green and blue values together at every pixel, without reducing their sampling resolution. rgba adds alpha for opacity.",
+      text: "Stores 8-bit red, green and blue values together at every pixel, without reducing their sampling resolution. rgba adds alpha for opacity; keep it for transparent source graphics until they are composed over a background.",
     },
     {
       name: "yuv420p10le",
-      text: "The same 4:2:0 pattern with 10 bits per sample, allowing finer steps between values. The le suffix means the lower-order byte is stored first. Extra precision cannot restore detail already lost.",
+      text: "The same 4:2:0 pattern with 10 bits per sample, allowing finer steps between values. The le suffix means the lower-order byte is stored first. Investigate it when a workflow requests 10-bit samples; extra precision cannot restore detail already lost.",
     },
   ],
   conclusion: [

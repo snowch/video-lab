@@ -4,7 +4,7 @@ export const recordingGuide = {
   title: "Record your own screen",
   eyebrow: "Optional appendix",
   link: "Recording guide (optional)",
-  back: "Back to source video",
+  back: "Back to the course overview",
   overviewTitle: "Optional guides",
   overviewNote:
     "Use this guide if you want to make your own recording. The practice video supports the same inspection and editing lessons.",
@@ -87,8 +87,8 @@ export const recordingGuide = {
     importTitle: "Bring the recording into the course",
     importSteps: [
       "Replay the saved file on your computer. Check that the starting state, action and readable result are visible.",
-      "Return to Get video, choose Import file and select the recording. The file must be no larger than 20 MiB.",
-      "Replay the imported source, keep a downloaded copy and continue to Inspect.",
+      "Return to the course overview, open Files and choose Import files. Select the recording; it must be no larger than 20 MiB.",
+      "Select the imported filename in Files to replay it, and keep a downloaded copy. In video lesson commands, replace the supplied input filename with your recording's exact filename.",
     ],
   },
   windows: {
@@ -156,7 +156,7 @@ export const recordingGuide = {
       "Some applications prevent recording their pictures or sound. Check the saved video rather than assuming that everything visible or audible was captured.",
     importTitle: "Import the saved video",
     importNote:
-      "Return to Get video and choose Import file. Select the recording from your device; if the chooser does not offer it from Photos, save or export it to Files first. Keep it within 20 MiB, then replay the imported source before continuing.",
+      "Return to the course overview, open Files and choose Import files. Select the recording from your device; if the chooser does not offer it from Photos, save or export it to your device's Files first. The recording must be no larger than 20 MiB. Select its imported filename in the course's Files to replay it. In video lesson commands, replace the supplied input filename with your recording's exact filename.",
   },
   copy: "Copy command",
   copyTemplate: "Copy template",

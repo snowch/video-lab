@@ -343,6 +343,7 @@ type NotebookRoute =
       home: true;
       glossary?: boolean;
       codecs?: boolean;
+      codecSection?: "check-playback";
       formats?: boolean;
       formatSection?: FormatSection;
     }
@@ -357,7 +358,13 @@ export function notebookRoute(hash: string): NotebookRoute | undefined {
   const parts = hash.replace(/^#\/?/, "").split("/");
   if (!parts[0]) return { home: true as const };
   if (parts[0] === "appendix" && parts[1] === "codecs")
-    return { home: true, codecs: true };
+    return {
+      home: true,
+      codecs: true,
+      ...(parts[2] === "check-playback"
+        ? { codecSection: "check-playback" as const }
+        : {}),
+    };
   if (parts[0] === "appendix" && parts[1] === "formats")
     return {
       home: true,

@@ -185,7 +185,13 @@ function App() {
       return;
     }
     document.title = `${pageTitle} · ${home.title}`;
-    if (notebook?.formats && notebook.formatSection) {
+    if (notebook?.codecs && notebook.codecSection) {
+      requestAnimationFrame(() => {
+        const heading = document.getElementById(notebook.codecSection!);
+        heading?.focus({ preventScroll: true });
+        heading?.scrollIntoView();
+      });
+    } else if (notebook?.formats && notebook.formatSection) {
       const sectionId = notebook.formatSection;
       requestAnimationFrame(() => {
         const heading = document.getElementById(sectionId);

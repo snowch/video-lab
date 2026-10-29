@@ -21,6 +21,29 @@ export function CodecGuide() {
       <span className="eyebrow">{g.optional}</span>
       <h1>{g.title}</h1>
       <Paragraphs items={g.intro} />
+      <section className="codec-start" aria-labelledby="codec-start-title">
+        <h2 id="codec-start-title">{g.startTitle}</h2>
+        <Paragraphs items={g.startBody} />
+        <a className="button primary" href="#/learn/export/format">
+          {g.startLink} →
+        </a>
+      </section>
+      <section aria-labelledby="check-playback">
+        <h2 id="check-playback" tabIndex={-1}>
+          {g.checkTitle}
+        </h2>
+        <ol className="codec-check-steps">
+          {g.checkSteps.map((step) => (
+            <li key={step.title}>
+              <strong>{step.title}</strong>
+              <p>
+                <InlineText>{step.text}</InlineText>
+              </p>
+            </li>
+          ))}
+        </ol>
+        <p>{g.checkLimit}</p>
+      </section>
       <section>
         <h2>{g.choosingTitle}</h2>
         <Paragraphs items={g.choosing} />

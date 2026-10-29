@@ -4,7 +4,7 @@ export const formatGuide = {
   optional: "Optional reference",
   link: "Media file formats (optional)",
   intro: [
-    "Choose a format for the tool or audience receiving your file. A familiar filename ending helps identify a likely format, but does not establish its contents or whether a player can decode them.",
+    "Start with MP4 for ordinary video with sound, PNG for drawings or transparency, JPEG for photographs and PCM in WAV for audio editing. A filename ending helps identify a likely format, but does not establish its contents or whether an app can read them.",
     "This reference explains common video, audio and image choices. Use the codec guide for a fuller comparison of video and audio compression.",
   ],
   conceptsTitle: "Read the file and its contents separately",
@@ -33,14 +33,14 @@ export const formatGuide = {
       extensions: ".mp4",
       description:
         "An MPEG-4 container commonly carrying H.264 video and AAC audio, as in the course source. Other codec combinations are possible.",
-      use: "A practical delivery starting point with the course's H.264/AAC settings. Check the destination's codec, picture and audio requirements; the MP4 suffix alone does not guarantee playback.",
+      use: "Start here for ordinary video delivery with the course's H.264/AAC settings. Try a short export in the receiving app using the linked procedure; the MP4 suffix alone does not guarantee playback.",
     },
     {
       name: "MOV",
       extensions: ".mov",
       description:
         "A QuickTime-family container closely related to MP4. MOV does not specify one codec or compression method.",
-      use: "Often encountered in Apple, camera and editing workflows. Use it when the receiving editor requests it, checking the streams it accepts; MOV does not imply ProRes, lossless video or a particular file size.",
+      use: "Use it when an editor requests MOV or to work with a camera's existing MOV files. Follow any named codec in that request; MOV does not imply ProRes, lossless video or a particular file size.",
     },
     {
       name: "Matroska",
@@ -54,7 +54,7 @@ export const formatGuide = {
       extensions: ".webm",
       description:
         "A restricted Matroska-based container using VP8, VP9 or AV1 video and Vorbis or Opus audio.",
-      use: "Useful for web delivery when the destination accepts that combination. H.264/AAC streams from MP4 cannot be copied unchanged into WebM; different codecs require encoding.",
+      use: "Investigate it when a website or delivery instruction requests WebM. H.264/AAC streams from MP4 cannot be copied unchanged into WebM; different codecs require encoding.",
     },
     {
       name: "AVI",
@@ -78,28 +78,28 @@ export const formatGuide = {
       extensions: ".aac · .m4a",
       description:
         "AAC is a codec. An .aac file commonly packages it with ADTS framing. M4A conventionally means audio in the MP4 family; it can contain AAC or another codec such as lossless ALAC.",
-      use: "AAC in MP4 is a common audio delivery choice. Check whether the destination expects M4A/MP4 or ADTS; the .m4a suffix alone does not establish whether audio is lossy.",
+      use: "AAC in MP4 is a common audio delivery choice. Use M4A/MP4 or ADTS when a receiving app names that packaging; the .m4a suffix alone does not establish whether audio is lossy.",
     },
     {
       name: "WAV",
       extensions: ".wav",
       description:
         "A RIFF/WAVE audio container, commonly holding uncompressed PCM samples but capable of other encodings.",
-      use: "PCM WAV is useful for editing and reference exchange where supported, usually with much larger files than lossy delivery audio. Decoding a lossy source into WAV cannot recover discarded sound detail.",
+      use: "Start with PCM WAV for audio editing or a reference copy, usually with much larger files than lossy delivery audio. Decoding a lossy source into WAV cannot recover discarded sound detail.",
     },
     {
       name: "FLAC",
       extensions: ".flac",
       description:
         "A lossless audio codec and native file format. Decoding reconstructs its input samples without compression loss.",
-      use: "Useful for keeping a compressed, lossless audio copy when the receiving tool supports it. It is usually larger than a lossy delivery copy and cannot repair losses already present in its input.",
+      use: "Use it to keep a compressed, lossless audio copy; try importing that copy if it will go into an editor. It is usually larger than a lossy delivery copy and cannot repair losses already present in its input.",
     },
     {
       name: "Ogg and Opus",
       extensions: ".ogg · .opus",
       description:
         "Ogg is a container that can carry Vorbis or Opus audio. The .opus suffix is recommended for Ogg Opus files; Opus can also be packaged elsewhere.",
-      use: "Ogg Vorbis and Ogg Opus are delivery choices when accepted by the target. Ogg does not uniquely identify Vorbis, and the receiving player must support the contained codec.",
+      use: "Investigate Ogg Vorbis or Ogg Opus when an app or delivery instruction requests it. Ogg does not uniquely identify Vorbis, and the receiving player must support the contained codec.",
     },
   ],
   imagesTitle: "Still-image formats",
@@ -109,21 +109,21 @@ export const formatGuide = {
       extensions: ".jpg · .jpeg",
       description:
         "A raster format: a fixed grid of pixels. Everyday photographic JPEGs normally use lossy compression and have no alpha transparency.",
-      use: "Useful for photographs when some loss is acceptable. Strong compression can damage text and sharp edges; increasing display size cannot recover missing detail.",
+      use: "Start here for photographs when some loss is acceptable. Strong compression can damage text and sharp edges; increasing display size cannot recover missing detail.",
     },
     {
       name: "PNG",
       extensions: ".png",
       description:
         "A losslessly compressed raster format with optional alpha, the per-pixel opacity information used for transparency. PNG also supports animation.",
-      use: "Useful for screenshots, diagrams, text and transparent graphics. Photographs may need more space than a lossy version; lossless storage preserves the supplied data without undoing earlier losses.",
+      use: "Start here for screenshots, diagrams, text and transparent graphics. Photographs may need more space than a lossy version; lossless storage preserves the supplied data without undoing earlier losses.",
     },
     {
       name: "WebP",
       extensions: ".webp",
       description:
         "A raster format with lossy and lossless modes, optional transparency and animation. Its suffix does not identify the compression mode.",
-      use: "Useful for web image delivery when receiving tools support it. Compare actual quality and size on your pictures rather than assuming it always produces smaller files.",
+      use: "Investigate it for a website that requests WebP or when comparing image sizes for web delivery. Compare actual quality and size on your pictures; it does not always produce smaller files.",
     },
     {
       name: "SVG",
@@ -135,14 +135,14 @@ export const formatGuide = {
   ],
   choosingTitle: "Choose for the next step",
   choosing: [
-    "Check what the receiving tool needs, including codecs, dimensions, audio settings and transparency. File size and visible or audible quality depend on the encoded content and settings as well as the format.",
+    "Keep the starting format while it serves the next step. A request from an editor, an upload rejection or a need for transparency or selectable tracks gives you a specific reason to change it. File size and visible or audible quality depend on the content and encoding settings as well as the format.",
     "Transparency can be lost in a later video export. A transparent PNG or WebP does not guarantee that the chosen video codec, pixel format or compositing process will preserve alpha.",
-    "Test a short representative result in the actual destination. Remuxing may avoid another encode, but it cannot make an unsupported codec playable.",
+    "Use the linked export-test procedure to try a short video in the app, device or website that will receive it. Remuxing may avoid another encode, but it cannot make an unsupported codec playable.",
   ],
   scopeTitle: "This reference and the notebook",
   scope: [
     "These are general format choices, not a list of formats this notebook can create. Importing or storing a file, processing it and previewing it are separate capabilities.",
-    "Processing depends on the notebook's FFmpeg build and accepted output paths. Preview depends on this browser's decoders. A native FFmpeg installation may provide different capabilities; consult its build and the destination's requirements.",
+    "Processing depends on the notebook's FFmpeg build and accepted output paths. Preview depends on this browser's decoders. A native FFmpeg installation may provide different capabilities; a listed format is not a promise that the notebook can create or preview it.",
     "The reference can be read offline once the app is saved. External sources below are further reading and require a connection.",
   ],
   continueTitle: "Continue with the course",

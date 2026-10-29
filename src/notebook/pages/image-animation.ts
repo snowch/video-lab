@@ -10,7 +10,6 @@ export const animation: PageCopy = {
   concept: [
     "In **frame-by-frame animation**, you draw successive positions yourself. These six pictures suggest a ball’s arc because each drawing changes its position. The numbered-image command gives those drawings times and puts them into a video.",
     "The input rate controls the pace of the action. At three drawings per second, six drawings take two seconds. A 24-frame-per-second output repeats each drawing eight times; those copies hold its position rather than adding positions between drawings.",
-    "To author your own sequence, use a drawing tool outside this notebook. Keep the canvas size fixed, draw successive positions and export matching PNGs with consecutive names such as frame-01.png, frame-02.png and so on. Import the files through Files. Gaps in the numbering can end the sequence; export all drawings with matching dimensions and pixel format.",
   ],
   worked: [
     {
@@ -52,6 +51,14 @@ export const animation: PageCopy = {
       ],
     },
   ],
+  personalMedia: {
+    title: "Use your own drawings (optional)",
+    paragraphs: [
+      "Use a drawing tool outside this notebook. Keep one 640 × 360 canvas size, draw successive positions and export every drawing as PNG using the same 8-bit RGB colour mode and transparency settings. Use consecutive names such as sketch-01.png, sketch-02.png and so on, then import them through Files. This prefix keeps your drawings separate from the supplied frame files.",
+      "Run `ffprobe sketch-01.png`, then repeat with each imported filename. On every Video line, compare png, the pixel-format word (such as rgba or rgb24) and dimensions: these must match across the sequence. If they differ, return to the editor and export again with the same 8-bit RGB mode and transparency settings. Palette optimisation can change the pixel format even when all files are PNG. A still image’s reported 25 fps does not set the animation’s pace; -framerate does.",
+      "Reuse the worked command with `sketch-%02d.png` as the input pattern and `sketch-animation.mp4` as a new output filename. Keep the numbers consecutive; a gap can end the sequence. The input rate sets how quickly your drawings play. Use the supplied six drawings for the practice below.",
+    ],
+  },
   practice:
     "Create animation-practice.mp4 with the same six drawings completing the arc in one second. Keep the output at 24 frames per second. The starter currently uses three input drawings per second; change their input rate.",
   practiceObserve:

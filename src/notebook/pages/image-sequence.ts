@@ -6,7 +6,7 @@ export const sequence: PageCopy = {
   title: "Show pictures in order",
   goal: "Turn three numbered pictures into a slideshow, then shorten each hold.",
   sourceNote:
-    "Use `drawing-01.png`, `drawing-02.png` and `drawing-03.png`: three original 640 × 360 PNG drawings. For your own pictures, prepare matching dimensions and PNG format, then give them consecutive numbered names. Files supports renaming; importing unrelated pictures does not prepare a sequence.",
+    "Use `drawing-01.png`, `drawing-02.png` and `drawing-03.png`: three original 640 × 360 PNG drawings.",
   concept: [
     "An **image sequence** is an ordered set of still-image files. FFmpeg reads each supplied picture once and gives it a duration from the input frame rate. Three pictures at half a picture per second each last two seconds: six seconds altogether.",
     "The input rate determines how long each drawing lasts. The output frame rate determines how many video frames represent that time. Repeating a drawing at 24 frames per second holds it on screen; it does not create movement between drawings.",
@@ -51,6 +51,14 @@ export const sequence: PageCopy = {
       ],
     },
   ],
+  personalMedia: {
+    title: "Use your own pictures (optional)",
+    paragraphs: [
+      "Keep the originals and prepare copies in an image editor outside this notebook. Use one 640 × 360 canvas size. Fit each whole photo inside it without stretching or cropping, leaving surrounding space where needed. Export every canvas as PNG using the same 8-bit RGB colour mode and transparency settings. Give the copies consecutive names such as photo-01.png, photo-02.png and photo-03.png, then import them through Files.",
+      "Run `ffprobe photo-01.png`, then repeat with each imported filename. Compare the Video line: the image codec must be png, and the pixel-format word (such as rgba or rgb24) and dimensions must match across all inputs. If they differ, return to the editor and export again with the same 8-bit RGB mode and transparency settings. Palette optimisation can produce a different pixel format, so check the exported files rather than relying on their .png endings. A still image’s reported 25 fps is not slideshow timing; -framerate sets that timing.",
+      "Reuse the worked command with `photo-%02d.png` as the input pattern and `photos.mp4` as a new output filename. Keep the numbers consecutive; a gap can end the sequence. These personal files are optional: use the supplied drawings for the practice below.",
+    ],
+  },
   practice:
     "Create `slides-practice.mp4` from the same three drawings, holding each for one second. Keep the output at 24 frames per second and 640 × 360 pixels, with no audio. The result should last three seconds.",
   practiceObserve:

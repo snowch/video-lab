@@ -5,17 +5,17 @@ export const formatVisuals = {
     {
       title: "Video and sound together",
       formats: "MP4 · MOV · Matroska (.mkv) · WebM · AVI",
-      text: "Choose a container that the receiving tool accepts, then check the video and audio codecs it can play.",
+      text: "Start with MP4 containing H.264 video and AAC sound. Investigate another container for a specific editor request, web-delivery request or need for selectable tracks.",
     },
     {
       title: "Audio on its own",
       formats: "MP3 · M4A · WAV · FLAC · Ogg",
-      text: "Choose for the next step: editing, keeping a lossless copy or delivering sound to a player. These names cover both encoded audio formats and containers.",
+      text: "Start with PCM in WAV for editing or a reference copy. FLAC keeps a compressed lossless copy; use MP3 or another delivery format when a player or publishing instruction requests it. These names cover both encoded audio formats and containers.",
     },
     {
       title: "Still pictures and graphics",
       formats: "JPEG · PNG · WebP · SVG",
-      text: "Check whether you need photographic compression, sharp text, transparency or scalable shapes. Render graphics into pixels when adding them to a video.",
+      text: "Start with JPEG for photographs and PNG for sharp text, diagrams or transparency. Keep SVG for scalable shapes, then render it into pixels when adding it to a video. Investigate WebP for a web-image request or size comparison.",
     },
   ],
   containerTitle: "Video containers",
