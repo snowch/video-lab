@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { Fragment, useEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { hasEarlierWork } from "./earlier-work";
 import {
@@ -264,9 +264,13 @@ function NotebookPage({ page }: { page: PageDefinition }) {
       )}
       <section className="notebook-concept">
         {copy.concept.map((p, i) => (
-          <p key={i}>
-            <InlineText>{p}</InlineText>
-          </p>
+          <Fragment key={i}>
+            {copy.conceptHeadings?.[i] && <h2>{copy.conceptHeadings[i]}</h2>}
+            <p>
+              <InlineText>{p}</InlineText>
+            </p>
+            <ConceptVisual pageId={page.id} afterParagraph={i} />
+          </Fragment>
         ))}
       </section>
       <ConceptVisual pageId={page.id} />

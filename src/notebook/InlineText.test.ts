@@ -12,7 +12,7 @@ describe("authored inline teaching copy", () => {
         createElement("p", null, createElement(InlineText, { children: text })),
       ),
     ).toBe(
-      "<p>A <strong>container</strong> holds <code>Stream #0:0</code>. &lt;img onerror=&quot;bad&quot;&gt;</p>",
+      '<p>A <dfn class="notebook-definition">container</dfn> holds <code>Stream #0:0</code>. &lt;img onerror=&quot;bad&quot;&gt;</p>',
     );
   });
   it("keeps markup inside literal code literal and preserves unfinished notation", () => {

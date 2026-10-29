@@ -35,7 +35,7 @@ function FrameRow({ rate, label }: { rate: number; label: string }) {
   );
 }
 
-function FrameRateDiagram() {
+export function FrameRateDiagram() {
   return (
     <figure className="notebook-diagram time-diagram">
       <figcaption>{t.frameCaption}</figcaption>
@@ -264,8 +264,6 @@ function SubtitleDiagram() {
 
 export function TimeDiagrams({ pageId }: { pageId: string }) {
   switch (pageId) {
-    case "frames-time/rate":
-      return <FrameRateDiagram />;
     case "frames-time/timestamps":
       return <TimestampDiagram />;
     case "sound/level":

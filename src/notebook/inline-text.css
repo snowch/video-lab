@@ -1,0 +1,11 @@
+/* Copyright © 2026 Christopher Snow */
+.notebook-definition {
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-style: normal;
+  font-weight: 700;
+  padding-inline: 0.15em;
+  border-radius: 0.15em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
