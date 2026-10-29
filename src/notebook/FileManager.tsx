@@ -1,13 +1,48 @@
 // Copyright © 2026 Christopher Snow
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNotebook, downloadBlob, mediaMime } from "./Workspace";
-import type { NotebookFile } from "./model";
+import { hashBlob, type NotebookFile } from "./model";
 import { zipFiles } from "./zip";
 import { useRestartGuard } from "../app-status/safety";
 import { n } from "./ui.strings";
 import "./files.css";
 const isTextFile = (name: string) => /\.(txt|md|srt|csv|sh|json)$/i.test(name);
 export function FilePreview({ file }: { file: NotebookFile }) {
+  const [resource, setResource] = useState<
+    { key: string; file: NotebookFile } | { error: true }
+  >();
+  useEffect(() => {
+    let live = true;
+    void hashBlob(file.blob).then(
+      (hash) => {
+        if (!live) return;
+        const key = JSON.stringify([
+          file.name,
+          file.blob.type || mediaMime(file.name),
+          hash,
+        ]);
+        // IndexedDB reads clone Blobs, including unchanged files. Keep their
+        // player and URL until the actual bytes, name or media type change.
+        setResource((current) =>
+          current && "key" in current && current.key === key
+            ? current
+            : { key, file },
+        );
+      },
+      () => {
+        if (live) setResource({ error: true });
+      },
+    );
+    return () => {
+      live = false;
+    };
+  }, [file.blob, file.name]);
+  if (!resource) return null;
+  if ("error" in resource) return <p>{n.noPreview}</p>;
+  return <PreviewResource key={resource.key} file={resource.file} />;
+}
+function PreviewResource({ file }: { file: NotebookFile }) {
+  const media = useRef<HTMLMediaElement>(null);
   const [url, setUrl] = useState(""),
     [text, setText] = useState(""),
     [failed, setFailed] = useState(false);
@@ -32,6 +67,19 @@ export function FilePreview({ file }: { file: NotebookFile }) {
       URL.revokeObjectURL(u);
     };
   }, [file.blob, file.name]);
+  // Detach the decoder during layout cleanup, before the passive effect
+  // revokes this resource's URL. A replacement gets a fresh media element
+  // and local error state, so queued events cannot poison the next file.
+  useLayoutEffect(() => {
+    const element = media.current;
+    return () => {
+      if (!element) return;
+      element.pause();
+      element.removeAttribute("src");
+      element.load();
+    };
+  }, [url]);
+  if (!url) return null;
   const mime = file.blob.type || mediaMime(file.name);
   return (
     <div
@@ -42,6 +90,9 @@ export function FilePreview({ file }: { file: NotebookFile }) {
         <p>{n.noPreview}</p>
       ) : mime.startsWith("video/") ? (
         <video
+          ref={(element) => {
+            media.current = element;
+          }}
           src={url}
           controls
           preload="metadata"
@@ -49,6 +100,9 @@ export function FilePreview({ file }: { file: NotebookFile }) {
         />
       ) : mime.startsWith("audio/") ? (
         <audio
+          ref={(element) => {
+            media.current = element;
+          }}
           src={url}
           controls
           preload="metadata"
