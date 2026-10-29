@@ -13,6 +13,6 @@ export const imageCopy = {
   photoSourceLabel: "Original photograph on Wikimedia Commons",
   photoLicenceLabel: "Creative Commons Attribution-ShareAlike 3.0",
   shareAlikeWarning:
-    "The adapted photograph is CC BY-SA 3.0. Keep the photographer credit, source and licence links, indicate your changes, and license adaptations, including videos made from it, under the ShareAlike terms.",
+    "The adapted photograph is CC BY-SA 3.0. If you share this photograph or an edited version, retain the photographer credit, title, source and licence links, and describe your changes. If you share an adaptation, follow the licence’s ShareAlike terms.",
   formatsAppendixLabel: "Media file formats (optional)",
 } as const;

@@ -3,7 +3,11 @@ import type { Chapter } from "./structure";
 export type WorkedCopy = {
   title: string;
   introduction?: string[];
-  options: { flag: string; meaning: string }[];
+  options: {
+    flag: string;
+    meaning: string;
+    reference?: { href: string; label: string };
+  }[];
   observe: string;
   explanation?: string[];
   prediction?: string;
