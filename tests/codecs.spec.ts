@@ -159,6 +159,52 @@ test("saved codec appendix and all listening files work in a new offline page", 
   await context.setOffline(false);
 });
 
+test("delayed animation frames cannot steal focus from reference links", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const frames = new Map<number, FrameRequestCallback>();
+    let next = 0;
+    window.requestAnimationFrame = (callback) => {
+      frames.set(++next, callback);
+      return next;
+    };
+    window.cancelAnimationFrame = (id) => frames.delete(id);
+    window.addEventListener("test:release-frames", () => {
+      const pending = [...frames.values()];
+      frames.clear();
+      pending.forEach((callback) => callback(performance.now()));
+    });
+  });
+  for (const route of [
+    "formats/video-containers",
+    "formats/pixel-formats",
+    "codecs/check-playback",
+  ]) {
+    await page.goto(`./#/appendix/${route}`);
+    const codecs = route.startsWith("codecs");
+    const link = page.getByRole("link", {
+      name: `${codecs ? g.startLink : g.checkLink} →`,
+      exact: true,
+    });
+    await link.focus();
+    await page.evaluate(() =>
+      window.dispatchEvent(new Event("test:release-frames")),
+    );
+    await expect(link).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(
+      codecs
+        ? /#\/learn\/export\/format$/
+        : /#\/appendix\/codecs\/check-playback$/,
+    );
+    if (!codecs)
+      await expect(
+        page.getByRole("heading", { name: g.checkTitle, exact: true }),
+      ).toBeFocused();
+  }
+});
+
 test("format references reach the export-check procedure and retain an edited command on Back", async ({
   page,
 }) => {
