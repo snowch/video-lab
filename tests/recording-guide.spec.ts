@@ -2,6 +2,7 @@
 import { test, expect } from "@playwright/test";
 import { navigateChapter } from "./course-actions";
 import { recordingGuide as text } from "../src/capture/guide.strings";
+import { n } from "../src/notebook/ui.strings";
 import { captureCommands } from "../src/capture/native";
 
 test("optional recording guide preserves the source and draft without browser screen capture", async ({
@@ -92,6 +93,14 @@ test("optional recording guide preserves the source and draft without browser sc
   await page.reload();
   await expect(method).toHaveValue("");
   await page.getByRole("link", { name: text.back, exact: true }).click();
+  await expect(page).toHaveURL(/#\/$/);
+  await page.getByRole("button", { name: n.files, exact: true }).click();
+  const files = page.locator("dialog.notebook-files");
+  await expect(
+    files.getByRole("button", { name: n.import, exact: true }),
+  ).toBeVisible();
+  await files.getByRole("button", { name: n.close, exact: true }).click();
+  await page.goto("./#/capture");
   await expect(page.locator(".cli-preview video")).toHaveAttribute(
     "aria-label",
     "mousepad-demo.mp4",

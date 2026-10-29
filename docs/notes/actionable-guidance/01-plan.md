@@ -1,0 +1,11 @@
+# Actionable course guidance
+
+Copyright © 2026 Christopher Snow.
+
+Owner requests fixing the codec guide's assumed destination/compatibility knowledge and investigating other pages for the same teaching gaps. Standing authorisation to merge reviewed work remains in AGENTS.md and the session.
+
+Start with a defensible ordinary export: H.264 video and AAC-LC audio in MP4, using the existing course export command. Name the receiving app/device/service rather than an abstract destination. Give an actionable short-export → download → open/upload in actual receiving app → picture/sound/start/end check. Distinguish one successful test from support for every recipient. For published submission rules, locate upload/import/export requirements and map codec/container/resolution/size limits to inspected file properties. Do not require researching all codecs before a first export. Introduce HEVC/VP9/AV1 through specific reasons to investigate, not a mandatory choice among four unexplained alternatives. Do not claim this WASM notebook encodes all listed codecs.
+
+Audit all 28 notebook pages, optional reference pages, glossary and recording appendix. Read whole pages in teaching order; retain only material assumed-knowledge/decision gaps, not every occurrence of 'compare', 'target' or 'support'. Teach a working default, observable criterion or explicit next action where advice currently outsources an unexplained choice. Preserve exercises, real commands/media/checks, routes, drafts and runtime unless findings demonstrate a real need. No blanket expansion into a compatibility database, product recommendation list or external-research assignment.
+
+Workflow: two independent source-audit agents split notebook pages, builder audits references and verifies sources. Separate prose draft from verified facts/findings; builder edits, reads final complete page flow before CI, then independent built learner/sceptic/checker review. Freeze reviewed content before the full npm run check gate to avoid unnecessary superseded runs. Use local focused browser checks for changed references, navigation/draft retention, no encoder download on reading, desktop/phone light/dark and text enlargement. Full CI before authorised merge; permanent final results recorded in PR and validation note.

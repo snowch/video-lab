@@ -158,3 +158,61 @@ test("saved codec appendix and all listening files work in a new offline page", 
   await offline.close();
   await context.setOffline(false);
 });
+
+test("format references reach the export-check procedure and retain an edited command on Back", async ({
+  page,
+}) => {
+  const processing: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("/encoder/")) processing.push(request.url());
+  });
+  await page.goto("./#/learn/export/format");
+  await expectPracticeReady(page);
+  const id = "export/format:worked:0";
+  const cell = page.locator(`[data-cell="${id}"]`);
+  const command = (await cell.locator("textarea").inputValue()).replace(
+    "ffmpeg ",
+    "ffmpeg -hide_banner ",
+  );
+  await cell.locator("textarea").fill(command);
+  await expectSavedCell(page, id, { command });
+  await page.getByRole("link", { name: g.link, exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: g.startTitle, exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("link", { name: `${g.startLink} →`, exact: true })
+    .click();
+  await expect(page).toHaveURL(/#\/learn\/export\/format$/);
+  await expect(cell.locator("textarea")).toHaveValue(command);
+  await page.goBack();
+  for (const route of [
+    "formats",
+    "formats/video-containers",
+    "formats/pixel-formats",
+  ]) {
+    await page.goto(`./#/appendix/${route}`);
+    const link = page.getByRole("link", {
+      name: `${g.checkLink} →`,
+      exact: true,
+    });
+    await link.focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#\/appendix\/codecs\/check-playback$/);
+    await expect(
+      page.getByRole("heading", { name: g.checkTitle, exact: true }),
+    ).toBeFocused();
+    await page.goBack();
+    await expect(page.locator(".format-guide")).toBeVisible();
+  }
+  await page.goto("./#/appendix/codecs/check-playback");
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: g.checkTitle, exact: true }),
+  ).toBeFocused();
+  await page
+    .getByRole("link", { name: `${g.startLink} →`, exact: true })
+    .click();
+  await expect(cell.locator("textarea")).toHaveValue(command);
+  expect(processing).toEqual([]);
+});

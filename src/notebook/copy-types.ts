@@ -16,6 +16,7 @@ export type PageCopy = {
   title: string;
   goal: string;
   sourceNote?: string;
+  personalMedia?: { title: string; paragraphs: string[] };
   concept: string[];
   worked: WorkedCopy[];
   practice: string;

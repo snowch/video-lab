@@ -4,45 +4,74 @@ export const codecGuide = {
   optional: "Optional reference",
   intro: [
     "A container organises streams; a **codec** defines how their pictures or sound are represented. An **encoder** produces that representation: `libx264` writes H.264 video, and FFmpeg's `aac` encoder writes AAC audio.",
-    "Choose codecs your destination can play, then compare the result and file size. The course uses H.264 video and AAC audio in MP4 as a practical starting point.",
+    "The receiving app or device is where your video will be watched, edited or uploaded: for example, a phone, desktop player, editing app or website.",
   ],
-  choosingTitle: "Start with the destination",
+  startTitle: "Start with the course export",
+  startBody: [
+    "For an ordinary video with sound, start with MP4 containing H.264 video and AAC audio. This widely supported combination is the course's working default.",
+    "The export lesson supplies the command, using libx264 for H.264, aac for AAC and yuv420p for picture storage. Before exporting a long video, try a short section with movement, fine detail and any intended sound.",
+  ],
+  startLink: "Make the course MP4 export",
+  checkTitle: "Try the file where it will be used",
+  checkSteps: [
+    {
+      title: "Download the short export",
+      text: "Use Download beneath the result player, or the file's Download action in Files. Keep the output filename so you can identify the file you test.",
+    },
+    {
+      title: "Open, import or upload it",
+      text: "Open the downloaded file in the player or device that will show it, import it into the editing app, or upload it to the website that will receive it. Playback inside this course tests this browser only.",
+    },
+    {
+      title: "Check picture, sound and timing",
+      text: "Play the result there. Check that the picture is recognisable, the expected sound is audible, and the video starts and ends at the intended moments. For a website, check its processed playback after the upload has finished.",
+    },
+    {
+      title: "Use a failure to choose the next change",
+      text: "If the app rejects the file or it plays incorrectly, read its message and upload/import guidance. For codecs and picture size, run `ffprobe compatible.mp4` using your output's actual filename and compare its Video and Audio lines. Files shows the saved file's size. Change the setting named by the message and try another short export.",
+    },
+  ],
+  checkLimit:
+    "A successful test establishes that this file works in that receiving setup. It does not establish playback on every device or in every app.",
+  checkLink: "How to test an export in the receiving app",
+  choosingTitle: "When published requirements apply",
   choosing: [
-    "Check the target browser, device or publishing service for both codec and container support. Changing a filename ending does not prove that the streams were converted.",
-    "More efficient compression can use less data for a comparable result. The gain and processing effort depend on the material, encoder and settings; test a short representative section before encoding everything.",
+    "Find published upload or import requirements in the app's help or beside the upload control. Look for accepted file types, named codecs, picture dimensions and file-size limits. The course export command selects the MP4 container through its output filename; renaming an existing file does not convert its contents.",
+    "The YouTube link below is an example of published upload guidance, not a required course step. It includes settings beyond the course export command. For an ordinary first export without such rules, use the starting combination and playback test above.",
+    "Other codecs can be worth investigating for a specific request or a size or quality problem. Compression gains and processing effort depend on the material, encoder and settings. To try alternatives on a computer, `ffmpeg -encoders` lists the encoders in that installed FFmpeg build. The course examples use H.264 and AAC.",
   ],
   videoTitle: "Video choices",
   video: [
     {
       name: "H.264 / AVC",
-      text: "A common delivery choice, often in MP4. The course uses the libx264 encoder; retain this combination when it meets your destination's requirements.",
+      text: "The course starting choice, encoded with libx264 and packaged in MP4 with AAC sound. Keep it when your short export works in the receiving app or device.",
     },
     {
       name: "H.265 / HEVC",
-      text: "Designed for greater compression efficiency than earlier standards. Consider it when your destination accepts HEVC, then compare picture quality, size and processing effort on your material.",
+      text: "Designed for greater compression efficiency than earlier standards. Investigate it if an editor or service requests HEVC, or if you need to compare compression options for a large video. Use an encoder that provides it, then compare picture quality, size, processing effort and actual playback.",
     },
     {
       name: "VP9",
-      text: "A web-video option commonly used in the WebM container. Consider it for a service requesting VP9 or WebM, checking the required picture settings and audio combination.",
+      text: "A web-video option commonly packaged in WebM with Opus sound. Investigate it for a VP9 request or a WebM delivery workflow. WebM also allows other video codecs; follow any codec named by the website or app.",
     },
     {
       name: "AV1",
-      text: "Designed for efficient video delivery, including web streaming. Consider it when the destination and target devices support your output, and measure encoding effort as well as quality and size.",
+      text: "Designed for efficient video delivery, including web streaming. Investigate it for an AV1 delivery request or a comparison of compression options. With a suitable encoder, measure encoding effort, picture quality and size, then try playback on the devices that will use it.",
     },
   ],
   audioTitle: "Audio choices",
   audio: [
     {
       name: "AAC",
-      text: "Lossy audio commonly paired with H.264 in MP4. The course uses AAC-LC, the Low Complexity profile. A profile is a variant with particular coding features; check which one your destination accepts.",
+      text: "The course starting choice for sound with H.264 in MP4. It uses AAC-LC, the Low Complexity profile. A profile is a variant with particular coding features; investigate another only if the receiving app or published instructions call for it.",
     },
     {
       name: "Opus",
-      text: "Lossy audio designed for speech and music, including real-time communication. Common in web applications; check the container and destination for file delivery.",
+      text: "Lossy audio designed for speech and music, including real-time communication. Investigate it for a WebM or Ogg Opus request, or an audio-compression comparison; package it in a container accepted by the receiving app.",
     },
     {
       name: "MP3",
-      text: "An established lossy format used in many existing audio workflows. Choose it when the destination specifically needs MP3; its age does not determine sound quality or file size.",
+      text: "An established lossy format used in many existing audio workflows. Choose it when a player or delivery instruction specifically requests MP3; its age does not determine sound quality or file size.",
     },
     {
       name: "FLAC",
@@ -50,7 +79,7 @@ export const codecGuide = {
     },
     {
       name: "PCM",
-      text: "Stores audio sample values without compression, useful for references and editing where supported. It is often much larger than compressed delivery audio; WAV is a common container, not another name for PCM.",
+      text: "Stores audio sample values without compression. PCM in WAV is a useful starting choice for editing or an audio reference. It is often much larger than compressed delivery audio; WAV is a container, not another name for PCM.",
     },
   ],
   compressionTitle: "What audio compression changes",
@@ -97,6 +126,14 @@ export const codecGuide = {
   ],
   sourcesTitle: "Sources and further reading (external)",
   sources: [
+    {
+      label: "MDN: web video codec guide",
+      url: "https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Video_codecs",
+    },
+    {
+      label: "Example published requirements: YouTube upload settings",
+      url: "https://support.google.com/youtube/answer/1722171?hl=en",
+    },
     {
       label: "Codec comparison: primary sources and factual limits",
       url: "https://github.com/snowch/video-lab/blob/main/docs/notes/codecs/codec-sources.md",

@@ -48,7 +48,7 @@ const copy: PageCopy = {
       explanation: [
         "The libx264 and AAC encoders produce the encoded video and sound streams. A **muxer** writes streams into a container; this packaging step is called **muxing**. Here, the `.mp4` ending selects the MP4 muxer to package those streams in compatible.mp4.",
         "The source already uses these formats, so this example need not look different. The command makes the choices explicit for the new file. Colour subsampling can soften fine coloured edges; this encode is not a comparison that isolates that effect.",
-        "This combination is widely supported. Playback here confirms that this browser can play this file; test the actual destination player before delivering an export.",
+        "MP4 with H.264 video and AAC sound is a widely supported starting point. Before delivering a video, download a short export and open it on the phone or player that will show it, import it into the receiving editor, or upload it to the website that will receive it. Play the result there and check recognisable picture, audible sound and the intended start and end. Success applies to that file and receiving setup.",
       ],
     },
   ],
@@ -64,7 +64,7 @@ const copy: PageCopy = {
     "Add -t 4 and save the result as practice-export.mp4.",
   ],
   checkLimit:
-    "The check verifies four seconds, video and audio, H.264 and MP4. Confirm yuv420p and AAC in the output log; replay with sound and test your destination player separately.",
+    "The check verifies four seconds, video and audio, H.264 and MP4. Confirm yuv420p and AAC in the output log, then replay with sound. Use the download-and-playback procedure above to check the receiving app or device.",
 };
 
 export default copy;
