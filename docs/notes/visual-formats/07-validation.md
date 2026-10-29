@@ -16,4 +16,6 @@ Intermediate draft/selector failures and their fixes are recorded in 05-fixes.md
 
 Final reading-width follow-up: add direct article paragraphs to the existing 62ch text-width rule so opening prose aligns with the diagrams on desktop. Rebuilt and reran `npx playwright test tests/format-visuals.spec.ts`: all five projects passed, 14.7 seconds. The independent checker rechecks this one-rule change separately. Initial CI was deliberately superseded for this CSS adjustment, not reported as a pass or product failure.
 
+Final context qualifier: the optional paragraph now explicitly says “In yuv420p” when describing halved colour sampling, so selecting 4:4:4 does not change the scope of that fixed reference prose. Independent checker verified the expanded details with 4:4:4 selected in all four contexts on the final rebuild. The five-project targeted browser test was rerun after this wording change; all five passed. Earlier CI was superseded for this clarification; the complete final-revision gate remains required.
+
 Full `npm run check`, including media facts and the whole browser suite, must pass on the final PR revision before merging. The PR records permanent CI links, exact full-suite results and merge status. No full local suite pass is claimed; the targeted local checks above are distinguished from the full CI gate.

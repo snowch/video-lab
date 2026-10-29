@@ -9,7 +9,7 @@ export const pixelFormats = {
   samplingTitle: "How yuv420p stores a picture",
   sampling: [
     "Y is luma, a brightness-related component. U and V store colour differences. In 4:2:0 sampling, each 2 × 2 group has four Y samples but only one U and one V sample. This is a conceptual grouping, not a measurement of the photograph.",
-    "Colour sampling is halved horizontally and vertically; the picture’s width and height stay unchanged. Fine coloured text and edges can soften. The p means planar: Y, U and V samples are stored in separate arrays. It does not mean progressive video.",
+    "In `yuv420p`, colour sampling is halved horizontally and vertically; the picture’s width and height stay unchanged. Fine coloured text and edges can soften. The p means planar: Y, U and V samples are stored in separate arrays. It does not mean progressive video.",
     "yuv420p has no alpha, the opacity information used for transparency. Converting an overlay to it before composition loses that transparency.",
   ],
   formats: [
