@@ -1,5 +1,5 @@
 // Copyright © 2026 Christopher Snow
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { browserStorage } from "@platform/lesson-runtime";
 import { ui } from "./content/ui.strings";
@@ -178,32 +178,24 @@ function App() {
                 ? referenceLessons[step].title
                 : chapterTitles[step]
               : home.subtitle;
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (resolved.canonical) {
       history.replaceState(null, "", resolved.canonical);
       setRoute(resolved.canonical);
       return;
     }
     document.title = `${pageTitle} · ${home.title}`;
+    // Finish route focus before paint so it cannot steal a learner's next focus.
     if (notebook?.codecs && notebook.codecSection) {
-      requestAnimationFrame(() => {
-        const heading = document.getElementById(notebook.codecSection!);
-        heading?.focus({ preventScroll: true });
-        heading?.scrollIntoView();
-      });
+      const heading = document.getElementById(notebook.codecSection);
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView();
     } else if (notebook?.formats && notebook.formatSection) {
-      const sectionId = notebook.formatSection;
-      requestAnimationFrame(() => {
-        const heading = document.getElementById(sectionId);
-        heading?.focus({ preventScroll: true });
-        heading?.scrollIntoView();
-      });
+      const heading = document.getElementById(notebook.formatSection);
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView();
     } else if (!notebook && resolved.section) {
-      requestAnimationFrame(() =>
-        document
-          .getElementById(`section-${resolved.section}`)
-          ?.scrollIntoView(),
-      );
+      document.getElementById(`section-${resolved.section}`)?.scrollIntoView();
     } else {
       window.scrollTo(0, 0);
       if (!initial.current) main.current?.focus();
