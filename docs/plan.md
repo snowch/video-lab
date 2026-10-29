@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Visual format references, 29 October 2026:** [the focused reference revision](notes/visual-formats/01-plan-facts.md) separates media file choices, video containers and pixel formats into linked optional pages, with stream-copy diagrams, interactive colour-sampling grids and a transparency demonstration.
+
 **Photograph reuse and pixel-format reference, 29 October 2026:** [the focused clarification](notes/photo-credit-sharing/01-facts.md) makes photograph reuse guidance conditional on sharing and links image-command option notes directly to pixel-format explanations in the existing media formats appendix.
 
 **Reference grouping and SVG workflow, 28 October 2026:** [the focused follow-up](notes/reference-svg/01-facts.md) groups the glossary and three guides in one unnumbered Appendices and reference card. The overlay lesson adds an optional external SVG-editor → full-canvas transparent PNG → existing FFmpeg command workflow. Original assets, routes, commands and checks remain unchanged.

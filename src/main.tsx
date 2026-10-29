@@ -24,6 +24,8 @@ import { notebookRoute } from "./notebook/structure";
 import { courseCopy } from "./notebook/copy";
 import { n as notebookUI } from "./notebook/ui.strings";
 import { codecGuide } from "./notebook/codecs.strings";
+import { pixelFormats } from "./notebook/pixel-formats.strings";
+import { formatVisuals } from "./notebook/format-visuals.strings";
 import { formatGuide } from "./notebook/formats.strings";
 import { glossaryUI } from "./notebook/glossary.strings";
 const storage = browserStorage();
@@ -156,7 +158,11 @@ function App() {
       ? { home: true as const }
       : undefined);
   const pageTitle = notebook?.formats
-    ? formatGuide.title
+    ? notebook.formatSection === "pixel-formats"
+      ? pixelFormats.title
+      : notebook.formatSection === "video-containers"
+        ? formatVisuals.containerTitle
+        : formatGuide.title
     : notebook?.codecs
       ? codecGuide.title
       : notebook?.glossary
@@ -274,6 +280,7 @@ function App() {
             glossary={notebook.glossary}
             codecs={notebook.codecs}
             formats={notebook.formats}
+            formatSection={notebook.home ? notebook.formatSection : undefined}
           />
         ) : resolved.appendix ? (
           <RecordingGuide />

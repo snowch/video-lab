@@ -1,0 +1,17 @@
+# Visual format references
+
+Copyright © 2026 Christopher Snow.
+
+Owner requests diagrams for media file formats, pixel formats and video containers, and asks whether separate pages would help. Implement three focused linked references: existing Media file formats overview with audio/image cards and video signpost; Video containers with container/streams schematic and stream-copy comparison plus existing video cards; Pixel formats with conceptual sampling grids and actual CSS alpha demonstration. Preserve #/appendix/formats and #/appendix/formats/pixel-formats; add #/appendix/formats/video-containers. Keep chapter sequence and runtime commands unchanged. Main appendix card gains direct links to the two focused references.
+
+Prerequisites: no media knowledge; define component samples/luma/colour differences before sampling model, alpha before transparency control. Reference pages optional, no processing downloads merely reading, offline bundled local DOM/CSS diagrams. No new media fixtures or measured claims. Existing saved commands/files must survive reference navigation and Back.
+
+Verified primary sources: FFmpeg n5.1.4 libavutil/pixfmt.h and doc/ffmpeg.texi, fetched 2026-10-29 to /workspace/scratch/visual-formats/{pixfmt,ffmpeg}. Relevant existing format authority links in formats.strings.ts retained.
+
+- Containers organise encoded streams. Illustrative MP4 holds H.264 video and AAC audio; not every MP4 has these streams/codecs. Demuxer reads streams; muxer writes streams. Encoding changes stream representation; stream copy can remux compatible streams without re-encoding. Matroska accepts H.264/AAC; WebM restricts to VP8/VP9/AV1 and Vorbis/Opus. General conceptual MP4→Matroska example is not a claimed notebook execution. Rename alone changes no content.
+- YUV420P: planar, 8-bit components, 1 Cb/U and 1 Cr/V per 2x2 Y samples; YUV422P: 1 each per 2x1; YUV444P 1 each per Y. Thus a conceptual 2x2 picture group has 4 Y and respectively 4/2/1 U and 4/2/1 V samples. Grids illustrate counts/grouping only, not chroma siting, memory ordering or measured colours. Width/height stay unchanged. 420 halves chroma sampling both axes,422 horizontally. p=separate component planes, not progressive. yuv420p has no alpha; RGBA has alpha. 10-bit precision cannot restore lost detail; file size/quality not guaranteed by more samples.
+- Alpha describes opacity: 0 transparent,0.5 partial,1 opaque. Actual CSS opacity demo changes foreground drawing over checkerboard and coloured backdrop, no simulation of a particular codec. Composite before non-alpha export to preserve visible result; converting overlay to yuv420p before composition loses alpha.
+
+Model: pure sampling data computes rows/columns/counts for 444/422/420 from same2x2 Y group, tested before authored prose. Responsive HTML/CSS figures with text/counts, colours never sole encoding. User controls keyboard/touch accessible; optional precision/layout details below primary diagrams. No downloadable raster asset or runtime network dependency.
+
+Workflow per AGENTS.md: separate fact-based prose draft, independent built phone/desktop light/dark learner review, sceptic/source check, ranked fixes, independent checker. Read required upstream workflow files under /workspace/scratch/visual-formats/assembly-* and platform/learning-platform. Local targeted tests then full npm run check on CI before authorised merge. Preserve unrelated untracked learner-audit notes.

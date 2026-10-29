@@ -2,7 +2,13 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { hasEarlierWork } from "./earlier-work";
-import { chapters, pages, pageHref, type PageDefinition } from "./structure";
+import {
+  chapters,
+  pages,
+  pageHref,
+  type PageDefinition,
+  type FormatSection,
+} from "./structure";
 import { courseCopy } from "./copy";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
@@ -10,6 +16,8 @@ import { CommandCell } from "./Cell";
 import { CodecGuide } from "./CodecGuide";
 import { codecGuide } from "./codecs.strings";
 import { FormatGuide } from "./FormatGuide";
+import { pixelFormats } from "./pixel-formats.strings";
+import { formatVisuals } from "./format-visuals.strings";
 import { formatGuide } from "./formats.strings";
 import { Glossary } from "./Glossary";
 import { glossaryUI } from "./glossary.strings";
@@ -111,6 +119,14 @@ function NotebookHome({
           </li>
           <li>
             <a href="#/appendix/formats">{formatGuide.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/formats/video-containers">
+              {formatVisuals.containerTitle}
+            </a>
+          </li>
+          <li>
+            <a href="#/appendix/formats/pixel-formats">{pixelFormats.title}</a>
           </li>
           <li>
             <a href="#/appendix/recording">{n.recordingGuide}</a>
@@ -439,11 +455,13 @@ function NotebookShell({
   glossary = false,
   codecs = false,
   formats = false,
+  formatSection,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
   formats?: boolean;
+  formatSection?: FormatSection;
 }) {
   const w = useNotebook(),
     [filesOpen, setFilesOpen] = useState(false),
@@ -518,7 +536,7 @@ function NotebookShell({
         ) : codecs ? (
           <CodecGuide />
         ) : formats ? (
-          <FormatGuide />
+          <FormatGuide section={formatSection} />
         ) : glossary ? (
           <Glossary />
         ) : (
@@ -541,11 +559,13 @@ export function NotebookCourse({
   glossary,
   codecs,
   formats,
+  formatSection,
 }: {
   page?: PageDefinition;
   glossary?: boolean;
   codecs?: boolean;
   formats?: boolean;
+  formatSection?: FormatSection;
 }) {
   return (
     <NotebookWorkspace>
@@ -554,6 +574,7 @@ export function NotebookCourse({
         glossary={glossary}
         codecs={codecs}
         formats={formats}
+        formatSection={formatSection}
       />
     </NotebookWorkspace>
   );

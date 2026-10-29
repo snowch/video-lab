@@ -11,6 +11,7 @@
   line-height: 1.15;
 }
 .format-guide header,
+.format-guide > p,
 .format-guide section > p,
 .format-concepts {
   max-width: 62ch;
@@ -52,4 +53,219 @@
   display: inline-block;
   padding: 0.5rem 0;
   min-height: 44px;
+}
+.format-figure {
+  max-width: 62ch;
+  margin: 1.5rem 0;
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+.format-figure-title {
+  font-weight: 700;
+  margin-top: 0;
+}
+.format-figure figcaption {
+  color: var(--muted);
+  margin-top: 1rem;
+}
+.format-container {
+  padding: 1rem;
+  border: 2px solid var(--accent);
+  border-radius: 0.5rem;
+}
+.format-streams {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.format-streams span {
+  padding: 0.75rem;
+  background: var(--bg);
+  border-left: 4px solid var(--accent);
+}
+.format-streams .format-audio-stream {
+  border-left-style: double;
+  border-left-width: 6px;
+}
+.format-copy-arrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+}
+.format-copy-arrow > span {
+  font-size: 2rem;
+}
+.format-purpose {
+  display: grid;
+  gap: 1rem;
+}
+.format-purpose > div {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+}
+.format-purpose h3,
+.format-purpose p {
+  margin: 0.25rem 0;
+}
+.format-magnifier {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 20rem;
+}
+.format-mini-picture {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 40%;
+  aspect-ratio: 1;
+}
+.format-selection {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  border: 3px solid #102724;
+  outline: 2px solid white;
+}
+.format-pixel-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 40%;
+  aspect-ratio: 1;
+}
+.format-pixel-group span {
+  display: grid;
+  place-items: center;
+  color: #102724;
+  border: 1px solid #102724;
+}
+.format-sampling fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.format-sampling legend {
+  font-weight: 700;
+}
+.format-sampling-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1.5rem;
+}
+.format-sampling-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.format-sampling-options input {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.format-planes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.format-plane {
+  min-width: 0;
+}
+.format-sample-grid {
+  display: grid;
+  gap: 2px;
+  aspect-ratio: 1;
+  margin-top: 0.5rem;
+}
+.format-sample-grid span {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  font-family: monospace;
+}
+.format-plane p {
+  font-size: 0.9rem;
+}
+.format-sampling-result {
+  min-height: 4.5em;
+}
+.format-alpha-label {
+  display: block;
+  font-weight: 700;
+}
+.format-alpha-label output {
+  display: inline;
+}
+.format-alpha-range {
+  width: 100%;
+  min-height: 44px;
+  accent-color: var(--accent);
+}
+.format-alpha-previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.format-alpha-preview {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4/3;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.format-checker {
+  background: repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 0/24px 24px;
+}
+.format-backdrop {
+  background: linear-gradient(150deg, #8bcbd4 45%, #38644c 46%);
+}
+.format-drawing {
+  display: grid;
+  place-items: center;
+  width: 70%;
+  height: 60%;
+  background: #a83214;
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 20%;
+  opacity: var(--drawing-opacity);
+}
+.format-details {
+  margin-top: 2rem;
+  max-width: 62ch;
+}
+.format-details summary {
+  min-height: 44px;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+.format-reference-links {
+  padding-left: 1.25rem;
+}
+@media (max-width: 35rem) {
+  .format-streams,
+  .format-alpha-previews {
+    grid-template-columns: 1fr;
+  }
+  .format-planes {
+    gap: 0.5rem;
+  }
+}
+
+.format-pixel-group span:nth-child(3) {
+  color: white;
 }

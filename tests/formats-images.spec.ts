@@ -417,6 +417,13 @@ test("saved image chapter and formats reference open with decoded previews offli
   try {
     await offline.goto(new URL("./#/appendix/formats", page.url()).href);
     await expect(offline.locator("h1")).toBeVisible();
+    for (const reference of ["video-containers", "pixel-formats"]) {
+      await offline.goto(
+        new URL(`./#/appendix/formats/${reference}`, page.url()).href,
+      );
+      await expect(offline.locator("h1")).toBeFocused();
+      await expect(offline.locator(".format-figure").first()).toBeVisible();
+    }
     for (const lesson of lessons) {
       await offline.goto(
         new URL(`./#/learn/image-video/${lesson.slug}`, page.url()).href,

@@ -337,13 +337,14 @@ export const pages: PageDefinition[] = [
       '#!/bin/sh\nset -eu\nmkdir -p exports\nfor input in ./*.mp4; do\n  [ -f "$input" ] || continue\n  name=${input##*/}\n  ffmpeg -n -i "$input" -t 5 -vf "scale=640:-2" "exports/${name%.*}-preview.mp4"\ndone\n',
   },
 ];
+export type FormatSection = "pixel-formats" | "video-containers";
 type NotebookRoute =
   | {
       home: true;
       glossary?: boolean;
       codecs?: boolean;
       formats?: boolean;
-      formatSection?: "pixel-formats";
+      formatSection?: FormatSection;
     }
   | {
       home: false;
@@ -361,8 +362,8 @@ export function notebookRoute(hash: string): NotebookRoute | undefined {
     return {
       home: true,
       formats: true,
-      ...(parts[2] === "pixel-formats"
-        ? { formatSection: "pixel-formats" as const }
+      ...(parts[2] === "pixel-formats" || parts[2] === "video-containers"
+        ? { formatSection: parts[2] }
         : {}),
     };
   if (parts[0] === "glossary") return { home: true, glossary: true };
