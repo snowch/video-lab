@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Command option reference, 30 October 2026:** [the reference slice](notes/command-reference/01-plan.md) indexes current taught FFmpeg/ffprobe syntax by purpose, with searchable examples, consequential placement rules and links back to teaching pages. It is an optional appendix, outside the chapter sequence, with a real `ffmpeg -h` cell. The same slice makes picture timestamps and clock ticks visible through a measured four-picture timeline and selectable interval zoom.
+
 **Playback after overwriting media, 29 October 2026:** [the preview lifecycle fix](notes/overwrite-playback/01-plan.md) preserves active playback when file refreshes return unchanged bytes, and creates a fresh player/error state when content changes. It resets retired media before revoking object URLs. Regression evidence includes same-name 8000 → failed 6000 → 8000 recovery; physical-device low-rate silence is distinguished from verified resource lifecycle faults.
 
 **Resolution choices and separate audio sampling, 29 October 2026:** [this slice](notes/resolution-audio/01-plan.md) adds an optional resolution decision guide linked from framing and export, and moves audio sample-rate teaching and its model onto a separate Chapter 3 page with real resampling, raw inspection and sample-rate evidence checks. This supersedes the paired rates on a single page below; the existing picture-rate route and saved work remain.

@@ -204,3 +204,52 @@ test("amplitude model changes height with the keyboard without editing the comma
   );
   await expect(editor).toHaveValue(command);
 });
+
+test("recorded timestamps separate selected absolute times from elapsed ticks", async ({
+  page,
+}) => {
+  await page.goto("./#/learn/frames-time/timestamps");
+  const figure = page.locator(".timestamp-diagram");
+  const cards = figure.locator(".timestamp-picture-list li");
+  await expect(cards).toHaveCount(4);
+  for (const [index, frame] of media.timeline.frames.slice(0, 4).entries()) {
+    await expect(cards.nth(index)).toContainText(`${frame.pts} ticks`);
+    await expect(cards.nth(index)).toContainText(
+      `${frame.seconds.toFixed(6)} s`,
+    );
+  }
+  const editor = page.locator(".notebook-cell > textarea").first();
+  const draft = await editor.inputValue();
+  const select = figure.getByRole("combobox", {
+    name: "Choose one picture interval",
+  });
+  await select.focus();
+  await page.keyboard.press("End");
+  await expect(select).toHaveValue("2");
+  await expect(
+    figure.locator(".timestamp-zoom .time-endpoints").first(),
+  ).toHaveText("1024 ticks1536 ticks");
+  await expect(figure.locator(".timestamp-calculation")).toContainText(
+    "1536 − 1024 = 512 ticks",
+  );
+  await expect(figure.locator(".timestamp-calculation")).toContainText(
+    "0.041667 s",
+  );
+  await expect(cards.nth(0)).toHaveAttribute("data-selected", "false");
+  await expect(cards.nth(2)).toHaveAttribute("data-selected", "true");
+  await expect(cards.nth(3)).toHaveAttribute("data-selected", "true");
+  await expect(figure.locator(".timestamp-clock-mark")).toHaveCount(3);
+  await expect(editor).toHaveValue(draft);
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = "200%";
+  });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  expect(
+    await select.evaluate((el) => el.getBoundingClientRect().height),
+  ).toBeGreaterThanOrEqual(44);
+});

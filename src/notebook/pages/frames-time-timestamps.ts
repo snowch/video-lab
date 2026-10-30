@@ -29,7 +29,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Inspect the stream summaries. For this regularly spaced source, calculate the elapsed seconds and timestamp ticks from the first video picture to the third: two consecutive picture intervals. Use the video rate and time base, then check that both calculations describe the same span.",
+    "Inspect the stream summaries. For this regularly spaced source, calculate the elapsed seconds and timestamp ticks from the first video picture to the sixth. Use the video rate and time base, then check that both calculations describe the same span.",
   practiceOptions: [
     {
       flag: "stream=avg_frame_rate,time_base",
@@ -38,13 +38,13 @@ const page: PageCopy = {
     },
   ],
   practiceObserve:
-    "The first stream is video: `avg_frame_rate=24/1` and `time_base=1/12288`. Find the duration of two picture intervals, then divide by seconds per tick to obtain their tick count. Multiply your tick count by the time base to check the elapsed seconds. The audio stream has its own `time_base=1/48000`; its `avg_frame_rate=0/0` is not a video picture rate. Regular video spacing is verified for this supplied source; stream averages alone would not establish it for another file.",
+    "The first stream is video: `avg_frame_rate=24/1` and `time_base=1/12288`. Count the picture intervals from the first picture to the sixth. Use the video rate to find their elapsed duration, then divide by seconds per tick to obtain their tick count. Multiply your tick count by the time base to check the elapsed seconds. The audio stream has its own `time_base=1/48000`; its `avg_frame_rate=0/0` is not a video picture rate. Regular video spacing is verified for this supplied source; stream averages alone would not establish it for another file.",
   hints: [
     "Inspect the existing file; this task needs no new output media file.",
-    "From the first picture to the third there are two gaps, rather than three. Use the first stream’s video values.",
-    "At 24 pictures per second, one interval lasts 1/24 second. Double that interval before converting it to ticks.",
-    "Divide the elapsed seconds by the duration of one tick: (2/24) ÷ (1/12288).",
-    "Two intervals span 1024 ticks. Multiplying by 1/12288 gives 2/24 = 1/12 second, approximately 0.083333 seconds.",
+    "From the first picture to the sixth there are five gaps, rather than six. Use the first stream’s video values.",
+    "At 24 pictures per second, one interval lasts 1/24 second. Multiply that interval by five before converting it to ticks.",
+    "Divide the elapsed seconds by the duration of one tick: (5/24) ÷ (1/12288).",
+    "Five intervals span 2560 ticks. Multiplying by 1/12288 gives 5/24 second, approximately 0.208333 seconds.",
   ],
   checkLimit:
     "The check confirms that inspection ran. Manually verify your tick calculation and distinguish tick duration from picture interval.",

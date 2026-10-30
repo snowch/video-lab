@@ -21,6 +21,8 @@ import { FormatGuide } from "./FormatGuide";
 import { pixelFormats } from "./pixel-formats.strings";
 import { formatVisuals } from "./format-visuals.strings";
 import { formatGuide } from "./formats.strings";
+import { CommandReference } from "./CommandReference";
+import { commandReferenceUI } from "./command-reference.strings";
 import { Glossary } from "./Glossary";
 import { glossaryUI } from "./glossary.strings";
 import { usePracticeFiles } from "./usePracticeFiles";
@@ -115,6 +117,9 @@ function NotebookHome({
         <ul className="notebook-page-links">
           <li>
             <a href="#/glossary">{glossaryUI.title}</a>
+          </li>
+          <li>
+            <a href="#/appendix/commands">{commandReferenceUI.title}</a>
           </li>
           <li>
             <a href="#/appendix/codecs">{codecGuide.title}</a>
@@ -476,6 +481,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
 }
 function NotebookShell({
   page,
+  commands = false,
   glossary = false,
   codecs = false,
   resolution = false,
@@ -483,6 +489,7 @@ function NotebookShell({
   formatSection,
 }: {
   page?: PageDefinition;
+  commands?: boolean;
   glossary?: boolean;
   codecs?: boolean;
   resolution?: boolean;
@@ -524,11 +531,11 @@ function NotebookShell({
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
+      className={`notebook-shell${page || commands || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
-      {(page || glossary || codecs || formats || resolution) && (
+      {(page || commands || glossary || codecs || formats || resolution) && (
         <nav className="notebook-toolbar" aria-label={n.overview}>
           <a href="#/">{n.overview}</a>
         </nav>
@@ -546,7 +553,15 @@ function NotebookShell({
         {w.sessionOnly && <p role="status">{n.sessionOnly}</p>}
         {w.active && (
           <>
-            <a href={"#/learn/" + w.active.id.split(":")[0]}>{n.command}</a>
+            <a
+              href={
+                w.active.id === "appendix/commands:help"
+                  ? "#/appendix/commands"
+                  : "#/learn/" + w.active.id.split(":")[0]
+              }
+            >
+              {n.command}
+            </a>
             <button onClick={w.cancel}>{n.cancel}</button>
           </>
         )}
@@ -559,6 +574,8 @@ function NotebookShell({
       <div className="notebook-content">
         {page ? (
           <NotebookPage key={page.id} page={page} />
+        ) : commands ? (
+          <CommandReference />
         ) : resolution ? (
           <ResolutionGuide />
         ) : codecs ? (
@@ -584,6 +601,7 @@ function NotebookShell({
 }
 export function NotebookCourse({
   page,
+  commands,
   glossary,
   codecs,
   resolution,
@@ -591,6 +609,7 @@ export function NotebookCourse({
   formatSection,
 }: {
   page?: PageDefinition;
+  commands?: boolean;
   glossary?: boolean;
   codecs?: boolean;
   resolution?: boolean;
@@ -601,6 +620,7 @@ export function NotebookCourse({
     <NotebookWorkspace>
       <NotebookShell
         page={page}
+        commands={commands}
         glossary={glossary}
         resolution={resolution}
         codecs={codecs}
