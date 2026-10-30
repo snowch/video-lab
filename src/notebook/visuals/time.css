@@ -125,3 +125,117 @@
 .time-diagram .time-cue-list p {
   margin-block: 0.4rem;
 }
+
+.timestamp-timeline {
+  position: relative;
+  height: 5rem;
+  margin-inline: 1.5rem;
+}
+.timestamp-track,
+.timestamp-selection {
+  position: absolute;
+  top: 3rem;
+  height: 2px;
+}
+.timestamp-track {
+  inset-inline: 0;
+  background: var(--muted);
+}
+.timestamp-selection {
+  height: 0.65rem;
+  transform: translateY(-0.25rem);
+  border-block: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+}
+.timestamp-marker {
+  position: absolute;
+  top: 0.5rem;
+  display: grid;
+  justify-items: center;
+  transform: translateX(-50%);
+  color: var(--muted);
+}
+.timestamp-marker > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 1.5rem;
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  background: var(--surface);
+  font-weight: 700;
+}
+.timestamp-marker[data-selected="true"] {
+  color: var(--accent);
+}
+.timestamp-stem {
+  height: 1.5rem;
+  border-left: 2px solid currentColor;
+}
+.timestamp-picture-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.timestamp-picture-list li {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: 0.5rem;
+}
+.timestamp-picture-list li[data-selected="true"] {
+  border: 2px solid var(--accent);
+  padding: calc(0.75rem - 1px);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+.timestamp-controls {
+  display: grid;
+  gap: 0.5rem;
+  margin-block: 1.25rem;
+}
+.timestamp-controls label {
+  font-weight: 700;
+}
+.timestamp-controls select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.5rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 0.35rem;
+  font: inherit;
+}
+.timestamp-controls select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.timestamp-zoom,
+.timestamp-unit {
+  padding-block: 0.5rem;
+  border-top: 1px solid var(--muted);
+}
+.timestamp-zoom .timestamp-picture-shape {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.timestamp-zoom .timestamp-clock-mark {
+  stroke-dasharray: none;
+}
+.timestamp-calculation {
+  padding: 0.25rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+@media (max-width: 640px) {
+  .timestamp-picture-list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  }
+}

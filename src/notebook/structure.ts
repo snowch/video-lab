@@ -353,6 +353,7 @@ export type FormatSection = "pixel-formats" | "video-containers";
 type NotebookRoute =
   | {
       home: true;
+      commands?: boolean;
       glossary?: boolean;
       codecs?: boolean;
       codecSection?: "check-playback";
@@ -363,13 +364,14 @@ type NotebookRoute =
   | {
       home: false;
       page: PageDefinition;
+      commands?: false;
       glossary?: false;
       codecs?: false;
       resolution?: false;
       formats?: false;
     };
 export function notebookRoute(hash: string): NotebookRoute | undefined {
-  const parts = hash.replace(/^#\/?/, "").split("/");
+  const parts = hash.split("?")[0]!.replace(/^#\/?/, "").split("/");
   if (!parts[0]) return { home: true as const };
   if (parts[0] === "appendix" && parts[1] === "codecs")
     return {
@@ -389,6 +391,8 @@ export function notebookRoute(hash: string): NotebookRoute | undefined {
     };
   if (parts[0] === "appendix" && parts[1] === "resolution")
     return { home: true, resolution: true };
+  if (parts[0] === "appendix" && parts[1] === "commands")
+    return { home: true, commands: true };
   if (parts[0] === "glossary") return { home: true, glossary: true };
   if (parts[0] !== "learn") return undefined;
   const chapter = chapters.includes(parts[1] as Chapter)

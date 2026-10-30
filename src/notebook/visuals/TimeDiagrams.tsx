@@ -6,12 +6,12 @@ import {
   fadeGain,
   frameInstants,
   illustrativeSignal,
-  ticksToSeconds,
   timeFacts,
 } from "./time-model";
 import type { SignalPoint } from "./time-model";
 import { timeText as t } from "./time.strings";
 import "./time.css";
+import { TimestampDiagram } from "./TimestampDiagram";
 
 // SVGs carry geometry only. Their visible HTML labels and captions also provide
 // the text equivalent, and retain the reader's text size at narrow widths.
@@ -50,45 +50,6 @@ export function FrameRateDiagram() {
       </div>
       <p>{t.frameNote}</p>
       <p className="time-source-note">{t.frameSourceNote(timeFacts.source)}</p>
-    </figure>
-  );
-}
-
-function TimestampDiagram() {
-  const { ticksPerFrame, timeBase, frameRate } = timeFacts;
-  return (
-    <figure className="notebook-diagram time-diagram">
-      <figcaption>{t.timestampCaption}</figcaption>
-      <p>{t.timestampPicture}</p>
-      <div className="time-endpoints">
-        <span>{t.tickCount(0)}</span>
-        <span>{t.tickCount(ticksPerFrame)}</span>
-      </div>
-      <svg className="time-clock" viewBox="0 0 640 56" aria-hidden="true">
-        <path className="time-axis" d="M12 28H628 M12 14V42 M628 14V42" />
-        <circle className="time-point" cx="12" cy="28" r="7" />
-        <circle className="time-point" cx="628" cy="28" r="7" />
-      </svg>
-      <div className="time-endpoints">
-        <span>{t.seconds(0)}</span>
-        <span>
-          {t.seconds(
-            Number(ticksToSeconds(ticksPerFrame, timeBase).toFixed(6)),
-          )}
-        </span>
-      </div>
-      <p className="time-equation">
-        <span>{t.tickCount(ticksPerFrame)}</span>
-        <span aria-hidden="true">×</span>
-        <span>{t.timeBase(timeBase)}</span>
-      </p>
-      <p>
-        <strong>{t.timestampResult(ticksPerFrame, timeBase, frameRate)}</strong>
-      </p>
-      <p>{t.timestampNote}</p>
-      <p className="time-source-note">
-        {t.timestampSourceNote(timeFacts.source)}
-      </p>
     </figure>
   );
 }
