@@ -285,13 +285,47 @@
 .notebook-hints > button {
   margin-right: 0.5rem;
 }
+.notebook-lesson-end {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.notebook-shell label.notebook-completion-control {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  min-height: 44px;
+  cursor: pointer;
+}
+.notebook-shell .notebook-completion-control input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  min-height: 0;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--accent);
+}
+.notebook-page-links a.notebook-course-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.notebook-course-link > span:first-child {
+  min-width: 0;
+}
+.notebook-completion-tick {
+  display: inline-block;
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-weight: 700;
+}
 .notebook-pager {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  padding: 2rem 0 0;
-  border-top: 1px solid var(--line);
+  padding: 0.75rem 0 0;
 }
 .notebook-pager a {
   max-width: 100%;
@@ -480,6 +514,14 @@
   }
 }
 @media (max-width: 600px) {
+  .notebook-chapter-cards > li {
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: clamp(12px, 3vw, 1.2rem);
+  }
+  .notebook-chapter-cards .notebook-page-links {
+    padding-left: 1rem;
+  }
   .notebook-shell {
     padding: 0 1rem 2rem;
   }

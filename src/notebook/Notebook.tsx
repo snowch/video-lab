@@ -10,6 +10,8 @@ import {
   type FormatSection,
 } from "./structure";
 import { courseCopy } from "./copy";
+import { useCompletion } from "./completion";
+import { completionStrings as completionCopy } from "./completion.strings";
 import { n } from "./ui.strings";
 import { NotebookWorkspace, useNotebook, downloadBlob } from "./Workspace";
 import { CommandCell } from "./Cell";
@@ -51,6 +53,7 @@ function NotebookHome({
 }: {
   startRef: RefObject<HTMLAnchorElement | null>;
 }) {
+  const completion = useCompletion();
   return (
     <div className="notebook-home">
       <section className="notebook-welcome">
@@ -96,9 +99,21 @@ function NotebookHome({
                   {pages
                     .filter((p) => p.chapter === c)
                     .map((p) => (
-                      <li key={p.id}>
-                        <a href={pageHref(p)}>
-                          {courseCopy.pages[p.id]!.title}
+                      <li
+                        key={p.id}
+                        data-completed={completion.completed.has(p.id)}
+                      >
+                        <a className="notebook-course-link" href={pageHref(p)}>
+                          <span>{courseCopy.pages[p.id]!.title}</span>
+                          {completion.completed.has(p.id) && (
+                            <span className="notebook-completion-tick">
+                              <span aria-hidden="true">✓</span>
+                              <span className="sr-only">
+                                {" "}
+                                · {completionCopy.completed}
+                              </span>
+                            </span>
+                          )}
                         </a>
                       </li>
                     ))}
@@ -153,6 +168,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
     [solution, setSolution] = useState(false),
     [replay, setReplay] = useState(page.id === pages[0]!.id),
     [sourceName, setSourceName] = useState(page.assets[0]!);
+  const completion = useCompletion();
   const preparation = usePracticeFiles(page.assets);
   const noteId = page.id + ":notes",
     notes = w.cells[noteId] ?? { id: noteId, command: "" };
@@ -456,26 +472,46 @@ function NotebookPage({ page }: { page: PageDefinition }) {
         <button onClick={exportPage}>{n.exportNotebook}</button>
       </details>
       {page.assets.some((name) => name.startsWith("bunny")) && <Credits />}
-      <nav className="notebook-pager" aria-label="Lesson pages">
-        {index > 0 ? (
-          <a className="button" href={pageHref(pages[index - 1]!)}>
-            ← {n.previous}
-          </a>
-        ) : (
-          <a className="button" href="#/">
-            {n.overview}
-          </a>
+      <div className="notebook-lesson-end">
+        <label className="notebook-completion-control">
+          <input
+            type="checkbox"
+            checked={completion.completed.has(page.id)}
+            onChange={(event) => completion.set(page.id, event.target.checked)}
+            aria-describedby={
+              completion.unsaved.has(page.id)
+                ? "completion-save-note"
+                : undefined
+            }
+          />
+          {completionCopy.label}
+        </label>
+        {completion.unsaved.has(page.id) && (
+          <p id="completion-save-note" role="status">
+            {completionCopy.unsaved}
+          </p>
         )}
-        {index < pages.length - 1 ? (
-          <a className="button primary" href={pageHref(pages[index + 1]!)}>
-            {n.next}: {courseCopy.pages[pages[index + 1]!.id]!.title} →
-          </a>
-        ) : (
-          <a className="button primary" href="#/">
-            {n.overview} →
-          </a>
-        )}
-      </nav>
+        <nav className="notebook-pager" aria-label="Lesson pages">
+          {index > 0 ? (
+            <a className="button" href={pageHref(pages[index - 1]!)}>
+              ← {n.previous}
+            </a>
+          ) : (
+            <a className="button" href="#/">
+              {n.overview}
+            </a>
+          )}
+          {index < pages.length - 1 ? (
+            <a className="button primary" href={pageHref(pages[index + 1]!)}>
+              {n.next}: {courseCopy.pages[pages[index + 1]!.id]!.title} →
+            </a>
+          ) : (
+            <a className="button primary" href="#/">
+              {n.overview} →
+            </a>
+          )}
+        </nav>
+      </div>
     </article>
   );
 }
