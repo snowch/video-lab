@@ -3,6 +3,8 @@ import { audioStream, videoStream } from "../media/model";
 
 export const ui = {
   brand: "Video Lab",
+  githubStar: "Star",
+  githubStarLabel: "Star Video Lab on GitHub (opens in a new tab)",
   skip: "Skip to content",
   course: "Course overview",
   source: "Source and evidence",

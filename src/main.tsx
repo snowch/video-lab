@@ -232,6 +232,25 @@ function App() {
           <AppStatus />
           <div className="header-links">
             {notebook && <span id="notebook-header-tools" />}
+            <a
+              className="button github-star"
+              href="https://github.com/snowch/video-lab"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={ui.githubStarLabel}
+              title={ui.githubStarLabel}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="m12 3 2.78 5.63L21 9.54l-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 1.06-6.2L3 9.54l6.22-.91Z" />
+              </svg>
+              <span>{ui.githubStar}</span>
+            </a>
             <button
               aria-label={ui.theme}
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
