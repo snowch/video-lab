@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Header star link, 3 November 2026:** [the header slice](notes/header-star/01-facts.md) adds a compact, keyboard/touch-accessible repository link. It opens GitHub in a new tab, where the learner can star the project.
+
 **Manual lesson completion, 3 November 2026:** [the completion slice](notes/lesson-completion/01-plan-facts.md) adds a reversible checkbox beside notebook page navigation and accessible completion ticks in the chapter/page index. Reading marks use separate per-page browser storage and do not imply a passed command or exercise.
 
 **Command option reference, 30 October 2026:** [the reference slice](notes/command-reference/01-plan.md) indexes current taught FFmpeg/ffprobe syntax by purpose, with searchable examples, consequential placement rules and links back to teaching pages. It is an optional appendix, outside the chapter sequence, with a real `ffmpeg -h` cell. The same slice makes picture timestamps and clock ticks visible through a measured four-picture timeline and selectable interval zoom.
