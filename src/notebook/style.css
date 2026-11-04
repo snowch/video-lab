@@ -15,7 +15,9 @@
   gap: 0.7rem;
 }
 .notebook-toolbar {
-  padding: 0.7rem 0;
+  padding: 1.25rem 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 650;
 }
 .notebook-workspace-status:not(.sr-only) {
   margin: 0.7rem 0;
@@ -39,21 +41,31 @@
   max-width: 65rem;
 }
 .notebook-page {
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 2.5rem;
 }
 .notebook-page h1 {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  line-height: 1.15;
+  font-size: clamp(2.1rem, 4.6vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 750;
+  margin-bottom: 1.2rem;
+}
+.notebook-page-heading {
+  margin-bottom: 2.25rem;
 }
 .notebook-page-heading .eyebrow {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 650;
+  margin-bottom: 1rem;
 }
 .notebook-goal {
   font-size: 1.15rem;
+  color: var(--muted);
 }
 .notebook-source {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.6rem 1rem;
   padding: 0;
@@ -64,8 +76,9 @@
   overflow-wrap: anywhere;
 }
 .notebook-source > button {
-  grid-column: 1 / -1;
-  justify-self: start;
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
 }
 .notebook-source > p,
 .notebook-source > .notebook-preview,
@@ -79,9 +92,12 @@
   color: var(--muted);
   line-height: 1.5;
 }
-.notebook-concept,
+.notebook-concept {
+  max-width: 76ch;
+  margin-inline: auto;
+}
 .notebook-options {
-  max-width: 62ch;
+  max-width: none;
 }
 .notebook-options > div {
   display: grid;
@@ -94,6 +110,7 @@
 }
 .notebook-options dd {
   margin: 0;
+  max-width: 76ch;
 }
 .notebook-prediction,
 .notebook-change,
@@ -120,9 +137,12 @@
   max-width: 100%;
 }
 .notebook-cell {
-  padding: 0;
-  margin: 2.5rem 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  margin: 2.75rem 0;
   min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
 }
 .notebook-cell > header {
   display: flex;
@@ -133,7 +153,8 @@
 }
 .notebook-cell > header h2 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.3rem;
+  font-weight: 750;
 }
 .notebook-cell-tool {
   min-width: 0;
@@ -141,6 +162,7 @@
   color: var(--muted);
   font-family: var(--mono, monospace);
   font-size: 0.9rem;
+  margin-left: auto;
 }
 .notebook-cell-mode,
 .notebook-cell-actions,
@@ -155,23 +177,40 @@
 .notebook-cell-mode button[aria-pressed="true"] {
   border-color: var(--accent);
   color: var(--accent);
+  background: var(--accent-soft);
+}
+.notebook-cell-mode button,
+.notebook-cell-actions button {
+  font-size: 0.9rem;
+  padding-inline: 0.85rem;
+}
+.notebook-cell-actions > .primary {
+  margin-right: auto;
+}
+.notebook-cell > p:not([role]):not(.notebook-shortcut) {
+  margin-inline: auto;
 }
 .notebook-cell > textarea {
   display: block;
   width: 100%;
   font: 1rem/1.65 var(--mono, monospace);
-  background: var(--surface-2, var(--surface));
+  background: var(--monitor);
+  color: var(--monitor-text);
+  border: 1px solid var(--monitor);
+  border-radius: 10px;
+  caret-color: var(--monitor-text);
   resize: vertical;
-  padding: 1rem;
+  padding: 1.15rem;
   min-height: 6rem;
 }
 .notebook-shortcut {
   font-size: 0.85rem;
   color: var(--muted);
-  margin: 0.4rem 0;
+  margin: 0.6rem 0;
 }
 .notebook-cell p[role="status"] {
   font-weight: 600;
+  font-size: 0.9rem;
 }
 .notebook-log {
   position: relative;
@@ -243,6 +282,7 @@
   object-fit: contain;
   display: block;
   background: #111;
+  border-radius: 12px;
 }
 .notebook-preview audio {
   width: 100%;
@@ -266,6 +306,8 @@
   border-top: 1px solid var(--line);
   margin-top: 1.25rem;
   padding-top: 0.5rem;
+  max-width: 76ch;
+  margin-inline: auto;
 }
 .notebook-check ul {
   padding-left: 1.25rem;
@@ -287,7 +329,7 @@
 }
 .notebook-lesson-end {
   border-top: 1px solid var(--line);
-  padding-top: 1rem;
+  padding-top: 1.5rem;
 }
 .notebook-shell label.notebook-completion-control {
   display: flex;
@@ -325,50 +367,86 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.75rem 0 0;
+  padding: 1.25rem 0 0;
 }
 .notebook-pager a {
   max-width: 100%;
   white-space: normal;
 }
 .notebook-welcome {
-  padding: 2rem 0;
+  padding: clamp(2.5rem, 6vw, 5rem) 0 3.5rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 3rem;
+  align-items: center;
 }
 .notebook-welcome h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.05;
+  font-weight: 800;
+  max-width: 13ch;
+}
+.notebook-welcome .eyebrow {
+  display: none;
+}
+.notebook-welcome p {
+  color: var(--muted);
+}
+.notebook-welcome .primary {
+  margin: 0.5rem 0;
+  padding: 0.85rem 1.25rem;
+}
+.notebook-welcome .primary + p {
+  font-size: 0.85rem;
+  max-width: 40ch;
 }
 .notebook-welcome figure {
-  margin: 1rem 0;
+  min-width: 0;
+  margin: 0;
 }
 .notebook-welcome img {
   width: 100%;
   height: auto;
-  border-radius: 1rem;
+  display: block;
+  border: 8px solid var(--monitor);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px #17243b26;
+}
+.notebook-welcome .notebook-credit {
+  margin: 1.25rem 0 0.7rem;
+  font-size: 0.75rem;
+}
+.notebook-welcome figure > a {
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+.notebook-home > section > h2 {
+  font-size: 1.8rem;
+  margin: 0 0 1.5rem;
 }
 .notebook-chapter-cards {
   list-style: none;
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0 3rem;
 }
 .notebook-chapter-cards > li,
 .notebook-reference-card {
   min-width: 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  padding: 1.2rem;
-  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: 1.75rem 0;
 }
 .notebook-reference-card {
   display: block;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  padding: 1.75rem;
+  border: 0;
+  border-radius: 12px;
+  background: var(--raised);
 }
 .notebook-reference-card h2 {
   margin: 0;
@@ -385,18 +463,35 @@
 }
 .notebook-chapter-cards > li > div {
   min-width: 0;
-  flex: 1;
+  flex: 1 1 14rem;
 }
 .notebook-chapter-cards > li > span {
   color: var(--accent);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1;
+  min-width: 1.4em;
+  padding-top: 0.1rem;
 }
 .notebook-chapter-cards h3 {
   margin: 0;
+  font-size: 1.2rem;
 }
 .notebook-chapter-cards p {
   margin: 0.6rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.notebook-chapter-cards .notebook-page-links {
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+}
+.notebook-chapter-cards .notebook-page-links a {
+  padding: 0.55rem 0.25rem;
+  text-decoration-color: var(--line);
+}
+.notebook-chapter-cards .notebook-page-links a:hover {
+  text-decoration-color: currentColor;
 }
 .notebook-notice {
   font-size: 0.9rem;
@@ -515,9 +610,8 @@
 }
 @media (max-width: 600px) {
   .notebook-chapter-cards > li {
-    flex-direction: column;
-    gap: 0.35rem;
-    padding: clamp(12px, 3vw, 1.2rem);
+    gap: 0.75rem;
+    padding: 1.5rem 0;
   }
   .notebook-chapter-cards .notebook-page-links {
     padding-left: 1rem;
@@ -527,6 +621,11 @@
   }
   .notebook-source {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .notebook-source > button {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
   }
   .notebook-page .notebook-colour-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -544,6 +643,9 @@
   .notebook-cell-actions > button {
     flex: 1 1 9rem;
   }
+  .notebook-cell-actions > .primary {
+    margin-right: 0;
+  }
   .notebook-scroll-tools span {
     flex: 1;
   }
@@ -551,7 +653,8 @@
     display: none;
   }
   .notebook-welcome {
-    padding-top: 1rem;
+    padding-top: 2rem;
+    gap: 2rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -566,8 +669,8 @@
   margin: 1rem 0;
 }
 .notebook-observation {
-  margin-top: 1.25rem;
-  max-width: 62ch;
+  margin: 1.5rem auto 0;
+  max-width: 76ch;
 }
 .notebook-review {
   border-top: 1px solid var(--line);
@@ -584,9 +687,9 @@
 }
 
 .notebook-diagram {
-  margin: 1.25rem 0;
+  margin: 1.25rem auto;
   padding: 0;
-  max-width: 62ch;
+  max-width: 76ch;
 }
 .notebook-diagram figcaption {
   font-weight: 600;
@@ -609,6 +712,9 @@
 }
 .notebook-cut-plan figcaption {
   margin-bottom: 0.5rem;
+}
+.notebook-cut-plan {
+  max-width: none;
 }
 .notebook-cut-plan figcaption span {
   font-weight: 400;
@@ -635,7 +741,25 @@
 .notebook-check > p,
 .notebook-native > p,
 .notebook-hints > ol {
-  max-width: 62ch;
+  max-width: 76ch;
+}
+@media (min-width: 760px) {
+  .notebook-cell .notebook-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+    margin: 1.5rem 0;
+  }
+  .notebook-cell .notebook-options > div {
+    display: block;
+    flex: 1 1 16rem;
+    min-width: 0;
+    padding: 0;
+  }
+  .notebook-cell .notebook-options dt {
+    margin-bottom: 0.4rem;
+    font-weight: 650;
+  }
 }
 .notebook-guide-label {
   font-weight: 600;
@@ -712,8 +836,8 @@
 }
 
 .notebook-personal-media {
-  max-width: 62ch;
-  margin: 2rem 0;
+  max-width: 76ch;
+  margin: 2rem auto;
 }
 .notebook-personal-media summary {
   min-height: 44px;

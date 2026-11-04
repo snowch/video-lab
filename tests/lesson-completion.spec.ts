@@ -1,16 +1,29 @@
 // Copyright © 2026 Christopher Snow
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { pages, pageHref } from "../src/notebook/structure";
 import { courseCopy } from "../src/notebook/copy";
 import { completionStrings as c } from "../src/notebook/completion.strings";
 import { completionKey } from "../src/notebook/completion";
+import { expectPracticeReady } from "./notebook-storage";
 const first = pages[0]!;
 const last = pages.at(-1)!;
+async function openFirstLesson(page: Page) {
+  await page.goto("./" + pageHref(first));
+  await expectPracticeReady(page);
+  // The automatic source preview must have its intrinsic size before a footer click.
+  await expect
+    .poll(() =>
+      page
+        .locator(".notebook-source video")
+        .evaluate((video: HTMLVideoElement) => video.readyState),
+    )
+    .toBeGreaterThanOrEqual(1);
+}
 test("reading marks are explicit, reversible, persistent and shown in the course index", async ({
   page,
   isMobile,
 }) => {
-  await page.goto("./" + pageHref(first));
+  await openFirstLesson(page);
   const mark = page.getByRole("checkbox", { name: c.label });
   await expect(mark).not.toBeChecked();
   const geometry = await mark.evaluate((input) => ({
@@ -83,7 +96,7 @@ test("independent windows reconcile individual marks without changing other page
   page,
   context,
 }) => {
-  await page.goto("./" + pageHref(first));
+  await openFirstLesson(page);
   const other = await context.newPage();
   await other.goto("./" + pageHref(last));
   await page.getByRole("checkbox", { name: c.label }).check();
@@ -110,7 +123,7 @@ test("failed storage keeps the choice during navigation and explains it was not 
       original.call(this, key, value);
     };
   });
-  await page.goto("./" + pageHref(first));
+  await openFirstLesson(page);
   await page.getByRole("checkbox", { name: c.label }).check();
   await expect(page.locator("#completion-save-note")).toHaveText(c.unsaved);
   await page.locator(".notebook-toolbar a").click();
