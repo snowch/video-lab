@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Visual design, 4 November 2026:** [the styling slice](notes/visual-design/01-plan.md) applies the Frontend Design skill to a media-led overview, clearer chapter hierarchy and command workspaces, with locally bundled Manrope typography and coordinated light/dark colours. It retains the wide chapters, readable reference measures and existing learning interactions.
+
 **Chapter width, 4 November 2026:** [the layout slice](notes/chapter-width/01-plan.md) gives notebook chapters the course overview's wider container for videos and command editors, while retaining paragraph measures, phone gutters and the narrower reference pages.
 
 **Header star link, 3 November 2026:** [the header slice](notes/header-star/01-facts.md) adds a compact, keyboard/touch-accessible repository link. It opens GitHub in a new tab, where the learner can star the project.

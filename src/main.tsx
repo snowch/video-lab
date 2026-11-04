@@ -225,7 +225,14 @@ function App() {
         <div className="header-inner">
           <a className="brand" href="#/">
             <span className="brand-mark" aria-hidden="true">
-              ▶
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M6 3.5a1 1 0 0 1 1.5-.87l10 6.5a1 1 0 0 1 0 1.74l-10 6.5A1 1 0 0 1 6 16.5z" />
+              </svg>
             </span>
             {ui.brand}
           </a>
