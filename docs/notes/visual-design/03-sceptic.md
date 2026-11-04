@@ -104,3 +104,38 @@ Evidence: `/workspace/scratch/visual-design/sceptic-balanced-options.json` and
 specific framing/pad worked cell before reproducing the dimensions at 820 and
 1365 pixels. The final checker should verify the corrected option layout on these
 longer pages as well as the introductory cut, including enlarged text.
+
+## CI follow-up: Firefox completion-test readiness
+
+PR 22 quality run `41927410880` failed the Firefox test “failed storage keeps the
+choice during navigation and explains it was not saved” at its first checkbox
+check (`tests/lesson-completion.spec.ts:114`). The local full suite had passed;
+the failure should not be hidden with retries.
+
+The CI trace shows a click at viewport coordinates (130, 458) during automatic
+practice-source preparation. The failure screenshot shows the Try it yourself
+card at that position, with the completion checkbox below the viewport. The first
+lesson adds its source preview when the downloaded file becomes available; video
+metadata can subsequently change the player's intrinsic height. The test navigated
+directly to that lesson and immediately checked the checkbox without waiting for
+practice readiness. This evidence supports a moving pointer target during source
+initialisation, rather than a completion-store failure.
+
+Source review found that `CompletionStore.set` catches the deliberately injected
+storage error and synchronously publishes the checked and unsaved sets. There is
+no asynchronous persistence-success dependency in that checkbox handler. In
+contrast, `expectPracticeReady` only waits for files to be present and preparation
+to finish; it does not wait for the source video's metadata. `FilePreview` renders
+a video with `preload="metadata"` and no reserved width/height or aspect ratio.
+
+The focused correction is to wait for the existing practice-ready signal and for
+the source video's `readyState` to be at least 1 before checking the box. This
+waits for the relevant initial layout inputs rather than adding a fixed delay,
+waiting for playback or downloading processing tools. It retains the original
+checked-state, unsaved-warning and navigation assertions. This is a test-setup
+readiness fix with no product or completion-storage change.
+
+Evidence was independently inspected from
+`/workspace/attachments/9240b2ea-7172-4d8e-aa41-24756a1f60ef/pr22-browser-evidence.zip`,
+including the failed screenshot, error context and trace. Repeat-test results
+belong to the builder/checker record; this diagnostic pass does not claim them.

@@ -140,3 +140,35 @@ Evidence: `completed-index.json`, `completed-index-320-200-{light,dark}.png` and
 light/dark entries and representative normal-width screenshots were visually
 inspected. The full-suite finding is resolved in this focused independent check;
 the parent agent owns the final rerun results for the wider course-index suite.
+
+## CI follow-up: completion-test readiness
+
+The checker independently inspected the test-only diff after the Firefox CI
+failure. `openFirstLesson` replaces the three initial first-lesson navigations
+with the same navigation followed by the existing practice-ready assertion and
+a poll for the source video's `readyState >= 1` (metadata available). The wait
+allows the automatic preview to acquire its intrinsic size before a footer click.
+No product code, completion assertion, storage-failure simulation or navigation
+assertion was removed or weakened. This is a state-based wait rather than a fixed
+sleep. The sceptic's separate CI trace review establishes the reported layout
+race; this checker did not repeat that trace review.
+
+Independent command:
+
+```sh
+npx playwright test lesson-completion.spec.ts --config /workspace/scratch/visual-design/checker/playwright-completion.config.ts
+```
+
+Result: **12 passed in 18.4 seconds**, covering all three completion tests in
+`desktop-light`, `desktop-dark`, `phone-light` and `phone-dark`. The temporary
+configuration inherits the repository's browser/device settings, retries and
+web server, omits only the unrelated release-fixture global setup, excludes
+Firefox (tested separately by the parent), and writes to an isolated output
+directory. Omitting that setup avoids concurrently deleting the shared alternate
+release fixtures while the parent's Firefox run is active; these completion tests
+do not use those fixtures. The production build at port 4173 was unchanged.
+
+The exact configuration and run log are retained as
+`playwright-completion.config.ts` and `completion-run.log` under
+`/workspace/scratch/visual-design/checker/`. No test or product edit was made by
+this checker. The parent owns the Firefox repetition and remote CI results.

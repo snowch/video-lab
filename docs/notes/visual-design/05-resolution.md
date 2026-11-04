@@ -52,3 +52,23 @@ Committed screenshots show the [light overview](evidence/overview-light.jpg),
 [dark overview](evidence/overview-dark.jpg) and
 [balanced command workspace](evidence/workspace-light.png). They are native
 browser captures, not edited mock-ups.
+
+## CI follow-up before merge
+
+GitHub's push run `41927396185` passed the full suite, but PR run `41927410880`
+failed one Firefox completion test: its immediate footer checkbox click raced the
+first lesson's automatically inserted source video. The failure screenshot and
+trace locate the click in the practice card after the preview changed page height.
+The independent sceptic confirmed that completion storage publishes synchronously.
+
+The three completion tests now open the first lesson through a helper that waits
+for practice-file readiness and video metadata (`readyState >= 1`) before acting
+on the footer. All storage, pointer, keyboard, persistence and navigation assertions
+remain. No product code or test retries changed.
+
+Formatting and TypeScript checks passed. The full completion file passed ten
+Firefox repetitions (30 tests, 1.1 minutes). The independent checker ran all four
+Chromium configurations (12 tests, 18.4 seconds), also passing. A diagnostic run of
+the original storage test was stopped after 18 passes, with two interrupted and
+ten unrun; it did not reproduce the CI timing race. GitHub runs the complete quality
+gate again for this test-only follow-up before merge.
