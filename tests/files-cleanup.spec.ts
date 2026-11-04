@@ -174,7 +174,11 @@ test("text rows offer Edit, focus the editor and retain saved changes", async ({
   await expect(editor).toHaveValue("");
   await editor.fill("New notes");
   await fileButton(dialog, n.save).click();
+  // Save starts an asynchronous write. Row actions become available only once
+  // the write has finished and the editor no longer has unsaved changes.
+  await expect(fileButton(dialog, `${n.editFile} empty.txt`)).toBeEnabled();
   await fileButton(dialog, n.close).click();
+  await expect(dialog).not.toBeVisible();
   await page.reload();
   await page.getByRole("button", { name: n.files, exact: true }).click();
   await fileButton(dialog, `${n.editFile} captions.srt`).click();
