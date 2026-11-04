@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Chapter width, 4 November 2026:** [the layout slice](notes/chapter-width/01-plan.md) gives notebook chapters the course overview's wider container for videos and command editors, while retaining paragraph measures, phone gutters and the narrower reference pages.
+
 **Header star link, 3 November 2026:** [the header slice](notes/header-star/01-facts.md) adds a compact, keyboard/touch-accessible repository link. It opens GitHub in a new tab, where the learner can star the project.
 
 **Manual lesson completion, 3 November 2026:** [the completion slice](notes/lesson-completion/01-plan-facts.md) adds a reversible checkbox beside notebook page navigation and accessible completion ticks in the chapter/page index. Reading marks use separate per-page browser storage and do not imply a passed command or exercise.

@@ -567,7 +567,7 @@ function NotebookShell({
     (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
   return (
     <div
-      className={`notebook-shell${page || commands || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
+      className={`notebook-shell${commands || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
       data-notebook-ready={w.ready}
     >
       {headerTarget && createPortal(filesControl, headerTarget)}
