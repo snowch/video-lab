@@ -98,15 +98,17 @@
 }
 .notebook-options {
   max-width: none;
+  margin: 1.5rem 0;
 }
 .notebook-options > div {
   display: grid;
-  grid-template-columns: minmax(12rem, 2fr) minmax(0, 3fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 0.5rem 1rem;
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
 }
 .notebook-options dt {
   overflow-wrap: anywhere;
+  font-weight: 650;
 }
 .notebook-options dd {
   margin: 0;
@@ -742,24 +744,6 @@
 .notebook-native > p,
 .notebook-hints > ol {
   max-width: 76ch;
-}
-@media (min-width: 760px) {
-  .notebook-cell .notebook-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem 2rem;
-    margin: 1.5rem 0;
-  }
-  .notebook-cell .notebook-options > div {
-    display: block;
-    flex: 1 1 16rem;
-    min-width: 0;
-    padding: 0;
-  }
-  .notebook-cell .notebook-options dt {
-    margin-bottom: 0.4rem;
-    font-weight: 650;
-  }
 }
 .notebook-guide-label {
   font-weight: 600;
