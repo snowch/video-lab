@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**CLI help columns, 5 November 2026:** [the help-layout correction](notes/cli-help-columns/01-plan.md) puts each parameter beside its description in a single row, replacing the visual-design pass's multi-column groups. Phone layouts retain stacked parameter/description pairs.
+
 **Visual design, 4 November 2026:** [the styling slice](notes/visual-design/01-plan.md) applies the Frontend Design skill to a media-led overview, clearer chapter hierarchy and command workspaces, with locally bundled Manrope typography and coordinated light/dark colours. It retains the wide chapters, readable reference measures and existing learning interactions.
 
 **Chapter width, 4 November 2026:** [the layout slice](notes/chapter-width/01-plan.md) gives notebook chapters the course overview's wider container for videos and command editors, while retaining paragraph measures, phone gutters and the narrower reference pages.
