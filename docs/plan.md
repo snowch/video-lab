@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**One-fps practice, 6 November 2026:** [the frame-rate exercise](notes/one-fps/01-plan.md) uses 1 fps for more obvious motion steps over the same four seconds with sound. The worked 12 fps example remains the comparison.
+
 **CLI help columns, 5 November 2026:** [the help-layout correction](notes/cli-help-columns/01-plan.md) puts each parameter beside its description in a single row, replacing the visual-design pass's multi-column groups. Phone layouts retain stacked parameter/description pairs.
 
 **Visual design, 4 November 2026:** [the styling slice](notes/visual-design/01-plan.md) applies the Frontend Design skill to a media-led overview, clearer chapter hierarchy and command workspaces, with locally bundled Manrope typography and coordinated light/dark colours. It retains the wide chapters, readable reference measures and existing learning interactions.

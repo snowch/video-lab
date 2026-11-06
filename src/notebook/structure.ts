@@ -97,8 +97,8 @@ export const pages: PageDefinition[] = [
     "rate",
     [`ffmpeg -i ${short} -t 4 -vf "fps=12" paced.mp4`],
     `ffmpeg -i ${short} -t 4 -vf "fps=12" practice-rate.mp4`,
-    `ffmpeg -i ${short} -t 4 -vf "fps=6" practice-rate.mp4`,
-    { duration: 4, rate: 6, audio: true, video: true },
+    `ffmpeg -i ${short} -t 4 -vf "fps=1" practice-rate.mp4`,
+    { duration: 4, rate: 1, audio: true, video: true },
   ),
   page(
     "frames-time",
