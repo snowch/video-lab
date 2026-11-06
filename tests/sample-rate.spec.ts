@@ -154,3 +154,78 @@ test("audio practice checks real sample rate and accepts the independent resampl
   });
   expect(Number(probe.format.duration)).toBe(4);
 });
+
+test("picture-rate practice requires one fps, four pictures and retained sound", async ({
+  page,
+}, info) => {
+  test.skip(!["desktop-light", "firefox"].includes(info.project.name));
+  test.setTimeout(180000);
+  await page.goto("./#/learn/frames-time/rate");
+  await expectPracticeReady(page);
+  const cell = page.locator('[data-cell="frames-time/rate:practice"]');
+  const editor = cell.locator("textarea");
+  const check = cell.locator(".notebook-check");
+  // The former six-fps answer has the right duration and sound, but is no longer the task.
+  for (const [command, rejected] of [
+    [
+      'ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=6" old-rate.mp4',
+      "✗ Average rate 1 frame per second",
+    ],
+    [
+      'ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=1" -an silent-rate.mp4',
+      "✗ Contains an audio stream",
+    ],
+  ] as const) {
+    await editor.fill(command);
+    await cell.getByRole("button", { name: n.run, exact: true }).click();
+    await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
+      timeout: 120000,
+    });
+    await cell.getByRole("button", { name: n.check, exact: true }).click();
+    await expect(check).toContainText(rejected, { timeout: 120000 });
+    await expect(check).not.toContainText(n.passed);
+  }
+  await editor.fill(
+    'ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=1" practice-rate.mp4',
+  );
+  await cell.getByRole("button", { name: n.run, exact: true }).click();
+  await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
+    timeout: 120000,
+  });
+  await cell.getByRole("button", { name: n.check, exact: true }).click();
+  await expect(check).toContainText(n.passed, { timeout: 120000 });
+  const downloaded = page.waitForEvent("download");
+  await cell
+    .getByRole("button", { name: "Download practice-rate.mp4", exact: true })
+    .click();
+  const path = (await (await downloaded).path())!;
+  const probe = JSON.parse(
+    execFileSync(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-count_frames",
+        "-show_streams",
+        "-show_format",
+        "-of",
+        "json",
+        path,
+      ],
+      { encoding: "utf8" },
+    ),
+  );
+  expect(probe.streams).toHaveLength(2);
+  expect(probe.streams).toContainEqual(
+    expect.objectContaining({
+      codec_type: "video",
+      avg_frame_rate: "1/1",
+      nb_read_frames: "4",
+      duration: "4.000000",
+    }),
+  );
+  expect(probe.streams).toContainEqual(
+    expect.objectContaining({ codec_type: "audio", duration: "4.000000" }),
+  );
+  expect(Number(probe.format.duration)).toBe(4);
+});

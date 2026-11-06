@@ -752,7 +752,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
         const [a, b] = String(video?.avg_frame_rate).split("/").map(Number);
         test(
           Boolean(a && b && Math.abs(a / b - expected.rate) < 0.01),
-          `Average rate ${expected.rate} frames per second`,
+          `Average rate ${expected.rate} ${expected.rate === 1 ? "frame" : "frames"} per second`,
         );
       }
       if (expected.sampleRate !== undefined)

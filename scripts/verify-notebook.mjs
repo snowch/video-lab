@@ -30,6 +30,15 @@ const evidence = JSON.parse(
 const browserEvidence = JSON.parse(
   await readFile("docs/notes/notebook/commands-wasm.json", "utf8"),
 );
+evidence.records.push(
+  ...JSON.parse(
+    await readFile("docs/notes/one-fps/commands-native.json", "utf8"),
+  ).records,
+);
+browserEvidence.records.push(
+  ...JSON.parse(await readFile("docs/notes/one-fps/commands-wasm.json", "utf8"))
+    .records,
+);
 const imageEvidence = JSON.parse(
   await readFile("docs/notes/formats-images/native-commands.json", "utf8"),
 );
@@ -149,6 +158,34 @@ for (const p of pages) {
   for (const command of [...p.worked, p.solution])
     if (!evidence.records.some((r) => r.page === p.id && r.command === command))
       throw Error("Missing executed command evidence " + p.id);
+  if (p.id === "frames-time/rate") {
+    for (const [kind, records] of [
+      ["native", evidence.records],
+      ["WASM", browserEvidence.records],
+    ]) {
+      const record = records.find(
+        (r) =>
+          r.command === p.solution &&
+          (r.page === p.id || r.id === p.id + ":practice"),
+      );
+      const video = record?.probe?.streams?.find(
+        (s) => s.codec_type === "video",
+      );
+      const audio = record?.probe?.streams?.find(
+        (s) => s.codec_type === "audio",
+      );
+      if (
+        p.expected.rate !== 1 ||
+        video?.avg_frame_rate !== "1/1" ||
+        Number(video.nb_read_frames) !== 4 ||
+        Number(video.duration) !== 4 ||
+        !audio ||
+        Number(audio.duration) !== 4 ||
+        Number(record?.probe?.format?.duration) !== 4
+      )
+        throw Error("Incorrect actual " + kind + " one-fps practice output");
+    }
+  }
   if (p.id === "frames-time/samples") {
     for (const [id, command, sampleRate] of [
       [p.id + ":worked:0", p.worked[0], 24000],

@@ -42,15 +42,15 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-rate.mp4` containing the opening four seconds at 6 frames per second, with sound. Aim for more visibly stepped movement over the same interval.",
+    "Create `practice-rate.mp4` containing the opening four seconds at 1 frame per second, with sound. Aim for noticeable jumps between pictures while the scene keeps its original pace.",
   practiceObserve:
-    "Compare the same movement in practice-rate.mp4, paced.mp4 and the source. The six-frame-per-second version has 24 video frames across four seconds. Check that the motion has larger steps while the scene and sound keep their pace.",
+    "Compare the same movement in practice-rate.mp4, paced.mp4 and the source. The 1 fps version has four video frames in total, each shown for one second. Look for larger jumps in movement and listen for the sound continuing at its original pace.",
   hints: [
     "Keep the output interval at four seconds.",
     "Change the video filter rather than the duration.",
     "The number after fps= sets the number of pictures per second.",
-    "Use fps=6 and keep the source sound enabled.",
-    'Use `ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=6" practice-rate.mp4`.',
+    "Use fps=1 and keep the source sound enabled.",
+    'Use `ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=1" practice-rate.mp4`.',
   ],
   checkLimit:
     "Checks verify duration, frame rate and the presence of video and audio. Replay to judge motion and confirm that the sound keeps its pace.",
