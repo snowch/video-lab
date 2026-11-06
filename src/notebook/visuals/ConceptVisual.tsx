@@ -2,6 +2,8 @@
 import { InspectDiagram } from "./InspectDiagrams";
 import { FrameRateDiagram, TimeDiagrams } from "./TimeDiagrams";
 import { SampleRateDiagram } from "./SampleRateDiagram";
+import { ToneFrequencyDiagram } from "./ToneFrequencyDiagram";
+import { SampleRateReasoning } from "./SampleRateReasoning";
 import { MediaDiagrams } from "./MediaDiagrams";
 import { ImageVisual } from "./ImageVisual";
 
@@ -16,8 +18,17 @@ export function ConceptVisual({
     if (afterParagraph === 0) return <FrameRateDiagram />;
     return null;
   }
-  if (pageId === "frames-time/samples")
-    return afterParagraph === 0 ? <SampleRateDiagram /> : null;
+  if (pageId === "frames-time/samples") {
+    if (afterParagraph === 0)
+      return (
+        <>
+          <ToneFrequencyDiagram />
+          <SampleRateDiagram />
+        </>
+      );
+    if (afterParagraph === 1) return <SampleRateReasoning />;
+    return null;
+  }
   if (afterParagraph !== undefined) return null;
   return (
     <>
