@@ -2,6 +2,8 @@
 
 Copyright © 2026 Christopher Snow.
 
+**Tone frequency and sample rate, 6 November 2026:** [the learning-design slice](notes/tone-frequency/01-plan.md) prepares cycle/frequency before sample measurements, compares two computed tones with optional generated playback, and adds a fresh formative resampling prediction. Existing command tasks and saved work remain.
+
 **One-fps practice, 6 November 2026:** [the frame-rate exercise](notes/one-fps/01-plan.md) uses 1 fps for more obvious motion steps over the same four seconds with sound. The worked 12 fps example remains the comparison.
 
 **CLI help columns, 5 November 2026:** [the help-layout correction](notes/cli-help-columns/01-plan.md) puts each parameter beside its description in a single row, replacing the visual-design pass's multi-column groups. Phone layouts retain stacked parameter/description pairs.

@@ -22,10 +22,9 @@ export function SampleRateDiagram() {
 
   return (
     <figure className="notebook-diagram sample-rate-diagram">
-      <figcaption>{t.caption}</figcaption>
-      <p>
-        {t.valueExplanation} {t.fixedModel}
-      </p>
+      <figcaption>{t.samplingHeading}</figcaption>
+      <p>{t.fixedModel}</p>
+      <p>{t.samplingExplanation}</p>
       <div className="sample-rate-control">
         <label htmlFor={id}>{t.rateLabel}</label>
         <select
@@ -99,6 +98,8 @@ export function SampleRateDiagram() {
           {t.dotsLegend}
         </li>
       </ul>
+      <p>{t.rateDistinction}</p>
+      <p>{t.channelNote}</p>
       <p className="sample-rate-source-note">{t.limitation}</p>
     </figure>
   );
