@@ -5,7 +5,7 @@ const page: PageCopy = {
   title: "Render a title into pictures",
   goal: "Draw a permanent title onto the video using a supplied font.",
   sourceNote:
-    "The supplied font file fonts/DejaVuSans.ttf provides the letter shapes used to draw the title.",
+    "The DejaVu Sans font provides the letter shapes used to draw the title.",
   concept: [
     "A title can be part of the picture itself. Drawing letters into each frame is often called burning in text: the player shows those pixels along with the rest of the scene, so it cannot switch the title off.",
     "A font describes the shapes of letters. FFmpeg combines those shapes with your chosen word, size and colour to draw the title. In this example it stays in the upper-left throughout the clip, while the scene moves behind it. A fixed colour may be clear against one background and hard to read against another.",
@@ -42,7 +42,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-title.mp4 with Bunny in white at font size 40, using the supplied font. Keep the full eight-second clip and its sound. Compare the title with the worked example to judge whether the larger lettering is easier to read.",
+    "In the practice command’s `drawtext` filter, change `text=Hello` to `text=Bunny` and `fontsize=32` to `fontsize=40`. Keep the font and white colour and run it. Is the larger lettering easier to read over the moving picture?",
   practiceObserve:
     "Check that the replay says Bunny throughout, that its letters are larger than Hello, and that sound remains. Watch the changing background to judge whether the white title stays readable.",
   hints: [

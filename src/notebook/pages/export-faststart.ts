@@ -39,7 +39,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Apply the same preparation to `bunny-action.mp4` and save it as `practice-ready.mp4` for playback during download. Preserve its full six seconds of picture and sound without encoding them again. Adapt the command to the new input and output names, then use the log to distinguish the layout operation from stream copying.",
+    "The practice command already names `bunny-action.mp4` and `practice-ready.mp4`. Add `-movflags +faststart` before the output filename and run it. Keep `-c copy` so the full six seconds of picture and sound stay encoded as in the source.",
   practiceObserve:
     "Which log lines establish that the index was moved and that both streams were copied? Replay practice-ready.mp4 through to the end with sound and check that it contains the six-second action clip. Local startup time does not measure a network benefit.",
   hints: [

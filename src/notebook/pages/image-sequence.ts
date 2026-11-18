@@ -5,8 +5,7 @@ import { pixelFormats } from "../pixel-formats.strings";
 export const sequence: PageCopy = {
   title: "Show pictures in order",
   goal: "Turn three numbered pictures into a slideshow, then shorten each hold.",
-  sourceNote:
-    "Use `drawing-01.png`, `drawing-02.png` and `drawing-03.png`: three original 640 × 360 PNG drawings.",
+  sourceNote: "The three supplied drawings are 640 × 360 PNGs.",
   concept: [
     "An **image sequence** is an ordered set of still-image files. FFmpeg reads each supplied picture once and gives it a duration from the input frame rate. Three pictures at half a picture per second each last two seconds: six seconds altogether.",
     "The input rate determines how long each drawing lasts. The output frame rate determines how many video frames represent that time. Repeating a drawing at 24 frames per second holds it on screen; it does not create movement between drawings.",
@@ -60,7 +59,7 @@ export const sequence: PageCopy = {
     ],
   },
   practice:
-    "Create `slides-practice.mp4` from the same three drawings, holding each for one second. Keep the output at 24 frames per second and 640 × 360 pixels, with no audio. The result should last three seconds.",
+    "Change the practice command’s input `-framerate 1/2` to `-framerate 1` and run it. The three drawings should hold for one second each. Keep the output `fps=24` unchanged.",
   practiceObserve:
     "Replay slides-practice.mp4 beside slides.mp4. Confirm the same three pictures in the same order, now changing once per second. The shorter slideshow contains 72 output frames.",
   hints: [

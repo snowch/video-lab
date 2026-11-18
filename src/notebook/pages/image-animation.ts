@@ -6,7 +6,7 @@ export const animation: PageCopy = {
   title: "Animate a sequence of drawings",
   goal: "Choose how quickly six drawings play while keeping a 24-frame-per-second video.",
   sourceNote:
-    "frame-01.png through frame-06.png are six original 640 × 360 drawings. In filename order, the orange ball rises across the picture and returns to the ground line.",
+    "The six 640 × 360 drawings show an orange ball rising and falling when viewed in filename order.",
   concept: [
     "In **frame-by-frame animation**, you draw successive positions yourself. These six pictures suggest a ball’s arc because each drawing changes its position. The numbered-image command gives those drawings times and puts them into a video.",
     "The input rate controls the pace of the action. At three drawings per second, six drawings take two seconds. A 24-frame-per-second output repeats each drawing eight times; those copies hold its position rather than adding positions between drawings.",
@@ -60,7 +60,7 @@ export const animation: PageCopy = {
     ],
   },
   practice:
-    "Create animation-practice.mp4 with the same six drawings completing the arc in one second. Keep the output at 24 frames per second. The starter currently uses three input drawings per second; change their input rate.",
+    "Change the practice command’s input `-framerate 3` to `-framerate 6` and run it. Keep the output `fps=24` unchanged. Does the same six-drawing arc now finish in one second?",
   practiceObserve:
     "Compare animation-practice.mp4 with animation.mp4. The ball should visit the same six positions in the same order, taking half as long. The practice output has 24 video frames: four copies of each drawing. Check 640 × 360 dimensions and no audio.",
   hints: [

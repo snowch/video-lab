@@ -117,7 +117,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         id: "question",
         title: "What does the recording contain?",
         paragraphs: [
-          "Enter one FFmpeg or ffprobe command, or use the command builder, then choose Run command. Read its actual output before continuing. File setup and lesson checks use the app controls. Open Using the command workspace for keyboard guidance and limits; shell pipes and redirection are unavailable.",
+          "On the next step, choose Load inspection source to prepare the clip. On a command step, enter one FFmpeg or ffprobe command and select Run command. Read its output before continuing. Open Help for keyboard guidance and limits.",
           "A quiet player does not establish that a file lacks sound. Inspect the file, then create a video-only copy to distinguish muted playback from changed file contents. If the workspace is full, open Files, download important work and choose Delete for unneeded files.",
         ],
         examples: [
@@ -321,7 +321,7 @@ export const referenceLessons: Record<ReferenceLab, ReferenceLesson> = {
         title: "What must survive a cut?",
         paragraphs: [
           "Keep the opening context and readable result while removing waiting. For this challenge, retain source [0,2) followed by [4,6), with both pictures and sound. The notation includes each start and excludes its end. These ranges are two seconds each and request four seconds in total.",
-          "Use the command editor or builder to run one FFmpeg or ffprobe command at a time. Commands operate on workspace files; a provided finished example is not evidence that your edit ran. Open Using the command workspace for limits. Download important files before choosing Delete to make room.",
+          "On the next step, choose Load cutting source to prepare the clip. On a command step, enter one FFmpeg or ffprobe command and select Run command. The finished example was prepared in advance. Open Help for workspace limits. In Files, download important work before deleting unneeded files.",
         ],
         examples: [
           {

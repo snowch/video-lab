@@ -39,6 +39,7 @@ export function CodecGuide() {
               <p>
                 <InlineText>{step.text}</InlineText>
               </p>
+              {"href" in step && <a href={step.href}>{step.link}</a>}
             </li>
           ))}
         </ol>

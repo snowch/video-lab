@@ -12,24 +12,25 @@ const page: PageCopy = {
     {
       title: "Read presentation timestamps",
       introduction: [
-        "Inspect the times attached to individual frames. `ffprobe` uses ‘frame’ for both video pictures and decoded blocks of audio, so this command lists both kinds together.",
+        "Run the command to see the times attached to individual frames. `ffprobe` uses frame for both video pictures and decoded blocks of audio, so the report includes both kinds.",
+        "If your saved command shows `frame=pts_time`, change it to `frame=media_type,pts_time` before running to include the frame type.",
       ],
       options: [
         {
-          flag: "-show_entries frame=pts_time",
+          flag: "-show_entries frame=media_type,pts_time",
           meaning:
-            "Request selected information: frame names the section, and `pts_time` requests its presentation timestamp in seconds. The equals sign separates the section from its field name.",
+            "In each frame entry, `media_type` identifies video or audio and `pts_time` reports when it should play, in seconds.",
         },
       ],
       observe:
-        "Find timestamps such as 7.625000, 7.666667 and 7.708333 near the end of the output. They are successive video picture times, about 0.041667 seconds apart. Other entries occur between them because audio frames are listed too.",
+        "Near the end of Command output, find three consecutive `media_type=video` entries at `pts_time=7.625000`, `7.666667` and `7.708333`. Skip the audio entries between them. How much time elapses between successive pictures?",
       explanation: [
         "For this 24-picture-per-second source, one picture interval is 1 ÷ 24 seconds. The last decimal place varies because the printed seconds are rounded. Subtracting every adjacent entry would mix the audio and video clocks, so it would not measure video picture spacing.",
       ],
     },
   ],
   practice:
-    "Inspect the stream summaries. For this regularly spaced source, calculate the elapsed seconds and timestamp ticks from the first video picture to the sixth. Use the video rate and time base, then check that both calculations describe the same span.",
+    "Run the practice command unchanged. Use the video stream’s `avg_frame_rate` and `time_base` to calculate the seconds and timestamp ticks from the first picture to the sixth. Do both values describe the same span?",
   practiceOptions: [
     {
       flag: "stream=avg_frame_rate,time_base",

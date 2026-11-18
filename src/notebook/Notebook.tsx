@@ -175,6 +175,9 @@ function NotebookPage({ page }: { page: PageDefinition }) {
   const index = pages.findIndex((p) => p.id === page.id);
   const chapterPages = pages.filter((p) => p.chapter === page.chapter);
   const source = w.files[sourceName];
+  const retained = page.assets.filter(
+    (name) => w.files[name] && w.files[name]!.origin !== "provided",
+  );
   useEffect(() => {
     setHint(0);
     setSolution(false);
@@ -219,8 +222,26 @@ function NotebookPage({ page }: { page: PageDefinition }) {
         className="notebook-source"
         data-practice-ready={preparation.ready}
       >
-        <strong>{n.source}</strong>
-        <code>{sourceName}</code>
+        <p className="notebook-prepared-files">
+          {page.assets.length === 1 ? n.preparedFile : n.preparedFiles}{" "}
+          {page.assets.map((name, i) => (
+            <Fragment key={name}>
+              {i > 0 && ", "}
+              <code>{name}</code>
+            </Fragment>
+          ))}
+        </p>
+        {retained.length > 0 && (
+          <p className="notebook-prepared-files">
+            {n.retainedFiles}{" "}
+            {retained.map((name, i) => (
+              <Fragment key={name}>
+                {i > 0 && ", "}
+                <code>{name}</code>
+              </Fragment>
+            ))}
+          </p>
+        )}
         {copy.sourceNote && (
           <p>
             <InlineText>{copy.sourceNote}</InlineText>
@@ -240,20 +261,22 @@ function NotebookPage({ page }: { page: PageDefinition }) {
             </div>
           )
         ) : (
-          <button onClick={() => setReplay((v) => !v)} aria-expanded={replay}>
-            {/\.(png|jpg)$/i.test(sourceName)
-              ? imageCopy.viewSource
-              : n.replaySource}
+          <button
+            onClick={() => setReplay((v) => !v)}
+            aria-expanded={replay}
+            aria-controls={replay ? "notebook-source-preview" : undefined}
+          >
+            {replay ? n.hideSource : n.showSource}
           </button>
         )}
         {replay && source && (
-          <div className="notebook-source-preview">
+          <div id="notebook-source-preview" className="notebook-source-preview">
             {page.assets.filter((name) => /\.(mp4|png|jpg)$/i.test(name))
               .length > 1 && (
               <div
                 className="notebook-source-choices"
                 role="group"
-                aria-label={n.source}
+                aria-label={n.chooseSource}
               >
                 {page.assets
                   .filter(
@@ -270,7 +293,6 @@ function NotebookPage({ page }: { page: PageDefinition }) {
                   ))}
               </div>
             )}
-            <strong>{sourceName}</strong>
             <FilePreview key={sourceName} file={source} />
           </div>
         )}
@@ -363,19 +385,19 @@ function NotebookPage({ page }: { page: PageDefinition }) {
             aria-expanded={solution}
             onClick={() => setSolution((v) => !v)}
           >
-            {n.solution}
+            {solution ? n.hideSolution : n.solution}
           </button>
           {solution && (
             <div>
               <pre tabIndex={0}>{page.solution}</pre>
-              <p>{n.editor}</p>
+              <p>{n.referenceCommandNote}</p>
             </div>
           )}
         </div>
       </section>
       {page.id === "image-video/overlay" && (
-        <section className="notebook-svg-workflow" aria-labelledby="svg-title">
-          <h2 id="svg-title">{svgWorkflow.title}</h2>
+        <details className="notebook-svg-workflow">
+          <summary>{svgWorkflow.title}</summary>
           <p>
             <InlineText>{svgWorkflow.intro}</InlineText>
           </p>
@@ -389,11 +411,11 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           <p>
             <InlineText>{svgWorkflow.after}</InlineText>
           </p>
-        </section>
+        </details>
       )}
       {page.nativeScript && (
-        <section className="notebook-native">
-          <h2>{n.native}</h2>
+        <details className="notebook-native">
+          <summary>{n.native}</summary>
           <p>{n.nativeNote}</p>
           <pre tabIndex={0}>{page.nativeScript}</pre>
           {copy.nativeExplanation?.map((p, i) => (
@@ -412,7 +434,7 @@ function NotebookPage({ page }: { page: PageDefinition }) {
           >
             {n.nativeDownload}
           </button>
-        </section>
+        </details>
       )}
       {(page.chapter === "image-video" ||
         page.id === "inside-video/inspect" ||
@@ -561,10 +583,15 @@ function NotebookShell({
       {n.files}
     </button>
   );
+  const otherCellRunning =
+    (page && w.active?.id.startsWith(page.id + ":")) ||
+    (commands && w.active?.id === "appendix/commands:help")
+      ? undefined
+      : w.active;
   const quiet =
-    !w.active &&
+    !otherCellRunning &&
     !w.sessionOnly &&
-    (!w.ready || ((!w.busy || w.preparingPractice) && !w.saving));
+    (!w.ready || ((!w.busy || w.active || w.preparingPractice) && !w.saving));
   return (
     <div
       className={`notebook-shell${commands || glossary || codecs || formats || resolution ? " notebook-lesson" : ""}${formats ? " notebook-formats" : ""}`}
@@ -580,20 +607,20 @@ function NotebookShell({
         <span role="status" aria-live="polite">
           {!w.ready
             ? n.loading
-            : w.busy && !w.preparingPractice
+            : otherCellRunning
               ? n.running
               : w.saving
                 ? n.saving
                 : ""}
         </span>
         {w.sessionOnly && <p role="status">{n.sessionOnly}</p>}
-        {w.active && (
+        {otherCellRunning && (
           <>
             <a
               href={
-                w.active.id === "appendix/commands:help"
+                otherCellRunning.id === "appendix/commands:help"
                   ? "#/appendix/commands"
-                  : "#/learn/" + w.active.id.split(":")[0]
+                  : "#/learn/" + otherCellRunning.id.split(":")[0]
               }
             >
               {n.command}

@@ -42,7 +42,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-rate.mp4` containing the opening four seconds at 1 frame per second, with sound. Aim for noticeable jumps between pictures while the scene keeps its original pace.",
+    "Change `fps=12` to `fps=1` in the practice command and run it. Keep the four-second duration and sound. Can fewer pictures change how the motion looks without slowing the scene down?",
   practiceObserve:
     "Compare the same movement in practice-rate.mp4, paced.mp4 and the source. The 1 fps version has four video frames in total, each shown for one second. Look for larger jumps in movement and listen for the sound continuing at its original pace.",
   hints: [

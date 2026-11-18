@@ -36,7 +36,7 @@ export default {
     },
   ],
   practice:
-    "Inspect the supplied MP4 file `bunny-action.mp4` to make a compact description: find its duration, count its streams, and identify each stream's type and codec. Which properties match the worked example, and which differ? Use the output as evidence.",
+    "Select Run command in the practice cell with `ffprobe bunny-action.mp4` unchanged. Compare its duration and the number, types and codecs of its streams with the worked example. Which properties stayed the same in the shorter file?",
   practiceObserve:
     "Read Duration as hours:minutes:seconds, then count the Stream lines. For each stream, identify its type and the codec immediately after Video or Audio. The Input line lists the reader’s supported formats; it does not establish the exact container by itself.",
   hints: [

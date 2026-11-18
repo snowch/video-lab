@@ -93,6 +93,7 @@ function PreviewResource({ file }: { file: NotebookFile }) {
           ref={(element) => {
             media.current = element;
           }}
+          aria-label={file.name}
           src={url}
           controls
           preload="metadata"
@@ -103,6 +104,7 @@ function PreviewResource({ file }: { file: NotebookFile }) {
           ref={(element) => {
             media.current = element;
           }}
+          aria-label={file.name}
           src={url}
           controls
           preload="metadata"
@@ -182,6 +184,7 @@ export function FileManager({
     ),
     [name, setName] = useState(() => restoredDraft.current?.name ?? ""),
     [error, setError] = useState(""),
+    [savingChange, setSavingChange] = useState(false),
     [confirmClose, setConfirmClose] = useState(false);
   const textEditor = useRef<HTMLTextAreaElement>(null),
     focusEditor = useRef(false),
@@ -197,7 +200,7 @@ export function FileManager({
     formInput = useRef<HTMLInputElement>(null),
     formCancel = useRef<HTMLButtonElement>(null),
     keepEditing = useRef<HTMLButtonElement>(null);
-  useRestartGuard(() => !dirty && !form && !confirmClose);
+  useRestartGuard(() => !dirty && !form && !savingChange && !confirmClose);
   useLayoutEffect(() => {
     pendingFileDraft =
       dirty || form ? { cwd, selected, text, dirty, form, name } : undefined;
@@ -236,6 +239,7 @@ export function FileManager({
   }, [confirmClose]);
   const current = w.files[selected];
   function requestClose() {
+    if (savingChange) return;
     if (dirty || form) {
       setConfirmClose(true);
       return;
@@ -276,6 +280,14 @@ export function FileManager({
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
       return false;
+    }
+  }
+  async function saveChange(work: () => Promise<void>, afterSave: () => void) {
+    setSavingChange(true);
+    try {
+      if (await perform(work)) afterSave();
+    } finally {
+      setSavingChange(false);
     }
   }
   async function imported(list: FileList | null) {
@@ -345,7 +357,8 @@ export function FileManager({
   );
   const nearLimit =
     fileCount / 64 >= 0.8 || totalBytes / (32 * 1024 * 1024) >= 0.8;
-  const blocked = w.busy || dirty || Boolean(form);
+  const saving = w.busy || savingChange;
+  const blocked = saving || dirty || Boolean(form);
   return (
     <dialog
       className="notebook-files notebook-files-simple"
@@ -380,7 +393,8 @@ export function FileManager({
         }
       }}
       onCancel={(e) => {
-        if (dirty || form) {
+        if (savingChange) e.preventDefault();
+        else if (dirty || form) {
           e.preventDefault();
           setConfirmClose(true);
         }
@@ -402,7 +416,9 @@ export function FileManager({
     >
       <header>
         <h2 id="notebook-files-title">{n.yourFiles}</h2>
-        <button onClick={requestClose}>{n.close}</button>
+        <button disabled={savingChange} onClick={requestClose}>
+          {n.close}
+        </button>
       </header>
       <p id="notebook-files-intro" className="muted">
         {n.filesIntro}
@@ -412,6 +428,7 @@ export function FileManager({
           {error}
         </p>
       )}
+      {savingChange && <p role="status">{n.savingFileChange}</p>}
       {confirmClose && (
         <section aria-label={n.dirty} className="notebook-file-form">
           <p>{n.dirty}</p>
@@ -556,8 +573,9 @@ export function FileManager({
               className="notebook-file-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                void (async () => {
-                  const ok = await perform(() =>
+                if (saving) return;
+                void saveChange(
+                  () =>
                     form.kind === "folder"
                       ? w.folder(name)
                       : form.kind === "text"
@@ -567,8 +585,7 @@ export function FileManager({
                           : form.kind === "copy"
                             ? w.copy(form.from!, name)
                             : w.remove(form.from!),
-                  );
-                  if (ok) {
+                  () => {
                     if (selected === form.from)
                       setSelected(form.kind === "move" ? name : "");
                     if (
@@ -578,8 +595,8 @@ export function FileManager({
                     )
                       setCwd("");
                     cancelForm();
-                  }
-                })();
+                  },
+                );
               }}
             >
               <h3>
@@ -605,7 +622,7 @@ export function FileManager({
                   {n.name}
                   <input
                     ref={formInput}
-                    disabled={w.busy}
+                    disabled={saving}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -615,13 +632,13 @@ export function FileManager({
                   />
                 </label>
               )}
-              <button disabled={w.busy}>
+              <button disabled={saving}>
                 {form.kind === "delete" ? n.delete : n.save}
               </button>
               <button
                 type="button"
                 ref={formCancel}
-                disabled={w.busy}
+                disabled={saving}
                 onClick={cancelForm}
               >
                 {n.keep}
@@ -750,10 +767,10 @@ export function FileManager({
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    void perform(() => w.writeText(current.name, text)).then(
-                      (ok) => {
-                        if (ok) setDirty(false);
-                      },
+                    if (saving || !dirty) return;
+                    void saveChange(
+                      () => w.writeText(current.name, text),
+                      () => setDirty(false),
                     );
                   }}
                 >
@@ -761,7 +778,7 @@ export function FileManager({
                     {n.editText}
                     <textarea
                       ref={textEditor}
-                      disabled={w.busy}
+                      disabled={saving}
                       value={text}
                       onChange={(e) => {
                         setText(e.target.value);
@@ -770,8 +787,10 @@ export function FileManager({
                       spellCheck={false}
                     />
                   </label>
-                  <button disabled={w.busy || !dirty}>{n.save}</button>
-                  {dirty && <span role="status">{n.dirty}</span>}
+                  <button disabled={saving || !dirty}>{n.save}</button>
+                  {dirty && !savingChange && (
+                    <span role="status">{n.dirty}</span>
+                  )}
                 </form>
               )}
             </section>

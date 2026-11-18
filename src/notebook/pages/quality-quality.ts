@@ -54,9 +54,9 @@ const copy: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-quality.mp4` from `bunny-short.mp4` with libx264 and CRF 26. Keep all eight seconds and the sound. Use this third version to decide whether an intermediate setting gives an acceptable picture for its file size.",
+    "Change `-crf 35` to `-crf 26` in the practice command and run it. Compare this third version with the two examples to decide which file size and picture detail work for you.",
   practiceObserve:
-    "Compare the final file sizes and the same scene in all three versions. With equal durations, the file sizes also rank their average whole-file bitrates. Check that the practice file plays to the end with sound, then decide which version you would keep and what detail influenced your choice.",
+    "Compare `Lsize` in the final progress lines and look at the same scene in all three versions. With equal durations, the file sizes also rank their average whole-file bitrates. Check that the practice file plays to the end with sound, then decide which version you would keep and what detail influenced your choice.",
   hints: [
     "Use the original source so the third version has the same starting point.",
     "Keep the full clip: no start or duration option is needed.",

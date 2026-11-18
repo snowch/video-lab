@@ -62,7 +62,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-join.mp4 with bunny-action.mp4 first, then bunny-short.mp4. Keep picture and sound for both clips. Change the input order while keeping the graph and its output connections intact.",
+    "Swap the two input filenames after `-i` in the practice command, so `bunny-action.mp4` comes first. Keep the filter and both `-map` options unchanged, then run it. Does reversing the clip order affect their total duration?",
   practiceObserve:
     "Check that the action clip opens the output and the short clip begins at six seconds. Replay with sound across that cut. Reversing the clips should change their order while keeping the total picture duration at fourteen seconds.",
   hints: [

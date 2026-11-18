@@ -641,14 +641,12 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
         record.output = output;
         record.outputHash = await hashBlob(data);
       }
-      setNotice(n.done);
     } catch (e) {
       record.error = cancelled.current
         ? n.cancelled
         : e instanceof Error
-          ? e.message
+          ? e.message.replace("See its log above.", n.logHint)
           : String(e);
-      if (live.current) setNotice(cancelled.current ? n.cancelled : n.failed);
     } finally {
       clearTimeout(timer);
       record.log = log.join("\n");
@@ -688,12 +686,11 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
       ];
     }
     if (expected.decode) {
-      if (
-        parseCommand(last.command)[0] !== "ffmpeg" ||
-        !last.command.includes("null") ||
-        !last.inputs.length
-      )
-        throw new Error("Run the decoding command first.");
+      const plan = toolPlan(parseCommand(last.command), true);
+      if (plan.tool !== "ffmpeg" || "output" in plan || !last.inputs.length)
+        throw new Error(
+          "Run an FFmpeg decoding command ending in -f null - first.",
+        );
       return [
         "The recorded FFmpeg command completed without an execution error. Review the log to confirm the intended streams and full duration.",
       ];

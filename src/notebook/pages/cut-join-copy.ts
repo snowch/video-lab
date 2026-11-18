@@ -35,7 +35,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Use `bunny-action.mp4`, the six-second action clip, to create `practice-copy.mp4` with its video and sound unchanged by encoding. The starter leaves FFmpeg to choose encoders: change it to copy both streams instead. Use the mapping lines to establish which path FFmpeg took.",
+    "Add `-c copy` before `practice-copy.mp4` in the practice command and run it. How can the Stream mapping lines show that FFmpeg copied both streams from `bunny-action.mp4`?",
   practiceObserve:
     "Check that both stream-mapping lines end in (copy), rather than showing a decoder and encoder. Replay practice-copy.mp4 to confirm it contains the full six-second action scene with sound. H.264 video and AAC sound alone would also be possible after encoding again.",
   hints: [

@@ -59,7 +59,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Prepare a four-second silent clip from the start of `bunny-short.mp4`. Save it as `practice-silent.mp4` with video and no audio stream.",
+    "Add `-an` before `practice-silent.mp4` in the practice command and run it. Keep the opening four seconds so you can compare playback and stream information.",
   practiceObserve:
     "Check that the output lists Video without Audio, then replay the clip to confirm it shows the opening four seconds of the source.",
   hints: [

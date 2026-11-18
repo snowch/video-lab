@@ -84,7 +84,7 @@ test("unchanged source playback survives real inspection and cloned-file refresh
   await expectPracticeReady(page);
   await run(page, "ffprobe bunny-short.mp4");
   await page
-    .getByRole("button", { name: "Replay source", exact: true })
+    .getByRole("button", { name: "Show source preview", exact: true })
     .click();
   const video = page.locator(".notebook-source video");
   await expect

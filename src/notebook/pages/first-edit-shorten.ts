@@ -3,9 +3,9 @@ import type { PageCopy } from "../copy-types";
 
 export default {
   title: "Keep a shorter section",
-  goal: "Make a five-second video from an eight-second source.",
+  goal: "Make a five-second video from an eight-second source. Where will the cut stop?",
   sourceNote:
-    "Play this eight-second clip from Big Buck Bunny, an animated short film, so you can recognise the part you keep.",
+    "Play the supplied eight-second Big Buck Bunny clip in the source preview so you can recognise the opening.",
   concept: [
     "A **cut** selects part of a video. Its **duration** is how long that part plays.",
     "FFmpeg is a command-line tool for editing media. It reads a source file (the input) and saves the cut to a new file (the output). Here, the .mp4 ending selects the MP4 file format.",
@@ -13,6 +13,9 @@ export default {
   worked: [
     {
       title: "Keep the opening five seconds",
+      introduction: [
+        "Select Run command with the example unchanged to make `first-cut.mp4`.",
+      ],
       options: [
         {
           flag: "-i bunny-short.mp4",
@@ -28,16 +31,16 @@ export default {
         },
       ],
       observe:
-        "Replay first-cut.mp4. Compare its ending with the source and listen for where the sound stops.",
+        "Play `first-cut.mp4` below Command output. The player’s time display ends at five seconds. The final `time=` in Command output is also about five seconds. Compare the picture and sound at the start and end with the source.",
       explanation: [
         "The cut keeps the opening five seconds of picture and sound at their original pace, leaving out the last three seconds.",
       ],
     },
   ],
   practice:
-    "Make a shorter preview of the same source: save its opening three seconds as practice-cut.mp4, keeping both picture and sound.",
+    "In the practice command, change `-t 5` to `-t 3` and select Run command. Keep the source and the output name `practice-cut.mp4` unchanged.",
   practiceObserve:
-    "Compare practice-cut.mp4 with first-cut.mp4. They should begin alike, with the practice cut ending two seconds earlier. Listen as well as watching to check that sound is present.",
+    "Play `practice-cut.mp4` and `first-cut.mp4`. Do both begin at the same picture and sound? Use the player’s time display to check which finishes first and by how much.",
   hints: [
     "Use the same source file as the worked example.",
     "Keep the input filename separate from the output filename.",
@@ -46,5 +49,5 @@ export default {
     "Use -t 3 and name the output practice-cut.mp4.",
   ],
   checkLimit:
-    "The check verifies a three-second file with picture and sound. Replay it to confirm that it contains the source opening and ends where you intended.",
+    "Check result measures duration and looks for video and audio streams. Replay to confirm that the cut keeps the opening you intended.",
 } satisfies PageCopy;

@@ -30,6 +30,21 @@ const evidence = JSON.parse(
 const browserEvidence = JSON.parse(
   await readFile("docs/notes/notebook/commands-wasm.json", "utf8"),
 );
+const timestampEvidence = JSON.parse(
+  await readFile("docs/notes/learner-wording/timestamps.json", "utf8"),
+);
+for (const output of [
+  timestampEvidence.native.stdout,
+  timestampEvidence.browser.record.last.log,
+]) {
+  for (const time of ["7.625000", "7.666667", "7.708333"])
+    if (!output.includes(`media_type=video\npts_time=${time}`))
+      throw Error("Timestamp evidence needs labelled video frame " + time);
+  if (!output.includes("media_type=audio\npts_time=7.637333"))
+    throw Error("Timestamp evidence needs the intervening audio frame");
+}
+evidence.records.push(timestampEvidence.native);
+browserEvidence.records.push(timestampEvidence.browser);
 evidence.records.push(
   ...JSON.parse(
     await readFile("docs/notes/one-fps/commands-native.json", "utf8"),

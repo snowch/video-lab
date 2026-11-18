@@ -17,7 +17,7 @@ export const guided = {
   helpIntro: "Commands for the current task:",
   helpBasics:
     "Run one media command at a time. Files shows exact names; Replay opens media and Download saves a copy. Cancel discards active processing. Next task changes the instructions without running a command.",
-  helpAll: "Open Using the command workspace for usage and limits.",
+  helpAll: "Open Help for keyboard instructions and workspace limits.",
   taskTitles: {
     build: [
       "Load the supplied pictures and sound",

@@ -31,7 +31,7 @@ export default {
     },
   ],
   practice:
-    "Create `practice-level.mp4` from `bunny-short.mp4` with audio sample amplitudes reduced to one quarter of the source. Keep the full eight seconds, including picture and soundtrack.",
+    "Change `volume=0.5` to `volume=0.25` in the practice command and run it. The multiplier gives one quarter of the source amplitude. Compare the same passage at a fixed device volume.",
   practiceObserve:
     "Compare the same passage in the source, quieter.mp4 and practice-level.mp4 at a fixed device volume. The practice output should sound quieter than both other versions. Check your command’s multiplier as well as listening.",
   hints: [

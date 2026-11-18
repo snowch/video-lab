@@ -178,7 +178,7 @@
     "downloadRecipe": "Download execution recipe",
     "downloadReport": "Download report",
     "importRenamed": "Imported “{original}” as “{name}” in this workspace. The file on your device is unchanged.",
-    "firstRun": "The first run downloads about 32.4 MB of processing tools unless they are already saved. For offline use, open Offline access and app installation and choose Download for offline use.",
+    "firstRun": "The first run loads the processing tools. To save them with the lessons and practice media, open App status, find Offline access and select Download for offline use.",
     "limits": "Workspace limits: 12 working files plus 12 execution recipes, 32 MiB in total, and 20 MiB per file. Each processing operation has a 120-second limit. Download important work before deleting files to make room.",
     "course": "Course overview",
     "sourceMissing": "The selected source is no longer in the workspace. Choose another file before running the command.",

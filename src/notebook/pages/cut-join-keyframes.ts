@@ -65,7 +65,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Deliver `practice-exact.mp4` containing source seconds 1 to 4, with video and audio. Choose the approach that can discard decoded pictures before the start, then check that the opening matches the source around second 1.",
+    "In the practice command, add `-ss 1` after the source filename and before `-t 3`. Run it to rebuild the pictures and keep source seconds 1 to 4 with sound.",
   practiceObserve:
     "Replay the first moment of practice-exact.mp4 and compare it with the source around second 1. Listen at the start as well: matching the duration does not establish that the intended moment was kept.",
   hints: [

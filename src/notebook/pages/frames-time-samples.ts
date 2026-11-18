@@ -63,15 +63,15 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-samples.wav` containing the opening four seconds of the source as audio only, at 16000 Hz. Keep the sound at its original pace.",
+    "In the practice command, change `-ar 24000` to `-ar 16000` and select Run command. Keep `-t 4` for four seconds and `-vn` for audio only.",
   practiceObserve:
-    "Inspect practice-samples.wav with ffprobe. Look for four seconds, an audio stream at 16000 Hz and no video stream. That is 64,000 values per channel across the interval. Replay it and compare pace and pitch with the source’s opening four seconds; you may not hear an obvious difference in detail.",
+    "In Command output, find the Audio line below `Output #0` for `practice-samples.wav`. It should show `16000 Hz`. Find the final `time=` value to see four seconds. That is 64,000 samples per channel. Replay the file and compare pace and pitch with the opening four seconds of the source. Can you hear a change in pitch or playing time?",
   hints: [
     "Keep the opening interval at four seconds and write to practice-samples.wav.",
     "Use -vn to omit video from the output.",
     "Change the output sample rate with -ar, rather than changing the duration.",
     "Place -ar 16000 before the output filename. The value is samples per second in each channel.",
-    "Use `ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav`, then inspect it with `ffprobe practice-samples.wav`.",
+    "Use `ffmpeg -i bunny-short.mp4 -t 4 -vn -ar 16000 practice-samples.wav`.",
   ],
   checkLimit:
     "Checks verify a four-second output with audio at 16000 Hz and no video. They do not assess pitch, audible detail or whether the sound matches the source; use replay for your comparison.",

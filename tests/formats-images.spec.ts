@@ -331,9 +331,7 @@ test("image sources, touch argument editing and the formats reference need no pr
     const practice = page.locator(
       `[data-cell="image-video/${lesson.slug}:practice"]`,
     );
-    await practice
-      .getByRole("button", { name: n.builder, exact: true })
-      .click();
+    await practice.locator(".notebook-command-tools summary").click();
     const builder = practice.locator(".native-builder");
     const editIndex =
       lesson.slug === "hold" ? 2 : lesson.slug === "overlay" ? 2 : 0;

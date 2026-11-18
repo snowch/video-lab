@@ -5,7 +5,7 @@ const page: PageCopy = {
   title: "Time text with a subtitle file",
   goal: "Use a separate text file to decide when lettering appears in the picture.",
   sourceNote:
-    "This example needs the video, captions.srt and fonts/DejaVuSans.ttf. Open captions.srt in Files to see the two cues and their times.",
+    "Open Files and select `captions.srt` to see the two pieces of text and their times. Close Files before running the example.",
   concept: [
     "A **subtitle cue** pairs text with a start and end time. The supplied text is original instructional material, rather than a transcription of Big Buck Bunny dialogue.",
     "`captions.srt` is a plain-text SubRip file. Each cue has a number, a timing line and text, with a blank line between cues. Times use `hours:minutes:seconds,milliseconds`; `-->` separates start and end. The timeline shows the supplied intervals.",
@@ -47,7 +47,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "In Files, change only the second cue’s words in `captions.srt` to a short description of something you can see in the scene. Keep both timing lines unchanged and save the text file. Render `practice-subtitles.mp4` using the supplied font and all eight seconds of video and sound.",
+    "Run the worked example before editing the captions. Open Files and select `captions.srt`. In Edit text, replace only the second cue’s words with a short scene description. Keep both timing lines and select Save, then Close. Select Run command in the practice cell with its command unchanged.",
   practiceObserve:
     "Check that your new words appear from 3 to 6 seconds, while the first cue stays unchanged. Compare with subtitled.mp4, then listen for sound. Download the edited text file if you want to retain it.",
   hints: [

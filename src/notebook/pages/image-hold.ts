@@ -51,7 +51,7 @@ export const hold: PageCopy = {
     },
   ],
   practice:
-    "Create still-practice.mp4 with the same photograph held for three seconds. The starter command currently makes a five-second hold; change its output duration.",
+    "Change `-t 5` to `-t 3` in the practice command and run it. Check whether the photograph in `still-practice.mp4` stays still for the whole three seconds.",
   practiceObserve:
     "Replay still-practice.mp4 to the end. Confirm that the same photograph remains visible throughout and the video ends after three seconds with no sound.",
   hints: [

@@ -36,7 +36,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-fade.mp4` with a fade-out that begins halfway through this eight-second clip and reaches silence at its end. Keep the full video and its audio stream.",
+    "In the practice command, change `st=5:d=3` to `st=4:d=4` inside the `afade` filter and run it. This keeps the whole clip while starting the fade halfway through. How does the longer fade sound?",
   practiceObserve:
     "Compare practice-fade.mp4 with faded.mp4 at the same playback volume. Listen from second 4 onwards: the practice fade should begin earlier and fall more gradually, with both clips ending at second 8.",
   hints: [

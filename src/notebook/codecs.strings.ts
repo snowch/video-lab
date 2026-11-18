@@ -28,7 +28,9 @@ export const codecGuide = {
     },
     {
       title: "Use a failure to choose the next change",
-      text: "If the app rejects the file or it plays incorrectly, read its message and upload/import guidance. For codecs and picture size, run `ffprobe compatible.mp4` using your output's actual filename and compare its Video and Audio lines. Files shows the saved file's size. Change the setting named by the message and try another short export.",
+      text: "If the app rejects the file or it plays incorrectly, read its message and upload or import requirements. In the Command option reference, replace the command under Ask the installed browser tool for help with `ffprobe compatible.mp4`, using your saved export’s filename. Select Run command and look at the Video and Audio lines for codecs and picture size. Files shows the file size. Try another short export with the setting the app requests.",
+      href: "#/appendix/commands",
+      link: "Open the Command option reference",
     },
   ],
   checkLimit:
