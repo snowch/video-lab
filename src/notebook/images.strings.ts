@@ -3,7 +3,6 @@ export const imageCopy = {
   chapterTitle: "Build video from images",
   chapterSummary:
     "Give still pictures duration, play drawings in order and place a transparent graphic over video.",
-  viewSource: "View source",
   filmstripCaption:
     "Source drawings in filename order. These thumbnails show the supplied pictures; run the command to create and replay their timing as video.",
   transparentPngExplanation:

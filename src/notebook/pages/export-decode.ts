@@ -43,12 +43,12 @@ export default {
     },
   ],
   practice:
-    "Verify the six-second bunny-action.mp4 clip without creating a media file. Make the run stop on errors, and use its log to establish whether both picture and sound were processed through to the end.",
+    "Run the practice command unchanged. It reads the six-second `bunny-action.mp4`, uses `-xerror` to stop on errors and discards the output. How can you tell whether FFmpeg processed both picture and sound to the end?",
   practiceObserve:
-    "Find the selected streams under Stream mapping, then compare the final processing time with this source's duration. Check the completion status as well. Replay bunny-action.mp4 to judge its picture and sound: decoding cannot tell whether the content is what you intended.",
+    "Find the selected streams under Stream mapping. Then look for a final `time=` near six seconds and a Command completed status. Replay bunny-action.mp4 to judge its picture and sound: decoding cannot tell whether the content is what you intended.",
   hints: [
     "Use FFmpeg to reconstruct the media rather than only inspect its headers.",
-    "Change the input to bunny-action.mp4 and leave out any time limit.",
+    "The practice command already reads `bunny-action.mp4` and has no time limit.",
     "Use -xerror to stop on errors.",
     "Use the null output format so that the processed media is discarded.",
     "Finish with -f null -; check the selected streams, final progress time and completion status.",

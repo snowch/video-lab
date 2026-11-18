@@ -44,7 +44,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-pad.mp4` for a smaller square preview: use a 360 × 360 canvas, keep the full view centred, and retain all eight seconds and the sound.",
+    "In the practice filter, change `scale=480:-2` to `scale=360:-2` and `pad=480:480` to `pad=360:360`. Keep both centring expressions unchanged and run the command. Does the smaller canvas still show the full view?",
   practiceObserve:
     "Compare the scene edges with the source and the bands with the worked result. The smaller preview should keep the same view and centred placement. Play it through and listen for sound.",
   hints: [

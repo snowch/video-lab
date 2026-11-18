@@ -93,8 +93,10 @@ test("notebook outline and every concept page reflow without loading processing 
     await expect(page.locator(".notebook-hints li")).toHaveCount(5);
   }
   expect(requests.some((u) => u.includes("/encoder/"))).toBe(false);
+  await expect(page.locator(".notebook-native button")).toBeHidden();
+  await page.locator(".notebook-native summary").press("Space");
   await expect(page.locator(".notebook-native")).toContainText(n.nativeNote);
-  await expect(page.locator(".notebook-native button")).toHaveCount(1);
+  await expect(page.locator(".notebook-native button")).toBeVisible();
 });
 
 test("cells preserve edited drafts and raw evidence, check actual outputs, and reject stale results", async ({
@@ -105,7 +107,7 @@ test("cells preserve edited drafts and raw evidence, check actual outputs, and r
   await page.goto("./#/learn/first-edit/shorten");
   await expectPracticeReady(page);
   await expect(
-    page.getByRole("button", { name: n.replaySource, exact: true }),
+    page.getByRole("button", { name: n.hideSource, exact: true }),
   ).toBeVisible();
   const cell = page.locator('[data-cell="first-edit/shorten:practice"]');
   const input = cell.locator("textarea");
@@ -116,8 +118,27 @@ test("cells preserve edited drafts and raw evidence, check actual outputs, and r
   });
   await cell.getByRole("button", { name: n.check, exact: true }).click();
   await expect(cell.locator(".notebook-check")).toContainText("✗ Duration");
-  await input.fill("ffmpeg -i bunny-short.mp4 -t 3 own-three.mp4");
+  await expect(cell.locator(".notebook-check")).toContainText(n.checkMismatch);
+  await expect(cell.getByRole("status").first()).toHaveText(n.done);
+  await cell.evaluate((element) => {
+    [...element.querySelectorAll("button")]
+      .find((button) => button.textContent === "Check result")!
+      .click();
+    const editor = element.querySelector("textarea")!;
+    Object.getOwnPropertyDescriptor(
+      HTMLTextAreaElement.prototype,
+      "value",
+    )!.set!.call(editor, "ffmpeg -i bunny-short.mp4 -t 3 own-three.mp4");
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await expect(input).toHaveValue(
+    "ffmpeg -i bunny-short.mp4 -t 3 own-three.mp4",
+  );
   await expect(cell).toHaveAttribute("data-stale", "true");
+  await expect(
+    cell.getByRole("button", { name: n.run, exact: true }),
+  ).toBeEnabled();
+  await expect(cell.locator(".notebook-check [role=status]")).toBeEmpty();
   await expect(
     cell.getByRole("button", { name: n.check, exact: true }),
   ).toBeDisabled();
@@ -352,29 +373,34 @@ test("inspection checks stay visible for unchanged evidence and failed runs neve
   await page.goto("./#/learn/inside-video/inspect");
   await expectPracticeReady(page);
   await expect(
-    page.getByRole("button", { name: n.replaySource, exact: true }),
+    page.getByRole("button", { name: n.showSource, exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: n.replaySource, exact: true }).click();
+  await page.getByRole("button", { name: n.showSource, exact: true }).click();
   await page
     .locator(".notebook-source-choices")
     .getByRole("button", { name: "bunny-action.mp4", exact: true })
     .click();
-  await expect(page.locator(".notebook-source > code")).toHaveText(
+  await expect(page.locator(".notebook-prepared-files code")).toHaveText([
+    "bunny-short.mp4",
     "bunny-action.mp4",
-  );
-  await expect(page.locator(".notebook-source-preview > strong")).toHaveText(
-    "bunny-action.mp4",
-  );
+  ]);
+  await expect(
+    page.locator(".notebook-source-preview .notebook-preview"),
+  ).toHaveAttribute("aria-label", "File preview: bunny-action.mp4");
   const cell = page.locator('[data-cell="inside-video/inspect:practice"]');
   await cell.getByRole("button", { name: n.run, exact: true }).click();
   await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
     timeout: 120000,
   });
   await cell.getByRole("button", { name: n.check, exact: true }).click();
-  await expect(cell.locator(".notebook-check")).toContainText(n.passed);
+  await expect(cell.locator(".notebook-check")).toContainText(
+    "An actual ffprobe inspection of the unchanged input is recorded.",
+  );
   // Wait beyond asynchronous Blob hashing/file refresh, which previously erased feedback.
   await page.waitForTimeout(750);
-  await expect(cell.locator(".notebook-check")).toContainText(n.passed);
+  await expect(cell.locator(".notebook-check")).toContainText(
+    "An actual ffprobe inspection of the unchanged input is recorded.",
+  );
   await cell.locator("textarea").fill("ffprobe missing.mp4");
   await expect(
     cell.getByRole("button", { name: n.check, exact: true }),
@@ -384,7 +410,17 @@ test("inspection checks stay visible for unchanged evidence and failed runs neve
     timeout: 120000,
   });
   await expect(cell.locator(".notebook-runtime-note")).toHaveCount(0);
-  await expect(cell.locator(".notebook-check")).not.toContainText(n.passed);
+  await expect(cell.locator(".notebook-check")).not.toContainText(
+    "An actual ffprobe inspection of the unchanged input is recorded.",
+  );
+  await cell.locator("textarea").fill("ffprobe bunny-action.mp4");
+  await expect(cell.getByRole("status").first()).toHaveText(n.failedEarlier);
+  await expect(cell.getByRole("alert")).toHaveCount(0);
+  await expect(cell.locator(".notebook-error summary")).toHaveText(
+    n.previousError,
+  );
+  await cell.getByRole("button", { name: n.run, exact: true }).click();
+  await expect(cell.getByRole("status").first()).toHaveText(n.done);
 });
 
 test("subtitles render visible lettering with the supplied font in the actual WASM output", async ({
@@ -395,7 +431,7 @@ test("subtitles render visible lettering with the supplied font in the actual WA
   await page.goto("./#/learn/text/subtitles");
   await expectPracticeReady(page);
   await expect(
-    page.getByRole("button", { name: n.replaySource, exact: true }),
+    page.getByRole("button", { name: n.showSource, exact: true }),
   ).toBeVisible();
   const cell = page.locator('[data-cell="text/subtitles:worked:0"]');
   await cell.getByRole("button", { name: n.run, exact: true }).click();

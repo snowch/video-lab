@@ -11,7 +11,7 @@ import { OutputResize } from "../components/OutputResize";
 import { NativeBuilder, quoteArgument } from "../cli/NativeBuilder";
 import { parseCommand } from "../cli/command";
 import { useNotebook, downloadBlob } from "./Workspace";
-import { hashBlob } from "./model";
+import { hashBlob, type CellRecord } from "./model";
 import { FilePreview } from "./FileManager";
 import type { Expectation } from "./structure";
 import { n } from "./ui.strings";
@@ -49,10 +49,13 @@ export function CommandCell({
     record = w.cells[id] ?? { id, command: initial };
   const [builder, setBuilder] = useState(false),
     [wrap, setWrap] = useState(false),
-    [stale, setStale] = useState(false),
+    [filesChanged, setFilesChanged] = useState(false),
     [outputMatches, setOutputMatches] = useState(false),
-    [checks, setChecks] = useState<string[]>([]),
-    [checkGood, setCheckGood] = useState(false),
+    [checked, setChecked] = useState<{
+      record: CellRecord;
+      messages?: string[];
+      error?: string;
+    }>(),
     [notice, setNotice] = useState(""),
     [right, setRight] = useState(false),
     [left, setLeft] = useState(false);
@@ -79,17 +82,37 @@ export function CommandCell({
   }, [record.command]);
   const running = w.active?.id === id;
   const last = record.last;
+  const draftChanged = Boolean(last && record.command !== last.command);
+  const stale = draftChanged || filesChanged;
+  const currentCheck =
+    !stale && checked?.record === record ? checked : undefined;
+  const mismatch = currentCheck?.messages?.some((message) =>
+    message.startsWith("✗"),
+  );
   const text = running ? w.liveLog : (last?.log ?? "");
+  const status = running
+    ? n.running
+    : last?.error === n.cancelled
+      ? draftChanged
+        ? n.cancelledEarlier
+        : n.cancelled
+      : last?.error && draftChanged
+        ? n.failedEarlier
+        : last?.error
+          ? n.failed
+          : stale
+            ? n.stale
+            : last
+              ? n.done
+              : "";
   function edit(command: string) {
     w.edit(id, { command });
-    setChecks([]);
-    setCheckGood(false);
   }
   useEffect(() => {
     let live = true;
     void (async () => {
       if (!last) {
-        setStale(false);
+        setFilesChanged(false);
         setOutputMatches(false);
         return;
       }
@@ -107,25 +130,16 @@ export function CommandCell({
       );
       if (live) {
         const changed =
-          record.command !== last.command ||
-          inputs.some((x) => !x) ||
-          (Boolean(last.output) && !matches);
-        if (changed) {
-          setChecks([]);
-          setCheckGood(false);
-        }
-        setStale(changed);
+          inputs.some((x) => !x) || (Boolean(last.output) && !matches);
+        if (changed) setChecked(undefined);
+        setFilesChanged(changed);
         setOutputMatches(matches);
       }
     })();
     return () => {
       live = false;
     };
-  }, [last, record.command, w.files]);
-  useEffect(() => {
-    setChecks([]);
-    setCheckGood(false);
-  }, [last, record.command]);
+  }, [last, w.files]);
   function edges() {
     const el = pre.current;
     if (el) {
@@ -171,26 +185,12 @@ export function CommandCell({
       data-cell={id}
       data-stale={stale}
     >
-      <header>
-        <h2 id={`${id}-title`}>{title}</h2>
-        <span className="notebook-cell-tool">
-          {record.command.trim().split(/\s/)[0] || "ffmpeg"}
-        </span>
-      </header>
+      <h2 id={`${id}-title`}>{title}</h2>
       {(teaching?.introduction ?? introduction)?.map((p, i) => (
         <p key={i}>
           <InlineText>{p}</InlineText>
         </p>
       ))}
-      <div className="notebook-cell-mode">
-        <button aria-pressed={!builder} onClick={() => setBuilder(false)}>
-          {n.editor}
-        </button>
-        <button aria-pressed={builder} onClick={() => setBuilder(true)}>
-          {n.builder}
-        </button>
-      </div>
-      {builder && <NativeBuilder command={record.command} onChange={edit} />}
       {preview?.(record.command)}
       <label className="sr-only" htmlFor={`${id}-command`}>
         {n.command}: {title}
@@ -226,32 +226,43 @@ export function CommandCell({
           {n.run}
         </button>
         {running && <button onClick={w.cancel}>{n.cancel}</button>}
-        <button onClick={() => void copy()}>{n.copy}</button>
-        <button onClick={downloadCommand}>{n.downloadCommand}</button>
       </div>
-      <p role="status" aria-live="polite">
-        {running
-          ? n.running
-          : last?.error
-            ? n.failed
-            : stale
-              ? n.stale
-              : last
-                ? n.done
-                : notice || n.ready}
-      </p>
-      {notice && last && <p role="status">{notice}</p>}
-      {last && record.command !== last.command && (
-        <div className="notebook-last-command">
-          <strong>{n.last}</strong>
-          <pre tabIndex={0}>{last.command}</pre>
+      <details
+        className="notebook-command-tools"
+        onToggle={(event) => {
+          if (event.currentTarget.open) setBuilder(true);
+        }}
+      >
+        <summary>{n.commandTools}</summary>
+        {builder && <NativeBuilder command={record.command} onChange={edit} />}
+        <div className="notebook-cell-actions">
+          <button onClick={() => void copy()}>{n.copy}</button>
+          <button onClick={downloadCommand}>{n.downloadCommand}</button>
         </div>
+      </details>
+      <p className="notebook-run-status" role="status">
+        {status}
+      </p>
+      {notice && <p role="status">{notice}</p>}
+      {last && draftChanged && !running && (
+        <details className="notebook-last-command">
+          <summary>{n.last}</summary>
+          <pre tabIndex={0}>{last.command}</pre>
+        </details>
       )}
-      {last?.error && !running && (
-        <p className="notebook-error" role="alert">
-          {last.error}
-        </p>
-      )}
+      {last?.error &&
+        last.error !== n.cancelled &&
+        !running &&
+        (draftChanged ? (
+          <details className="notebook-error">
+            <summary>{n.previousError}</summary>
+            <p>{last.error}</p>
+          </details>
+        ) : (
+          <p className="notebook-error" role="alert">
+            {last.error}
+          </p>
+        ))}
       {last?.error === n.overwrite &&
         last.command === record.command &&
         !running && (
@@ -334,7 +345,7 @@ export function CommandCell({
         last?.output &&
         (outputMatches && w.files[last.output] ? (
           <div className="notebook-cell-result">
-            <h4>{last.output}</h4>
+            <h3>{last.output}</h3>
             <FilePreview file={w.files[last.output]!} />
             <button
               onClick={() =>
@@ -392,37 +403,50 @@ export function CommandCell({
       )}
       {expected && (
         <section className="notebook-check">
-          <h4>{n.technical}</h4>
+          <h3>{n.technical}</h3>
           <p>
             <InlineText>{limit ?? ""}</InlineText>
           </p>
           <button
             disabled={w.busy || !last || Boolean(last.error) || stale}
-            onClick={() =>
+            onClick={() => {
+              setChecked({ record });
               void w
                 .check(record, expected)
-                .then((result) => {
-                  setChecks(result);
-                  setCheckGood(result.every((c) => !c.startsWith("✗")));
+                .then((messages) => {
+                  setChecked({ record, messages });
                 })
                 .catch((e) => {
-                  setChecks([e instanceof Error ? e.message : String(e)]);
-                  setCheckGood(false);
-                })
-            }
+                  setChecked({
+                    record,
+                    error: e instanceof Error ? e.message : String(e),
+                  });
+                });
+            }}
           >
             {n.check}
           </button>
-          {checks.length > 0 && (
-            <div role="status" aria-live="polite">
-              <ul>
-                {checks.map((c, i) => (
-                  <li key={i}>{c}</li>
-                ))}
-              </ul>
-              {checkGood && !stale && <p>{n.passed}</p>}
-            </div>
-          )}
+          <div role="status">
+            {currentCheck &&
+              (currentCheck.error ? (
+                <p>{currentCheck.error}</p>
+              ) : currentCheck.messages ? (
+                <>
+                  <ul>
+                    {currentCheck.messages.map((message) => (
+                      <li key={message}>{message}</li>
+                    ))}
+                  </ul>
+                  {mismatch ? (
+                    <p>{n.checkMismatch}</p>
+                  ) : (
+                    !expected.probe && !expected.decode && <p>{n.passed}</p>
+                  )}
+                </>
+              ) : (
+                <p>{n.checking}</p>
+              ))}
+          </div>
         </section>
       )}
     </section>

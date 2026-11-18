@@ -4,8 +4,6 @@ import type { PageCopy } from "../copy-types";
 const page: PageCopy = {
   title: "Reuse a command deliberately",
   goal: "Adapt a preview command to another source while keeping its sizing rule.",
-  sourceNote:
-    "In Files, use New folder to create previews before running the commands on this page.",
   concept: [
     "A reusable command separates the processing you want to keep from the values that belong to one job. For a small preview, the sizing rule can stay the same while the source, duration and destination change. Review each part before reusing it: a command that worked on one clip can still select the wrong material for the next job.",
     "The notebook sends one command to FFmpeg. It does not run a shell, so filename wildcards, loops and shell pipelines do not work here. The paths refer to files in the notebook’s workspace, rather than folders on your device.",
@@ -34,7 +32,7 @@ const page: PageCopy = {
         {
           flag: "previews/short.mp4",
           meaning:
-            "Write short.mp4 inside the existing previews folder in the notebook’s file workspace.",
+            "Write `short.mp4` in the notebook’s `previews` folder. Files shows the folder once the command saves the output.",
         },
       ],
       observe:
@@ -45,9 +43,9 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Adapt the preview command for bunny-action.mp4. Save its first two seconds as previews/practice.mp4, with a 320 × 180 picture and sound. Keep the worked preview available for comparison.",
+    "In the practice command, change the input to `bunny-action.mp4` and `-t 3` to `-t 2`. Keep the sizing rule and the output `previews/practice.mp4`, then run it. The worked preview remains available for comparison.",
   practiceObserve:
-    "Compare the opening with bunny-action.mp4 to confirm you used the action clip. Replay the two-second result and listen for its sound; previews/short.mp4 should still be available in Files.",
+    "Compare the opening with `bunny-action.mp4` to confirm you used the action clip. Play the two-second result with sound. Open `previews` in Files to find both saved previews.",
   hints: [
     "Keep the preview’s sizing rule; identify the values that belong to the new job.",
     "The source must change from the short clip to the action clip.",

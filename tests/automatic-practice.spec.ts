@@ -168,6 +168,7 @@ test("automatic preparation preserves an imported same-name file and never overw
   );
   await page.goto("./#/learn/first-edit/shorten");
   await expectPracticeReady(page);
+  await expect(page.locator(".notebook-source")).toContainText(n.retainedFiles);
   const id = "first-edit/shorten:worked:0";
   const editor = page.locator(`[data-cell="${id}"] textarea`);
   await editor.fill("ffprobe -show_streams bunny-short.mp4");

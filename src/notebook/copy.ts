@@ -34,7 +34,7 @@ import { imageCopy } from "./images.strings";
 export const courseCopy: CourseCopy = {
   title: "Video Lab: Editing with FFmpeg",
   intro:
-    "Learn video editing by reading, changing and running real FFmpeg commands. Each short page introduces one idea, keeps its result beside the command and gives you a separate task to try. Start with the supplied short practice clips from Big Buck Bunny, an animated short film. A two-minute excerpt is also available. No media knowledge is assumed.",
+    "Learn to cut, inspect and export video by running FFmpeg commands in your browser. You only need to be comfortable working with files and typing commands. Each page explains a media concept, prepares the practice files and gives you a task to try. The short clips come from the animated film Big Buck Bunny.",
   chapters: {
     "image-video": {
       title: imageCopy.chapterTitle,

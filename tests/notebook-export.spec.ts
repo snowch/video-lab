@@ -21,6 +21,8 @@ test("multiline browser commands copy and export as one runnable native shell co
   await cell
     .locator("textarea")
     .fill('ffmpeg -i bunny-short.mp4\n -t 1\n "my cut.mp4"');
+  await expect(cell.getByRole("button", { name: n.copy })).toBeHidden();
+  await cell.locator(".notebook-command-tools summary").press("Enter");
   await cell.getByRole("button", { name: n.copy, exact: true }).click();
   const copied = await page.evaluate(() => navigator.clipboard.readText());
   const downloading = page.waitForEvent("download");

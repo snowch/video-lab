@@ -38,7 +38,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create `practice-scale.mp4` as a smaller preview: 320 × 180 stored pixels, with the full eight-second scene and sound. Let FFmpeg calculate the height from the width.",
+    "In the practice command, change `scale=640:-2` to `scale=320:-2` and run it. Keep `-2` so FFmpeg calculates the height. Do the 320 × 180 stored pixels preserve the scene’s proportions?",
   practiceObserve:
     "Find 320x180 in the output video description. Compare the preview with scaled.mp4 at the same displayed size: which fine details are harder to distinguish? Check that subjects keep their shape and the full scene and sound remain.",
   hints: [

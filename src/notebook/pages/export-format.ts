@@ -53,9 +53,9 @@ const copy: PageCopy = {
     },
   ],
   practice:
-    "Create practice-export.mp4 containing the first four seconds of bunny-short.mp4. Keep H.264 video through libx264, yuv420p picture storage and AAC sound in an MP4 container. Duration and export format are separate choices: retain the format options while adding the duration limit.",
+    "Add `-t 4` after the input filename in the practice command and run it. Keep the format settings. Can you shorten the clip while keeping the same video codec, pixel format and audio codec?",
   practiceObserve:
-    "Check the output log for all three format choices, then replay the four-second file with sound. Confirm that it starts at the source's beginning and ends at the intended point.",
+    "Under `Output #0`, find `h264` and `yuv420p` on the Video line and `aac` on the Audio line. Replay the four-second file with sound. Confirm that it starts at the source's beginning and ends at the intended point.",
   hints: [
     "Start from bunny-short.mp4 and keep both picture and sound.",
     "Keep the explicit video encoder, pixel format and audio encoder from the example.",

@@ -52,38 +52,50 @@ export const n = {
   sourceTimeout: "Loading the practice files took too long. Try again.",
   sourceMismatch:
     "A practice file did not match the expected contents. Try loading it again.",
-  source: "Practice source",
+  preparedFile: "This page prepares the practice file automatically.",
+  preparedFiles: "This page prepares these practice files automatically.",
+  retainedFiles: "The page is using your saved files with these names.",
+  chooseSource: "Choose a source to preview",
   longPractice: "Download the two-minute practice video",
-  replaySource: "Replay source",
+  showSource: "Show source preview",
+  hideSource: "Hide source preview",
   run: "Run command",
   cancel: "Cancel processing",
   command: "FFmpeg or ffprobe command",
-  builder: "Command builder",
-  editor: "Edit command",
+  commandTools: "Command builder, copy and download",
   shortcut: "Shift+Enter runs this cell. Enter adds a line.",
   output: "Command output",
+  logHint: "Read Command output for details.",
   runtimeFfmpeg:
     "This saved run includes Aborted() from an older browser runtime. Rerun the command to check its result with the current runtime.",
   runtimeProbe:
     "This saved inspection includes Aborted() from an older browser runtime. Rerun the command to check its result with the current runtime.",
   wrap: "Wrap output",
   sideways: "Scroll sideways for long lines, or turn on Wrap output.",
-  ready: "Ready",
-  running: "Working",
+  running: "Running command…",
   done: "Command completed",
   cancelled:
     "Processing cancelled. Review the files and the last completed result.",
+  cancelledEarlier:
+    "The previous run was cancelled. Run the edited command to see its result.",
   failed: "Command failed. Read its output before retrying.",
   stale:
     "The command, input or output has changed since this result. Run again before checking.",
+  failedEarlier:
+    "The previous command failed. Run the edited command to see its result.",
+  previousError: "Previous error",
   last: "Last executed command",
   previousOutput:
     "The previous output was changed or removed. It is not shown as this run’s result.",
   copy: "Copy command",
   downloadCommand: "Download command (.sh)",
   check: "Check result",
+  checking: "Checking the recorded result…",
   hints: "Hints",
   solution: "Show reference command",
+  hideSolution: "Hide reference command",
+  referenceCommandNote:
+    "Compare this command with your draft in the practice editor.",
   useSolution: "Use reference command",
   replace: "Add -y and rerun",
   overwrite:
@@ -138,7 +150,7 @@ export const n = {
   toolNote:
     "Run FFmpeg and ffprobe commands in your browser. Your files stay on this device.",
   help: "Help",
-  native: "Run in your own terminal",
+  native: "Optional batch script for your own terminal",
   nativeDownload: "Download native script (.sh)",
   nativeNote:
     "This script needs an installed FFmpeg and a POSIX shell. It is not executed in the browser. Place your source MP4 files in its working folder.",
@@ -155,9 +167,10 @@ export const n = {
   previewTruncated: "[Preview shortened. Download the complete file.]",
   copied: "Copied",
   copyFailed: "Copy failed. Select and copy the command text.",
-  technical: "Technical checks",
-  passed:
-    "The checked properties match. Review the actual output; replay media when available.",
+  technical: "Practice result checks",
+  passed: "Your result has the properties listed above.",
+  checkMismatch:
+    "The command ran. Your result differs from the practice target on the marked properties.",
   predictionLabel: "Your prediction",
   reviewLabel: "Your review",
   truncated: "Output was truncated to the last 1,000 lines.",

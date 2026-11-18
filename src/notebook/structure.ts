@@ -114,7 +114,7 @@ export const pages: PageDefinition[] = [
   page(
     "frames-time",
     "timestamps",
-    [`ffprobe -show_entries frame=pts_time ${short}`],
+    [`ffprobe -show_entries frame=media_type,pts_time ${short}`],
     `ffprobe -show_entries stream=avg_frame_rate,time_base ${short}`,
     `ffprobe -show_entries stream=avg_frame_rate,time_base ${short}`,
     { probe: true },

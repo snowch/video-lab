@@ -29,7 +29,7 @@ const copy: PageCopy = {
     },
   ],
   practice:
-    "Inspect bunny-action.mp4 with ffprobe. Compare its duration with the worked source to check that you are reading the second file.",
+    "Run the practice command unchanged. Compare Duration in both reports. Is `bunny-action.mp4` long enough for another five-second preview?",
   practiceObserve:
     "The input name should be bunny-action.mp4 and Duration should read 00:00:06.00. Both sources are long enough for a five-second preview.",
   hints: [

@@ -28,7 +28,7 @@ export default {
     },
   ],
   practice:
-    "Create practice-start.mp4 containing the section from second 1 to second 4 of bunny-short.mp4, with picture and sound. Work out the duration from those two positions.",
+    "In the practice command, set `-ss` to 1. Work out the duration needed to reach source second 4 and set `-t` to that many seconds. Run the command and keep the output name `practice-start.mp4`.",
   practiceObserve:
     "Compare the opening with the source at second 1 and the ending with the source at second 4. The output should last three seconds; listen to check that it also contains sound.",
   hints: [

@@ -93,6 +93,7 @@ function PreviewResource({ file }: { file: NotebookFile }) {
           ref={(element) => {
             media.current = element;
           }}
+          aria-label={file.name}
           src={url}
           controls
           preload="metadata"
@@ -103,6 +104,7 @@ function PreviewResource({ file }: { file: NotebookFile }) {
           ref={(element) => {
             media.current = element;
           }}
+          aria-label={file.name}
           src={url}
           controls
           preload="metadata"

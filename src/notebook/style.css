@@ -64,28 +64,17 @@
   color: var(--muted);
 }
 .notebook-source {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.6rem 1rem;
   padding: 0;
   margin: 1.5rem 0;
 }
-.notebook-source > code {
-  min-width: 0;
+.notebook-prepared-files code {
   overflow-wrap: anywhere;
-}
-.notebook-source > button {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
 }
 .notebook-source > p,
 .notebook-source > .notebook-preview,
 .notebook-source-preview {
-  grid-column: 1 / -1;
   min-width: 0;
-  margin: 0.35rem 0;
+  margin: 0.6rem 0;
 }
 .notebook-credit {
   font-size: 0.85rem;
@@ -146,27 +135,11 @@
   border-radius: 16px;
   background: var(--surface);
 }
-.notebook-cell > header {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  align-items: baseline;
-  margin-bottom: 0.7rem;
-}
-.notebook-cell > header h2 {
-  margin: 0;
+.notebook-cell > h2 {
+  margin: 0 0 0.7rem;
   font-size: 1.3rem;
   font-weight: 750;
 }
-.notebook-cell-tool {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  color: var(--muted);
-  font-family: var(--mono, monospace);
-  font-size: 0.9rem;
-  margin-left: auto;
-}
-.notebook-cell-mode,
 .notebook-cell-actions,
 .notebook-file-tools,
 .notebook-file-actions {
@@ -176,18 +149,14 @@
   gap: 0.6rem;
   margin: 0.65rem 0;
 }
-.notebook-cell-mode button[aria-pressed="true"] {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-soft);
-}
-.notebook-cell-mode button,
 .notebook-cell-actions button {
   font-size: 0.9rem;
   padding-inline: 0.85rem;
 }
-.notebook-cell-actions > .primary {
-  margin-right: auto;
+.notebook-command-tools,
+.notebook-last-command,
+.notebook-native {
+  margin-block: 1rem;
 }
 .notebook-cell > p:not([role]):not(.notebook-shortcut) {
   margin-inline: auto;
@@ -213,6 +182,9 @@
 .notebook-cell p[role="status"] {
   font-weight: 600;
   font-size: 0.9rem;
+}
+.notebook-run-status:empty {
+  margin: 0;
 }
 .notebook-log {
   position: relative;
@@ -298,7 +270,7 @@
 .notebook-cell-result {
   margin-top: 1.5rem;
 }
-.notebook-cell-result h4 {
+.notebook-cell-result h3 {
   overflow-wrap: anywhere;
 }
 .notebook-cell-result button {
@@ -621,14 +593,6 @@
   .notebook-shell {
     padding: 0 1rem 2rem;
   }
-  .notebook-source {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .notebook-source > button {
-    grid-column: 1;
-    grid-row: auto;
-    justify-self: start;
-  }
   .notebook-page .notebook-colour-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -645,14 +609,8 @@
   .notebook-cell-actions > button {
     flex: 1 1 9rem;
   }
-  .notebook-cell-actions > .primary {
-    margin-right: 0;
-  }
   .notebook-scroll-tools span {
     flex: 1;
-  }
-  .notebook-cell-tool {
-    display: none;
   }
   .notebook-welcome {
     padding-top: 2rem;
@@ -678,16 +636,15 @@
   border-top: 1px solid var(--line);
   padding-top: 1rem;
 }
-.notebook-review summary {
+.notebook-review summary,
+.notebook-command-tools summary,
+.notebook-last-command summary,
+.notebook-error summary,
+.notebook-svg-workflow summary,
+.notebook-native summary {
   cursor: pointer;
   padding: 0.6rem 0;
 }
-.notebook-source-preview strong {
-  display: block;
-  margin-bottom: 0.5rem;
-  overflow-wrap: anywhere;
-}
-
 .notebook-diagram {
   margin: 1.25rem auto;
   padding: 0;

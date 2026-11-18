@@ -30,7 +30,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Make `practice-square.mp4` with a centred 360 × 360 crop of `bunny-short.mp4`. Keep all eight seconds and the sound. Compared with the worked square, this should remove picture area above and below as well as from the sides.",
+    "Change `crop=480:480` to `crop=360:360` in the practice command and run it. The smaller square removes picture area above and below as well as from the sides. Does the smaller crop still show the full action?",
   practiceObserve:
     "Compare the two square outputs at the same moment, then replay the smaller crop in full. Identify an object or piece of background that the smaller crop loses, and decide whether the remaining view still makes the action clear.",
   hints: [

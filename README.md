@@ -2,20 +2,21 @@
 
 Copyright © 2026 Christopher Snow.
 
-[Open the course](https://snowch.github.io/video-lab/). Ten chapters teach video editing with real, editable FFmpeg/ffprobe commands executed locally in WebAssembly. Twenty-four concept pages put each command beside its explanation, followed by actual output/replay, a specific observation and one independent practice task with five hints. Optional Notes retain earlier predictions and reviews. Timelines and connection diagrams explain examples without claiming to measure learner outputs. The optional command builder supports touch devices; raw tool output remains visible.
+[Open the course](https://snowch.github.io/video-lab/). Eleven chapters teach video editing with real, editable FFmpeg/ffprobe commands executed locally in WebAssembly. Twenty-nine concept pages put each command beside its explanation, followed by actual output/replay, a specific observation and one independent practice task with five hints. Optional Notes retain earlier predictions and reviews. Timelines and connection diagrams explain examples without claiming to measure learner outputs. The optional command builder supports touch devices; raw tool output remains visible.
 
 | Chapter | First page |
 | --- | --- |
 | 1 · Your first edit | `#/learn/first-edit/shorten` |
 | 2 · Inside a video file | `#/learn/inside-video/inspect` |
 | 3 · Frames and time | `#/learn/frames-time/rate` |
-| 4 · Cut and join | `#/learn/cut-join/copy` |
-| 5 · Shape the picture | `#/learn/framing/scale` |
-| 6 · Work with sound | `#/learn/sound/level` |
-| 7 · Titles and subtitles | `#/learn/text/title` |
-| 8 · Compression and quality | `#/learn/quality/quality` |
-| 9 · Export and verify | `#/learn/export/format` |
-| 10 · Repeatable workflows | `#/learn/workflows/reuse` |
+| 4 · Build video from images | `#/learn/image-video/hold` |
+| 5 · Cuts and joins | `#/learn/cut-join/copy` |
+| 6 · Shape the picture | `#/learn/framing/scale` |
+| 7 · Work with sound | `#/learn/sound/level` |
+| 8 · Titles and subtitles | `#/learn/text/title` |
+| 9 · Compression and quality | `#/learn/quality/quality` |
+| 10 · Export and verify | `#/learn/export/format` |
+| 11 · Repeatable workflows | `#/learn/workflows/reuse` |
 
 The credited, low-resolution two-minute Big Buck Bunny excerpt includes original sound, with eight- and six-second companion clips for quick mobile exercises. Preparation, licence, hashes and native measurements are recorded in [media provenance](docs/notes/notebook/media.json). The course ships its subtitle example and licensed font, including in the complete offline download.
 
@@ -50,7 +51,11 @@ Processing uses pinned single-thread `@ffmpeg/core` 0.12.10, wrapper 0.12.15 and
 
 The notebook workspace allows 64 files, 20 MiB each and 32 MiB combined. One command can read up to twelve inputs. Archived workspaces retain their earlier twelve-file/twelve-recipe limits. Commands select timing and dimensions directly; processing has a 120-second limit. Record with native FFmpeg or a device recorder outside the app, then import the source. The optional [recording guide](https://snowch.github.io/video-lab/#/appendix/recording) gives platform-specific instructions. Browser screen recording has been removed; no sharing or microphone permission is requested. Earlier saved recordings are retained. Native Windows/macOS command forms are source-reviewed, while the Linux/X11 example has virtual-desktop execution evidence.
 
-## Using the command labs
+## Using the notebook
+
+Each page prepares its listed practice files. Select **Run command** or press Shift+Enter in the command editor. Enter adds a line. **Command builder, copy and download** contains the touch-friendly argument builder and command export controls.
+
+## Using the archived command labs
 
 Enter a genuine `ffmpeg` or `ffprobe` command in **Command** and press Enter or **Run command**. Shift+Enter continues the same command; Up/Down recalls one-line history. **Build command** offers editable arguments for touch devices. Its complete command stays visible; replacing a typed draft is explicit and the previous draft can be restored.
 

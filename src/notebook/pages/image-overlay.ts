@@ -5,7 +5,7 @@ export const overlay: PageCopy = {
   title: "Place a drawing over video",
   goal: "Combine a transparent drawing with moving footage, then change its position.",
   sourceNote:
-    "The supplied annotation.png is an original 854 × 480 drawing of an orange arrow and ring. Its canvas matches the supplied eight-second bunny-short.mp4.",
+    "The transparent arrow-and-ring drawing has the same 854 × 480 dimensions as the video.",
   concept: [
     "An image can add marks to moving footage. The overlay filter combines two pictures: the first input forms the background, and the second sits above it. Each output frame contains the combined result.",
     "An image’s **alpha** channel records how transparent each pixel is. Fully transparent pixels let the background show through; opaque pixels cover it. The supplied PNG has transparent space around its orange drawing, so the footage remains visible there. An image with an opaque background would cover the footage in that area.",
@@ -45,7 +45,7 @@ export const overlay: PageCopy = {
     },
   ],
   practice:
-    "Create annotated-practice.mp4 using the supplied annotation.png shifted 40 pixels to the right, with no vertical movement. Keep the full eight-second video and its sound. The starter command uses the default overlay position; change the filter’s position settings.",
+    "Change `-filter_complex overlay` to `-filter_complex overlay=40:0` in the practice command and run it. This shifts the drawing 40 pixels right with no vertical movement and keeps the full video and sound.",
   practiceObserve:
     "Compare annotated-practice.mp4 with annotated.mp4. The arrow and ring should sit 40 pixels farther right at the same height and remain visible throughout. The canvas extends past the right edge, but only transparent space is cropped in this supplied drawing. Listen for the source sound.",
   hints: [

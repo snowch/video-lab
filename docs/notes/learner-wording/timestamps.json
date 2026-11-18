@@ -1,0 +1,33 @@
+{
+  "copyright": "Copyright © 2026 Christopher Snow",
+  "source": "bunny-short.mp4",
+  "note": "Real output excerpts from the same time interval. The browser captured the successful notebook RunRecord using the pinned FFmpeg WASM core.",
+  "native": {
+    "version": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers",
+    "page": "frames-time/timestamps",
+    "command": "ffprobe -show_entries frame=media_type,pts_time bunny-short.mp4",
+    "stdout": "media_type=video\npts_time=7.625000\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.637333\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.658667\n[/FRAME]\n[FRAME]\nmedia_type=video\npts_time=7.666667\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.680000\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.701333\n[/FRAME]\n[FRAME]\nmedia_type=video\npts_time=7.708333"
+  },
+  "browser": {
+    "id": "frames-time/timestamps:worked:0",
+    "command": "ffprobe -show_entries frame=media_type,pts_time bunny-short.mp4",
+    "record": {
+      "command": "ffprobe -show_entries frame=media_type,pts_time bunny-short.mp4",
+      "id": "frames-time/timestamps:worked:0",
+      "last": {
+        "runtime": "exit-adapter-v1",
+        "command": "ffprobe -show_entries frame=media_type,pts_time bunny-short.mp4",
+        "log": "media_type=video\npts_time=7.625000\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.637333\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.658667\n[/FRAME]\n[FRAME]\nmedia_type=video\npts_time=7.666667\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.680000\n[/FRAME]\n[FRAME]\nmedia_type=audio\npts_time=7.701333\n[/FRAME]\n[FRAME]\nmedia_type=video\npts_time=7.708333",
+        "inputs": [
+          {
+            "name": "bunny-short.mp4",
+            "sha256": "b02849f31c6493657af16c54f17d0a8853da4a8de921c377d610775840f08144"
+          }
+        ],
+        "at": "2026-11-18T22:02:13.130Z",
+        "truncated": true,
+        "code": -1
+      }
+    }
+  }
+}

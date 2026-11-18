@@ -49,7 +49,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Create practice-speed.mp4 with the fast preset, retaining libx264, CRF 26, all eight seconds and sound. Compare its final output size and processing rate with fast.mp4, then replay the same moving detail in each version.",
+    "Change `-preset ultrafast` to `-preset fast` in the practice command and run it. Keep `-crf 26`. How do these two encodes differ in file size, processing rate and moving detail?",
   practiceOptions: [
     {
       flag: "-preset fast",
@@ -58,7 +58,7 @@ const page: PageCopy = {
     },
   ],
   practiceObserve:
-    "Compare the measured sizes and processing rates, and look for changes around moving edges. More encoding effort can produce a smaller file at this CRF, but the actual size, timing and visible differences depend on the clip and environment.",
+    "Compare `Lsize` and `speed` on the final progress lines in both runs. Replay the same moment in each video and look for changes around moving edges. More encoding effort can produce a smaller file at this CRF, but the actual size, timing and visible differences depend on the clip and environment.",
   hints: [
     "Keep the source and duration unchanged; this task changes encoding effort.",
     "Keep libx264 as the video encoder.",

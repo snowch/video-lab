@@ -126,7 +126,7 @@ test("visiting the glossary preserves a draft and an active real command", async
   await page.goBack();
   await expect(cell.locator("textarea")).toHaveValue(command);
   await expect(cell.locator("[role=status]").first()).toHaveText(n.done);
-  await expect(cell.locator(".notebook-cell-result h4")).toHaveText(
+  await expect(cell.locator(".notebook-cell-result h3")).toHaveText(
     "glossary-cut.mp4",
   );
   await page.getByRole("button", { name: n.files, exact: true }).click();

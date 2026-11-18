@@ -40,7 +40,7 @@ const page: PageCopy = {
     },
   ],
   practice:
-    "Inspect bunny-action.mp4 with both stream and whole-file details in JSON. Make a short delivery record: video codec and dimensions, audio codec and sample rate, file duration and size in bytes. Compare its duration and size with bunny-short.mp4 from the worked example.",
+    "Add `-show_streams -show_format -of json` before `bunny-action.mp4` in the practice command and run it. Use the report to record the video codec and dimensions, the audio codec and sample rate, and the whole file’s duration and size in bytes.",
   practiceObserve:
     "Use codec_type to identify the video and audio objects before recording their properties. Take duration and size from format in both reports, keeping seconds and bytes with the values. Which clip is shorter, and which file is smaller? Keep the field's location with each recorded value so another person can find it.",
   hints: [

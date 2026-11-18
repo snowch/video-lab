@@ -519,13 +519,14 @@ export const commandReferenceGroups: readonly CommandReferenceGroup[] = [
         options: ["-show_entries"],
         summary: "Ask ffprobe for selected report sections and fields.",
         example:
-          "ffprobe -show_entries frame=pts_time bunny-short.mp4\nffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
+          "ffprobe -show_entries frame=media_type,pts_time bunny-short.mp4\nffprobe -show_entries stream=avg_frame_rate,time_base bunny-short.mp4",
         detail:
-          "Place before the input filename. The equals sign separates a section from its fields, and commas separate field names. These are report selections, not extra command options. Frame reports can contain both decoded audio and video frames.",
+          "Place before the input filename. The equals sign separates a section from its fields, and commas separate field names. In the frame report, look for media_type to tell video pictures from decoded audio blocks.",
         href: "#/learn/frames-time/timestamps",
         link: courseCopy.pages["frames-time/timestamps"]!.title,
         aliases: [
           "pts_time",
+          "media_type",
           "avg_frame_rate",
           "time_base",
           "comma",
