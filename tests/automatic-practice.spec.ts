@@ -287,8 +287,48 @@ test("deleting a practice file does not immediately recreate it", async ({
   await dialog
     .getByRole("button", { name: `${n.delete} bunny-short.mp4`, exact: true })
     .click();
+  // Leave the real storage operation in progress until the Close and Escape checks.
+  await page.evaluate(() => {
+    const target = IDBTransaction.prototype;
+    const original = Object.getOwnPropertyDescriptor(target, "oncomplete")!;
+    const resume = new Promise<void>((resolve) => {
+      window.addEventListener(
+        "resume-file-save",
+        () => {
+          Object.defineProperty(target, "oncomplete", original);
+          resolve();
+        },
+        { once: true },
+      );
+    });
+    Object.defineProperty(target, "oncomplete", {
+      ...original,
+      set(this: IDBTransaction, listener: EventListener | null) {
+        original.set!.call(
+          this,
+          listener &&
+            this.mode === "readwrite" &&
+            this.db.name === "video-lab-notebook" &&
+            this.objectStoreNames.contains("files")
+            ? (event: Event) =>
+                void resume.then(() => listener.call(this, event))
+            : listener,
+        );
+      },
+    });
+  });
   await dialog.getByRole("button", { name: n.delete, exact: true }).click();
-  await dialog.getByRole("button", { name: n.close, exact: true }).click();
+  const close = dialog.getByRole("button", { name: n.close, exact: true });
+  await expect(close).toBeDisabled();
+  await expect(dialog.getByRole("status")).toContainText(n.savingFileChange);
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("button", { name: n.discard })).toBeHidden();
+  await page.evaluate(() =>
+    window.dispatchEvent(new Event("resume-file-save")),
+  );
+  await close.click();
+  await expect(dialog).toBeHidden();
   await expect(page.locator(".notebook-source [role=alert]")).toHaveText(
     n.sourceMissing,
   );

@@ -24,6 +24,8 @@ The review retained the explanatory timelines, signal models, and figure labels 
 
 No storage schema or key changes were needed. Existing content remains addressable by the same lesson and cell IDs. The regression suite follows existing source collision, storage-failure, reload, migration, offline, and overwrite paths. The revisions leave the original media files and their provenance intact.
 
+The first hosted Firefox suite exposed a separate race in Files. Closing the dialog while a confirmed deletion was still saving could produce a discard prompt and cover Retry loading. Close and Escape now wait for the file change to finish. The regression holds the real IndexedDB delete completion, tests both close paths, then releases it and retries loading the supplied practice file.
+
 ## Independent review and evidence
 
 - The first source pass tied each browser and optional native action to the provided command, expected output, terms already introduced, and the visible control. Prose was revised from those checked facts in a separate pass. An independent learner reviewer navigated the public baseline and built revision and reported concrete missing controls, mixed timestamp evidence, an unreachable resample check, and archive guidance.

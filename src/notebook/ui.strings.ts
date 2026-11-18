@@ -101,6 +101,7 @@ export const n = {
   overwrite:
     "An output with that name exists. Choose a new name, or add -y to allow FFmpeg to replace it.",
   saving: "Saving work",
+  savingFileChange: "Saving file change…",
   sessionOnly:
     "Some work could not be saved. Download your files and page records before closing or updating.",
   loading: "Opening workspace",
