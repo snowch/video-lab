@@ -135,6 +135,7 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
     unsafeCells = useRef(new Set<string>()),
     nonDurable = useRef(new Set<string>()),
     queue = useRef(Promise.resolve()),
+    latestRefresh = useRef(0),
     channel = useRef<BroadcastChannel | null>(null);
   function durableState() {
     if (live.current)
@@ -195,20 +196,17 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
     });
   }
   async function refresh() {
-    if (locked.current) return;
-    try {
-      const data = await readWorkspace();
-      const next = Object.fromEntries(data.files.map((f) => [f.name, f]));
-      for (const name of nonDurable.current)
-        if (filesRef.current[name]) next[name] = filesRef.current[name];
-      updateFiles(next);
-      updateFolders(
-        (data.meta.find((m) => m.key === "folders")?.value as
-          string[] | undefined) ?? [],
-      );
-    } catch {
-      /* Current in-memory work remains available. */
-    }
+    if (locked.current || !live.current) return;
+    const request = ++latestRefresh.current;
+    const previous = filesRef.current;
+    // A background read can finish after a command has saved a newer result.
+    await freshFiles(
+      () =>
+        live.current &&
+        !locked.current &&
+        request === latestRefresh.current &&
+        previous === filesRef.current,
+    );
   }
   useEffect(() => {
     live.current = true;
@@ -385,9 +383,10 @@ export function NotebookWorkspace({ children }: { children: ReactNode }) {
       }
     }
   }
-  async function freshFiles() {
+  async function freshFiles(canApply?: () => boolean) {
     try {
       const data = await readWorkspace();
+      if (canApply && !canApply()) return;
       const next = Object.fromEntries(data.files.map((f) => [f.name, f]));
       for (const name of nonDurable.current)
         if (filesRef.current[name]) next[name] = filesRef.current[name];

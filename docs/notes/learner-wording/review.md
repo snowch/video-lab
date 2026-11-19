@@ -26,6 +26,8 @@ No storage schema or key changes were needed. Existing content remains addressab
 
 The first hosted Firefox suite exposed a separate race in Files. Closing the dialog while a confirmed deletion was still saving could produce a discard prompt and cover Retry loading. Close and Escape now wait for the file change to finish. The regression holds the real IndexedDB delete completion, tests both close paths, then releases it and retries loading the supplied practice file.
 
+The first post-merge Pages suite exposed a second timing issue in Firefox. An older background file read could finish after a real encode saved its output and mark the result stale. A focus or cross-tab refresh now applies only if it remains the latest request and the workspace files have stayed current. The frame-rate regression saves a real one-frame-per-second output before delivering the earlier read. The download and check remain available, and native ffprobe verifies four encoded pictures and an audio stream. An independent Firefox replay observed the stale status on the earlier build and verified that the updated build keeps the output and passes the practice check.
+
 ## Independent review and evidence
 
 - The first source pass tied each browser and optional native action to the provided command, expected output, terms already introduced, and the visible control. Prose was revised from those checked facts in a separate pass. An independent learner reviewer navigated the public baseline and built revision and reported concrete missing controls, mixed timestamp evidence, an unreachable resample check, and archive guidance.

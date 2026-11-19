@@ -188,16 +188,57 @@ test("picture-rate practice requires one fps, four pictures and retained sound",
   await editor.fill(
     'ffmpeg -i bunny-short.mp4 -t 4 -vf "fps=1" practice-rate.mp4',
   );
+  // Capture the previous files with a real focus refresh and delay its delivery.
+  await page.evaluate(() => {
+    const target = IDBTransaction.prototype;
+    const original = Object.getOwnPropertyDescriptor(target, "oncomplete")!;
+    return new Promise<void>((captured) => {
+      Object.defineProperty(target, "oncomplete", {
+        ...original,
+        set(this: IDBTransaction, listener: EventListener | null) {
+          if (
+            !listener ||
+            this.mode !== "readonly" ||
+            this.db.name !== "video-lab-notebook" ||
+            !this.objectStoreNames.contains("cells")
+          ) {
+            original.set!.call(this, listener);
+            return;
+          }
+          Object.defineProperty(target, "oncomplete", original);
+          original.set!.call(this, (event: Event) => {
+            window.addEventListener(
+              "deliver-previous-files",
+              () => listener.call(this, event),
+              { once: true },
+            );
+            captured();
+          });
+        },
+      });
+      window.dispatchEvent(new Event("focus"));
+    });
+  });
   await cell.getByRole("button", { name: n.run, exact: true }).click();
   await expect(cell.locator("[role=status]").first()).toHaveText(n.done, {
     timeout: 120000,
   });
+  const download = cell.getByRole("button", {
+    name: "Download practice-rate.mp4",
+    exact: true,
+  });
+  await expect(download).toBeVisible();
+  await page.evaluate(async () => {
+    window.dispatchEvent(new Event("deliver-previous-files"));
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+  });
+  await expect(download).toBeVisible();
+  await expect(cell.locator("[role=status]").first()).toHaveText(n.done);
   await cell.getByRole("button", { name: n.check, exact: true }).click();
   await expect(check).toContainText(n.passed, { timeout: 120000 });
   const downloaded = page.waitForEvent("download");
-  await cell
-    .getByRole("button", { name: "Download practice-rate.mp4", exact: true })
-    .click();
+  await download.click();
   const path = (await (await downloaded).path())!;
   const probe = JSON.parse(
     execFileSync(
